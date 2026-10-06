@@ -182,8 +182,8 @@ code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;paddi
         sections.append(f'<section id="doc-{Path(fn).stem}">{rendered}</section>')
     nav=''.join(f'<a href="#doc-{Path(fn).stem}">{html.escape(label)}</a>' for fn,label in CHAPTERS)
     document=f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Relink Studio · 业务重构开发文档</title><style>{css}</style></head><body>
-<aside><div class="brand">Relink Studio</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav>{nav}</nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>步骤按需采集 · 内存识别<br>M1 已达到可开工规格<br>Ctrl + F 搜索业务与参数</div></aside>
-<main><header class="hero"><div class="eyebrow">业务规则独立重构 · 保留现有界面</div><h1>从业务证据，到开发规格。</h1><p>v0.3：M1 首条纵切片已经具备可开工契约；步骤按需采集，实时图像默认不落盘。OpenCV、OCR 与业务状态机分层，已确认事实与待决规则分开。</p><div class="stats"><span><b>44</b>业务 / 工程条目</span><span><b>88</b>待实施验收规格</span><span><b>16</b>已核查官方资料</span><span><b>12</b>证据 / 需求记录组</span></div></header>
+<aside><div class="brand">Delta Market Assistant</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav>{nav}</nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>PR01–PR10 已实现<br>下一阶段：PR11 UI 接入<br>Ctrl + F 搜索业务与参数</div></aside>
+<main><header class="hero"><div class="eyebrow">业务规则独立重构 · 保留现有界面</div><h1>业务契约与实现进度。</h1><p>PR10 已完成 SQLite 持久化、事务与恢复测试，常规 UI 接入进入 PR11。下方保留原始业务证据和冻结规格；实际代码与测试结果以实施进度文档为准。实时捕获与 OCR 仍属后续阶段。</p><div class="stats"><span><b>44</b>业务 / 工程条目</span><span><b>88</b>冻结验收规格</span><span><b>16</b>已核查官方资料</span><span><b>12</b>证据 / 需求记录组</span></div></header>
 {''.join(sections)}<footer>本文是开发规格，不是完成接入的声明。离线阅读无在线脚本和字体依赖；Markdown、JSON与图表源文件在同目录。</footer></main></body></html>'''
     (DOC/'index.html').write_text(document,encoding='utf-8')
     print(f'HTML_WRITTEN={(DOC/"index.html").stat().st_size} BYTES / CHAPTERS={len(CHAPTERS)}')

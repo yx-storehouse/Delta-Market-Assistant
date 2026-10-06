@@ -1,0 +1,1172 @@
+Delta Market Assistant PR10 — completed transaction verification
+Date: 2026-10-06 (Asia/Shanghai)
+CWD: C:\Users\Administrator\Desktop\price
+Original source revision: b39bce5e3a47ee642d4a767ec939558e36e502b5
+Changed branch: main; SQLite PRAGMA user_version 0 -> 1 -> 2.
+Changed behavior: durable event/attempt/receipt/reservation/ledger transactions; committed-only projection; restart reconciliation; backup.
+Changed guards: commitLedger rejects RECEIPT_UNCONFIRMED and RECEIPT_OUTCOME_MISMATCH in both stores.
+Changed UI fields: 330 Chinese string literals restored; no layout/code-structure/ASCII-key change; 3 visible-text assertions added.
+Normal UI SQLite/profile/records integration remains PR11. This PR does not enable screen capture, OCR or external actions.
+
+MODIFIED_FILE: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\MODIFIED_FILE.exe
+DIFF_FILE: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\DIFF_FILE
+VERIFICATION: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\VERIFICATION.txt
+ROLLBACK: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\ROLLBACK.sh
+Original EXE SHA256: cd9b68c477621c7e6bdb75c2d79a55853c0036502adfd33377c1ec14b9897f37
+Modified EXE SHA256: d19688ccbda8786246c6d8927fc49ac5484f7b8acc42d5e3256fd84250d1e3a6
+Restored EXE SHA256: cd9b68c477621c7e6bdb75c2d79a55853c0036502adfd33377c1ec14b9897f37
+Delivery EXE: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
+Rollback copies original application files only; it does not revert Git or delete new database files.
+Restored behavior/status: original UI_SELF_TEST=PASS, exit=0; historical baseline text is preserved, not claimed as fixed.
+Fixed delivery and MODIFIED_FILE remain changed; original release stays byte-identical; database sentinel survives rollback.
+Visual review: final run.png and favorites.png reopened; normal Chinese, neutral white/gray store layout and intact content/controls verified.
+Baseline, modified and restored snapshots use separate directories; restored snapshots do not overwrite modified screenshots.
+
+Exact commands, inputs, literal outputs and exit status:
+
+BASELINE_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test
+INPUT: Original source at b39bce5e3a47ee642d4a767ec939558e36e502b5
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.2s)
+-- Generating done (0.3s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+ninja: no work to do.
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: domain_tests
+ 1/10 Test  #1: domain_tests .....................   Passed    0.10 sec
+      Start  2: business_tests
+ 2/10 Test  #2: business_tests ...................   Passed    0.03 sec
+      Start  3: business_value_tests
+ 3/10 Test  #3: business_value_tests .............   Passed    0.03 sec
+      Start  4: business_rule_tests
+ 4/10 Test  #4: business_rule_tests ..............   Passed    0.03 sec
+      Start  5: business_migration_tests
+ 5/10 Test  #5: business_migration_tests .........   Passed    0.03 sec
+      Start  6: profile_store_tests
+ 6/10 Test  #6: profile_store_tests ..............   Passed    0.03 sec
+      Start  7: runtime_tests
+ 7/10 Test  #7: runtime_tests ....................   Passed    0.03 sec
+      Start  8: ui_projection_tests
+ 8/10 Test  #8: ui_projection_tests ..............   Passed    0.03 sec
+      Start  9: ledger_tests
+ 9/10 Test  #9: ledger_tests .....................   Passed    0.03 sec
+      Start 10: ui_offscreen
+10/10 Test #10: ui_offscreen .....................   Passed    1.66 sec
+
+100% tests passed out of 10
+
+Total Test time (real) =   2.01 sec
+STDERR:
+Captured together in baseline_test.log
+EXIT_STATUS: 0
+
+FINAL_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test -Package
+INPUT: PR10 source and final corrected Chinese UI; build_relocated; isolated application tests.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.2s)
+-- Generating done (0.2s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/5] Automatic MOC for target RelinkStudio
+[2/4] Building CXX object CMakeFiles/RelinkStudio.dir/src/main.cpp.obj
+[3/4] Building CXX object CMakeFiles/RelinkStudio.dir/src/mainwindow.cpp.obj
+[4/4] Linking CXX executable RelinkStudio.exe
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: domain_tests
+ 1/12 Test  #1: domain_tests .....................   Passed    0.10 sec
+      Start  2: business_tests
+ 2/12 Test  #2: business_tests ...................   Passed    0.03 sec
+      Start  3: business_value_tests
+ 3/12 Test  #3: business_value_tests .............   Passed    0.03 sec
+      Start  4: business_rule_tests
+ 4/12 Test  #4: business_rule_tests ..............   Passed    0.03 sec
+      Start  5: business_migration_tests
+ 5/12 Test  #5: business_migration_tests .........   Passed    0.03 sec
+      Start  6: profile_store_tests
+ 6/12 Test  #6: profile_store_tests ..............   Passed    0.03 sec
+      Start  7: runtime_tests
+ 7/12 Test  #7: runtime_tests ....................   Passed    0.03 sec
+      Start  8: ui_projection_tests
+ 8/12 Test  #8: ui_projection_tests ..............   Passed    0.03 sec
+      Start  9: ledger_tests
+ 9/12 Test  #9: ledger_tests .....................   Passed    0.03 sec
+      Start 10: sqlite_ledger_tests
+10/12 Test #10: sqlite_ledger_tests ..............   Passed    0.83 sec
+      Start 11: storage_self_test
+11/12 Test #11: storage_self_test ................   Passed    0.10 sec
+      Start 12: ui_offscreen
+12/12 Test #12: ui_offscreen .....................   Passed    1.54 sec
+
+100% tests passed out of 12
+
+Total Test time (real) =   2.83 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+powershell : Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+所在位置 行:14 字符: 72
++ ... TEXITCODE}; powershell -NoProfile -ExecutionPolicy Bypass -File .\bui ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Warning: Cannot...l and dxil.dll.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Captured together in final_build.log
+EXIT_STATUS: 0
+
+SQLITE_REGRESSION
+COMMAND: .\build_relocated\sqlite_ledger_tests.exe
+INPUT: Temporary databases; package DLL/plugin path; four controlled child exits; no external actions.
+STDOUT:
+PASS temporary_disk_directory_created
+PASS qsqlite_driver_available
+PASS identity_open
+PASS identity_schema_v2
+PASS event_first_is_new
+PASS event_first_commit
+PASS event_canonical_payload_idempotent
+PASS event_duplicate_commit
+PASS event_payload_conflict_rejected_EVENT_ID_CONFLICT
+PASS event_payload_conflict_commit_aborted
+PASS event_payload_conflict_rollback_clears_abort
+PASS event_metadata_conflict_rejected_EVENT_ID_CONFLICT
+PASS event_metadata_conflict_commit_aborted
+PASS event_metadata_conflict_rollback_clears_abort
+PASS event_sequence_zero_conflict_rejected_EVENT_SEQ_CONFLICT
+PASS event_sequence_zero_conflict_commit_aborted
+PASS event_sequence_zero_conflict_rollback_clears_abort
+PASS event_count_after_conflicts_is_one
+PASS attempt_reserve_prepared
+PASS attempt_reserve_commit
+PASS attempt_idempotent
+PASS attempt_duplicate_commit
+PASS attempt_payload_conflict_rejected_ATTEMPT_ID_CONFLICT
+PASS attempt_payload_conflict_commit_aborted
+PASS attempt_payload_conflict_rollback_clears_abort
+PASS intent_conflict_rejected_INTENT_ID_CONFLICT
+PASS intent_conflict_commit_aborted
+PASS intent_conflict_rollback_clears_abort
+PASS reservation_conflict_rejected_RESERVATION_CONFLICT
+PASS reservation_conflict_commit_aborted
+PASS reservation_conflict_rollback_clears_abort
+PASS quota_full_rejected_QUOTA_FULL
+PASS quota_full_commit_aborted
+PASS quota_full_rollback_clears_abort
+PASS quota_required_rejected_QUOTA_SCOPE_UNRESOLVED
+PASS quota_required_commit_aborted
+PASS quota_required_rollback_clears_abort
+PASS conflict_stage_prior_event
+PASS conflict_stage_prior_attempt
+PASS conflict_aborts_entire_unit_of_work_rejected_EVENT_ID_CONFLICT
+PASS conflict_aborts_entire_unit_of_work_commit_aborted
+PASS conflict_aborts_entire_unit_of_work_rollback_clears_abort
+PASS conflict_rolls_back_prior_event_in_same_transaction
+PASS identity_errors_preserve_committed_state
+PASS identity_close
+PASS success_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS success_dispatch
+PASS success_dispatch_commit
+PASS same_dispatch_new_event_id_is_idempotent
+PASS dispatch_new_event_id_commit
+PASS success_receipt
+PASS success_ledger_staged
+PASS ui_snapshot_before_commit_has_no_success
+PASS observer_readonly_open
+PASS other_connection_before_commit_has_no_success
+PASS success_atomic_commit
+PASS success_visible_only_after_commit
+PASS successful_receipt_new_event_id_is_idempotent
+PASS successful_ledger_new_event_id_is_idempotent
+PASS success_replay_commit
+PASS success_replay_not_double_counted
+PASS transaction_payload_conflict_rejected_TRANSACTION_ID_CONFLICT
+PASS transaction_payload_conflict_commit_aborted
+PASS transaction_payload_conflict_rollback_clears_abort
+PASS terminal_receipt_rejected_rejected_ATTEMPT_TERMINAL
+PASS terminal_receipt_rejected_commit_aborted
+PASS terminal_receipt_rejected_rollback_clears_abort
+PASS seed_event_failed
+PASS seed_attempt_failed
+PASS seed_commit_failed
+PASS failed_dispatch
+PASS failed_receipt
+PASS failed_ledger
+PASS failed_before_commit_still_reserved
+PASS failed_commit
+PASS explicit_failed_releases_reservation
+PASS failed_reservation_marked_released
+PASS failed_frees_quota_for_new_intent
+PASS retry_rollback
+PASS rollback_discards_new_attempt
+PASS success_close
+PASS success_reopen
+PASS success_and_failure_persist_across_reopen
+PASS events_persist_across_reopen
+PASS confirmed_success_matches_memory_oracle
+PASS unknown_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS unknown_dispatch
+PASS unknown_receipt_retains_reservation
+PASS unknown_commit
+PASS unknown_receipt_cannot_be_success_rejected_RECEIPT_UNCONFIRMED
+PASS unknown_receipt_cannot_be_success_commit_aborted
+PASS unknown_receipt_cannot_be_success_rollback_clears_abort
+PASS unknown_receipt_cannot_release_as_failure_rejected_RECEIPT_UNCONFIRMED
+PASS unknown_receipt_cannot_release_as_failure_commit_aborted
+PASS unknown_receipt_cannot_release_as_failure_rollback_clears_abort
+PASS unknown_never_redispatched_rejected_ATTEMPT_UNKNOWN
+PASS unknown_never_redispatched_commit_aborted
+PASS unknown_never_redispatched_rollback_clears_abort
+PASS unknown_occupies_quota_rejected_QUOTA_FULL
+PASS unknown_occupies_quota_commit_aborted
+PASS unknown_occupies_quota_rollback_clears_abort
+PASS unknown_receipt_duplicate
+PASS unknown_duplicate_commit
+PASS receipt_outcome_conflict_rejected_RECEIPT_CONFLICT
+PASS receipt_outcome_conflict_commit_aborted
+PASS receipt_outcome_conflict_rollback_clears_abort
+PASS unknown_never_increments_success
+PASS seed_event_ambiguous
+PASS seed_attempt_ambiguous
+PASS seed_commit_ambiguous
+PASS ambiguous_dispatch
+PASS ambiguous_success_becomes_unknown
+PASS ambiguous_commit
+PASS ambiguous_cannot_commit_success_rejected_RECEIPT_UNCONFIRMED
+PASS ambiguous_cannot_commit_success_commit_aborted
+PASS ambiguous_cannot_commit_success_rollback_clears_abort
+PASS ambiguous_retains_both_reservations
+PASS late_distinct_confirmed_receipt_accepted
+PASS late_confirmation_staged
+PASS late_confirmation_hidden_until_commit
+PASS late_confirmation_commit
+PASS only_explicit_late_confirmation_counts_success
+PASS seed_event_mismatch
+PASS seed_attempt_mismatch
+PASS seed_commit_mismatch
+PASS mismatch_dispatch
+PASS mismatch_failed_receipt
+PASS mismatch_receipt_commit
+PASS failed_receipt_cannot_be_success_rejected_RECEIPT_OUTCOME_MISMATCH
+PASS failed_receipt_cannot_be_success_commit_aborted
+PASS failed_receipt_cannot_be_success_rollback_clears_abort
+PASS mismatched_outcome_does_not_corrupt_ledger
+PASS recovery_open
+PASS rollback_event_stage
+PASS rollback_attempt_stage
+PASS uncommitted_attempt_not_projected
+PASS explicit_rollback
+PASS rollback_removes_event_and_attempt_atomically
+PASS seed_event_prepared
+PASS seed_attempt_prepared
+PASS seed_commit_prepared
+PASS seed_event_sent
+PASS seed_attempt_sent
+PASS seed_commit_sent
+PASS seed_event_dispatching
+PASS seed_attempt_dispatching
+PASS seed_commit_dispatching
+PASS seed_event_awaiting
+PASS seed_attempt_awaiting
+PASS seed_commit_awaiting
+PASS recovery_sent_stage
+PASS recovery_dispatching_stage
+PASS recovery_awaiting_stage
+PASS recovery_stages_commit
+PASS close_uncommitted_attempt
+PASS close_rolls_back_pending_transaction
+PASS recovery_default_open
+PASS restart_preserves_only_possibly_sent_reservations
+PASS restart_prepared_not_dispatched_is_cancelled
+PASS restart_unknown_sent
+PASS restart_blocks_redispatch_sent_rejected_ATTEMPT_UNKNOWN
+PASS restart_blocks_redispatch_sent_commit_aborted
+PASS restart_blocks_redispatch_sent_rollback_clears_abort
+PASS restart_unknown_dispatching
+PASS restart_blocks_redispatch_dispatching_rejected_ATTEMPT_UNKNOWN
+PASS restart_blocks_redispatch_dispatching_commit_aborted
+PASS restart_blocks_redispatch_dispatching_rollback_clears_abort
+PASS restart_unknown_awaiting
+PASS restart_blocks_redispatch_awaiting_rejected_ATTEMPT_UNKNOWN
+PASS restart_blocks_redispatch_awaiting_commit_aborted
+PASS restart_blocks_redispatch_awaiting_rollback_clears_abort
+PASS recovery_set_contains_only_unresolved_session_attempts
+PASS recovery_set_is_session_scoped
+PASS recovery_second_close
+PASS recovery_second_open
+PASS recovery_is_idempotent_across_restarts
+PASS readonly_seed_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS readonly_open
+PASS readonly_does_not_apply_recovery
+PASS readonly_write_rejected_DB_READ_ONLY
+PASS readonly_write_commit_aborted
+PASS readonly_write_rollback_clears_abort
+PASS readonly_failure_keeps_old_snapshot
+PASS readonly_preserves_source_bytes
+PASS busy_writer_open
+PASS second_writable_instance_cannot_recover_live_attempts
+PASS second_writer_rejection_preserves_first_writer_state
+PASS readonly_observer_can_coexist_with_writer
+PASS coexisting_readonly_observer_sees_committed_snapshot
+PASS coexisting_readonly_open_does_not_cancel_live_prepared
+PASS busy_fixture_real_write_lock
+PASS busy_real_lock_rejected_DB_BUSY
+PASS busy_real_lock_commit_aborted
+PASS busy_real_lock_rollback_clears_abort
+PASS busy_error_keeps_previous_snapshot
+PASS busy_fixture_unlock
+PASS busy_retry_after_unlock
+PASS busy_retry_commit
+PASS commit_failure_fixture_real_read_lock
+PASS commit_failure_dispatch_staged
+PASS commit_failure_receipt_staged
+PASS commit_failure_success_staged
+PASS real_commit_failure_returned_DB_BUSY
+PASS commit_failure_explicit_rollback
+PASS failed_commit_never_publishes_success
+PASS commit_failure_reader_unlock
+PASS commit_failure_close
+PASS commit_failure_reopen
+PASS failed_commit_has_no_partial_success_after_reopen
+PASS full_open
+PASS full_set_real_sqlite_page_limit
+PASS full_real_sqlite_limit_rejected_DB_FULL
+PASS full_real_sqlite_limit_commit_aborted
+PASS full_real_sqlite_limit_rollback_clears_abort
+PASS full_failure_leaves_no_partial_event
+PASS full_failure_keeps_empty_snapshot
+PASS full_close
+PASS full_reopen
+PASS full_recovery_accepts_small_event
+PASS full_recovery_commit
+PASS migration_seed_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS migration_create_v1_fixture
+PASS readonly_v1_does_not_implicitly_migrate
+PASS readonly_v1_preserves_source_bytes
+PASS migration_v1_to_v2_open
+PASS migration_version_is_two
+PASS migration_preserves_business_records
+PASS migration_preserves_events
+PASS migration_creates_recovery_audit
+PASS future_schema_fixture
+PASS future_schema_open_rejected
+PASS future_schema_source_bytes_preserved
+PASS corrupt_fixture_written
+PASS corrupt_open_rejected_without_rebuild
+PASS corrupt_source_bytes_preserved
+PASS missing_index_seed_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS missing_index_fixture_created
+PASS missing_required_index_rejected_not_silently_recreated
+PASS missing_required_index_source_bytes_preserved
+PASS inconsistent_ledger_seed_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS inconsistent_ledger_fixture_created
+PASS success_without_ledger_fact_is_rejected
+PASS inconsistent_ledger_source_bytes_preserved
+PASS backup_source_open
+PASS seed_event_one
+PASS seed_attempt_one
+PASS seed_commit_one
+PASS backup_unknown_dispatch
+PASS backup_unknown_receipt
+PASS backup_unknown_commit
+PASS seed_event_success
+PASS seed_attempt_success
+PASS seed_commit_success
+PASS backup_success_dispatch
+PASS backup_success_receipt
+PASS backup_success_ledger
+PASS backup_success_commit
+PASS backup_consistent_copy_created
+PASS backup_real_file_exists
+PASS backup_refuses_overwrite
+PASS backup_existing_copy_preserved
+PASS backup_pending_attempt
+PASS backup_pending_transaction_rejected
+PASS backup_pending_creates_no_partial_file
+PASS backup_pending_rollback
+PASS backup_restore_open
+PASS backup_restores_success_and_unresolved_reservation
+PASS backup_restore_keeps_unknown_for_reconciliation
+PASS backup_restores_event_history
+PASS crash_child_exact_exit_before_transaction
+PASS crash_reopen_before_transaction
+PASS crash_committed_snapshot_matches_oracle_before_transaction
+PASS crash_atomic_event_count_before_transaction
+PASS crash_recovery_set_matches_oracle_before_transaction
+PASS crash_child_exact_exit_before_commit
+PASS crash_before_commit_has_real_hot_journal
+CRASH_HOT_JOURNAL_BYTES=62976; header=d9d505f920a163d7
+PASS crash_reopen_before_commit
+PASS crash_committed_snapshot_matches_oracle_before_commit
+PASS crash_atomic_event_count_before_commit
+PASS crash_recovery_set_matches_oracle_before_commit
+PASS crash_child_exact_exit_after_commit
+PASS crash_reopen_after_commit
+PASS crash_committed_snapshot_matches_oracle_after_commit
+PASS crash_atomic_event_count_after_commit
+PASS crash_recovery_set_matches_oracle_after_commit
+PASS crash_post_commit_receipt_replay_idempotent
+PASS crash_post_commit_ledger_replay
+PASS crash_post_commit_replay_commit
+PASS crash_post_commit_replay_does_not_double_count
+PASS crash_child_exact_exit_before_receipt
+PASS crash_reopen_before_receipt
+PASS crash_committed_snapshot_matches_oracle_before_receipt
+PASS crash_atomic_event_count_before_receipt
+PASS crash_recovery_set_matches_oracle_before_receipt
+PASS crash_sent_before_receipt_is_unknown_not_retried
+PASS crash_recovery_blocks_automatic_redispatch_rejected_ATTEMPT_UNKNOWN
+PASS crash_recovery_blocks_automatic_redispatch_commit_aborted
+PASS crash_recovery_blocks_automatic_redispatch_rollback_clears_abort
+SQLITE_LEDGER_TESTS=PASS; assertions=316; failures=0; real_database=true; crash_processes=4; external_actions=0
+STDERR:
+Captured together in sqlite_ledger_tests.log
+EXIT_STATUS: 0
+
+BASELINE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\baseline\release\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\baseline\ui_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\baseline-config.json
+INPUT: Original extracted release; isolated synthetic config; package-only PATH.
+STDOUT:
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --storage-self-test
+INPUT: QTemporaryDir SQLite database; committed dispatch, reopen, Unknown recovery, backup.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_UI
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\modified-config.json
+INPUT: Synthetic UI/config; offscreen page snapshots; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+ROLLBACK
+COMMAND: "C:\Program Files\Git\bin\bash.exe" -c "chmod +x artifacts/m1_pr10_transaction/ROLLBACK.sh && ./artifacts/m1_pr10_transaction/ROLLBACK.sh \"$1\"" rollback C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\rollback_test
+INPUT: Modified extracted release copy; restore original release files; preserve new ledger database.
+STDOUT:
+ROLLBACK_RESTORED=PASS; new_databases_preserved=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESTORED
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\rollback_test\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\rollback_test\ui_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m1_pr10_transaction\restored-config.json
+INPUT: Restored baseline executable and dependencies; isolated config; package-only PATH.
+STDOUT:
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESOLVED DURING VERIFICATION:
+Initial DB_FULL regression exposed automatic SQLite rollback; fixed and covered by 316 passing assertions.
+Rollback shell initially lacked PowerShell on clean PATH; fixed by resolving the system executable explicitly; rerun exit=0.
+Visual review exposed existing Chinese mojibake; repaired, rebuilt and all delivery checks rerun.
+Four controlled child exits test process recovery, not physical power-loss guarantees.
+Final result: BUILD=PASS; CTEST=12/12; SQLITE=316/316; STORAGE_PACKAGE=22/22; UI=PASS; ROLLBACK=PASS.

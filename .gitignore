@@ -21,6 +21,13 @@ artifacts/ui_directions/
 artifacts/screenshots/
 artifacts/m1_offscreen_package/
 artifacts/m1_import/
+artifacts/m1_pr10_transaction/baseline/
+artifacts/m1_pr10_transaction/rollback_test/
+artifacts/m1_pr10_transaction/snapshots/
+artifacts/m1_pr10_transaction/MODIFIED_FILE.exe
+artifacts/m1_pr10_transaction/*-config.json
+__pycache__/
+*.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/
 artifacts/business_rebuild_docs/shell-profile-*/
 nul

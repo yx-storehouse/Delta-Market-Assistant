@@ -223,6 +223,13 @@ StoreResult<LedgerTransactionRecord> InMemoryEventStore::commitLedger(const Ledg
         return error(QStringLiteral("RECEIPT_REQUIRED"), QStringLiteral("ledger commit requires a receipt identity"), draft.attemptId);
     if (draft.receiptIdentity != attempt->receiptIdentity)
         return error(QStringLiteral("RECEIPT_MISMATCH"), QStringLiteral("ledger receipt differs from attempt receipt"), draft.attemptId);
+    const auto receipt = m_receipts.constFind(receiptKey(draft.attemptId, draft.receiptIdentity));
+    if (receipt == m_receipts.cend() || receipt->draft.association != QStringLiteral("confirmed")
+        || receipt->draft.outcome == QStringLiteral("unknown"))
+        return error(QStringLiteral("RECEIPT_UNCONFIRMED"), QStringLiteral("a confirmed terminal receipt is required"), draft.attemptId);
+    const QString expected = draft.terminal == QStringLiteral("Success") ? QStringLiteral("success") : QStringLiteral("failed");
+    if (receipt->draft.outcome != expected)
+        return error(QStringLiteral("RECEIPT_OUTCOME_MISMATCH"), QStringLiteral("ledger terminal differs from confirmed receipt"), draft.attemptId);
     LedgerTransactionRecord tx{draft.transactionId, draft.attemptId, draft.terminal, draft.queueEmpty, draft.receiptIdentity};
     m_transactions.insert(tx.transactionId, tx); attempt->transactionId = tx.transactionId;
     QuotaReservationRecord* reservation = findReservation(attempt->reservationId);

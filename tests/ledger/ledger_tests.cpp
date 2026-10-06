@@ -58,9 +58,19 @@ int main(int argc, char** argv) {
     auto receiptConflict = store.applyReceipt({QStringLiteral("attempt-1"), QStringLiteral("receipt-1"), QStringLiteral("success"), QStringLiteral("confirmed"), QStringLiteral("receipt-event-3")});
     check(!ok(receiptConflict) && err(receiptConflict)->code == QStringLiteral("RECEIPT_CONFLICT"), "receipt_identity_conflict");
 
-    auto tx = store.commitLedger({QStringLiteral("tx-1"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-1"), QStringLiteral("ledger-event-1")});
+    auto unknownSuccess = store.commitLedger({QStringLiteral("tx-unconfirmed"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-1"), QStringLiteral("ledger-event-unconfirmed")});
+    check(!ok(unknownSuccess) && err(unknownSuccess)->code == QStringLiteral("RECEIPT_UNCONFIRMED"), "unknown_receipt_cannot_be_success");
+    auto ambiguous = store.applyReceipt({QStringLiteral("attempt-1"), QStringLiteral("receipt-ambiguous"), QStringLiteral("success"), QStringLiteral("ambiguous"), QStringLiteral("receipt-event-ambiguous")});
+    check(ok(ambiguous) && value(ambiguous)->reservationHeld, "ambiguous_success_keeps_reservation");
+    auto ambiguousSuccess = store.commitLedger({QStringLiteral("tx-ambiguous"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-ambiguous"), QStringLiteral("ledger-event-ambiguous")});
+    check(!ok(ambiguousSuccess) && err(ambiguousSuccess)->code == QStringLiteral("RECEIPT_UNCONFIRMED"), "ambiguous_receipt_cannot_be_success");
+    auto confirmed = store.applyReceipt({QStringLiteral("attempt-1"), QStringLiteral("receipt-confirmed"), QStringLiteral("success"), QStringLiteral("confirmed"), QStringLiteral("receipt-event-confirmed")});
+    check(ok(confirmed), "late_confirmed_receipt_resolves_unknown");
+    auto mismatch = store.commitLedger({QStringLiteral("tx-mismatch"), QStringLiteral("attempt-1"), QStringLiteral("Failed"), true, QStringLiteral("receipt-confirmed"), QStringLiteral("ledger-event-mismatch")});
+    check(!ok(mismatch) && err(mismatch)->code == QStringLiteral("RECEIPT_OUTCOME_MISMATCH"), "receipt_terminal_must_match");
+    auto tx = store.commitLedger({QStringLiteral("tx-1"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-confirmed"), QStringLiteral("ledger-event-1")});
     check(ok(tx) && value(tx)->terminal == QStringLiteral("Success"), "ledger_commit_success");
-    auto txDup = store.commitLedger({QStringLiteral("tx-1"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-1"), QStringLiteral("ledger-event-2")});
+    auto txDup = store.commitLedger({QStringLiteral("tx-1"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-confirmed"), QStringLiteral("ledger-event-2")});
     check(ok(txDup), "ledger_duplicate_idempotent");
     auto txReceiptConflict = store.commitLedger({QStringLiteral("tx-1"), QStringLiteral("attempt-1"), QStringLiteral("Success"), true, QStringLiteral("receipt-other"), QStringLiteral("ledger-event-2b")});
     check(!ok(txReceiptConflict) && err(txReceiptConflict)->code == QStringLiteral("TRANSACTION_ID_CONFLICT"), "ledger_receipt_identity_conflict");

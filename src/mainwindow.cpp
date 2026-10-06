@@ -55,9 +55,9 @@
 #include <cmath>
 
 namespace {
-const QStringList titles = {QStringLiteral("宸ヤ綔鍙?"), QStringLiteral("鎴戠殑鍏虫敞"), QStringLiteral("鑷姩浠诲姟"),
-                            QStringLiteral("浠锋牸涓績"), QStringLiteral("杩愯缁熻"), QStringLiteral("杩愯鏃ュ織"),
-                            QStringLiteral("璁剧疆"), QStringLiteral("杩愯璁剧疆")};
+const QStringList titles = {QStringLiteral("工作台"), QStringLiteral("我的关注"), QStringLiteral("自动任务"),
+                            QStringLiteral("价格中心"), QStringLiteral("运行统计"), QStringLiteral("运行日志"),
+                            QStringLiteral("设置"), QStringLiteral("运行设置")};
 constexpr int RunPage = 7;
 
 constexpr int SubtitleRole = Qt::UserRole + 1;
@@ -85,10 +85,10 @@ QColor toneColor(int tone)
 int taskTone(const Task& task)
 {
     if (!task.enabled) return ToneInactive;
-    if (task.status == QStringLiteral("婕旂ず宸插畬鎴?")) return ToneSuccess;
-    if (task.status == QStringLiteral("婕旂ず閰嶇疆鏃犳晥")) return ToneCritical;
-    if (task.status == QStringLiteral("婕旂ず宸叉殏鍋?") || task.status == QStringLiteral("婕旂ず绛夊緟鏉′欢")) return ToneCaution;
-    if (task.status == QStringLiteral("婕旂ず杩涜涓?")) return ToneAccent;
+    if (task.status == QStringLiteral("演示已完成")) return ToneSuccess;
+    if (task.status == QStringLiteral("演示配置无效")) return ToneCritical;
+    if (task.status == QStringLiteral("演示已暂停") || task.status == QStringLiteral("演示等待条件")) return ToneCaution;
+    if (task.status == QStringLiteral("演示进行中")) return ToneAccent;
     return ToneNeutral;
 }
 
@@ -126,7 +126,7 @@ QPushButton* button(const QString& text, const QString& name, ButtonKind kind = 
     return item;
 }
 
-// Store-style "鏌ョ湅鍏ㄩ儴 鈥? link: text followed by a small chevron.
+// Store-style "查看全部 >" link: text followed by a small chevron.
 QPushButton* link(const QString& text, const QString& name)
 {
     auto* item = button(text, name, ButtonKind::Link, Glyph::ChevronRight);
@@ -175,7 +175,7 @@ QHBoxLayout* pageHeader(QVBoxLayout* layout, const QString& title, QLabel** capt
     return row;
 }
 
-// Store-style section title; links such as "鏌ョ湅鍏ㄩ儴" are added on the right.
+// Store-style section title; links such as "查看全部" are added on the right.
 QHBoxLayout* sectionHeader(QVBoxLayout* layout, const QString& title)
 {
     auto* row = new QHBoxLayout;
@@ -190,8 +190,8 @@ QHBoxLayout* sectionHeader(QVBoxLayout* layout, const QString& title)
 
 bool numericHeading(const QString& title)
 {
-    return title.contains(QStringLiteral("鎶ヤ环")) || title.contains(QStringLiteral("浠锋牸"))
-        || title == QStringLiteral("鏁伴噺") || title.contains(QStringLiteral("纾ㄦ崯"));
+    return title.contains(QStringLiteral("报价")) || title.contains(QStringLiteral("价格"))
+        || title == QStringLiteral("数量") || title.contains(QStringLiteral("磨损"));
 }
 
 QFont numberFont()
@@ -261,11 +261,11 @@ QPixmap skinArtwork(int index)
     }
     return index >= 0 && index < sprites.size() ? sprites[index] : QPixmap();
 }
-// Mirrors the original "S6|AUG 绐佸嚮姝ユ灙 - 澶╁懡" skin selector: season, then name.
+// Mirrors the original "S6|AUG 突击步枪 - 天命" skin selector: season, then name.
 QString skinChoice(const Skin& skin) { return skin.series.section(' ', 0, 0) + QStringLiteral(" | ") + skin.name; }
 QStringList conditionOptions(const AppState* state)
 {
-    QStringList options = {QStringLiteral("涓嶉檺"), QStringLiteral("成色S"), QStringLiteral("成色A"), QStringLiteral("成色B")};
+    QStringList options = {QStringLiteral("不限"), QStringLiteral("成色S"), QStringLiteral("成色A"), QStringLiteral("成色B")};
     for (const auto& skin : state->skins)
         if (!options.contains(skin.condition)) options.append(skin.condition);
     return options;
@@ -581,7 +581,7 @@ bool confirm(QWidget* parent, const QString& title, const QString& text, const Q
     row->setContentsMargins(24, 20, 24, 20);
     row->setSpacing(8);
     auto* yes = button(accept, QStringLiteral("confirmAcceptButton"), ButtonKind::Accent);
-    auto* no = button(QStringLiteral("鍙栨秷"), QStringLiteral("confirmCancelButton"));
+    auto* no = button(QStringLiteral("取消"), QStringLiteral("confirmCancelButton"));
     no->setDefault(true);
     row->addWidget(yes, 1);
     row->addWidget(no, 1);
@@ -666,22 +666,22 @@ QWidget* MainWindow::buildTitleBar()
     // Store-style search, centred on the window by resizeEvent; it filters the watchlist.
     m_favoriteSearch = new QLineEdit(bar);
     m_favoriteSearch->setObjectName(QStringLiteral("favoriteSearch"));
-    m_favoriteSearch->setPlaceholderText(QStringLiteral("鎼滅储鐨偆銆佺郴鍒?"));
+    m_favoriteSearch->setPlaceholderText(QStringLiteral("搜索皮肤、系列"));
     m_favoriteSearch->setFixedSize(520, 34);
     auto* searchAction = m_favoriteSearch->addAction(
         FluentTheme::glyphIcon(Glyph::Search, FluentTheme::secondary, FluentTheme::text), QLineEdit::TrailingPosition);
-    searchAction->setToolTip(QStringLiteral("鎼滅储鍏虫敞鏉＄洰"));
+    searchAction->setToolTip(QStringLiteral("搜索关注条目"));
     m_searchClear = m_favoriteSearch->addAction(
         FluentTheme::glyphIcon(Glyph::Clear, FluentTheme::secondary, FluentTheme::text), QLineEdit::TrailingPosition);
-    m_searchClear->setToolTip(QStringLiteral("娓呴櫎"));
+    m_searchClear->setToolTip(QStringLiteral("清除"));
     m_searchClear->setVisible(false);
     connect(searchAction, &QAction::triggered, this, [this] { setPage(1); m_favoriteSearch->setFocus(); });
     connect(m_searchClear, &QAction::triggered, m_favoriteSearch, &QLineEdit::clear);
-    auto* importButton = button(QStringLiteral("瀵煎叆"), QStringLiteral("importConfigButton"), ButtonKind::Subtle, Glyph::Import);
-    auto* exportButton = button(QStringLiteral("瀵煎嚭"), QStringLiteral("exportConfigButton"), ButtonKind::Subtle, Glyph::Export);
+    auto* importButton = button(QStringLiteral("导入"), QStringLiteral("importConfigButton"), ButtonKind::Subtle, Glyph::Import);
+    auto* exportButton = button(QStringLiteral("导出"), QStringLiteral("exportConfigButton"), ButtonKind::Subtle, Glyph::Export);
     auto* helpButton = button(QString(), QStringLiteral("helpButton"), ButtonKind::Subtle, Glyph::Help);
-    helpButton->setToolTip(QStringLiteral("甯姪"));
-    helpButton->setAccessibleName(QStringLiteral("甯姪"));
+    helpButton->setToolTip(QStringLiteral("帮助"));
+    helpButton->setAccessibleName(QStringLiteral("帮助"));
     helpButton->setFixedWidth(36);
     actions->addWidget(importButton);
     actions->addWidget(exportButton);
@@ -706,14 +706,14 @@ QWidget* MainWindow::buildNavigationRail()
     column->setSpacing(4);
     struct Entry { int page; const char* name; const char* text; char16_t glyph; char16_t selectedGlyph; };
     const Entry entries[] = {
-        {1, "navFavorites", "鍏虫敞", Glyph::Star, Glyph::StarFill},
-        {2, "navTasks", "浠诲姟", Glyph::Tasks, 0},
-        {RunPage, "navRun", "杩愯", Glyph::Lightning, 0},
-        {3, "navPrices", "浠锋牸", Glyph::Trend, 0},
-        {0, "navOverview", "宸ヤ綔鍙?", Glyph::Home, Glyph::HomeFill},
-        {4, "navStats", "缁熻", Glyph::Pie, 0},
-        {5, "navLogs", "鏃ュ織", Glyph::History, 0},
-        {6, "navSettings", "璁剧疆", Glyph::Settings, Glyph::SettingsFill},
+        {1, "navFavorites", "关注", Glyph::Star, Glyph::StarFill},
+        {2, "navTasks", "任务", Glyph::Tasks, 0},
+        {RunPage, "navRun", "运行", Glyph::Lightning, 0},
+        {3, "navPrices", "价格", Glyph::Trend, 0},
+        {0, "navOverview", "工作台", Glyph::Home, Glyph::HomeFill},
+        {4, "navStats", "统计", Glyph::Pie, 0},
+        {5, "navLogs", "日志", Glyph::History, 0},
+        {6, "navSettings", "设置", Glyph::Settings, Glyph::SettingsFill},
     };
     m_nav.resize(titles.size());
     for (const auto& entry : entries) {
@@ -733,8 +733,8 @@ QWidget* MainWindow::buildOverview()
     page->setObjectName(QStringLiteral("overviewPage"));
     auto* layout = pageLayout(page);
     auto* header = pageHeader(layout, titles[0]);
-    m_pauseButton = button(QStringLiteral("鏆傚仠"), QStringLiteral("pauseSimulationButton"), ButtonKind::Standard, Glyph::Pause);
-    m_startButton = button(QStringLiteral("寮€濮嬫ā鎷?"), QStringLiteral("startSimulationButton"), ButtonKind::Accent, Glyph::Play);
+    m_pauseButton = button(QStringLiteral("暂停"), QStringLiteral("pauseSimulationButton"), ButtonKind::Standard, Glyph::Pause);
+    m_startButton = button(QStringLiteral("开始模拟"), QStringLiteral("startSimulationButton"), ButtonKind::Accent, Glyph::Play);
     header->addWidget(m_pauseButton, 0, Qt::AlignVCenter);
     header->addWidget(m_startButton, 0, Qt::AlignVCenter);
     connect(m_startButton, &QPushButton::clicked, m_state, &AppState::startSimulation);
@@ -745,7 +745,7 @@ QWidget* MainWindow::buildOverview()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("鎴戠殑鍏虫敞"), QStringLiteral("鍚敤浠诲姟"), QStringLiteral("鎵弿鏉＄洰"), QStringLiteral("妯℃嫙纭")};
+    const QStringList names = {QStringLiteral("我的关注"), QStringLiteral("启用任务"), QStringLiteral("扫描条目"), QStringLiteral("模拟确认")};
     for (int i = 0; i < names.size(); ++i) {
         auto* metric = new MetricCard(names[i], QStringLiteral("0"), QString());
         metric->setObjectName(QStringLiteral("overviewMetric%1").arg(i));
@@ -803,8 +803,8 @@ QWidget* MainWindow::buildOverview()
     middle->setSpacing(16);
     auto* chartColumn = new QVBoxLayout;
     chartColumn->setSpacing(0);
-    auto* pricesLink = link(QStringLiteral("鏌ョ湅鍏ㄩ儴浠锋牸"), QStringLiteral("overviewPricesLink"));
-    sectionHeader(chartColumn, QStringLiteral("浠锋牸瑙傚療"))->addWidget(pricesLink);
+    auto* pricesLink = link(QStringLiteral("查看全部价格"), QStringLiteral("overviewPricesLink"));
+    sectionHeader(chartColumn, QStringLiteral("价格观察"))->addWidget(pricesLink);
     auto* chartPanel = card(QStringLiteral("overviewChartPanel"));
     auto* chartLayout = new QVBoxLayout(chartPanel);
     chartLayout->setContentsMargins(20, 16, 20, 12);
@@ -817,15 +817,15 @@ QWidget* MainWindow::buildOverview()
 
     auto* taskColumn = new QVBoxLayout;
     taskColumn->setSpacing(0);
-    auto* taskHeader = sectionHeader(taskColumn, QStringLiteral("浠诲姟闃熷垪"));
+    auto* taskHeader = sectionHeader(taskColumn, QStringLiteral("任务队列"));
     m_overviewTaskCount = label(QString(), QStringLiteral("tertiaryLabel"));
     taskHeader->insertWidget(1, m_overviewTaskCount, 0, Qt::AlignVCenter);
-    auto* tasksLink = link(QStringLiteral("绠＄悊浠诲姟"), QStringLiteral("overviewTasksLink"));
+    auto* tasksLink = link(QStringLiteral("管理任务"), QStringLiteral("overviewTasksLink"));
     taskHeader->addWidget(tasksLink);
     auto* taskPanel = card(QStringLiteral("overviewTaskPanel"));
     auto* taskLayout = new QVBoxLayout(taskPanel);
     taskLayout->setContentsMargins(12, 6, 12, 8);
-    m_overviewTasks = table({QStringLiteral("浠诲姟"), QStringLiteral("鏁伴噺"), QStringLiteral("鐘舵€?")},
+    m_overviewTasks = table({QStringLiteral("任务"), QStringLiteral("数量"), QStringLiteral("状态")},
                             QStringLiteral("overviewTasksTable"), RowStyle::Lines);
     auto* taskColumns = m_overviewTasks->horizontalHeader();
     taskColumns->setStretchLastSection(false);
@@ -841,12 +841,12 @@ QWidget* MainWindow::buildOverview()
     layout->addLayout(middle, 1);
     layout->addSpacing(28);
 
-    auto* logsLink = link(QStringLiteral("鍏ㄩ儴鏃ュ織"), QStringLiteral("overviewLogsLink"));
-    sectionHeader(layout, QStringLiteral("鏈€杩戞椿鍔?"))->addWidget(logsLink);
+    auto* logsLink = link(QStringLiteral("全部日志"), QStringLiteral("overviewLogsLink"));
+    sectionHeader(layout, QStringLiteral("最近活动"))->addWidget(logsLink);
     auto* logPanel = card(QStringLiteral("overviewLogPanel"));
     auto* logLayout = new QVBoxLayout(logPanel);
     logLayout->setContentsMargins(12, 4, 12, 4);
-    m_overviewLogs = table({QStringLiteral("鏃堕棿"), QStringLiteral("绾у埆"), QStringLiteral("浜嬩欢")},
+    m_overviewLogs = table({QStringLiteral("时间"), QStringLiteral("级别"), QStringLiteral("事件")},
                            QStringLiteral("overviewLogsTable"), RowStyle::Lines);
     m_overviewLogs->horizontalHeader()->hide();
     auto* logColumns = m_overviewLogs->horizontalHeader();
@@ -889,22 +889,22 @@ QWidget* MainWindow::buildFavorites()
         m_catalogFilters.append(pill);
         connect(pill, &QPushButton::clicked, this, [this, key] { m_catalogFilter = key; refreshFavorites(); });
     };
-    addFilter(QStringLiteral("鍏ㄩ儴"), QStringLiteral("all"));
-    addFilter(QStringLiteral("宸插叧娉?"), QStringLiteral("followed"));
-    addFilter(QStringLiteral("鏈叧娉?"), QStringLiteral("unfollowed"));
+    addFilter(QStringLiteral("全部"), QStringLiteral("all"));
+    addFilter(QStringLiteral("已关注"), QStringLiteral("followed"));
+    addFilter(QStringLiteral("未关注"), QStringLiteral("unfollowed"));
     filters->addWidget(rule(QStringLiteral("filterDivider")));
-    addFilter(QStringLiteral("姝ユ灙"), QStringLiteral("rifle"));
-    addFilter(QStringLiteral("鍐查攱鏋?"), QStringLiteral("smg"));
-    addFilter(QStringLiteral("鐙欏嚮鏋?"), QStringLiteral("sniper"));
-    addFilter(QStringLiteral("杞绘満鏋?"), QStringLiteral("lmg"));
+    addFilter(QStringLiteral("步枪"), QStringLiteral("rifle"));
+    addFilter(QStringLiteral("冲锋枪"), QStringLiteral("smg"));
+    addFilter(QStringLiteral("狙击枪"), QStringLiteral("sniper"));
+    addFilter(QStringLiteral("轻机枪"), QStringLiteral("lmg"));
     filters->addStretch();
     m_rarityFilter = new FluentComboBox;
     m_rarityFilter->setObjectName(QStringLiteral("favoriteRarity"));
-    m_rarityFilter->addItem(QStringLiteral("鍏ㄩ儴鍝佺骇"));
+    m_rarityFilter->addItem(QStringLiteral("全部品级"));
     m_rarityFilter->setFixedWidth(132);
     m_favoriteStateFilter = new FluentComboBox;
     m_favoriteStateFilter->setObjectName(QStringLiteral("favoriteTaskFilter"));
-    m_favoriteStateFilter->addItems({QStringLiteral("鍏ㄩ儴浠诲姟"), QStringLiteral("宸插叧鑱?"), QStringLiteral("鏈叧鑱?")});
+    m_favoriteStateFilter->addItems({QStringLiteral("全部任务"), QStringLiteral("已关联"), QStringLiteral("未关联")});
     m_favoriteStateFilter->setFixedWidth(132);
     filters->addWidget(m_rarityFilter);
     filters->addWidget(m_favoriteStateFilter);
@@ -918,8 +918,8 @@ QWidget* MainWindow::buildFavorites()
     auto* work = new QVBoxLayout(workspace);
     work->setContentsMargins(0, 0, 0, 0);
     work->setSpacing(12);
-    m_favoritesTable = table({QStringLiteral("鍏虫敞"), QStringLiteral("鐗╁搧"), QStringLiteral("纾ㄦ崯"), QStringLiteral("婕旂ず鎶ヤ环"),
-                              QStringLiteral("鏍锋湰瓒嬪娍"), QStringLiteral("鐩爣浠锋牸"), QStringLiteral("浠诲姟鐘舵€?")},
+    m_favoritesTable = table({QStringLiteral("关注"), QStringLiteral("物品"), QStringLiteral("磨损"), QStringLiteral("演示报价"),
+                              QStringLiteral("样本趋势"), QStringLiteral("目标价格"), QStringLiteral("任务状态")},
                              QStringLiteral("favoriteTable"), RowStyle::Cards);
     auto* columns = m_favoritesTable->horizontalHeader();
     columns->setStretchLastSection(false);
@@ -936,11 +936,11 @@ QWidget* MainWindow::buildFavorites()
     chartLayout->setSpacing(4);
     auto* chartHeader = new QHBoxLayout;
     chartHeader->setSpacing(8);
-    chartHeader->addWidget(label(QStringLiteral("浠锋牸璧板娍"), QStringLiteral("cardTitle")));
+    chartHeader->addWidget(label(QStringLiteral("价格走势"), QStringLiteral("cardTitle")));
     m_favoriteChartTitle = label(QString(), QStringLiteral("cardCaption"));
     chartHeader->addWidget(m_favoriteChartTitle);
     chartHeader->addStretch();
-    chartHeader->addWidget(label(QStringLiteral("妯℃嫙鏁版嵁"), QStringLiteral("tertiaryLabel")));
+    chartHeader->addWidget(label(QStringLiteral("模拟数据"), QStringLiteral("tertiaryLabel")));
     chartLayout->addLayout(chartHeader);
     m_favoriteChart = new PriceChart;
     m_favoriteChart->setObjectName(QStringLiteral("favoritePriceChart"));
@@ -970,7 +970,7 @@ QWidget* MainWindow::buildFavorites()
     m_favoriteArt = new ArtworkView;
     m_favoriteArt->setObjectName(QStringLiteral("skinPreview"));
     m_favoriteArt->setFixedHeight(148);
-    m_favoriteArt->setToolTip(QStringLiteral("鐢熸垚鐨勬紨绀烘彃鍥撅紝涓嶄唬琛ㄦ父鎴忎腑鐨勭湡瀹炵毊鑲ゅ瑙傘€?"));
+    m_favoriteArt->setToolTip(QStringLiteral("生成的演示插图，不代表游戏中的真实皮肤外观。"));
     detail->addWidget(m_favoriteArt);
     detail->addSpacing(16);
     m_favoriteTitle = label(QString(), QStringLiteral("detailTitle"));
@@ -988,7 +988,7 @@ QWidget* MainWindow::buildFavorites()
     quote->addWidget(m_favoriteChange, 0, Qt::AlignBottom);
     quote->addStretch();
     detail->addLayout(quote);
-    detail->addWidget(label(QStringLiteral("婕旂ず鎶ヤ环 路 闈炲疄鏃惰鎯?"), QStringLiteral("tertiaryLabel")));
+    detail->addWidget(label(QStringLiteral("演示报价 · 非实时行情"), QStringLiteral("tertiaryLabel")));
     detail->addSpacing(16);
     auto* facts = new QHBoxLayout;
     facts->setSpacing(12);
@@ -997,18 +997,18 @@ QWidget* MainWindow::buildFavorites()
         auto* block = new QVBoxLayout;
         block->setSpacing(2);
         block->addWidget(label(caption, QStringLiteral("factCaption")));
-        value = label(QStringLiteral("鈥?"), QStringLiteral("factValue"));
+        value = label(QStringLiteral("—"), QStringLiteral("factValue"));
         block->addWidget(value);
         facts->addLayout(block, 1);
     };
-    addFact(QStringLiteral("鍝佺骇"), m_factRarity);
+    addFact(QStringLiteral("品级"), m_factRarity);
     addFact(QStringLiteral("成色"), m_factCondition);
-    addFact(QStringLiteral("纾ㄦ崯"), m_factWear);
+    addFact(QStringLiteral("磨损"), m_factWear);
     detail->addLayout(facts);
     detail->addSpacing(16);
     detail->addWidget(rule(QStringLiteral("inspectorRule")));
     detail->addSpacing(16);
-    detail->addWidget(label(QStringLiteral("浠诲姟鏉′欢"), QStringLiteral("cardTitle")));
+    detail->addWidget(label(QStringLiteral("任务条件"), QStringLiteral("cardTitle")));
     detail->addSpacing(10);
     m_inspectorPrice = new FluentDoubleSpinBox;
     m_inspectorPrice->setObjectName(QStringLiteral("inspectorMaxPrice"));
@@ -1030,20 +1030,20 @@ QWidget* MainWindow::buildFavorites()
     auto* fields = new QGridLayout;
     fields->setHorizontalSpacing(12);
     fields->setVerticalSpacing(4);
-    fields->addWidget(label(QStringLiteral("鏈€楂樹环鏍?"), QStringLiteral("fieldLabel")), 0, 0);
+    fields->addWidget(label(QStringLiteral("最高价格"), QStringLiteral("fieldLabel")), 0, 0);
     fields->addWidget(label(QStringLiteral("成色"), QStringLiteral("fieldLabel")), 0, 1);
     fields->addWidget(m_inspectorPrice, 1, 0);
     fields->addWidget(m_inspectorCondition, 1, 1);
     fields->setRowMinimumHeight(2, 8);
-    fields->addWidget(label(QStringLiteral("鏈€澶х（鎹?"), QStringLiteral("fieldLabel")), 3, 0);
-    fields->addWidget(label(QStringLiteral("鏁伴噺涓婇檺"), QStringLiteral("fieldLabel")), 3, 1);
+    fields->addWidget(label(QStringLiteral("最大磨损"), QStringLiteral("fieldLabel")), 3, 0);
+    fields->addWidget(label(QStringLiteral("数量上限"), QStringLiteral("fieldLabel")), 3, 1);
     fields->addWidget(m_inspectorWear, 4, 0);
     fields->addWidget(m_inspectorQuantity, 4, 1);
     fields->setColumnStretch(0, 3);
     fields->setColumnStretch(1, 2);
     detail->addLayout(fields);
     detail->addSpacing(16);
-    m_favoriteCreate = button(QStringLiteral("鍒涘缓浠诲姟"), QStringLiteral("favoriteCreateTaskButton"), ButtonKind::Accent, Glyph::Add);
+    m_favoriteCreate = button(QStringLiteral("创建任务"), QStringLiteral("favoriteCreateTaskButton"), ButtonKind::Accent, Glyph::Add);
     m_favoriteCreate->setFixedHeight(36);
     detail->addWidget(m_favoriteCreate);
     detail->addSpacing(8);
@@ -1051,12 +1051,12 @@ QWidget* MainWindow::buildFavorites()
     m_favoriteTaskInfo = label(QString(), QStringLiteral("inspectorTaskInfo"));
     taskRow->addWidget(m_favoriteTaskInfo);
     taskRow->addStretch();
-    auto* manage = link(QStringLiteral("鏌ョ湅浠诲姟"), QStringLiteral("favoritesTasksButton"));
+    auto* manage = link(QStringLiteral("查看任务"), QStringLiteral("favoritesTasksButton"));
     taskRow->addWidget(manage);
     detail->addLayout(taskRow);
     detail->addStretch();
     detail->addSpacing(12);
-    auto* note = label(QStringLiteral("鏈湴妯℃嫙妯″紡锛氭彃鍥句笌浠锋牸鍧囦负婕旂ず绱犳潗锛屽垱寤轰换鍔″彧淇濆瓨绛涢€夋潯浠躲€?"), QStringLiteral("inspectorNote"));
+    auto* note = label(QStringLiteral("本地模拟模式：插图与价格均为演示素材，创建任务只保存筛选条件。"), QStringLiteral("inspectorNote"));
     note->setWordWrap(true);
     detail->addWidget(note);
     body->addWidget(m_inspector);
@@ -1085,12 +1085,12 @@ QWidget* MainWindow::buildTasks()
     layout->addSpacing(16);
     auto* commands = new QHBoxLayout;
     commands->setSpacing(4);
-    auto* add = button(QStringLiteral("鏂板浠诲姟"), QStringLiteral("taskNewButton"), ButtonKind::Accent, Glyph::Add);
-    auto* edit = button(QStringLiteral("缂栬緫"), QStringLiteral("taskEditButton"), ButtonKind::Subtle, Glyph::Edit);
-    auto* remove = button(QStringLiteral("鍒犻櫎"), QStringLiteral("taskDeleteButton"), ButtonKind::Subtle, Glyph::Delete);
-    auto* enable = button(QStringLiteral("鍚敤閫変腑"), QStringLiteral("enableSelectedTasksButton"), ButtonKind::Subtle, Glyph::CheckMark);
-    auto* disable = button(QStringLiteral("鏆傚仠閫変腑"), QStringLiteral("pauseSelectedTasksButton"), ButtonKind::Subtle, Glyph::Pause);
-    m_taskStart = button(QStringLiteral("杩愯妯℃嫙"), QStringLiteral("tasksSimulationButton"), ButtonKind::Standard, Glyph::Play);
+    auto* add = button(QStringLiteral("新增任务"), QStringLiteral("taskNewButton"), ButtonKind::Accent, Glyph::Add);
+    auto* edit = button(QStringLiteral("编辑"), QStringLiteral("taskEditButton"), ButtonKind::Subtle, Glyph::Edit);
+    auto* remove = button(QStringLiteral("删除"), QStringLiteral("taskDeleteButton"), ButtonKind::Subtle, Glyph::Delete);
+    auto* enable = button(QStringLiteral("启用选中"), QStringLiteral("enableSelectedTasksButton"), ButtonKind::Subtle, Glyph::CheckMark);
+    auto* disable = button(QStringLiteral("暂停选中"), QStringLiteral("pauseSelectedTasksButton"), ButtonKind::Subtle, Glyph::Pause);
+    m_taskStart = button(QStringLiteral("运行模拟"), QStringLiteral("tasksSimulationButton"), ButtonKind::Standard, Glyph::Play);
     commands->addWidget(add);
     commands->addSpacing(8);
     commands->addWidget(edit);
@@ -1121,7 +1121,7 @@ QWidget* MainWindow::buildTasks()
     m_tasksTable->setMinimumHeight(330);
     layout->addWidget(m_tasksTable, 1);
     layout->addSpacing(8);
-    auto* note = label(QStringLiteral("Ctrl / Shift 澶氶€?路 鍙屽嚮缂栬緫 路 褰撳墠浠呮ā鎷熻繍琛岋紝涓嶆墽琛岃喘涔?"), QStringLiteral("tertiaryLabel"));
+    auto* note = label(QStringLiteral("Ctrl / Shift 多选 · 双击编辑 · 当前仅模拟运行，不执行购买"), QStringLiteral("tertiaryLabel"));
     note->setWordWrap(true);
     layout->addWidget(note);
     connect(add, &QPushButton::clicked, this, [this] { editTask(); });
@@ -1142,12 +1142,12 @@ QWidget* MainWindow::buildPrices()
     page->setObjectName(QStringLiteral("pricesPage"));
     auto* layout = pageLayout(page);
     auto* header = pageHeader(layout, titles[3]);
-    header->addWidget(label(QStringLiteral("鍏虫敞鐩爣"), QStringLiteral("cardCaption")), 0, Qt::AlignVCenter);
+    header->addWidget(label(QStringLiteral("关注目标"), QStringLiteral("cardCaption")), 0, Qt::AlignVCenter);
     m_priceSkin = new FluentComboBox;
     m_priceSkin->setObjectName(QStringLiteral("pricesSkinCombo"));
     m_priceSkin->setMinimumWidth(260);
     header->addWidget(m_priceSkin, 0, Qt::AlignVCenter);
-    auto* exportButton = button(QStringLiteral("瀵煎嚭 CSV"), QStringLiteral("exportPricesButton"), ButtonKind::Standard, Glyph::Download);
+    auto* exportButton = button(QStringLiteral("导出 CSV"), QStringLiteral("exportPricesButton"), ButtonKind::Standard, Glyph::Download);
     header->addWidget(exportButton, 0, Qt::AlignVCenter);
     layout->addSpacing(20);
 
@@ -1155,9 +1155,9 @@ QWidget* MainWindow::buildPrices()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("褰撳墠婕旂ず鎶ヤ环"), QStringLiteral("鏍锋湰鏈€浣庢姤浠?"), QStringLiteral("鏍锋湰鏈€楂樻姤浠?")};
+    const QStringList names = {QStringLiteral("当前演示报价"), QStringLiteral("样本最低报价"), QStringLiteral("样本最高报价")};
     for (int i = 0; i < names.size(); ++i) {
-        auto* metric = new MetricCard(names[i], QStringLiteral("鈥?"), QStringLiteral("婕旂ず浠锋牸 路 闈炲疄鏃跺競鍦烘暟鎹?"));
+        auto* metric = new MetricCard(names[i], QStringLiteral("—"), QStringLiteral("演示价格 · 非实时市场数据"));
         metric->setObjectName(QStringLiteral("priceMetric%1").arg(i));
         metric->setProperty("separator", i < names.size() - 1);
         m_priceCards.append(metric);
@@ -1166,7 +1166,7 @@ QWidget* MainWindow::buildPrices()
     layout->addWidget(strip);
     layout->addSpacing(28);
 
-    sectionHeader(layout, QStringLiteral("浠锋牸璧板娍"))->addWidget(label(QStringLiteral("24 涓牱鏈?路 婕旂ず鏁版嵁"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(layout, QStringLiteral("价格走势"))->addWidget(label(QStringLiteral("24 个样本 · 演示数据"), QStringLiteral("tertiaryLabel")));
     auto* chartPanel = card(QStringLiteral("priceChartPanel"));
     auto* chartLayout = new QVBoxLayout(chartPanel);
     chartLayout->setContentsMargins(20, 16, 20, 12);
@@ -1177,11 +1177,11 @@ QWidget* MainWindow::buildPrices()
     layout->addWidget(chartPanel, 3);
     layout->addSpacing(28);
 
-    sectionHeader(layout, QStringLiteral("鏍锋湰璁板綍"))->addWidget(label(QStringLiteral("鏈湴鍚堟垚鏁版嵁"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(layout, QStringLiteral("样本记录"))->addWidget(label(QStringLiteral("本地合成数据"), QStringLiteral("tertiaryLabel")));
     auto* historyPanel = card(QStringLiteral("priceHistoryPanel"));
     auto* historyLayout = new QVBoxLayout(historyPanel);
     historyLayout->setContentsMargins(12, 6, 12, 8);
-    m_priceHistory = table({QStringLiteral("鏍锋湰"), QStringLiteral("鍟嗗搧"), QStringLiteral("婕旂ず浠锋牸"), QStringLiteral("绫诲瀷"), QStringLiteral("鏁版嵁鏉ユ簮")},
+    m_priceHistory = table({QStringLiteral("样本"), QStringLiteral("商品"), QStringLiteral("演示价格"), QStringLiteral("类型"), QStringLiteral("数据来源")},
                            QStringLiteral("priceHistoryTable"), RowStyle::Lines);
     auto* historyColumns = m_priceHistory->horizontalHeader();
     historyColumns->setStretchLastSection(false);
@@ -1210,10 +1210,10 @@ QWidget* MainWindow::buildStats()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("妯℃嫙鎵弿"), QStringLiteral("妯℃嫙鏉′欢鍛戒腑"), QStringLiteral("妯℃嫙纭鎴愬姛"), QStringLiteral("瀹為檯鎴愪氦 / 瀹為檯鏀嚭")};
-    const QStringList details = {QStringLiteral("鏈婕旂ず鎵弿鏉＄洰"), QStringLiteral("妯℃嫙绛涢€夌鍚堟潯浠?"), QStringLiteral("鍙鍏ユā鎷熺‘璁ょ粨鏋?"), QStringLiteral("鏈繛鎺ユ墽琛屾ā鍧?")};
+    const QStringList names = {QStringLiteral("模拟扫描"), QStringLiteral("模拟条件命中"), QStringLiteral("模拟确认成功"), QStringLiteral("实际成交 / 实际支出")};
+    const QStringList details = {QStringLiteral("本次演示扫描条目"), QStringLiteral("模拟筛选符合条件"), QStringLiteral("只计入模拟确认结果"), QStringLiteral("未连接执行模块")};
     for (int i = 0; i < names.size(); ++i) {
-        auto* metric = new MetricCard(names[i], i == 3 ? QStringLiteral("鈥?") : QStringLiteral("0"), details[i]);
+        auto* metric = new MetricCard(names[i], i == 3 ? QStringLiteral("—") : QStringLiteral("0"), details[i]);
         metric->setObjectName(QStringLiteral("statsMetric%1").arg(i));
         metric->setProperty("separator", i < names.size() - 1);
         m_statsCards.append(metric);
@@ -1226,12 +1226,12 @@ QWidget* MainWindow::buildStats()
     content->setSpacing(16);
     auto* left = new QVBoxLayout;
     left->setSpacing(0);
-    sectionHeader(left, QStringLiteral("妯℃嫙缁撴灉鍒嗗竷"))->addWidget(label(QStringLiteral("鍩轰簬鏈婕旂ず璁℃暟"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(left, QStringLiteral("模拟结果分布"))->addWidget(label(QStringLiteral("基于本次演示计数"), QStringLiteral("tertiaryLabel")));
     auto* distribution = card(QStringLiteral("distributionPanel"));
     auto* distributionLayout = new QVBoxLayout(distribution);
     distributionLayout->setContentsMargins(24, 22, 24, 20);
     distributionLayout->setSpacing(0);
-    const QStringList reasons = {QStringLiteral("鏈懡涓瓫閫夋潯浠?"), QStringLiteral("宸插懡涓?路 灏氭湭妯℃嫙纭"), QStringLiteral("妯℃嫙纭鎴愬姛")};
+    const QStringList reasons = {QStringLiteral("未命中筛选条件"), QStringLiteral("已命中 · 尚未模拟确认"), QStringLiteral("模拟确认成功")};
     for (const auto& reason : reasons) {
         auto* row = new QHBoxLayout;
         row->addWidget(label(reason));
@@ -1258,15 +1258,15 @@ QWidget* MainWindow::buildStats()
 
     auto* right = new QVBoxLayout;
     right->setSpacing(0);
-    sectionHeader(right, QStringLiteral("缁熻鍙ｅ緞"));
+    sectionHeader(right, QStringLiteral("统计口径"));
     auto* semantics = card(QStringLiteral("semanticsPanel"));
     auto* semanticsLayout = new QVBoxLayout(semantics);
     semanticsLayout->setContentsMargins(24, 22, 24, 20);
     semanticsLayout->setSpacing(0);
     const QVector<QPair<QString, QString>> explanations = {
-        {QStringLiteral("鎵弿 鈮?鍛戒腑"), QStringLiteral("鎵弿璁板綍瑙傚療娆℃暟锛涘懡涓褰曠鍚堜换鍔℃潯浠剁殑娆℃暟銆?")},
-        {QStringLiteral("灏濊瘯 鈮?鎴愪氦"), QStringLiteral("褰撳墠鍙湁鏈湴妯℃嫙锛屼笉浜х敓瀹為檯浜ゆ槗鍜屽疄闄呮敮鍑恒€?")},
-        {QStringLiteral("鏈喅缁撴灉鍗曠嫭璁?"), QStringLiteral("鎺ュ叆鎵ц妯″潡鍚庯紝缁撴灉鏈槑鐨勫姩浣滀笉璁″叆鎴愬姛銆傚綋鍓嶆紨绀烘湭鍐充负 0銆?")}};
+        {QStringLiteral("扫描 ≠ 命中"), QStringLiteral("扫描记录观察次数；命中记录符合任务条件的次数。")},
+        {QStringLiteral("尝试 ≠ 成交"), QStringLiteral("当前只有本地模拟，不产生实际交易和实际支出。")},
+        {QStringLiteral("未决结果单独记"), QStringLiteral("接入执行模块后，结果未明的动作不计入成功。当前演示未决为 0。")}};
     for (const auto& entry : explanations) {
         semanticsLayout->addWidget(label(entry.first, QStringLiteral("cardTitle")));
         semanticsLayout->addSpacing(4);
@@ -1291,7 +1291,7 @@ QWidget* MainWindow::buildLogs()
     auto* header = pageHeader(layout, titles[5], &m_logCount);
     m_logSearch = new QLineEdit;
     m_logSearch->setObjectName(QStringLiteral("logSearch"));
-    m_logSearch->setPlaceholderText(QStringLiteral("鎼滅储浜嬩欢鍐呭"));
+    m_logSearch->setPlaceholderText(QStringLiteral("搜索事件内容"));
     m_logSearch->setFixedWidth(280);
     m_logSearch->addAction(FluentTheme::glyphIcon(Glyph::Search, FluentTheme::secondary, FluentTheme::text), QLineEdit::TrailingPosition);
     auto* clearSearch = m_logSearch->addAction(FluentTheme::glyphIcon(Glyph::Clear, FluentTheme::secondary, FluentTheme::text), QLineEdit::TrailingPosition);
@@ -1301,16 +1301,16 @@ QWidget* MainWindow::buildLogs()
     header->addWidget(m_logSearch, 0, Qt::AlignVCenter);
     m_logLevel = new FluentComboBox;
     m_logLevel->setObjectName(QStringLiteral("logLevel"));
-    m_logLevel->addItems({QStringLiteral("鍏ㄩ儴绾у埆"), "INFO", "DEMO", "SUCCESS", "WARN", "ERROR"});
+    m_logLevel->addItems({QStringLiteral("全部级别"), "INFO", "DEMO", "SUCCESS", "WARN", "ERROR"});
     m_logLevel->setFixedWidth(140);
     header->addWidget(m_logLevel, 0, Qt::AlignVCenter);
-    auto* clear = button(QStringLiteral("娓呯┖鏃ュ織"), QStringLiteral("clearLogsButton"), ButtonKind::Standard, Glyph::Delete);
+    auto* clear = button(QStringLiteral("清空日志"), QStringLiteral("clearLogsButton"), ButtonKind::Standard, Glyph::Delete);
     header->addWidget(clear, 0, Qt::AlignVCenter);
     layout->addSpacing(20);
     auto* box = card(QStringLiteral("logPanel"));
     auto* boxLayout = new QVBoxLayout(box);
     boxLayout->setContentsMargins(12, 6, 12, 8);
-    m_logsTable = table({QStringLiteral("鏃堕棿"), QStringLiteral("绾у埆"), QStringLiteral("鍐呭")}, QStringLiteral("logsTable"), RowStyle::Lines);
+    m_logsTable = table({QStringLiteral("时间"), QStringLiteral("级别"), QStringLiteral("内容")}, QStringLiteral("logsTable"), RowStyle::Lines);
     auto* columns = m_logsTable->horizontalHeader();
     columns->setStretchLastSection(false);
     columns->setSectionResizeMode(QHeaderView::Fixed);
@@ -1323,7 +1323,7 @@ QWidget* MainWindow::buildLogs()
     connect(m_logSearch, &QLineEdit::textChanged, this, [this] { if (!m_refreshing) refreshLogs(); });
     connect(m_logLevel, &QComboBox::currentTextChanged, this, [this] { if (!m_refreshing) refreshLogs(); });
     connect(clear, &QPushButton::clicked, this, [this] {
-        if (confirm(this, QStringLiteral("娓呯┖鏈湴鏃ュ織"), QStringLiteral("鍙竻绌哄綋鍓嶆湰鍦版紨绀烘棩蹇楋紝浠诲姟涓庨厤缃笉鍙樸€?"), QStringLiteral("娓呯┖"))) {
+        if (confirm(this, QStringLiteral("清空本地日志"), QStringLiteral("只清空当前本地演示日志，任务与配置不变。"), QStringLiteral("清空"))) {
             m_state->logs.clear();
             m_state->notifyChanged();
         }
@@ -1343,44 +1343,44 @@ QWidget* MainWindow::buildSettings()
         layout->addSpacing(8);
     };
     const auto row = [&](QWidget* item) { layout->addWidget(item); layout->addSpacing(4); };
-    group(QStringLiteral("鏄剧ず"), true);
+    group(QStringLiteral("显示"), true);
     auto* compact = new ToggleSwitch;
     compact->setObjectName(QStringLiteral("compactTablesCheck"));
     compact->setStateTextVisible(true);
     m_compactTables = compact;
-    row(settingsCard(glyphLabel(Glyph::List), QStringLiteral("绱у噾鍒楄〃"), QStringLiteral("闄嶄綆鍒楄〃琛岄珮锛屼竴灞忔樉绀烘洿澶氭潯鐩?"), compact));
+    row(settingsCard(glyphLabel(Glyph::List), QStringLiteral("紧凑列表"), QStringLiteral("降低列表行高，一屏显示更多条目"), compact));
     auto* autoScroll = new ToggleSwitch;
     autoScroll->setObjectName(QStringLiteral("autoScrollLogsCheck"));
     autoScroll->setStateTextVisible(true);
     m_autoScrollLogs = autoScroll;
-    row(settingsCard(glyphLabel(Glyph::History), QStringLiteral("鏃ュ織鑷姩瀹氫綅"), QStringLiteral("鏂颁簨浠跺嚭鐜版椂锛屾棩蹇楀垪琛ㄥ畾浣嶅埌鏈€鏂颁竴鏉?"), autoScroll));
+    row(settingsCard(glyphLabel(Glyph::History), QStringLiteral("日志自动定位"), QStringLiteral("新事件出现时，日志列表定位到最新一条"), autoScroll));
 
-    group(QStringLiteral("鏈湴閰嶇疆"));
+    group(QStringLiteral("本地配置"));
     m_configDirectory = new QLineEdit;
     m_configDirectory->setObjectName(QStringLiteral("configDirectoryEdit"));
     m_configDirectory->setReadOnly(true);
     m_configDirectory->setFixedWidth(460);
-    row(settingsCard(glyphLabel(Glyph::Folder), QStringLiteral("閰嶇疆鏂囦欢"), QStringLiteral("鍏虫敞銆佷换鍔′笌杩愯鍙傛暟淇濆瓨鍦ㄦ鏂囦欢锛涢€€鍑虹▼搴忔椂鑷姩淇濆瓨"), m_configDirectory));
+    row(settingsCard(glyphLabel(Glyph::Folder), QStringLiteral("配置文件"), QStringLiteral("关注、任务与运行参数保存在此文件；退出程序时自动保存"), m_configDirectory));
     layout->addSpacing(8);
     auto* actionRow = new QHBoxLayout;
     m_settingsMessage = label(QString(), QStringLiteral("settingsMessage"));
     m_settingsMessage->setWordWrap(true);
     actionRow->addWidget(m_settingsMessage, 1);
-    auto* save = button(QStringLiteral("淇濆瓨鏈湴璁剧疆"), QStringLiteral("saveSettingsButton"), ButtonKind::Accent, Glyph::Save);
+    auto* save = button(QStringLiteral("保存本地设置"), QStringLiteral("saveSettingsButton"), ButtonKind::Accent, Glyph::Save);
     actionRow->addWidget(save);
     layout->addLayout(actionRow);
 
-    group(QStringLiteral("杩愯妯″紡"));
-    row(settingsCard(glyphLabel(Glyph::Pulse), QStringLiteral("鍓嶇鐙珛婕旂ず"),
-                     QStringLiteral("浣跨敤鏈湴婕旂ず鏁版嵁楠岃瘉鍏虫敞绠＄悊銆佷换鍔￠厤缃€佷环鏍煎睍绀轰笌缁熻浜や簰锛涙病鏈夎繛鎺ユ父鎴忚繘绋嬶紝涓嶈鍙栧疄鏃跺競鍦猴紝涔熶笉鎵ц瀹為檯璐拱銆?"),
-                     label(QStringLiteral("鏈湴棰勮"), QStringLiteral("settingsBadge")), QStringLiteral("runModeCard")));
-    group(QStringLiteral("鏁版嵁杩炴帴"));
-    row(settingsCard(glyphLabel(Glyph::Link), QStringLiteral("娓告垙椤甸潰閲囬泦 路 浠锋牸璇嗗埆涓庢牎楠?路 鑷姩鎿嶄綔涓庣粨鏋滅‘璁?"),
-                     QStringLiteral("鐣岄潰灞備笌杩欎簺妯″潡淇濇寔鍒嗙锛涘墠绔畬鎴愬悗鍙互閫愪釜鎺ュ叆銆?"),
-                     label(QStringLiteral("灏氭湭鎺ュ叆"), QStringLiteral("settingsBadge"))));
-    group(QStringLiteral("鍏充簬"));
+    group(QStringLiteral("运行模式"));
+    row(settingsCard(glyphLabel(Glyph::Pulse), QStringLiteral("前端独立演示"),
+                     QStringLiteral("使用本地演示数据验证关注管理、任务配置、价格展示与统计交互；没有连接游戏进程，不读取实时市场，也不执行实际购买。"),
+                     label(QStringLiteral("本地预览"), QStringLiteral("settingsBadge")), QStringLiteral("runModeCard")));
+    group(QStringLiteral("数据连接"));
+    row(settingsCard(glyphLabel(Glyph::Link), QStringLiteral("游戏页面采集 · 价格识别与校验 · 自动操作与结果确认"),
+                     QStringLiteral("界面层与这些模块保持分离；前端完成后可以逐个接入。"),
+                     label(QStringLiteral("尚未接入"), QStringLiteral("settingsBadge"))));
+    group(QStringLiteral("关于"));
     row(settingsCard(new AppMark(24), QStringLiteral("Relink Studio"),
-                     QStringLiteral("鐗堟湰 %1 路 鏈湴婕旂ず鍓嶇 路 C++17 / Qt %2 Widgets").arg(QCoreApplication::applicationVersion(), QStringLiteral(QT_VERSION_STR)),
+                     QStringLiteral("版本 %1 · 本地演示前端 · C++17 / Qt %2 Widgets").arg(QCoreApplication::applicationVersion(), QStringLiteral(QT_VERSION_STR)),
                      nullptr, QStringLiteral("aboutCard")));
     layout->addStretch();
     connect(save, &QPushButton::clicked, this, &MainWindow::saveSettings);
@@ -1397,11 +1397,11 @@ QWidget* MainWindow::buildRunSettings()
     QLabel* profileCaption = nullptr;
     auto* header = pageHeader(layout, titles[RunPage], &profileCaption);
     auto* runMessage = label(QString(), QStringLiteral("settingsMessage"));
-    auto* save = button(QStringLiteral("淇濆瓨鍙傛暟"), QStringLiteral("saveRunSettingsButton"), ButtonKind::Accent, Glyph::Save);
+    auto* save = button(QStringLiteral("保存参数"), QStringLiteral("saveRunSettingsButton"), ButtonKind::Accent, Glyph::Save);
     header->addWidget(runMessage, 0, Qt::AlignVCenter);
     header->addSpacing(8);
     header->addWidget(save, 0, Qt::AlignVCenter);
-    m_runBinders.append([this, profileCaption] { profileCaption->setText(QStringLiteral("鏂规 %1").arg(m_state->run.profile)); });
+    m_runBinders.append([this, profileCaption] { profileCaption->setText(QStringLiteral("方案 %1").arg(m_state->run.profile)); });
     connect(save, &QPushButton::clicked, this, [this, runMessage] { saveSettings(); runMessage->setText(m_settingsMessage->text()); });
 
     const auto group = [&](const QString& text, bool first = false) {
@@ -1468,7 +1468,7 @@ QWidget* MainWindow::buildRunSettings()
         return item;
     };
 
-    group(QStringLiteral("杩愯"), true);
+    group(QStringLiteral("运行"), true);
     auto* profile = new QLineEdit;
     profile->setObjectName(QStringLiteral("runProfileEdit"));
     profile->setMaxLength(40);
@@ -1483,14 +1483,14 @@ QWidget* MainWindow::buildRunSettings()
         refreshRunSettings();
     });
     m_runBinders.append([this, profile] { if (!profile->hasFocus()) profile->setText(m_state->run.profile); });
-    row(settingsCard(glyphLabel(Glyph::Tag), QStringLiteral("閰嶇疆鏂规"), QStringLiteral("瀵瑰簲鍘熺▼搴忛《閮ㄧ殑鏂规鏍囩锛涘鍑恒€佸鍏ユ椂闅忓弬鏁颁竴璧蜂繚瀛?"), profile));
+    row(settingsCard(glyphLabel(Glyph::Tag), QStringLiteral("配置方案"), QStringLiteral("对应原程序顶部的方案标签；导出、导入时随参数一起保存"), profile));
     auto* hotkey = new FluentComboBox;
     hotkey->setObjectName(QStringLiteral("runHotkeyCombo"));
     for (int key = 1; key <= 12; ++key) hotkey->addItem(QStringLiteral("F%1").arg(key));
     hotkey->setFixedWidth(104);
     connect(hotkey, &QComboBox::currentTextChanged, this, [this](const QString& key) { if (!key.isEmpty()) m_state->run.hotkey = key; });
     m_runBinders.append([this, hotkey] { QSignalBlocker guard(hotkey); hotkey->setCurrentText(m_state->run.hotkey); });
-    row(settingsCard(glyphLabel(Glyph::Keyboard), QStringLiteral("杩愯蹇嵎閿?"), QStringLiteral("鎸変笅鍚庡紑濮嬫垨鍋滄杩愯锛涙帴鍏ユ墽琛屾ā鍧楀悗鐢熸晥"), hotkey));
+    row(settingsCard(glyphLabel(Glyph::Keyboard), QStringLiteral("运行快捷键"), QStringLiteral("按下后开始或停止运行；接入执行模块后生效"), hotkey));
     auto* scheduleStart = new FluentTimeEdit;
     scheduleStart->setObjectName(QStringLiteral("runScheduleStart"));
     auto* scheduleStop = new FluentTimeEdit;
@@ -1512,65 +1512,65 @@ QWidget* MainWindow::buildRunSettings()
             edit->setTime(QTime::fromString(edit == scheduleStart ? m_state->run.scheduleStart : m_state->run.scheduleStop, QStringLiteral("HH:mm")));
         }
     });
-    row(settingsCard(glyphLabel(Glyph::Clock), QStringLiteral("瀹氭椂杩愯"), QStringLiteral("鍦ㄨ瀹氭椂闂磋嚜鍔ㄥ紑濮嬪拰鍋滄锛涙帴鍏ユ墽琛屾ā鍧楀悗鐢熸晥"),
-                     strip({text(QStringLiteral("寮€濮?")), scheduleStart, text(QStringLiteral("缁撴潫")), scheduleStop, schedule})));
+    row(settingsCard(glyphLabel(Glyph::Clock), QStringLiteral("定时运行"), QStringLiteral("在设定时间自动开始和停止；接入执行模块后生效"),
+                     strip({text(QStringLiteral("开始")), scheduleStart, text(QStringLiteral("结束")), scheduleStop, schedule})));
 
-    group(QStringLiteral("璐拱寤惰繜"));
-    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("璐拱寤惰繜"), QStringLiteral("姣忔璐拱鎿嶄綔涔嬮棿鐨勭瓑寰呮椂闂?"),
+    group(QStringLiteral("购买延迟"));
+    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("购买延迟"), QStringLiteral("每次购买操作之间的等待时间"),
                      integer(QStringLiteral("runPurchaseDelay"), &RunSettings::purchaseDelayMs, 0, 60000, QStringLiteral(" ms"), 140)));
-    row(settingsCard(nullptr, QStringLiteral("鍔ㄦ€佸欢杩?"), QStringLiteral("寮€鍚姩鎬佸欢杩熻皟鏁达紙璺宠繃鎶藉椤碉細寮€鍚級銆傚師绋嬪簭鏍囨敞涓轰笉寤鸿"),
+    row(settingsCard(nullptr, QStringLiteral("动态延迟"), QStringLiteral("开启动态延迟调整（跳过抽奖页：开启）。原程序标注为不建议"),
                      toggle(QStringLiteral("runDynamicDelay"), &RunSettings::dynamicDelay), QString(), true));
-    row(settingsCard(nullptr, QStringLiteral("闃熷垪宸叉弧鏃跺噺寤惰繜"), QStringLiteral("姣忚Е鍙戣瀹氭鏁帮紝璐拱寤惰繜鍑忓皯涓€娆?"),
-                     strip({text(QStringLiteral("瑙﹀彂")), integer(QStringLiteral("runQueueTrigger"), &RunSettings::queueFullTrigger, 1, 9999, QStringLiteral(" 娆?"), 104),
-                            text(QStringLiteral("鍑忓皯")), step(QStringLiteral("runQueueStep"), &RunSettings::queueFullStepMs)}), QString(), true));
-    row(settingsCard(nullptr, QStringLiteral("鍏ず鏈熷姞寤惰繜"), QStringLiteral("澶勪簬鍏ず鏈熸椂锛屾瘡瑙﹀彂璁惧畾娆℃暟锛岃喘涔板欢杩熷鍔犱竴娆?"),
-                     strip({text(QStringLiteral("瑙﹀彂")), integer(QStringLiteral("runPublicityTrigger"), &RunSettings::publicityTrigger, 1, 9999, QStringLiteral(" 娆?"), 104),
-                            text(QStringLiteral("澧炲姞")), step(QStringLiteral("runPublicityStep"), &RunSettings::publicityStepMs)}), QString(), true));
+    row(settingsCard(nullptr, QStringLiteral("队列已满时减延迟"), QStringLiteral("每触发设定次数，购买延迟减少一次"),
+                     strip({text(QStringLiteral("触发")), integer(QStringLiteral("runQueueTrigger"), &RunSettings::queueFullTrigger, 1, 9999, QStringLiteral(" 次"), 104),
+                            text(QStringLiteral("减少")), step(QStringLiteral("runQueueStep"), &RunSettings::queueFullStepMs)}), QString(), true));
+    row(settingsCard(nullptr, QStringLiteral("公示期加延迟"), QStringLiteral("处于公示期时，每触发设定次数，购买延迟增加一次"),
+                     strip({text(QStringLiteral("触发")), integer(QStringLiteral("runPublicityTrigger"), &RunSettings::publicityTrigger, 1, 9999, QStringLiteral(" 次"), 104),
+                            text(QStringLiteral("增加")), step(QStringLiteral("runPublicityStep"), &RunSettings::publicityStepMs)}), QString(), true));
 
-    group(QStringLiteral("杩炵偣妯″紡"));
+    group(QStringLiteral("连点模式"));
     auto* burst = toggle(QStringLiteral("runBurstClick"), &RunSettings::burstClick);
     auto* interval = integer(QStringLiteral("runClickInterval"), &RunSettings::clickIntervalMs, 1, 10000, QStringLiteral(" ms"), 140);
     connect(burst, &QCheckBox::toggled, interval, &QWidget::setEnabled);
     m_runBinders.append([this, interval] { interval->setEnabled(m_state->run.burstClick); });
-    row(settingsCard(glyphLabel(Glyph::Mouse), QStringLiteral("杩炵画鐐瑰嚮"), QStringLiteral("寮€鍚繛鐐规ā寮忥紝鎸夎瀹氶棿闅旇繛缁偣鍑昏喘涔?"), burst));
-    row(settingsCard(nullptr, QStringLiteral("鐐瑰嚮闂撮殧"), QStringLiteral("涓ゆ鐐瑰嚮涔嬮棿鐨勯棿闅?"), interval, QString(), true));
+    row(settingsCard(glyphLabel(Glyph::Mouse), QStringLiteral("连续点击"), QStringLiteral("开启连点模式，按设定间隔连续点击购买"), burst));
+    row(settingsCard(nullptr, QStringLiteral("点击间隔"), QStringLiteral("两次点击之间的间隔"), interval, QString(), true));
 
-    group(QStringLiteral("璐拱閲忛檺鍒?"));
-    row(settingsCard(glyphLabel(Glyph::Filter), QStringLiteral("鎸夊搧绾ч檺鍒惰喘涔版暟閲?"), QStringLiteral("姗欒壊銆佺传鑹层€佽摑鑹插搧绾у垎鍒鏁?"),
-                     strip({text(QStringLiteral("姗欒壊")), integer(QStringLiteral("runLimitOrange"), &RunSettings::limitOrange, 0, 9999, QString(), 96),
-                            text(QStringLiteral("绱壊")), integer(QStringLiteral("runLimitPurple"), &RunSettings::limitPurple, 0, 9999, QString(), 96),
-                            text(QStringLiteral("钃濊壊")), integer(QStringLiteral("runLimitBlue"), &RunSettings::limitBlue, 0, 9999, QString(), 96)})));
+    group(QStringLiteral("购买量限制"));
+    row(settingsCard(glyphLabel(Glyph::Filter), QStringLiteral("按品级限制购买数量"), QStringLiteral("橙色、紫色、蓝色品级分别计数"),
+                     strip({text(QStringLiteral("橙色")), integer(QStringLiteral("runLimitOrange"), &RunSettings::limitOrange, 0, 9999, QString(), 96),
+                            text(QStringLiteral("紫色")), integer(QStringLiteral("runLimitPurple"), &RunSettings::limitPurple, 0, 9999, QString(), 96),
+                            text(QStringLiteral("蓝色")), integer(QStringLiteral("runLimitBlue"), &RunSettings::limitBlue, 0, 9999, QString(), 96)})));
 
-    group(QStringLiteral("鎸傛満璁剧疆"));
-    row(settingsCard(glyphLabel(Glyph::Sync), QStringLiteral("鍒锋柊鐣岄潰"), QStringLiteral("鎸傛満鏃跺畾鏃跺埛鏂板競鍦虹晫闈€傚師绋嬪簭鏍囨敞涓轰笉鎺ㄨ崘"),
+    group(QStringLiteral("挂机设置"));
+    row(settingsCard(glyphLabel(Glyph::Sync), QStringLiteral("刷新界面"), QStringLiteral("挂机时定时刷新市场界面。原程序标注为不推荐"),
                      toggle(QStringLiteral("runRefreshPage"), &RunSettings::refreshPage)));
-    row(settingsCard(glyphLabel(Glyph::SkipTo), QStringLiteral("璺宠繃鎶藉椤?"), QStringLiteral("鎸傛満鏃惰嚜鍔ㄨ烦杩囨娊濂栭〉"),
+    row(settingsCard(glyphLabel(Glyph::SkipTo), QStringLiteral("跳过抽奖页"), QStringLiteral("挂机时自动跳过抽奖页"),
                      toggle(QStringLiteral("runSkipLottery"), &RunSettings::skipLotteryPage)));
-    row(settingsCard(glyphLabel(Glyph::SkipTo), QStringLiteral("璺宠繃鎴愬姛椤?"), QStringLiteral("璐拱鎴愬姛鍚庤嚜鍔ㄨ烦杩囩粨鏋滈〉"),
+    row(settingsCard(glyphLabel(Glyph::SkipTo), QStringLiteral("跳过成功页"), QStringLiteral("购买成功后自动跳过结果页"),
                      toggle(QStringLiteral("runSkipSuccess"), &RunSettings::skipSuccessPage)));
 
-    group(QStringLiteral("鑷姩鏀惰棌"));
-    row(settingsCard(glyphLabel(Glyph::Star), QStringLiteral("鑷姩鏀惰棌妯″紡"), QStringLiteral("鎸夋敹钘忎换鍔￠厤缃嚜鍔ㄦ敹钘忕鍚堟潯浠剁殑鏉＄洰"),
+    group(QStringLiteral("自动收藏"));
+    row(settingsCard(glyphLabel(Glyph::Star), QStringLiteral("自动收藏模式"), QStringLiteral("按收藏任务配置自动收藏符合条件的条目"),
                      toggle(QStringLiteral("runAutoCollect"), &RunSettings::autoCollect)));
-    row(settingsCard(glyphLabel(Glyph::Display), QStringLiteral("鏀惰棌鐘舵€?OSD"), QStringLiteral("鍦ㄦ父鎴忕敾闈笂鏄剧ず鏀惰棌鐘舵€佹诞灞?"),
+    row(settingsCard(glyphLabel(Glyph::Display), QStringLiteral("收藏状态 OSD"), QStringLiteral("在游戏画面上显示收藏状态浮层"),
                      toggle(QStringLiteral("runCollectOsd"), &RunSettings::collectOsd)));
     m_runTaskSummary = label(QString(), QStringLiteral("cardCaption"));
-    auto* manageTasks = link(QStringLiteral("绠＄悊浠诲姟"), QStringLiteral("runManageTasksLink"));
+    auto* manageTasks = link(QStringLiteral("管理任务"), QStringLiteral("runManageTasksLink"));
     connect(manageTasks, &QPushButton::clicked, this, [this] { setPage(2); });
-    row(settingsCard(glyphLabel(Glyph::Tasks), QStringLiteral("鏀惰棌浠诲姟閰嶇疆"), QStringLiteral("鐨偆銆佹垚鑹层€佹渶澶х（鎹熴€佷环鏍煎尯闂翠笌闄愬埗閲?"),
+    row(settingsCard(glyphLabel(Glyph::Tasks), QStringLiteral("收藏任务配置"), QStringLiteral("皮肤、成色、最大磨损、价格区间与限制量"),
                      strip({m_runTaskSummary, manageTasks})));
 
-    group(QStringLiteral("浼樺寲涓庤褰?"));
-    row(settingsCard(glyphLabel(Glyph::Speed), QStringLiteral("浼樺寲"), QStringLiteral("鍘熺▼搴忛《閮ㄧ殑銆屼紭鍖栥€嶅叆鍙ｏ紱鍏蜂綋浼樺寲椤圭洰寰呯‘璁ゅ悗鎺ュ叆"),
-                     label(QStringLiteral("寰呯‘璁?"), QStringLiteral("settingsBadge"))));
-    auto* records = link(QStringLiteral("鏌ョ湅鏃ュ織"), QStringLiteral("runRecordsLink"));
+    group(QStringLiteral("优化与记录"));
+    row(settingsCard(glyphLabel(Glyph::Speed), QStringLiteral("优化"), QStringLiteral("原程序顶部的「优化」入口；具体优化项目待确认后接入"),
+                     label(QStringLiteral("待确认"), QStringLiteral("settingsBadge"))));
+    auto* records = link(QStringLiteral("查看日志"), QStringLiteral("runRecordsLink"));
     connect(records, &QPushButton::clicked, this, [this] { setPage(5); });
-    row(settingsCard(glyphLabel(Glyph::History), QStringLiteral("杩愯璁板綍"), QStringLiteral("鏃ュ織涓庣粺璁￠〉璁板綍姣忔杩愯鐨勪簨浠跺拰缁撴灉"), records));
-    auto* help = link(QStringLiteral("鎵撳紑甯姪"), QStringLiteral("runHelpLink"));
+    row(settingsCard(glyphLabel(Glyph::History), QStringLiteral("运行记录"), QStringLiteral("日志与统计页记录每次运行的事件和结果"), records));
+    auto* help = link(QStringLiteral("打开帮助"), QStringLiteral("runHelpLink"));
     connect(help, &QPushButton::clicked, this, &MainWindow::showHelp);
-    row(settingsCard(glyphLabel(Glyph::Help), QStringLiteral("甯姪"), QStringLiteral("浣跨敤娴佺▼銆佸揩鎹烽敭涓庡綋鍓嶇増鏈鏄?"), help));
+    row(settingsCard(glyphLabel(Glyph::Help), QStringLiteral("帮助"), QStringLiteral("使用流程、快捷键与当前版本说明"), help));
     layout->addSpacing(16);
-    auto* note = label(QStringLiteral("浠ヤ笂鍙傛暟闅忛厤缃竴璧蜂繚瀛樸€佸鍑哄拰瀵煎叆銆傚綋鍓嶇増鏈笉杩炴帴娓告垙锛屼笉浼氭墽琛岀偣鍑绘垨璐拱銆?"), QStringLiteral("tertiaryLabel"));
+    auto* note = label(QStringLiteral("以上参数随配置一起保存、导出和导入。当前版本不连接游戏，不会执行点击或购买。"), QStringLiteral("tertiaryLabel"));
     note->setWordWrap(true);
     layout->addWidget(note);
     layout->addStretch();
@@ -1649,11 +1649,11 @@ void MainWindow::refreshAll()
     m_startButton->setEnabled(!running);
     m_pauseButton->setEnabled(running);
     m_taskStart->setEnabled(!running);
-    m_statusBadge->setText(QStringLiteral("<span style=\"color:%1;\">鈼?/span>&nbsp;&nbsp;%2")
+    m_statusBadge->setText(QStringLiteral("<span style=\"color:%1;\">●</span>&nbsp;&nbsp;%2")
                                .arg((running ? FluentTheme::positive : FluentTheme::muted).name(),
-                                    running ? QStringLiteral("妯℃嫙杩愯涓?") : QStringLiteral("鏈湴婕旂ず")));
-    m_statusBadge->setToolTip(running ? QStringLiteral("鏈湴妯℃嫙姝ｅ湪鎺ㄨ繘锛涗笉杩炴帴娓告垙锛屼笉浜х敓璁㈠崟銆?")
-                                      : QStringLiteral("婕旂ず鏁版嵁 路 鏈繛鎺ユ父鎴?"));
+                                    running ? QStringLiteral("模拟运行中") : QStringLiteral("本地演示")));
+    m_statusBadge->setToolTip(running ? QStringLiteral("本地模拟正在推进；不连接游戏，不产生订单。")
+                                      : QStringLiteral("演示数据 · 未连接游戏"));
     QString path = m_state->configPath;
     if (path.isEmpty()) path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.json";
     m_configDirectory->setText(QDir::toNativeSeparators(path));
@@ -1667,7 +1667,7 @@ void MainWindow::refreshRunSettings()
     int enabled = 0;
     for (const auto& task : m_state->tasks) if (task.enabled) ++enabled;
     if (m_runTaskSummary)
-        m_runTaskSummary->setText(QStringLiteral("%1 鏉′换鍔?路 %2 鏉″惎鐢?").arg(m_state->tasks.size()).arg(enabled));
+        m_runTaskSummary->setText(QStringLiteral("%1 条任务 · %2 条启用").arg(m_state->tasks.size()).arg(enabled));
 }
 
 void MainWindow::refreshOverview()
@@ -1675,14 +1675,14 @@ void MainWindow::refreshOverview()
     int followed = 0, enabled = 0;
     for (const auto& skin : m_state->skins) if (skin.followed) ++followed;
     for (const auto& task : m_state->tasks) if (task.enabled) ++enabled;
-    m_overviewCards[0]->setValue(QString::number(followed), QStringLiteral("鏈湴鍏虫敞鏉＄洰"));
-    m_overviewCards[1]->setValue(QString::number(enabled), QStringLiteral("鍏?%1 鏉′换鍔?").arg(m_state->tasks.size()));
-    m_overviewCards[2]->setValue(QString::number(m_state->simulatedScans), QStringLiteral("鏈妯℃嫙绱"));
-    m_overviewCards[3]->setValue(QString::number(m_state->simulatedSuccess), QStringLiteral("浠呮ā鎷熺粨鏋?"));
+    m_overviewCards[0]->setValue(QString::number(followed), QStringLiteral("本地关注条目"));
+    m_overviewCards[1]->setValue(QString::number(enabled), QStringLiteral("共 %1 条任务").arg(m_state->tasks.size()));
+    m_overviewCards[2]->setValue(QString::number(m_state->simulatedScans), QStringLiteral("本次模拟累计"));
+    m_overviewCards[3]->setValue(QString::number(m_state->simulatedSuccess), QStringLiteral("仅模拟结果"));
     const double reference = m_state->skins.isEmpty() ? 100 : m_state->skins.first().price;
     m_overviewChart->setSeries(series(reference));
-    m_overviewChart->setCaption(m_state->skins.isEmpty() ? QStringLiteral("婕旂ず浠锋牸") : m_state->skins.first().name);
-    m_overviewTaskCount->setText(QStringLiteral("%1 鏉′换鍔?").arg(m_state->tasks.size()));
+    m_overviewChart->setCaption(m_state->skins.isEmpty() ? QStringLiteral("演示价格") : m_state->skins.first().name);
+    m_overviewTaskCount->setText(QStringLiteral("%1 条任务").arg(m_state->tasks.size()));
     m_overviewTasks->setRowCount(qMin(4, int(m_state->tasks.size())));
     for (int i = 0; i < m_overviewTasks->rowCount(); ++i) {
         const auto& task = m_state->tasks[i];
@@ -1712,7 +1712,7 @@ void MainWindow::refreshFavorites()
         QStringList values;
         for (const auto& skin : m_state->skins) if (!values.contains(skin.rarity)) values.append(skin.rarity);
         m_rarityFilter->clear();
-        m_rarityFilter->addItem(QStringLiteral("鍏ㄩ儴鍝佺骇"));
+        m_rarityFilter->addItem(QStringLiteral("全部品级"));
         m_rarityFilter->addItems(values);
         m_rarityFilter->setCurrentIndex(qMax(0, m_rarityFilter->findText(rarity)));
     }
@@ -1753,7 +1753,7 @@ void MainWindow::refreshFavorites()
         auto* star = new StarToggle;
         star->setObjectName("follow_" + skin.id);
         star->setChecked(skin.followed);
-        star->setToolTip(skin.followed ? QStringLiteral("鍙栨秷鍏虫敞") : QStringLiteral("鍏虫敞"));
+        star->setToolTip(skin.followed ? QStringLiteral("取消关注") : QStringLiteral("关注"));
         m_favoritesTable->setCellWidget(row, 0, centered(star));
         connect(star, &QCheckBox::toggled, this, [this, id = skin.id](bool checked) {
             if (m_refreshing) return;
@@ -1764,7 +1764,7 @@ void MainWindow::refreshFavorites()
         identity->setData(KindRole, ItemCell);
         identity->setData(SubtitleRole, skin.series);
         identity->setData(ArtRole, skinArtIndex(skin));
-        identity->setToolTip(skin.name + "\n" + skin.series + QStringLiteral(" 路 婕旂ず鎻掑浘"));
+        identity->setToolTip(skin.name + "\n" + skin.series + QStringLiteral(" · 演示插图"));
         put(m_favoritesTable, row, 2, QString::number(skin.wear, 'f', 3), FluentTheme::secondary);
         put(m_favoritesTable, row, 3, amount(skin.price));
         QVariantList samples;
@@ -1772,13 +1772,13 @@ void MainWindow::refreshFavorites()
         auto* trend = put(m_favoritesTable, row, 4, QString());
         trend->setData(KindRole, SparkCell);
         trend->setData(SamplesRole, samples);
-        put(m_favoritesTable, row, 5, linked ? amount(linked->maxPrice) : QStringLiteral("鈥?"), linked ? FluentTheme::text : FluentTheme::muted);
+        put(m_favoritesTable, row, 5, linked ? amount(linked->maxPrice) : QStringLiteral("—"), linked ? FluentTheme::text : FluentTheme::muted);
         putStatus(m_favoritesTable, row, 6,
-                  linked ? (enabled ? QStringLiteral("宸插惎鐢?") : QStringLiteral("宸叉殏鍋?")) : QStringLiteral("鏈厤缃?"),
+                  linked ? (enabled ? QStringLiteral("已启用") : QStringLiteral("已暂停")) : QStringLiteral("未配置"),
                   linked ? (enabled ? ToneSuccess : ToneCaution) : ToneInactive);
     }
     if (m_favoritesTable->rowCount() > 0) m_favoritesTable->selectRow(selected < 0 ? 0 : selected);
-    m_favoritesCount->setText(QStringLiteral("%1 涓潯鐩?").arg(m_favoritesTable->rowCount()));
+    m_favoritesCount->setText(QStringLiteral("%1 个条目").arg(m_favoritesTable->rowCount()));
     refreshFavoriteDetail();
 }
 
@@ -1792,19 +1792,19 @@ void MainWindow::refreshFavoriteDetail()
         control->setEnabled(valid);
     if (!skin) {
         m_inspectorSkinId.clear();
-        m_favoriteTitle->setText(QStringLiteral("娌℃湁鍖归厤鏉＄洰"));
-        m_favoriteMetadata->setText(QStringLiteral("璋冩暣鎼滅储鎴栫瓫閫夋潯浠?"));
-        m_favoritePrice->setText(QStringLiteral("鈥?"));
+        m_favoriteTitle->setText(QStringLiteral("没有匹配条目"));
+        m_favoriteMetadata->setText(QStringLiteral("调整搜索或筛选条件"));
+        m_favoritePrice->setText(QStringLiteral("—"));
         m_favoriteChange->clear();
         m_favoriteArt->setArtwork(QPixmap());
-        for (auto* fact : {m_factRarity, m_factCondition, m_factWear}) fact->setText(QStringLiteral("鈥?"));
+        for (auto* fact : {m_factRarity, m_factCondition, m_factWear}) fact->setText(QStringLiteral("—"));
         m_favoriteTaskInfo->clear();
         m_favoriteChart->setSeries({});
         m_favoriteChartTitle->clear();
         return;
     }
     m_favoriteTitle->setText(skin->name);
-    m_favoriteMetadata->setText(skin->series + QStringLiteral(" 路 婕旂ず鎻掑浘"));
+    m_favoriteMetadata->setText(skin->series + QStringLiteral(" · 演示插图"));
     m_favoriteArt->setArtwork(skinArtwork(skinArtIndex(*skin)));
     m_favoritePrice->setText(amount(skin->price));
     m_favoriteChange->setText(changeText(skin->change));
@@ -1828,7 +1828,7 @@ void MainWindow::refreshFavoriteDetail()
         if (m_inspectorCondition->findText(condition) < 0) m_inspectorCondition->addItem(condition);
         m_inspectorCondition->setCurrentText(condition);
     }
-    m_favoriteTaskInfo->setText(QStringLiteral("宸插叧鑱?%1 鏉′换鍔?").arg(tasks));
+    m_favoriteTaskInfo->setText(QStringLiteral("已关联 %1 条任务").arg(tasks));
 }
 
 void MainWindow::createInspectorTask()
@@ -1840,7 +1840,7 @@ void MainWindow::createInspectorTask()
     m_inspectorQuantity->interpretText();
     Task task;
     task.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    task.name = skin->name.left(45) + QStringLiteral(" 路 浠锋牸鍏虫敞");
+    task.name = skin->name.left(45) + QStringLiteral(" · 价格关注");
     task.skinId = skin->id;
     task.minPrice = 0;
     task.maxPrice = m_inspectorPrice->value();
@@ -1848,12 +1848,12 @@ void MainWindow::createInspectorTask()
     task.quantity = m_inspectorQuantity->value();
     task.condition = m_inspectorCondition->currentText();
     task.enabled = true;
-    task.status = QStringLiteral("寰呭惎鍔?");
+    task.status = QStringLiteral("待启动");
     m_state->pauseSimulation();
     m_state->tasks.append(task);
-    m_state->addLog("INFO", QStringLiteral("浠庡叧娉ㄥ伐浣滃尯鍒涘缓鏈湴浠诲姟锛?") + task.name);
+    m_state->addLog("INFO", QStringLiteral("从关注工作区创建本地任务：") + task.name);
     m_state->notifyChanged();
-    m_favoriteTaskInfo->setText(QStringLiteral("宸插垱寤?路 鍙湪浠诲姟椤电紪杈?"));
+    m_favoriteTaskInfo->setText(QStringLiteral("已创建 · 可在任务页编辑"));
 }
 
 QString MainWindow::selectedTaskId() const { return selectedId(m_tasksTable); }
@@ -1872,22 +1872,22 @@ void MainWindow::refreshTasks()
         const auto* skin = findSkin(m_state, task.skinId);
         if (task.enabled) ++active;
         put(m_tasksTable, row, 0, task.name, QColor(), task.id);
-        put(m_tasksTable, row, 1, skin ? skinChoice(*skin) : QStringLiteral("鐩爣宸茬Щ闄?"), skin ? QColor() : FluentTheme::muted);
+        put(m_tasksTable, row, 1, skin ? skinChoice(*skin) : QStringLiteral("目标已移除"), skin ? QColor() : FluentTheme::muted);
         put(m_tasksTable, row, 2, task.condition, FluentTheme::secondary);
-        put(m_tasksTable, row, 3, QStringLiteral("%1 鈥?%2").arg(amount(task.minPrice), amount(task.maxPrice)));
+        put(m_tasksTable, row, 3, QStringLiteral("%1 — %2").arg(amount(task.minPrice), amount(task.maxPrice)));
         put(m_tasksTable, row, 4, QString::number(task.maxWear, 'f', 3), FluentTheme::secondary);
         put(m_tasksTable, row, 5, QString::number(task.quantity));
         auto* toggle = new ToggleSwitch;
         toggle->setObjectName("taskEnabled_" + task.id);
         toggle->setChecked(task.enabled);
-        toggle->setToolTip(task.enabled ? QStringLiteral("鏆傚仠浠诲姟") : QStringLiteral("鍚敤浠诲姟"));
+        toggle->setToolTip(task.enabled ? QStringLiteral("暂停任务") : QStringLiteral("启用任务"));
         m_tasksTable->setCellWidget(row, 6, centered(toggle));
         connect(toggle, &QCheckBox::toggled, this, [this, id = task.id](bool checked) {
             if (m_refreshing) return;
             for (auto& value : m_state->tasks) {
                 if (value.id != id) continue;
                 value.enabled = checked;
-                value.status = checked ? QStringLiteral("寰呭惎鍔?") : QStringLiteral("婕旂ず宸叉殏鍋?");
+                value.status = checked ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
                 break;
             }
             m_state->notifyChanged();
@@ -1901,7 +1901,7 @@ void MainWindow::refreshTasks()
             m_tasksTable->selectionModel()->select(m_tasksTable->model()->index(row, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
         if (id == previous) m_tasksTable->setCurrentCell(row, 0, QItemSelectionModel::NoUpdate);
     }
-    m_taskCount->setText(QStringLiteral("%1 鏉′换鍔?路 %2 鏉″惎鐢?").arg(m_state->tasks.size()).arg(active));
+    m_taskCount->setText(QStringLiteral("%1 条任务 · %2 条启用").arg(m_state->tasks.size()).arg(active));
 }
 
 void MainWindow::refreshPrices()
@@ -1915,42 +1915,42 @@ void MainWindow::refreshPrices()
     }
     const auto* skin = findSkin(m_state, m_priceSkin->currentData().toString());
     if (!skin) {
-        for (auto* metric : m_priceCards) metric->setValue(QStringLiteral("鈥?"), QStringLiteral("鏆傛棤鐨偆鏍锋湰"));
+        for (auto* metric : m_priceCards) metric->setValue(QStringLiteral("—"), QStringLiteral("暂无皮肤样本"));
         m_priceChart->setSeries({});
         m_priceHistory->setRowCount(0);
         return;
     }
     const auto values = series(skin->price);
-    m_priceCards[0]->setValue(amount(skin->price), QStringLiteral("婕旂ず鎶ヤ环 路 闈炲疄闄呮垚浜や环"));
-    m_priceCards[1]->setValue(amount(*std::min_element(values.begin(), values.end())), QStringLiteral("鍚堟垚鏍锋湰鑼冨洿"));
-    m_priceCards[2]->setValue(amount(*std::max_element(values.begin(), values.end())), QStringLiteral("鍚堟垚鏍锋湰鑼冨洿"));
+    m_priceCards[0]->setValue(amount(skin->price), QStringLiteral("演示报价 · 非实际成交价"));
+    m_priceCards[1]->setValue(amount(*std::min_element(values.begin(), values.end())), QStringLiteral("合成样本范围"));
+    m_priceCards[2]->setValue(amount(*std::max_element(values.begin(), values.end())), QStringLiteral("合成样本范围"));
     m_priceChart->setSeries(values);
-    m_priceChart->setCaption(skin->name + QStringLiteral(" 路 婕旂ず鏁版嵁"));
+    m_priceChart->setCaption(skin->name + QStringLiteral(" · 演示数据"));
     m_priceHistory->setRowCount(6);
     for (int row = 0; row < 6; ++row) {
         const int index = values.size() - 1 - row;
-        put(m_priceHistory, row, 0, QStringLiteral("鏍锋湰 %1").arg(index + 1), FluentTheme::secondary);
+        put(m_priceHistory, row, 0, QStringLiteral("样本 %1").arg(index + 1), FluentTheme::secondary);
         put(m_priceHistory, row, 1, skin->name);
         put(m_priceHistory, row, 2, amount(values[index]));
-        put(m_priceHistory, row, 3, QStringLiteral("婕旂ず鎶ヤ环"), FluentTheme::secondary);
-        put(m_priceHistory, row, 4, QStringLiteral("鏈湴鍚堟垚 路 闈炴父鎴忛噰闆?"), FluentTheme::secondary);
+        put(m_priceHistory, row, 3, QStringLiteral("演示报价"), FluentTheme::secondary);
+        put(m_priceHistory, row, 4, QStringLiteral("本地合成 · 非游戏采集"), FluentTheme::secondary);
     }
 }
 
 void MainWindow::refreshStats()
 {
     const int scans = m_state->simulatedScans, matches = m_state->simulatedMatches, success = m_state->simulatedSuccess;
-    m_statsCards[0]->setValue(QString::number(scans), QStringLiteral("鏈婕旂ず鎵弿鏉＄洰"));
-    m_statsCards[1]->setValue(QString::number(matches), QStringLiteral("绗﹀悎妯℃嫙绛涢€夋潯浠?"));
-    m_statsCards[2]->setValue(QString::number(success), QStringLiteral("涓嶆槸瀹為檯鎴愪氦"));
-    m_statsCards[3]->setValue(QStringLiteral("鈥?"), QStringLiteral("鏈繛鎺ユ墽琛屾ā鍧?"));
+    m_statsCards[0]->setValue(QString::number(scans), QStringLiteral("本次演示扫描条目"));
+    m_statsCards[1]->setValue(QString::number(matches), QStringLiteral("符合模拟筛选条件"));
+    m_statsCards[2]->setValue(QString::number(success), QStringLiteral("不是实际成交"));
+    m_statsCards[3]->setValue(QStringLiteral("—"), QStringLiteral("未连接执行模块"));
     const QVector<int> values = {qMax(0, scans - matches), qMax(0, matches - success), success};
     for (int i = 0; i < values.size(); ++i) {
         const double fraction = scans > 0 ? values[i] * 100.0 / scans : 0;
-        m_reasonLabels[i]->setText(QStringLiteral("%1 路 %2%").arg(values[i]).arg(fraction, 0, 'f', 1));
+        m_reasonLabels[i]->setText(QStringLiteral("%1 · %2%").arg(values[i]).arg(fraction, 0, 'f', 1));
         m_reasonBars[i]->setValue(qRound(fraction));
     }
-    m_statsNote->setText(QStringLiteral("妯℃嫙鏈喅锛?銆傜粺璁″彧鎻忚堪鏈湴妯℃嫙寮曟搸锛屼笉浠ｈ〃瀹為檯娓告垙缁撴灉銆?"));
+    m_statsNote->setText(QStringLiteral("模拟未决：0。统计只描述本地模拟引擎，不代表实际游戏结果。"));
 }
 
 void MainWindow::refreshLogs()
@@ -1966,7 +1966,7 @@ void MainWindow::refreshLogs()
         putStatus(m_logsTable, row, 1, log.level, levelTone(log.level));
         put(m_logsTable, row, 2, log.message)->setToolTip(log.message);
     }
-    m_logCount->setText(QStringLiteral("鏄剧ず %1 / %2 鏉?").arg(m_logsTable->rowCount()).arg(m_state->logs.size()));
+    m_logCount->setText(QStringLiteral("显示 %1 / %2 条").arg(m_logsTable->rowCount()).arg(m_state->logs.size()));
     if (m_autoScrollLogs && m_autoScrollLogs->isChecked()) m_logsTable->scrollToTop();
 }
 
@@ -1974,7 +1974,7 @@ void MainWindow::showHelp()
 {
     QDialog dialog(this);
     dialog.setObjectName(QStringLiteral("helpDialog"));
-    dialog.setWindowTitle(QStringLiteral("甯姪"));
+    dialog.setWindowTitle(QStringLiteral("帮助"));
     auto* outer = new QVBoxLayout(&dialog);
     outer->setContentsMargins(0, 0, 0, 0);
     outer->setSpacing(0);
@@ -1983,13 +1983,13 @@ void MainWindow::showHelp()
     auto* body = new QVBoxLayout(content);
     body->setContentsMargins(24, 22, 24, 22);
     body->setSpacing(0);
-    body->addWidget(label(QStringLiteral("浣跨敤璇存槑"), QStringLiteral("dialogTitle")));
+    body->addWidget(label(QStringLiteral("使用说明"), QStringLiteral("dialogTitle")));
     body->addSpacing(16);
     const QVector<QPair<QString, QString>> steps = {
-        {QStringLiteral("鍏虫敞"), QStringLiteral("绛涢€夋垨鎼滅储鐨偆锛屽湪鍙充晶濉啓鏈€楂樹环鏍笺€佹垚鑹层€佹渶澶х（鎹熷拰鏁伴噺鍚庡垱寤轰换鍔°€?")},
-        {QStringLiteral("浠诲姟"), QStringLiteral("绠＄悊鏀惰棌浠诲姟锛氱洰鏍囩毊鑲ゃ€佹垚鑹层€佷环鏍煎尯闂淬€佹渶澶х（鎹熴€侀檺鍒堕噺涓庡惎鐢ㄥ紑鍏炽€?")},
-        {QStringLiteral("杩愯"), QStringLiteral("璁剧疆璐拱寤惰繜銆佽繛鐐规ā寮忋€佸搧绾ч檺璐€佹寕鏈轰笌鑷姩鏀惰棌鍙傛暟锛屼互鍙婅繍琛屽揩鎹烽敭鍜屽畾鏃躲€?")},
-        {QStringLiteral("璁板綍"), QStringLiteral("鍦ㄦ棩蹇椾笌缁熻椤垫煡鐪嬭繍琛屼簨浠跺拰缁撴灉锛涘鍏ャ€佸鍑轰綅浜庣獥鍙ｅ彸涓婅銆?")}};
+        {QStringLiteral("关注"), QStringLiteral("筛选或搜索皮肤，在右侧填写最高价格、成色、最大磨损和数量后创建任务。")},
+        {QStringLiteral("任务"), QStringLiteral("管理收藏任务：目标皮肤、成色、价格区间、最大磨损、限制量与启用开关。")},
+        {QStringLiteral("运行"), QStringLiteral("设置购买延迟、连点模式、品级限购、挂机与自动收藏参数，以及运行快捷键和定时。")},
+        {QStringLiteral("记录"), QStringLiteral("在日志与统计页查看运行事件和结果；导入、导出位于窗口右上角。")}};
     for (const auto& step : steps) {
         body->addWidget(label(step.first, QStringLiteral("cardTitle")));
         body->addSpacing(2);
@@ -1998,9 +1998,9 @@ void MainWindow::showHelp()
         body->addWidget(text);
         body->addSpacing(14);
     }
-    body->addWidget(label(QStringLiteral("杩愯蹇嵎閿細%1锛堟帴鍏ユ墽琛屾ā鍧楀悗鐢熸晥锛?").arg(m_state->run.hotkey), QStringLiteral("cardCaption")));
+    body->addWidget(label(QStringLiteral("运行快捷键：%1（接入执行模块后生效）").arg(m_state->run.hotkey), QStringLiteral("cardCaption")));
     body->addSpacing(4);
-    auto* demo = label(QStringLiteral("褰撳墠鐗堟湰鏄湰鍦版紨绀哄墠绔細涓嶈繛鎺ユ父鎴忥紝涓嶈鍙栧疄鏃跺競鍦猴紝涔熶笉鎵ц鐐瑰嚮鎴栬喘涔般€?"), QStringLiteral("tertiaryLabel"));
+    auto* demo = label(QStringLiteral("当前版本是本地演示前端：不连接游戏，不读取实时市场，也不执行点击或购买。"), QStringLiteral("tertiaryLabel"));
     demo->setWordWrap(true);
     body->addWidget(demo);
     outer->addWidget(content, 1);
@@ -2010,7 +2010,7 @@ void MainWindow::showHelp()
     auto* commandRow = new QHBoxLayout(commands);
     commandRow->setContentsMargins(24, 20, 24, 20);
     commandRow->addStretch();
-    auto* close = button(QStringLiteral("鐭ラ亾浜?"), QStringLiteral("helpCloseButton"), ButtonKind::Accent);
+    auto* close = button(QStringLiteral("知道了"), QStringLiteral("helpCloseButton"), ButtonKind::Accent);
     close->setDefault(true);
     close->setMinimumWidth(120);
     commandRow->addWidget(close);
@@ -2028,7 +2028,7 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
     for (const auto& task : m_state->tasks) if (task.id == id) { existing = task; editing = true; break; }
     QDialog dialog(this);
     dialog.setObjectName(QStringLiteral("taskEditorDialog"));
-    dialog.setWindowTitle(editing ? QStringLiteral("缂栬緫妯℃嫙浠诲姟") : QStringLiteral("鏂板妯℃嫙浠诲姟"));
+    dialog.setWindowTitle(editing ? QStringLiteral("编辑模拟任务") : QStringLiteral("新增模拟任务"));
     dialog.setMinimumWidth(540);
     auto* outer = new QVBoxLayout(&dialog);
     outer->setContentsMargins(0, 0, 0, 0);
@@ -2039,14 +2039,14 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
     auto* body = new QVBoxLayout(content);
     body->setContentsMargins(24, 22, 24, 20);
     body->setSpacing(0);
-    body->addWidget(label(editing ? QStringLiteral("璋冩暣浠诲姟鏉′欢") : QStringLiteral("鍒涘缓涓€鏉℃ā鎷熶换鍔?"), QStringLiteral("dialogTitle")));
+    body->addWidget(label(editing ? QStringLiteral("调整任务条件") : QStringLiteral("创建一条模拟任务"), QStringLiteral("dialogTitle")));
     body->addSpacing(6);
-    body->addWidget(label(QStringLiteral("杩欎簺瑙勫垯鍙敤浜庢湰鍦版紨绀猴紝涓嶄細瑙﹀彂瀹為檯璐拱銆?"), QStringLiteral("cardCaption")));
+    body->addWidget(label(QStringLiteral("这些规则只用于本地演示，不会触发实际购买。"), QStringLiteral("cardCaption")));
     body->addSpacing(20);
     auto* name = new QLineEdit;
     name->setObjectName(QStringLiteral("taskName"));
     name->setMaxLength(60);
-    name->setPlaceholderText(QStringLiteral("渚嬪锛氬ぉ鍛戒綆浠峰叧娉?"));
+    name->setPlaceholderText(QStringLiteral("例如：天命低价关注"));
     if (editing) name->setText(existing.name);
     auto* skin = new FluentComboBox;
     skin->setObjectName(QStringLiteral("taskSkin"));
@@ -2057,7 +2057,7 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
     auto* condition = new FluentComboBox;
     condition->setObjectName(QStringLiteral("taskCondition"));
     condition->addItems(conditionOptions(m_state));
-    const QString conditionValue = editing ? existing.condition : (defaultSkin ? defaultSkin->condition : QStringLiteral("涓嶉檺"));
+    const QString conditionValue = editing ? existing.condition : (defaultSkin ? defaultSkin->condition : QStringLiteral("不限"));
     if (condition->findText(conditionValue) < 0) condition->addItem(conditionValue);
     condition->setCurrentText(conditionValue);
     auto* min = new FluentDoubleSpinBox;
@@ -2090,22 +2090,22 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
         form->addWidget(label(title, QStringLiteral("fieldLabel")), row, column, 1, span);
         form->addWidget(control, row + 1, column, 1, span);
     };
-    field(QStringLiteral("浠诲姟鍚嶇О"), name, 0, 0, 2);
+    field(QStringLiteral("任务名称"), name, 0, 0, 2);
     form->setRowMinimumHeight(2, 12);
-    field(QStringLiteral("鐩爣鐨偆"), skin, 3, 0);
+    field(QStringLiteral("目标皮肤"), skin, 3, 0);
     field(QStringLiteral("成色"), condition, 3, 1);
     form->setRowMinimumHeight(5, 12);
-    field(QStringLiteral("鏈€浣庝环鏍?"), min, 6, 0);
-    field(QStringLiteral("鏈€楂樹环鏍?"), max, 6, 1);
+    field(QStringLiteral("最低价格"), min, 6, 0);
+    field(QStringLiteral("最高价格"), max, 6, 1);
     form->setRowMinimumHeight(8, 12);
-    field(QStringLiteral("鏈€澶х（鎹?"), wear, 9, 0);
-    field(QStringLiteral("鏁伴噺涓婇檺"), quantity, 9, 1);
+    field(QStringLiteral("最大磨损"), wear, 9, 0);
+    field(QStringLiteral("数量上限"), quantity, 9, 1);
     form->setColumnStretch(0, 1);
     form->setColumnStretch(1, 1);
     body->addLayout(form);
     body->addSpacing(16);
     auto* enableRow = new QHBoxLayout;
-    enableRow->addWidget(label(QStringLiteral("鍚敤姝や换鍔?")));
+    enableRow->addWidget(label(QStringLiteral("启用此任务")));
     enableRow->addStretch();
     enableRow->addWidget(enabled);
     body->addLayout(enableRow);
@@ -2120,17 +2120,17 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
     commandRow->setContentsMargins(24, 20, 24, 20);
     commandRow->setSpacing(8);
     commands->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    auto* save = button(QStringLiteral("淇濆瓨浠诲姟"), QStringLiteral("taskSaveButton"), ButtonKind::Accent);
+    auto* save = button(QStringLiteral("保存任务"), QStringLiteral("taskSaveButton"), ButtonKind::Accent);
     save->setDefault(true);
-    auto* cancel = button(QStringLiteral("鍙栨秷"), QStringLiteral("taskCancelButton"));
+    auto* cancel = button(QStringLiteral("取消"), QStringLiteral("taskCancelButton"));
     commandRow->addWidget(save, 1);
     commandRow->addWidget(cancel, 1);
     outer->addWidget(commands);
     connect(cancel, &QPushButton::clicked, &dialog, &QDialog::reject);
     connect(save, &QPushButton::clicked, &dialog, [&] {
-        if (name->text().trimmed().isEmpty()) { validation->setText(QStringLiteral("璇疯緭鍏ヤ换鍔″悕绉般€?")); name->setFocus(); return; }
-        if (skin->currentIndex() < 0) { validation->setText(QStringLiteral("璇烽€夋嫨鐩爣鐨偆銆?")); return; }
-        if (min->value() > max->value()) { validation->setText(QStringLiteral("鏈€浣庝环鏍奸渶瑕佸皬浜庢垨绛変簬鏈€楂樹环鏍笺€?")); return; }
+        if (name->text().trimmed().isEmpty()) { validation->setText(QStringLiteral("请输入任务名称。")); name->setFocus(); return; }
+        if (skin->currentIndex() < 0) { validation->setText(QStringLiteral("请选择目标皮肤。")); return; }
+        if (min->value() > max->value()) { validation->setText(QStringLiteral("最低价格需要小于或等于最高价格。")); return; }
         dialog.accept();
     });
     if (dialog.exec() != QDialog::Accepted) return;
@@ -2144,16 +2144,16 @@ void MainWindow::editTask(const QString& id, const QString& skinId)
     task.quantity = quantity->value();
     task.condition = condition->currentText();
     task.enabled = enabled->isChecked();
-    task.status = task.enabled ? QStringLiteral("寰呭惎鍔?") : QStringLiteral("婕旂ず宸叉殏鍋?");
+    task.status = task.enabled ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
     if (editing) {
         for (auto& target : m_state->tasks) {
             if (target.id == id) { target = task; break; }
         }
-        m_state->addLog("INFO", QStringLiteral("鏇存柊鏈湴浠诲姟锛?") + task.name);
+        m_state->addLog("INFO", QStringLiteral("更新本地任务：") + task.name);
         m_state->resetTaskSimulation(task.id);
     } else {
         m_state->tasks.append(task);
-        m_state->addLog("INFO", QStringLiteral("鏂板鏈湴浠诲姟锛?") + task.name);
+        m_state->addLog("INFO", QStringLiteral("新增本地任务：") + task.name);
         m_state->notifyChanged();
     }
 }
@@ -2164,12 +2164,12 @@ void MainWindow::deleteSelectedTasks()
     for (const auto& index : m_tasksTable->selectionModel()->selectedRows())
         if (auto* item = m_tasksTable->item(index.row(), 0)) ids.append(item->data(Qt::UserRole).toString());
     if (ids.isEmpty()) return;
-    if (!confirm(this, QStringLiteral("鍒犻櫎浠诲姟"), QStringLiteral("鍒犻櫎閫変腑鐨?%1 鏉℃湰鍦颁换鍔★紵鍏虫敞鍒楄〃淇濇寔涓嶅彉銆?").arg(ids.size()), QStringLiteral("鍒犻櫎")))
+    if (!confirm(this, QStringLiteral("删除任务"), QStringLiteral("删除选中的 %1 条本地任务？关注列表保持不变。").arg(ids.size()), QStringLiteral("删除")))
         return;
     for (int i = m_state->tasks.size() - 1; i >= 0; --i) {
         if (ids.contains(m_state->tasks[i].id)) m_state->tasks.removeAt(i);
     }
-    m_state->addLog("INFO", QStringLiteral("鍒犻櫎 %1 鏉℃湰鍦颁换鍔?").arg(ids.size()));
+    m_state->addLog("INFO", QStringLiteral("删除 %1 条本地任务").arg(ids.size()));
     m_state->notifyChanged();
 }
 
@@ -2182,10 +2182,10 @@ void MainWindow::setSelectedTasksEnabled(bool enabled)
     for (auto& task : m_state->tasks) {
         if (ids.contains(task.id)) {
             task.enabled = enabled;
-            task.status = enabled ? QStringLiteral("寰呭惎鍔?") : QStringLiteral("婕旂ず宸叉殏鍋?");
+            task.status = enabled ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
         }
     }
-    m_state->addLog("INFO", QStringLiteral("%1 %2 鏉￠€変腑浠诲姟").arg(enabled ? QStringLiteral("鍚敤") : QStringLiteral("鏆傚仠")).arg(ids.size()));
+    m_state->addLog("INFO", QStringLiteral("%1 %2 条选中任务").arg(enabled ? QStringLiteral("启用") : QStringLiteral("暂停")).arg(ids.size()));
     m_state->notifyChanged();
 }
 
@@ -2347,27 +2347,27 @@ void MainWindow::showImportPreview(const QJsonObject& preview, const QString& so
 }
 void MainWindow::exportConfiguration()
 {
-    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("瀵煎嚭鏈湴閰嶇疆"), "relink-config.json", QStringLiteral("JSON 閰嶇疆 (*.json)"));
+    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出本地配置"), "relink-config.json", QStringLiteral("JSON 配置 (*.json)"));
     if (path.isEmpty()) return;
     QString error;
     if (!m_state->saveTo(path, &error)) {
-        QMessageBox::warning(this, QStringLiteral("瀵煎嚭澶辫触"), error);
+        QMessageBox::warning(this, QStringLiteral("导出失败"), error);
         return;
     }
-    m_state->addLog("INFO", QStringLiteral("宸插鍑烘湰鍦伴厤缃?"));
+    m_state->addLog("INFO", QStringLiteral("已导出本地配置"));
     m_state->notifyChanged();
 }
 
 void MainWindow::exportPrices()
 {
-    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("瀵煎嚭婕旂ず鎶ヤ环"), "relink-demo-prices.csv", QStringLiteral("CSV 鏂囦欢 (*.csv)"));
+    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出演示报价"), "relink-demo-prices.csv", QStringLiteral("CSV 文件 (*.csv)"));
     if (path.isEmpty()) return;
     QString error;
     if (!m_state->exportPricesCsv(path, &error)) {
-        QMessageBox::warning(this, QStringLiteral("瀵煎嚭澶辫触"), error);
+        QMessageBox::warning(this, QStringLiteral("导出失败"), error);
         return;
     }
-    m_state->addLog("INFO", QStringLiteral("宸插鍑烘紨绀烘姤浠?CSV锛堥潪娓告垙閲囬泦鏁版嵁锛?"));
+    m_state->addLog("INFO", QStringLiteral("已导出演示报价 CSV（非游戏采集数据）"));
     m_state->notifyChanged();
 }
 
@@ -2382,12 +2382,12 @@ void MainWindow::saveSettings()
     QDir().mkpath(QFileInfo(path).absolutePath());
     QString error;
     if (m_state->saveTo(path, &error)) {
-        m_settingsMessage->setText(QStringLiteral("璁剧疆涓庢湰鍦伴厤缃凡淇濆瓨"));
+        m_settingsMessage->setText(QStringLiteral("设置与本地配置已保存"));
         m_state->configPath = path;
-        m_state->addLog("INFO", QStringLiteral("宸蹭繚瀛樼晫闈㈣缃笌鏈湴閰嶇疆"));
+        m_state->addLog("INFO", QStringLiteral("已保存界面设置与本地配置"));
         m_state->notifyChanged();
     } else {
-        m_settingsMessage->setText(QStringLiteral("閰嶇疆淇濆瓨澶辫触锛?") + error);
+        m_settingsMessage->setText(QStringLiteral("配置保存失败：") + error);
     }
 }
 

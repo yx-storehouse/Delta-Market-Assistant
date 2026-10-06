@@ -1,4 +1,10 @@
-# Relink Studio · 前端预览版
+# Delta Market Assistant · 三角洲市场助手
+
+## 当前开发进度：PR10 持久化后端
+
+项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR10 已实现领域规则、离线回放、只读导入预览、审阅配置保存、内存账本及 SQLite 持久化后端。SQLite 支持事务提交、幂等、版本迁移、未决恢复与一致性备份；常规界面仍使用演示/回放数据，PR11 将接入持久化方案和记录。
+
+开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/sqlite_store_pr10.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。本轮同时修复历史中文乱码，并增加可见文案离屏回归。
 
 ## 当前版本：0.6 Windows 11 浅色 · 微软商店布局
 
@@ -13,7 +19,7 @@
 
 ## 打开程序
 
-打开交付目录中的 `RelinkStudio.exe`。请保留同目录的 DLL 和 `platforms` 文件夹，不要只移动 EXE。
+打开交付目录中的 `RelinkStudio.exe`。请保留同目录的 DLL、`platforms`、`sqldrivers` 和 `qt.conf`，不要只移动 EXE。
 本次开发和验证只使用 Qt `offscreen` 离屏模式，没有为测试启动可见窗口。
 
 ## 已完成的页面

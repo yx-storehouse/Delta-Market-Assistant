@@ -31,8 +31,29 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Qt deployment failed.' }
         New-Item -ItemType Directory -Path (Join-Path $Dest 'platforms') -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $Qt 'plugins\platforms\qoffscreen.dll') -Destination (Join-Path $Dest 'platforms') -Force
+        # QSQLITE is a runtime-loaded plugin: deploy it explicitly, not only
+        # whatever windeployqt discovers from import tables.
+        New-Item -ItemType Directory -Path (Join-Path $Dest 'sqldrivers') -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $Qt 'bin\Qt6Sql.dll') -Destination $Dest -Force
+        Copy-Item -LiteralPath (Join-Path $Qt 'plugins\sqldrivers\qsqlite.dll') -Destination (Join-Path $Dest 'sqldrivers') -Force
+        # Prevent a packaged app from silently finding plugins in the build SDK.
+        [System.IO.File]::WriteAllText((Join-Path $Dest 'qt.conf'), "[Paths]`nPrefix=.`nPlugins=.`n", [System.Text.UTF8Encoding]::new($false))
         foreach ($dll in @('libgcc_s_seh-1.dll','libstdc++-6.dll','libwinpthread-1.dll')) {
             Copy-Item -LiteralPath (Join-Path $Compiler $dll) -Destination $Dest -Force
+        }
+        $SavedPath = $env:PATH
+        $SavedPluginPath = $env:QT_PLUGIN_PATH
+        $SavedPlatformPath = $env:QT_QPA_PLATFORM_PLUGIN_PATH
+        try {
+            $env:PATH = "$Dest;$env:SystemRoot\System32;$env:SystemRoot"
+            $env:QT_PLUGIN_PATH = $Dest
+            $env:QT_QPA_PLATFORM_PLUGIN_PATH = Join-Path $Dest 'platforms'
+            & (Join-Path $Dest 'RelinkStudio.exe') --storage-self-test
+            if ($LASTEXITCODE -ne 0) { throw 'Packaged QSQLITE persistence self-test failed.' }
+        } finally {
+            $env:PATH = $SavedPath
+            $env:QT_PLUGIN_PATH = $SavedPluginPath
+            $env:QT_QPA_PLATFORM_PLUGIN_PATH = $SavedPlatformPath
         }
         if (Test-Path -LiteralPath (Join-Path $Root 'README.md')) {
             Copy-Item -LiteralPath (Join-Path $Root 'README.md') -Destination $Dest -Force

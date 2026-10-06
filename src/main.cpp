@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QCommandLineParser>
+#include "ledger/storage_self_test.h"
 #include <QDateTime>
 #include <QDialog>
 #include <QDir>
@@ -261,7 +262,7 @@ int main(int argc, char** argv) {
     for (int i = 1; i < argc; ++i) {
         const QByteArray a(argv[i]);
         headless |= a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
-            || a == "--export-app-icon";
+            || a == "--export-app-icon" || a == "--storage-self-test";
         headless |= a.startsWith("--snapshot-dir=") || a.startsWith("--write-demo-config=") || a.startsWith("--validate-config=");
     }
     if (headless) {
@@ -295,6 +296,7 @@ int main(int argc, char** argv) {
     parser.setApplicationDescription("Relink Studio offline frontend. No game connection or input automation.");
     parser.addHelpOption(); parser.addVersionOption();
     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
+    parser.addOption({"storage-self-test", "Verify the packaged SQLite driver, transactions, recovery and backup using temporary data."});
     parser.addOption({"snapshot-dir", "Render seven pages to PNG, offscreen, then exit.", "directory"});
     parser.addOption({"config", "Local demo configuration JSON path.", "path"});
     parser.addOption({"write-demo-config", "Write a fresh synthetic configuration and exit offscreen.", "path"});
@@ -302,6 +304,7 @@ int main(int argc, char** argv) {
     parser.addOption({"font-report", "Print the resolved UI and icon fonts, then exit without opening a window."});
     parser.addOption({"export-app-icon", "Render the 256 px application icon to a PNG offscreen, then exit.", "path"});
     parser.process(app);
+    if (parser.isSet("storage-self-test")) return relink::ledger::runStorageSelfTest();
     if (parser.isSet("font-report")) {
         const auto report = [](const char* role, const QFont& font) {
             const QFontInfo info(font);
@@ -401,6 +404,35 @@ int main(int argc, char** argv) {
         const QStringList nav = {"navOverview", "navFavorites", "navTasks", "navPrices", "navStats", "navLogs", "navSettings", "navRun"};
         const QStringList pages = {"overview", "favorites", "tasks", "prices", "stats", "logs", "settings", "run"};
         auto* stack = window.findChild<QStackedWidget*>("pageStack");
+        // Functional checks alone did not catch a historical UTF-8/GBK text
+        // corruption. Verify the visible labels as well as widget identities.
+        const QStringList navText = {QStringLiteral("工作台"), QStringLiteral("关注"), QStringLiteral("任务"),
+            QStringLiteral("价格"), QStringLiteral("统计"), QStringLiteral("日志"), QStringLiteral("设置"), QStringLiteral("运行")};
+        bool navigationTextValid = true;
+        for (int i = 0; i < nav.size(); ++i) {
+            const auto* control = window.findChild<QAbstractButton*>(nav[i]);
+            navigationTextValid &= control && control->text() == navText[i];
+        }
+        check(navigationTextValid, "NAVIGATION_TEXT_UTF8");
+        const auto textEquals = [&](const char* name, const QString& expected) {
+            const auto* control = window.findChild<QAbstractButton*>(name);
+            return control && control->text() == expected;
+        };
+        check(textEquals("importConfigButton", QStringLiteral("导入"))
+              && textEquals("exportConfigButton", QStringLiteral("导出"))
+              && textEquals("saveRunSettingsButton", QStringLiteral("保存参数")), "ACTION_TEXT_UTF8");
+        const QStringList damagedText = {QStringLiteral("鎴戠"), QStringLiteral("鍏虫"), QStringLiteral("杩愯"),
+            QStringLiteral("瀵煎"), QStringLiteral("璐"), QStringLiteral("閰嶇"), QStringLiteral("淇濆"),
+            QStringLiteral("鐢熸"), QStringLiteral("缁熻"), QString(QChar(0xfffd))};
+        bool visibleTextValid = true;
+        for (auto* widget : window.findChildren<QWidget*>()) {
+            QString displayed;
+            if (auto* label = qobject_cast<QLabel*>(widget)) displayed = label->text();
+            else if (auto* control = qobject_cast<QAbstractButton*>(widget)) displayed = control->text();
+            else if (auto* edit = qobject_cast<QLineEdit*>(widget)) displayed = edit->placeholderText();
+            for (const auto& damaged : damagedText) visibleTextValid &= !displayed.contains(damaged);
+        }
+        check(visibleTextValid, "NO_MOJIBAKE_LABELS");
         auto inspectGeometry = [&](int pageIndex, const QString& sizeName) {
             QJsonObject geometry = inspectPageGeometry(stack ? stack->currentWidget() : nullptr, &window);
             geometry.insert("render_size", sizeName);

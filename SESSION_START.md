@@ -1,5 +1,14 @@
 # Relink Studio — new session entry
 
+## 当前开发节点：PR10 SQLite 后端已完成
+
+- 当前仓库为 `yx-storehouse/Delta-Market-Assistant`，项目名为三角洲市场助手；构建目标/文件名保留 `RelinkStudio`。
+- 先读 `docs/business_rebuild/09_m1_progress.md` 和 `NEXT_IMPLEMENTATION.md`；下一阶段为 PR11，不重复实施 PR07/PR08/PR09/PR10。
+- `src/ledger/sqlite_event_store.*` 已实现事务、迁移、恢复和备份；正常界面尚未接 SQLite。配置仍保留独立 ProfileStore/QSaveFile 路径。
+- PR10 修正未知/歧义回执被计为成功的问题，并修复历史 UI 中文乱码；配色、布局和功能入口不变。
+- 构建验收入口仍为 `build.ps1 -Test -Package`；发布程序增加 `--storage-self-test`，只操作临时数据库，不打开前台窗口。
+- 本轮完整证据：`artifacts/m1_pr10_transaction/VERIFICATION.txt`。旧解压程序保留在该目录下 `baseline/release/`；回退脚本恢复程序文件并保留新数据库。
+
 ## 当前 UI 版本：0.6 Windows 11 浅色 · 微软商店布局
 
 用户喜欢微软商店 / Win11 的界面，2026-10-06 明确要求“不要蓝色”“按 Win11 同款白灰配色”（系统为浅色模式），取代 10-05 的深色要求。当前是 Win11 浅色主题、中性近黑强调色、商店式顶部搜索、左侧图标导航和左上圆角内容层。用户还提供了原程序“Relink枪皮助手”主界面截图，要求全部功能入口：已集中在“运行”页与“任务”页（含成色）。

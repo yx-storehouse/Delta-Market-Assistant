@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Sql)
 if(MSVC)
   add_compile_options(/utf-8 /W4)
 else()
@@ -15,6 +15,7 @@ qt_add_executable(RelinkStudio WIN32
   src/domain.cpp src/domain.h src/widgets.cpp src/widgets.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
+  src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
   resources.qrc)
 target_include_directories(RelinkStudio PRIVATE src)
 target_link_libraries(RelinkStudio PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
@@ -84,6 +85,15 @@ add_library(relink_ledger STATIC
 target_include_directories(relink_ledger PUBLIC src)
 target_link_libraries(relink_ledger PUBLIC Qt6::Core)
 
+add_library(relink_sqlite STATIC
+  src/ledger/sqlite_event_store.cpp src/ledger/sqlite_event_store.h)
+target_include_directories(relink_sqlite PUBLIC src)
+target_link_libraries(relink_sqlite PUBLIC Qt6::Core Qt6::Sql)
+target_link_libraries(RelinkStudio PRIVATE relink_sqlite)
+
+add_executable(sqlite_ledger_tests tests/ledger/sqlite_ledger_tests.cpp)
+target_link_libraries(sqlite_ledger_tests PRIVATE relink_sqlite relink_ledger)
+
 add_executable(ledger_tests tests/ledger/ledger_tests.cpp)
 target_include_directories(ledger_tests PRIVATE src)
 target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
@@ -98,5 +108,9 @@ add_test(NAME profile_store_tests COMMAND profile_store_tests)
 add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/replay_cases.json")
 add_test(NAME ui_projection_tests COMMAND ui_projection_tests)
 add_test(NAME ledger_tests COMMAND ledger_tests)
+add_test(NAME sqlite_ledger_tests COMMAND sqlite_ledger_tests)
+add_test(NAME storage_self_test COMMAND RelinkStudio --storage-self-test)
+set_tests_properties(sqlite_ledger_tests PROPERTIES TIMEOUT 120)
+set_tests_properties(storage_self_test PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1")
 add_test(NAME ui_offscreen COMMAND RelinkStudio --self-test --snapshot-dir "${CMAKE_BINARY_DIR}/snapshots" --config "${CMAKE_BINARY_DIR}/selftest-config.json")
 set_tests_properties(ui_offscreen PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1")
