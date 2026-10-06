@@ -1,0 +1,503 @@
+{
+  "scope": "JSON Schema syntax, offline references, and documented shape acceptance/rejection only",
+  "result": "PASS",
+  "schemas_checked": 6,
+  "schema_refs_resolved": 249,
+  "schema_fixture_cases": 42,
+  "expected_valid_cases": 20,
+  "expected_invalid_cases": 22,
+  "failures": 0,
+  "business_engine_tests_executed": 0,
+  "live_capture_tests_executed": 0,
+  "network_schema_fetches": 0,
+  "cases": [
+    {
+      "id": "domain:S01",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/config-v2.schema.json",
+      "instance": "implementation\\domain\\fixtures\\schema\\S01.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S02",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "implementation\\domain\\fixtures\\schema\\S02.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S03",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/ListingObservation",
+      "instance": "implementation\\domain\\fixtures\\schema\\S03.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S04",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "implementation\\domain\\fixtures\\schema\\S04.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S05",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "implementation\\domain\\fixtures\\schema\\S05.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/scale",
+          "message": "13 is greater than the maximum of 12"
+        }
+      ]
+    },
+    {
+      "id": "domain:S06",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "implementation\\domain\\fixtures\\schema\\S06.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/unscaled",
+          "message": "1 is not of type 'string'"
+        }
+      ]
+    },
+    {
+      "id": "domain:S07",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "implementation\\domain\\fixtures\\schema\\S07.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/unscaled",
+          "message": "'-1' does not match '^(0|[1-9][0-9]{0,23})$'"
+        }
+      ]
+    },
+    {
+      "id": "domain:S08",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "implementation\\domain\\fixtures\\schema\\S08.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/unscaled",
+          "message": "'1111111111111111111111111' does not match '^(0|[1-9][0-9]{0,23})$'"
+        }
+      ]
+    },
+    {
+      "id": "domain:S09",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "implementation\\domain\\fixtures\\schema\\S09.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "Additional properties are not allowed ('unknown_field' was unexpected)"
+        }
+      ]
+    },
+    {
+      "id": "domain:S10",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "implementation\\domain\\fixtures\\schema\\S10.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/enabled",
+          "message": "False was expected"
+        }
+      ]
+    },
+    {
+      "id": "domain:S11",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "implementation\\domain\\fixtures\\schema\\S11.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/price_range",
+          "message": "None is not of type 'object'"
+        }
+      ]
+    },
+    {
+      "id": "domain:S12",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "implementation\\domain\\fixtures\\schema\\S12.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S13",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/ListingObservation",
+      "instance": "implementation\\domain\\fixtures\\schema\\S13.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/condition",
+          "message": "'SS' is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "domain:S14",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id",
+      "instance": "implementation\\domain\\fixtures\\schema\\S14.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "'item with spaces' does not match '^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$'"
+        }
+      ]
+    },
+    {
+      "id": "domain:S15",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/config-v2.schema.json",
+      "instance": "implementation\\domain\\fixtures\\schema\\S15.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/schema_version",
+          "message": "2 was expected"
+        }
+      ]
+    },
+    {
+      "id": "domain:S16",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs",
+      "instance": "implementation\\domain\\fixtures\\schema\\S16.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "9007199254740992 is greater than the maximum of 9007199254740991"
+        }
+      ]
+    },
+    {
+      "id": "domain:S17",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/import-preview.schema.json",
+      "instance": "implementation\\domain\\fixtures\\schema\\S17.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S18",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/import-preview.schema.json",
+      "instance": "implementation\\domain\\fixtures\\schema\\S18.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/committable",
+          "message": "False was expected"
+        }
+      ]
+    },
+    {
+      "id": "domain:S19",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Decision",
+      "instance": "implementation\\domain\\fixtures\\schema\\S19.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "domain:S20",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Decision",
+      "instance": "implementation\\domain\\fixtures\\schema\\S20.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/eligible_for_action",
+          "message": "False was expected"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-DEMAND",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/ObservationDemand",
+      "instance": "implementation\\runtime\\fixtures\\demand.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-FRAME",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/FrameEnvelope",
+      "instance": "implementation\\runtime\\fixtures\\frame.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V1",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\01_hello.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V2",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\02_ready.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V3",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\03_recognize.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V4",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\04_result.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V5",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\05_release_frame.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V6",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\06_cancel.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V7",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\07_cancelled.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V8",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\08_error.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V9",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\09_shutdown.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-V10",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\10_bye.valid.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I1",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\01_file_transport.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-3', 'kind': 'recognize', 'body': {'request_id': 'request-1', 'demand_id': 'demand-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'frame': {'frame_id': 'frame-1', 'demand_id': 'demand-1', 'capture_session_id': 'capture-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'source_kind': 'replay', 'window_ref': 'fixture-window', 'width': 100, 'height': 50, 'dpi_x': 96, 'dpi_y': 96, 'pixel_format': 'BGRA8', 'stride_bytes': 400, 'valid_bytes': 20000, 'capture_start_mono_ms': 101, 'capture_end_mono_ms': 105, 'freshness_basis': 'post_barrier_capture', 'source_mono_ms': None, 'source_uncertainty_ms': None, 'descriptor': {'transport': 'temporary_file', 'mapping_name': 'Local\\\\RelinkVision_session1_0', 'lease_id': 'lease-1', 'slot_index': 0, 'slot_generation': 1, 'offset_bytes': 0, 'byte_length': 20000, 'capacity_bytes': 20000}}, 'roi_specs': [{'roi_id': 'price', 'coordinate_space': 'client_physical_px', 'x': 0, 'y': 0, 'width': 100, 'height': 50, 'transform_version': 1}], 'relative_budget_ms': 995}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I2",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\02_extra_image_path.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-3', 'kind': 'recognize', 'body': {'request_id': 'request-1', 'demand_id': 'demand-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'frame': {'frame_id': 'frame-1', 'demand_id': 'demand-1', 'capture_session_id': 'capture-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'source_kind': 'replay', 'window_ref': 'fixture-window', 'width': 100, 'height': 50, 'dpi_x': 96, 'dpi_y': 96, 'pixel_format': 'BGRA8', 'stride_bytes': 400, 'valid_bytes': 20000, 'capture_start_mono_ms': 101, 'capture_end_mono_ms': 105, 'freshness_basis': 'post_barrier_capture', 'source_mono_ms': None, 'source_uncertainty_ms': None, 'descriptor': {'transport': 'win32_named_shared_memory', 'mapping_name': 'Local\\\\RelinkVision_session1_0', 'lease_id': 'lease-1', 'slot_index': 0, 'slot_generation': 1, 'offset_bytes': 0, 'byte_length': 20000, 'capacity_bytes': 20000}}, 'roi_specs': [{'roi_id': 'price', 'coordinate_space': 'client_physical_px', 'x': 0, 'y': 0, 'width': 100, 'height': 50, 'transform_version': 1}], 'relative_budget_ms': 995, 'image_path': 'C:\\\\temp\\\\frame.png'}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I3",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\03_unsupported_version.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 2, 'session_id': 'session-1', 'message_id': 'message-1', 'kind': 'hello', 'body': {'supported_versions': [1], 'transport': 'win32_named_shared_memory', 'pixel_formats': ['BGRA8'], 'max_line_bytes': 1048576, 'max_frame_bytes': 134217728, 'max_tokens': 2000, 'max_in_flight': 1}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I4",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\04_missing_lease.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-5', 'kind': 'release_frame', 'body': {'request_id': 'request-1', 'slot_index': 0, 'slot_generation': 1}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I5",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\05_invalid_score.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-4', 'kind': 'result', 'body': {'request_id': 'request-1', 'demand_id': 'demand-1', 'frame_id': 'frame-1', 'lease_id': 'lease-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'status': 'ok', 'reason_code': None, 'provider': 'synthetic', 'model_id': 'no-model', 'elapsed_ms': 12, 'tokens': [{'roi_id': 'price', 'text': '340', 'score': 1.5, 'box_px': [[1, 1], [30, 1], [30, 20], [1, 20]]}]}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I6",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\06_unknown_without_reason.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-4', 'kind': 'result', 'body': {'request_id': 'request-1', 'demand_id': 'demand-1', 'frame_id': 'frame-1', 'lease_id': 'lease-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'status': 'unknown', 'reason_code': None, 'provider': 'synthetic', 'model_id': 'no-model', 'elapsed_ms': 12, 'tokens': [{'roi_id': 'price', 'text': '340', 'score': 0.99, 'box_px': [[1, 1], [30, 1], [30, 20], [1, 20]]}]}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I7",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\07_zero_budget.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-3', 'kind': 'recognize', 'body': {'request_id': 'request-1', 'demand_id': 'demand-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'frame': {'frame_id': 'frame-1', 'demand_id': 'demand-1', 'capture_session_id': 'capture-1', 'context': {'run_id': 'run-1', 'session_id': 'session-1', 'clock_domain_id': 'clock-1', 'step_id': 's1', 'cancel_epoch': 0, 'viewport_generation': 1}, 'source_kind': 'replay', 'window_ref': 'fixture-window', 'width': 100, 'height': 50, 'dpi_x': 96, 'dpi_y': 96, 'pixel_format': 'BGRA8', 'stride_bytes': 400, 'valid_bytes': 20000, 'capture_start_mono_ms': 101, 'capture_end_mono_ms': 105, 'freshness_basis': 'post_barrier_capture', 'source_mono_ms': None, 'source_uncertainty_ms': None, 'descriptor': {'transport': 'win32_named_shared_memory', 'mapping_name': 'Local\\\\RelinkVision_session1_0', 'lease_id': 'lease-1', 'slot_index': 0, 'slot_generation': 1, 'offset_bytes': 0, 'byte_length': 20000, 'capacity_bytes': 20000}}, 'roi_specs': [{'roi_id': 'price', 'coordinate_space': 'client_physical_px', 'x': 0, 'y': 0, 'width': 100, 'height': 50, 'transform_version': 1}], 'relative_budget_ms': 0}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-I8",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\messages\\08_bye_not_drained.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/",
+          "message": "{'protocol_version': 1, 'session_id': 'session-1', 'message_id': 'message-10', 'kind': 'bye', 'body': {'all_leases_closed': False}} is not valid under any of the given schemas"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-DEMAND-I",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/ObservationDemand",
+      "instance": "implementation\\runtime\\fixtures\\demand.invalid.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "result": "PASS",
+      "diagnostics": [
+        {
+          "instance_path": "/frame_budget",
+          "message": "1 was expected"
+        }
+      ]
+    },
+    {
+      "id": "runtime:RT-SCHEMA-REPLAY-SUITE",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/state.schema.json",
+      "instance": "implementation\\runtime\\fixtures\\replay_cases.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "result": "PASS",
+      "diagnostics": []
+    }
+  ]
+}

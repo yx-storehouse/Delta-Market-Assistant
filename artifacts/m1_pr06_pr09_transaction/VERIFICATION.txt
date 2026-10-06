@@ -1,0 +1,53 @@
+M1 PR06/PR09 TOOL TRANSACTION VERIFICATION
+DATE=2026-10-06
+TARGET=Read-only migration preview and in-memory ledger checkpoint fixture
+CHANGED_BRANCH=m1_pr06_pr09
+CHANGED_FIELD=preview_ledger_state
+SAFEGUARD=committable=false; actions_enabled=false; live_market_data=false; reservation_state=held
+
+ARTIFACTS
+MODIFIED_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\MODIFIED_FILE.json
+DIFF_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\DIFF_FILE
+VERIFICATION=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\VERIFICATION.txt
+ROLLBACK_SCRIPT=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\ROLLBACK.sh
+BASELINE_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\BASELINE_COPY.json
+ROLLBACK_TEST_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\ROLLBACK_TEST_COPY.json
+
+ORIGINAL_HASH_SHA256=1d8d710aaf967799d6e0d50ffdc4a23eacdac364c2c0f58e5b70a3436bfcd5e4
+MODIFIED_HASH_SHA256=75754387ef0e47c7d42c0e1051327b4a7de65770c33a5ad4710bb1931037b55a
+RESTORED_HASH_SHA256=1d8d710aaf967799d6e0d50ffdc4a23eacdac364c2c0f58e5b70a3436bfcd5e4
+
+BASELINE_COMMAND
+python artifacts/run_m1_pr06_pr09_transaction.py
+BASELINE_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\BASELINE_COPY.json
+BASELINE_LITERAL_OUTPUT
+PREVIEW_ONLY value=preview_only committable=False actions_enabled=False reservation_state=held
+BASELINE_EXIT=0
+
+MODIFIED_COMMAND
+python artifacts/run_m1_pr06_pr09_transaction.py
+MODIFIED_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\MODIFIED_FILE.json
+MODIFIED_LITERAL_OUTPUT
+REVIEW_DIAGNOSTICS value=review_diagnostics committable=False actions_enabled=False reservation_state=held
+MODIFIED_EXIT=0
+
+ROLLBACK_COMMAND
+C:\Program Files\Git\bin\bash.exe C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\ROLLBACK.sh C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\ROLLBACK_TEST_COPY.json C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\BASELINE_COPY.json
+ROLLBACK_INPUT
+The script copied MODIFIED_FILE.json to ROLLBACK_TEST_COPY.json and invoked the executable ROLLBACK.sh with BASELINE_COPY.json.
+ROLLBACK_LITERAL_OUTPUT
+ROLLBACK_RESTORED=C:\Users\Administrator\Desktop\price\artifacts\m1_pr06_pr09_transaction\ROLLBACK_TEST_COPY.json
+PREVIEW_ONLY value=preview_only committable=False actions_enabled=False reservation_state=held
+ROLLBACK_EXIT=0
+ROLLBACK_VERIFY_EXIT=0
+
+RESTORED_BEHAVIOR=PASS
+RESTORED_STATUS=value=preview_only; committable=false; actions_enabled=false; reservation_state=held
+MODIFIED_FILE_LEFT_CHANGED=PASS
+MODIFIED_STATUS=value=review_diagnostics; committable=false; actions_enabled=false; reservation_state=held
+
+DIFF_SUMMARY
+The changed branch is m1_pr06_pr09. The changed field is preview_ledger_state, represented by value preview_only -> review_diagnostics.
+The modified branch remains read-only and memory-only; no live market data, external input, transaction commit, or screenshot file is enabled.

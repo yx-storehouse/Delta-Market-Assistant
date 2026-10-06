@@ -1,0 +1,55 @@
+M1 PR08 TOOL TRANSACTION VERIFICATION
+DATE=2026-10-06
+TARGET=ProfileStore reviewed ConfigV2 atomic commit fixture
+CHANGED_BRANCH=m1_pr08
+CHANGED_FIELD=profile_commit_state (value/config_schema)
+SAFEGUARD=committable=false; actions_enabled=false; activation_required=true; source_hash_preserved=true; image_file_write_count=0
+
+ARTIFACTS
+MODIFIED_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\MODIFIED_FILE.json
+DIFF_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\DIFF_FILE
+VERIFICATION=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\VERIFICATION.txt
+ROLLBACK_SCRIPT=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK.sh
+BASELINE_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\BASELINE_COPY.json
+ROLLBACK_TEST_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK_TEST_COPY.json
+
+ORIGINAL_HASH_SHA256=8e3e6687f7cb3ade644c7108d22858e6d4b6a4cc5a438e2113a916ccbd09d8dd
+MODIFIED_HASH_SHA256=6892cb6a93edf2f5ca9dbb2afea5c01fadba8d0d882a3b8a0cedbf370a320c95
+
+BASELINE_COMMAND
+python artifacts/run_m1_pr08_transaction.py --baseline
+BASELINE_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\BASELINE_COPY.json
+BASELINE_LITERAL_OUTPUT
+REVIEW_ONLY value=review_only config_schema=LegacyImportPreview committable=False actions_enabled=False activation_required=True source_hash_preserved=True image_file_write_count=0
+BASELINE_RESULT=PASS
+BASELINE_EXIT_STATUS=0
+
+MODIFIED_COMMAND
+python artifacts/run_m1_pr08_transaction.py --modified
+MODIFIED_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\MODIFIED_FILE.json
+MODIFIED_LITERAL_OUTPUT
+ATOMIC_CONFIG_V2 value=atomic_config_v2 config_schema=ConfigV2 committable=False actions_enabled=False activation_required=True source_hash_preserved=True image_file_write_count=0
+MODIFIED_RESULT=PASS
+MODIFIED_EXIT_STATUS=0
+
+ROLLBACK_COMMAND
+C:/Program Files/Git/bin/bash.exe "C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK.sh" "C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK_TEST_COPY.json" "C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\BASELINE_COPY.json"
+ROLLBACK_INPUT
+Copied MODIFIED_FILE to C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK_TEST_COPY.json before running ROLLBACK.sh.
+ROLLBACK_LITERAL_OUTPUT
+ROLLBACK_RESTORED=C:\Users\Administrator\Desktop\price\artifacts\m1_pr08_transaction\ROLLBACK_TEST_COPY.json
+ROLLBACK_RESULT=PASS
+ROLLBACK_EXIT_STATUS=0
+ROLLBACK_VERIFY_LITERAL_OUTPUT=REVIEW_ONLY value=review_only config_schema=LegacyImportPreview committable=False actions_enabled=False activation_required=True source_hash_preserved=True image_file_write_count=0
+ROLLBACK_VERIFY_EXIT_STATUS=0
+
+RESTORED_BEHAVIOR=PASS
+MODIFIED_FILE_LEFT_CHANGED=PASS
+RESTORED_STATUS=value=review_only; config_schema=LegacyImportPreview; committable=false; actions_enabled=false; activation_required=true
+MODIFIED_STATUS=value=atomic_config_v2; config_schema=ConfigV2; committable=false; actions_enabled=false; activation_required=true
+
+DIFF_SUMMARY
+The changed branch is m1_pr08. The changed field is profile_commit_state, represented by value/config_schema review_only/LegacyImportPreview -> atomic_config_v2/ConfigV2.
+The modified branch remains non-actionable, requires explicit activation, preserves source hash metadata, and records zero image file writes.

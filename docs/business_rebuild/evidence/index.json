@@ -1,0 +1,249 @@
+[
+  {
+    "id": "E01",
+    "title": "初始样本清单",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/source_manifest.json",
+        "sha256": "361ae190f6db8f44c26ac8ba8efe481fd6edc5a51603c67a943d4f497cdb97e4",
+        "bytes": 119842
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E01",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E02",
+    "title": "静态 PE / OCR / 授权导出",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/pe_summary.json",
+        "sha256": "0cfab3af4cec7049f94c87afacd91d02abb74ba1e131fb2359e347bf6024c373",
+        "bytes": 52967
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E02",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E03",
+    "title": "脱敏配置和13列任务",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/task_schema.json",
+        "sha256": "60f0315ba5c228f5fcfc610284657db61b613b364678dc76962e1e5e22cbd755",
+        "bytes": 6839
+      },
+      {
+        "path": "artifacts/bbzps_static/configs_redacted.json",
+        "sha256": "ba003a44ceab00e0d2d3d3a338e677d0e04579194c93a8b38d8a47240d91284e",
+        "bytes": 3735
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E03",
+    "linked_workitem": "WI01",
+    "supersedes": "none"
+  },
+  {
+    "id": "E04",
+    "title": "历史日志索引、消息与连续片段",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/log_index.json",
+        "sha256": "74c069301c9abc140f9d39b94c54f315c9a421d3498b27a5d27bf5aff5194343",
+        "bytes": 462074
+      },
+      {
+        "path": "artifacts/bbzps_static/business_evidence.json",
+        "sha256": "fa27a31dae7a523802e382e31f555e15a47efb880747e0240bbeb0e2af0d22dd",
+        "bytes": 47809
+      },
+      {
+        "path": "artifacts/bbzps_static/business_passages.json",
+        "sha256": "922178311fec8354249cc6dfe8d1623f9c7fab47174507811f0cb344dbea5363",
+        "bytes": 130390
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E04",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E05",
+    "title": "外层嵌入关系",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/embedded_payload.json",
+        "sha256": "5072d7058a34c644f49a90dcc8f898bb2bc77dd629f2aea39a59e058c29eca54",
+        "bytes": 193
+      },
+      {
+        "path": "artifacts/bbzps_static/nested_pe.json",
+        "sha256": "a8bb56db7cc7e5f9d2bb8bda4dd0b096227b925945ab27da7e39f279073f91cb",
+        "bytes": 4195
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E05",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E06",
+    "title": "上一轮已完成的载荷静态摘要",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/decoded_pe.json",
+        "sha256": "e1881e9a7f443b4c5ab1d800f2760b7de42a7379a00398bd9da4361092ddae3d",
+        "bytes": 18985
+      },
+      {
+        "path": "artifacts/bbzps_static/decoded_api_calls.json",
+        "sha256": "1dbb157f1c2625fb79bc9d4fbd7ce3b3b6b6cbc3f67b3f2a603639b39731e38a",
+        "bytes": 2963
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E06",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E07",
+    "title": "上一轮静态代码证据索引（不纳入实现）",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/ida_survey.json",
+        "sha256": "890f8bfb196db84026dfc602b7c6ee5a9dc06f35830533dce41e1728ae35e4dd",
+        "bytes": 4289
+      },
+      {
+        "path": "artifacts/bbzps_static/ida_decompile_0x10004960.json",
+        "sha256": "af8338974e80677ba4a376551b7d9cb2f022adcfadf621c14a21bd41e3fb90db",
+        "bytes": 23896
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E07",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E08",
+    "title": "当前工程结构与前端行为",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "src/domain.h",
+        "sha256": "0111009e5c4b044163f8bc674c662626e6702f9970a47b24ec9b568b522173fa",
+        "bytes": 2514
+      },
+      {
+        "path": "src/domain.cpp",
+        "sha256": "84fb9f012b1804e120e3d779ef41553072651e7e7e557a0483199dfd20e3ca3f",
+        "bytes": 27446
+      },
+      {
+        "path": "src/mainwindow.cpp",
+        "sha256": "26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625",
+        "bytes": 112991
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c",
+        "bytes": 1456
+      },
+      {
+        "path": "docs/STORE_UI.md",
+        "sha256": "784e57a880b48381bb16065fd8bafd4702baad945d9adabd4f6f3215745a8749",
+        "bytes": 4522
+      },
+      {
+        "path": "build.ps1",
+        "sha256": "628530151780997adb90ec7bc2409eb59dfe1ac10f4da7959f32fdf7de5e176d",
+        "bytes": 4124
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E08",
+    "linked_workitem": "WI01",
+    "supersedes": "none"
+  },
+  {
+    "id": "E09",
+    "title": "上一轮目录复核记录",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/source_audit_verification.json",
+        "sha256": "263c54ea02bec540bcd17faed331e693b10baa6fe08c2bc962e675956591325c",
+        "bytes": 2536
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E09",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E10",
+    "title": "OCR 库字符串偏移",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "artifacts/bbzps_static/gdi32.dll.interesting.json",
+        "sha256": "3f585235dacb049839311bed311153277aed26718218066e9eca6aeeae85b4fd",
+        "bytes": 2118
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E10",
+    "linked_workitem": "WI03",
+    "supersedes": "none"
+  },
+  {
+    "id": "E11",
+    "title": "最新用户交付与入口约定",
+    "observed_at": "2026-10-06",
+    "source_type": "existing_static_artifact_or_project_file",
+    "files": [
+      {
+        "path": "AGENTS.md",
+        "sha256": "53470c20ea563150cce704f49008e28ff230dfecd7ee71e23b18a90c9c4ab65f",
+        "bytes": 1808
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E11",
+    "linked_workitem": "WI01",
+    "supersedes": "none"
+  },
+  {
+    "id": "E12",
+    "title": "用户补充：按步骤采集与图像默认不落盘",
+    "observed_at": "2026-10-06",
+    "source_type": "user_requirement_record",
+    "files": [
+      {
+        "path": "docs/business_rebuild/evidence/2026-10-06_capture_requirement.md",
+        "sha256": "f0e236c21f84f13e7372f9416da94e8e353048325e24a6158b8e7ed4ff2171db",
+        "bytes": 1157
+      }
+    ],
+    "repro_command": "python -I -X utf8 docs/business_rebuild/scripts/validate_docs.py --evidence E12",
+    "linked_workitem": "WI06",
+    "supersedes": "none"
+  }
+]

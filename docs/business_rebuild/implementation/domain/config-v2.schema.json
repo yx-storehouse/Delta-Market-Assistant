@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.relink.invalid/business/v1/domain/config-v2.schema.json",
+  "title": "Relink schema v2 proposed M1 configuration",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "contract_version": {
+      "const": "0.3.0"
+    },
+    "config_id": {
+      "$ref": "core.schema.json#/$defs/Id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "catalog": {
+      "type": "array",
+      "items": {
+        "$ref": "core.schema.json#/$defs/SkinCatalogEntry"
+      },
+      "maxItems": 10000
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "core.schema.json#/$defs/TaskRule"
+      },
+      "maxItems": 10000
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Profile"
+      },
+      "maxItems": 100
+    },
+    "active_profile_id": {
+      "$ref": "core.schema.json#/$defs/Id"
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UnitDefinition"
+      },
+      "maxItems": 32
+    },
+    "migration_decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/MigrationDecision"
+      },
+      "maxItems": 10000
+    },
+    "extensions": {
+      "$ref": "core.schema.json#/$defs/Extensions"
+    }
+  },
+  "required": [
+    "schema_version",
+    "contract_version",
+    "config_id",
+    "revision",
+    "catalog",
+    "rules",
+    "profiles",
+    "active_profile_id",
+    "units",
+    "migration_decisions",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "UiRunSettings": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "hotkey": {
+          "type": "string",
+          "pattern": "^F([1-9]|1[0-2])$"
+        },
+        "purchaseDelayMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "dynamicDelay": {
+          "type": "boolean"
+        },
+        "queueFullTrigger": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9999
+        },
+        "queueFullStepMs": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "publicityTrigger": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9999
+        },
+        "publicityStepMs": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "burstClick": {
+          "type": "boolean"
+        },
+        "clickIntervalMs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "limitOrange": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "limitPurple": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "limitBlue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "refreshPage": {
+          "type": "boolean"
+        },
+        "skipLotteryPage": {
+          "type": "boolean"
+        },
+        "skipSuccessPage": {
+          "type": "boolean"
+        },
+        "autoCollect": {
+          "type": "boolean"
+        },
+        "collectOsd": {
+          "type": "boolean"
+        },
+        "scheduleEnabled": {
+          "type": "boolean"
+        },
+        "scheduleStart": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "scheduleStop": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        }
+      },
+      "required": [
+        "profile",
+        "hotkey",
+        "purchaseDelayMs",
+        "dynamicDelay",
+        "queueFullTrigger",
+        "queueFullStepMs",
+        "publicityTrigger",
+        "publicityStepMs",
+        "burstClick",
+        "clickIntervalMs",
+        "limitOrange",
+        "limitPurple",
+        "limitBlue",
+        "refreshPage",
+        "skipLotteryPage",
+        "skipSuccessPage",
+        "autoCollect",
+        "collectOsd",
+        "scheduleEnabled",
+        "scheduleStart",
+        "scheduleStop"
+      ],
+      "additionalProperties": false
+    },
+    "UnitDefinition": {
+      "type": "object",
+      "properties": {
+        "unit_id": {
+          "$ref": "core.schema.json#/$defs/Id"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "quantum": {
+          "$ref": "core.schema.json#/$defs/DecimalValue"
+        },
+        "reviewed": {
+          "const": true
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "unit_id",
+        "display_name",
+        "quantum",
+        "reviewed",
+        "synthetic"
+      ],
+      "additionalProperties": false
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "profile_id": {
+          "$ref": "core.schema.json#/$defs/Id"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "mode": {
+          "enum": [
+            "demo",
+            "replay",
+            "observe"
+          ]
+        },
+        "rule_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "core.schema.json#/$defs/RuleRef"
+          },
+          "maxItems": 10000
+        },
+        "ui_run_settings": {
+          "$ref": "#/$defs/UiRunSettings"
+        },
+        "execution_policy": {
+          "const": "not_bound"
+        },
+        "schedule_timezone": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extensions": {
+          "$ref": "core.schema.json#/$defs/Extensions"
+        }
+      },
+      "required": [
+        "profile_id",
+        "revision",
+        "name",
+        "mode",
+        "rule_refs",
+        "ui_run_settings",
+        "execution_policy",
+        "schedule_timezone",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "MigrationDecision": {
+      "type": "object",
+      "properties": {
+        "decision_id": {
+          "$ref": "core.schema.json#/$defs/Id"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_line": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "choice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "actor": {
+          "enum": [
+            "user",
+            "compatibility_adapter"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "decision_id",
+        "source_sha256",
+        "source_line",
+        "field",
+        "choice",
+        "actor",
+        "note"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

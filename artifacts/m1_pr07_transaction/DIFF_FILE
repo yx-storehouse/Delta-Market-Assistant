@@ -1,0 +1,13 @@
+--- BASELINE_COPY.json
++++ MODIFIED_FILE.json
+@@ -1,8 +1,8 @@
+ {
+   "branch": "m1_pr07",
+   "field": "ui_import_preview_mode",
+-  "value": "hidden",
+-  "preview_only": false,
++  "value": "readonly_preview",
++  "preview_only": true,
+   "committable": false,
+   "actions_enabled": false,
+   "image_file_write_count": 0,

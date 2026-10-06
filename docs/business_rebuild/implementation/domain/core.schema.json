@@ -1,0 +1,1039 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json",
+  "title": "Relink M1 domain contract; specification, not implementation",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "MonoMs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "Extensions": {
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "pattern": "^x-[A-Za-z0-9._-]{1,60}$"
+      }
+    },
+    "DecimalValue": {
+      "type": "object",
+      "properties": {
+        "unscaled": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,23})$"
+        },
+        "scale": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        }
+      },
+      "required": [
+        "unscaled",
+        "scale"
+      ],
+      "additionalProperties": false
+    },
+    "Money": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/DecimalValue"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "RuleRef": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "task_id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "Selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "any"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "eq"
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ConditionSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "any"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "eq"
+            },
+            "value": {
+              "enum": [
+                "S",
+                "A",
+                "B",
+                "C"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "OwnershipSelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "any"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "eq"
+            },
+            "value": {
+              "enum": [
+                "owned",
+                "unowned"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "PublicitySelector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "any"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "eq"
+            },
+            "value": {
+              "enum": [
+                "active",
+                "ended",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "FieldEvidence": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "observed",
+            "missing",
+            "invalid",
+            "ambiguous"
+          ]
+        },
+        "raw": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 4096
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ref": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "status",
+        "raw",
+        "confidence",
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Association": {
+      "type": "object",
+      "properties": {
+        "association_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "provisional",
+            "ambiguous",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "association_ref",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SkinCatalogEntry": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "series": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "season": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "grade": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rarity": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "maxItems": 32
+        },
+        "source_kind": {
+          "enum": [
+            "native",
+            "legacy_v1",
+            "legacy_13",
+            "synthetic"
+          ]
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions"
+        }
+      },
+      "required": [
+        "product_id",
+        "name",
+        "series",
+        "season",
+        "grade",
+        "rarity",
+        "aliases",
+        "source_kind",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "ListingObservation": {
+      "type": "object",
+      "properties": {
+        "observation_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "product_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "market_listing_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "association": {
+          "$ref": "#/$defs/Association"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wear": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DecimalValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "enum": [
+                "S",
+                "A",
+                "B",
+                "C"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "season": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ownership": {
+          "anyOf": [
+            {
+              "enum": [
+                "owned",
+                "unowned"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "grade": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rarity": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publicity": {
+          "anyOf": [
+            {
+              "enum": [
+                "active",
+                "ended",
+                "none"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frame_ref": {
+          "$ref": "#/$defs/Id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "clock_domain_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "observed_mono_ms": {
+          "$ref": "#/$defs/MonoMs"
+        },
+        "viewport_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "field_evidence": {
+          "type": "object",
+          "properties": {
+            "product_ref": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "price": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "wear": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "condition": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "season": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "ownership": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "grade": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "rarity": {
+              "$ref": "#/$defs/FieldEvidence"
+            },
+            "publicity": {
+              "$ref": "#/$defs/FieldEvidence"
+            }
+          },
+          "required": [
+            "product_ref",
+            "price",
+            "wear",
+            "condition",
+            "season",
+            "ownership",
+            "grade",
+            "rarity",
+            "publicity"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions"
+        }
+      },
+      "required": [
+        "observation_id",
+        "product_ref",
+        "market_listing_id",
+        "association",
+        "price",
+        "wear",
+        "condition",
+        "season",
+        "ownership",
+        "grade",
+        "rarity",
+        "publicity",
+        "frame_ref",
+        "session_id",
+        "clock_domain_id",
+        "observed_mono_ms",
+        "viewport_generation",
+        "field_evidence",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "LegacyRaw": {
+      "type": "object",
+      "properties": {
+        "source_kind": {
+          "enum": [
+            "v1",
+            "bbzps_13",
+            "native"
+          ]
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_line": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_line": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 65536
+          },
+          "maxItems": 13
+        },
+        "unknown_json": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_kind",
+        "source_sha256",
+        "source_line",
+        "raw_line",
+        "columns",
+        "unknown_json"
+      ],
+      "additionalProperties": false
+    },
+    "TaskRule": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "product_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "review_required": {
+          "type": "boolean"
+        },
+        "review_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "maxItems": 64
+        },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "season": {
+              "$ref": "#/$defs/Selector"
+            },
+            "ownership": {
+              "$ref": "#/$defs/OwnershipSelector"
+            },
+            "grade": {
+              "$ref": "#/$defs/Selector"
+            },
+            "condition": {
+              "$ref": "#/$defs/ConditionSelector"
+            },
+            "publicity": {
+              "$ref": "#/$defs/PublicitySelector"
+            },
+            "rarity": {
+              "$ref": "#/$defs/Selector"
+            }
+          },
+          "required": [
+            "season",
+            "ownership",
+            "grade",
+            "condition",
+            "publicity",
+            "rarity"
+          ],
+          "additionalProperties": false
+        },
+        "price_range": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "$ref": "#/$defs/Money"
+                },
+                "max": {
+                  "$ref": "#/$defs/Money"
+                }
+              },
+              "required": [
+                "min",
+                "max"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_wear": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DecimalValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requested_sort": {
+          "enum": [
+            "default",
+            "price_asc",
+            "price_desc",
+            "rarity_asc",
+            "rarity_desc",
+            "unknown"
+          ]
+        },
+        "quantity_candidate": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quantity_semantics": {
+          "enum": [
+            "unreviewed",
+            "demo_count_only",
+            "none"
+          ]
+        },
+        "legacy_raw": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LegacyRaw"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions"
+        }
+      },
+      "required": [
+        "task_id",
+        "revision",
+        "name",
+        "product_ref",
+        "enabled",
+        "review_required",
+        "review_codes",
+        "filters",
+        "price_range",
+        "max_wear",
+        "requested_sort",
+        "quantity_candidate",
+        "quantity_semantics",
+        "legacy_raw",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "review_required": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "enabled": {
+                "const": false
+              },
+              "review_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "review_required": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "product_ref": {
+                "$ref": "#/$defs/Id"
+              },
+              "price_range": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "$ref": "#/$defs/Money"
+                  },
+                  "max": {
+                    "$ref": "#/$defs/Money"
+                  }
+                },
+                "required": [
+                  "min",
+                  "max"
+                ],
+                "additionalProperties": false
+              },
+              "review_codes": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "EvaluationContext": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "clock_domain_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "viewport_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "as_of_mono_ms": {
+          "$ref": "#/$defs/MonoMs"
+        },
+        "max_age_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "purpose": {
+          "enum": [
+            "filter_only",
+            "intent_candidate"
+          ]
+        },
+        "known_units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "session_id",
+        "clock_domain_id",
+        "viewport_generation",
+        "as_of_mono_ms",
+        "max_age_ms",
+        "purpose",
+        "known_units"
+      ],
+      "additionalProperties": false
+    },
+    "ReasonCode": {
+      "enum": [
+        "MATCH",
+        "RULE_INVALID",
+        "RULE_REVIEW_REQUIRED",
+        "RULE_DISABLED",
+        "CONTEXT_MISMATCH",
+        "OBSERVATION_FUTURE",
+        "OBSERVATION_STALE",
+        "ASSOCIATION_UNKNOWN",
+        "ASSOCIATION_AMBIGUOUS",
+        "ASSOCIATION_PROVISIONAL",
+        "PRODUCT_UNRESOLVED",
+        "FIELD_MISSING",
+        "FIELD_INVALID",
+        "FIELD_AMBIGUOUS",
+        "UNIT_UNKNOWN",
+        "UNIT_MISMATCH",
+        "PRODUCT_MISMATCH",
+        "SEASON_MISMATCH",
+        "OWNERSHIP_MISMATCH",
+        "GRADE_MISMATCH",
+        "CONDITION_MISMATCH",
+        "PUBLICITY_MISMATCH",
+        "RARITY_MISMATCH",
+        "PRICE_BELOW_MIN",
+        "PRICE_ABOVE_MAX",
+        "WEAR_ABOVE_MAX"
+      ]
+    },
+    "DecisionReason": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "field": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 128
+        },
+        "evidence_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "field",
+        "evidence_ref"
+      ],
+      "additionalProperties": false
+    },
+    "Decision": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "Match",
+            "NoMatch",
+            "NeedsReview"
+          ]
+        },
+        "primary_reason": {
+          "$ref": "#/$defs/ReasonCode"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DecisionReason"
+          },
+          "maxItems": 64
+        },
+        "rule_ref": {
+          "$ref": "#/$defs/RuleRef"
+        },
+        "observation_id": {
+          "$ref": "#/$defs/Id"
+        },
+        "eligible_for_action": {
+          "const": false
+        }
+      },
+      "required": [
+        "status",
+        "primary_reason",
+        "reasons",
+        "rule_ref",
+        "observation_id",
+        "eligible_for_action"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

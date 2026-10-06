@@ -1,0 +1,47 @@
+[
+  {
+    "id": "RRT01",
+    "title": "Microsoft: Creating Named Shared Memory",
+    "url": "https://learn.microsoft.com/en-us/windows/win32/memory/creating-named-shared-memory",
+    "use": "Named pagefile-backed shared memory and lifetime; not a no-swap guarantee.",
+    "checked_at": "2026-10-06T06:01:56.314206+00:00",
+    "http_status": 200,
+    "final_url": "https://learn.microsoft.com/en-us/windows/win32/memory/creating-named-shared-memory",
+    "bytes": 52849,
+    "sha256": "655a30047247d6986815a2c980fd2644ae25934d6ce3af6d568df199e4a6d253",
+    "page_title": "Creating Named Shared Memory - Win32 apps | Microsoft Learn",
+    "required_marker": "INVALID_HANDLE_VALUE",
+    "marker_found": true,
+    "status": "verified"
+  },
+  {
+    "id": "RRT02",
+    "title": "Python: multiprocessing.shared_memory",
+    "url": "https://docs.python.org/3/library/multiprocessing.shared_memory.html",
+    "use": "Cross-process memory lifecycle and Windows handle behavior; ABI interoperability still requires a test.",
+    "checked_at": "2026-10-06T06:01:57.202529+00:00",
+    "http_status": 200,
+    "final_url": "https://docs.python.org/3/library/multiprocessing.shared_memory.html",
+    "bytes": 74827,
+    "sha256": "fb840c252b836507c91363ae878e80ba7d59ca5b8cf95ea6ca557f85a9bb03cc",
+    "page_title": "multiprocessing.shared_memory — Shared memory for direct access across processes &#8212; Python 3.14.8 documentation",
+    "required_marker": "Windows",
+    "marker_found": true,
+    "status": "verified"
+  },
+  {
+    "id": "RRT03",
+    "title": "JSON Schema: Draft 2020-12",
+    "url": "https://json-schema.org/draft/2020-12",
+    "use": "Schema dialect identification, no runtime behavior or image capture guarantee.",
+    "checked_at": "2026-10-06T06:01:57.937536+00:00",
+    "http_status": 200,
+    "final_url": "https://json-schema.org/draft/2020-12",
+    "bytes": 88911,
+    "sha256": "05c61c905012f27098cf2b34c736ed51d98096f35b78adc63318c6199b4adc59",
+    "page_title": "JSON Schema",
+    "required_marker": "2020-12",
+    "marker_found": true,
+    "status": "verified"
+  }
+]

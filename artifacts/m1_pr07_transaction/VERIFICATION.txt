@@ -1,0 +1,55 @@
+M1 PR07 TOOL TRANSACTION VERIFICATION
+DATE=2026-10-06
+TARGET=13-column import preview UI projection fixture
+CHANGED_BRANCH=m1_pr07
+CHANGED_FIELD=ui_import_preview_mode (value/mode)
+SAFEGUARD=committable=false; actions_enabled=false; image_file_write_count=0
+
+ARTIFACTS
+MODIFIED_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\MODIFIED_FILE.json
+DIFF_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\DIFF_FILE
+VERIFICATION=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\VERIFICATION.txt
+ROLLBACK_SCRIPT=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK.sh
+BASELINE_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\BASELINE_COPY.json
+
+ORIGINAL_HASH_SHA256=3327478a9cb2b7b028f4345de66d7d74cbf4f982790c6a5676f77785ee2b7166
+MODIFIED_HASH_SHA256=364f209e66eccbcc0d685733e20f251d770fd3a0b5003ab6ecd132f602bac045
+ROLLBACK_TEST_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK_TEST_COPY.json
+
+BASELINE_COMMAND
+python artifacts/run_m1_pr07_transaction.py --baseline
+BASELINE_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\BASELINE_COPY.json
+BASELINE_LITERAL_OUTPUT
+HIDDEN value=hidden preview_only=False committable=False actions_enabled=False image_file_write_count=0
+BASELINE_RESULT=PASS
+BASELINE_EXIT_STATUS=0
+
+MODIFIED_COMMAND
+python artifacts/run_m1_pr07_transaction.py --modified
+MODIFIED_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\MODIFIED_FILE.json
+MODIFIED_LITERAL_OUTPUT
+READONLY_PREVIEW value=readonly_preview preview_only=True committable=False actions_enabled=False image_file_write_count=0
+MODIFIED_RESULT=PASS
+MODIFIED_EXIT_STATUS=0
+
+ROLLBACK_COMMAND
+C:/Program Files/Git/bin/bash.exe "C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK.sh" "C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK_TEST_COPY.json" "C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\BASELINE_COPY.json"
+ROLLBACK_INPUT
+Copied MODIFIED_FILE to C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK_TEST_COPY.json before running ROLLBACK.sh.
+ROLLBACK_LITERAL_OUTPUT
+ROLLBACK_RESTORED=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_transaction\ROLLBACK_TEST_COPY.json
+ROLLBACK_RESULT=PASS
+ROLLBACK_EXIT_STATUS=0
+ROLLBACK_VERIFY_LITERAL_OUTPUT=HIDDEN value=hidden preview_only=False committable=False actions_enabled=False image_file_write_count=0
+ROLLBACK_VERIFY_EXIT_STATUS=0
+
+RESTORED_BEHAVIOR=PASS
+MODIFIED_FILE_LEFT_CHANGED=PASS
+RESTORED_STATUS=value=hidden; preview_only=false; committable=false; actions_enabled=false
+MODIFIED_STATUS=value=readonly_preview; preview_only=true; committable=false; actions_enabled=false
+
+DIFF_SUMMARY
+The changed branch is m1_pr07. The changed field is ui_import_preview_mode, represented by value/mode hidden -> readonly_preview.
+The modified branch remains read-only and non-actionable; source hash preservation and zero image file writes remain enforced.

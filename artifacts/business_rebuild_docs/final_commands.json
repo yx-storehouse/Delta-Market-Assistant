@@ -1,0 +1,44 @@
+[
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\scripts\\build_readable.py --html-only",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "HTML_WRITTEN=128770 BYTES / CHAPTERS=11\n",
+    "stderr": ""
+  },
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\scripts\\preview_docs.py",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "OFFSCREEN overview: exit=0, image_bytes=146718\nOFFSCREEN architecture: exit=0, image_bytes=82642\nOFFSCREEN business: exit=0, image_bytes=84039\nOFFSCREEN matrix: exit=0, image_bytes=128781\nOFFSCREEN references: exit=0, image_bytes=120092\nOFFSCREEN implementation: exit=0, image_bytes=133351\n",
+    "stderr": ""
+  },
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\scripts\\validate_contracts.py",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "CONTRACT_STRUCTURAL_CHECKS=PASS SCHEMAS=6 RESOLVED_REFS=249 FIXTURES=42\nEXPECTED_ACCEPT=20 EXPECTED_REJECT=22 FAILURES=0 NETWORK_SCHEMA_FETCHES=0\nBUSINESS_ENGINE_TESTS_EXECUTED=0 LIVE_CAPTURE_TESTS_EXECUTED=0\n",
+    "stderr": ""
+  },
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\implementation\\readiness\\validate_readiness.py",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "READINESS_DOCS=PASS TICKETS=12 DETAILED_TEST_SPECS=30 DECISIONS=13 LINKS=13 APPLICATION_TESTS_RUN=0 SAMPLE_EXECUTIONS=0\n",
+    "stderr": ""
+  },
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\scripts\\validate_docs.py",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "BASELINE_DIFF evidence path=src/domain.h expected=0111009e5c4b044163f8bc674c662626e6702f9970a47b24ec9b568b522173fa actual=c6798d4dbdc8d542a92feb128abc505d9755a37359fca89aeedb7ff5000e89a7 covered_by_m1=True\nBASELINE_DIFF evidence path=src/domain.cpp expected=84fb9f012b1804e120e3d779ef41553072651e7e7e557a0483199dfd20e3ca3f actual=288fd4682b8c037262f1276c017dd78ae616d22fc27137b55777a617b49b3dc5 covered_by_m1=True\nBASELINE_DIFF evidence path=src/mainwindow.cpp expected=26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625 actual=ba7947988ae992016a5fef1d26ef6b65ceb65f691b118f151af389ca95562cfb covered_by_m1=True\nBASELINE_DIFF evidence path=CMakeLists.txt expected=45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c actual=db98eb1aa956a937e650d8e473de72f284cfa59538fc3b79b9f11920b11fa4c4 covered_by_m1=True\nBASELINE_DIFF project path=CMakeLists.txt state=modified expected=45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c actual=db98eb1aa956a937e650d8e473de72f284cfa59538fc3b79b9f11920b11fa4c4 covered_by_m1=True\nBASELINE_DIFF project path=dist/RelinkStudio/RelinkStudio.exe state=modified expected=b2d2e6b5ad2e1e28823bf62e79f839ae1d7379b06af02eb821867b145b91b15d actual=cd9b68c477621c7e6bdb75c2d79a55853c0036502adfd33377c1ec14b9897f37 covered_by_m1=True\nBASELINE_DIFF project path=dist/RelinkStudio/file_manifest.json state=modified expected=a5f196bc39ba6a6c9132432b7b4bf0fc5cc2e411d91843d81c975d6c0a203750 actual=f65d75eae319aedb302b13e6dd0dff918f50b77c25043091ff9ab2feecb803c9 covered_by_m1=True\nBASELINE_DIFF project path=src/domain.cpp state=modified expected=84fb9f012b1804e120e3d779ef41553072651e7e7e557a0483199dfd20e3ca3f actual=288fd4682b8c037262f1276c017dd78ae616d22fc27137b55777a617b49b3dc5 covered_by_m1=True\nBASELINE_DIFF project path=src/domain.h state=modified expected=0111009e5c4b044163f8bc674c662626e6702f9970a47b24ec9b568b522173fa actual=c6798d4dbdc8d542a92feb128abc505d9755a37359fca89aeedb7ff5000e89a7 covered_by_m1=True\nBASELINE_DIFF project path=src/main.cpp state=modified expected=cd210ca6382dbecafcd93a775cd3c3a68a34d2ac9496cfe6051df2c5b3653cd9 actual=b75d9a8e22e65576bd94482765563a78855af9fadd39da1843038fb50ddaa368 covered_by_m1=True\nBASELINE_DIFF project path=src/mainwindow.cpp state=modified expected=26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625 actual=ba7947988ae992016a5fef1d26ef6b65ceb65f691b118f151af389ca95562cfb covered_by_m1=True\nBASELINE_DIFF project path=src/mainwindow.h state=modified expected=be10da55c3471aea472c443a6a33bde35f768492d0bc19c7d80ca5dbf2dacb02 actual=bd0ab50207603ce46ef2e7f4d3d32a10f989f2fa9a3f130b0f079d1c992c7e19 covered_by_m1=True\nBASELINE_DIFF m1_pr08=NONE\nDOCUMENTATION_CHECKS=PASS\nBUSINESS_ITEMS=44 ACCEPTANCE_SPECIFICATIONS=88 BUSINESS_TESTS_EXECUTED=0\nOFFICIAL_REFERENCES_VERIFIED=16 EVIDENCE_GROUPS=12 EVIDENCE_FILES_HASH_VERIFIED=23\nJSON_FILES_PARSED=79 INTERNAL_MD_LINKS=88 HTML_SECTIONS=11 SVG_DIAGRAMS=2\nAPPLICATION_BASELINE_FILES=102 APPLICATION_BASELINE_FILES_UNCHANGED=94 APPLICATION_BASELINE_DIFFS=8\nM1_BASELINE_ID=m1_pr08 M1_BASELINE_FILES=139 M1_BASELINE_FILES_UNCHANGED=139 M1_BASELINE_DIFFS=0 SAMPLE_EXECUTIONS=0\nSTEP_CAPTURE_CONTRACT=PASS LIVE_CAPTURE_TESTS_EXECUTED=0\n",
+    "stderr": ""
+  },
+  {
+    "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -I -X utf8 C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\scripts\\validate_docs.py --evidence E04",
+    "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+    "exit_code": 0,
+    "stdout": "EVIDENCE E04: 3 source files hash verified; sample execution=0\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-2",
+  "kind": "ready",
+  "body": {
+    "selected_version": 1,
+    "worker_build": "fixture-worker-1",
+    "provider": "synthetic",
+    "model_id": "no-model",
+    "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "capabilities": [
+      "BGRA8",
+      "win32_named_shared_memory",
+      "cancel",
+      "release_frame"
+    ]
+  }
+}

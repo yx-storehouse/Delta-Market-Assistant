@@ -1,0 +1,10 @@
+{
+  "branch": "m1_pr06_pr09",
+  "field": "preview_ledger_state",
+  "value": "review_diagnostics",
+  "committable": false,
+  "actions_enabled": false,
+  "live_market_data": false,
+  "reservation_state": "held",
+  "transaction_checkpoint": "committed"
+}

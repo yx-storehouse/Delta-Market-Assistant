@@ -1,0 +1,136 @@
+{
+  "cases": [
+    {
+      "id": "RT-SCHEMA-DEMAND",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/ObservationDemand",
+      "instance": "fixtures/demand.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-FRAME",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/FrameEnvelope",
+      "instance": "fixtures/frame.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V1",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/01_hello.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V2",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/02_ready.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V3",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/03_recognize.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V4",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/04_result.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V5",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/05_release_frame.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V6",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/06_cancel.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V7",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/07_cancelled.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V8",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/08_error.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V9",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/09_shutdown.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-V10",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/10_bye.valid.json",
+      "valid": true
+    },
+    {
+      "id": "RT-SCHEMA-I1",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/01_file_transport.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I2",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/02_extra_image_path.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I3",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/03_unsupported_version.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I4",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/04_missing_lease.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I5",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/05_invalid_score.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I6",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/06_unknown_without_reason.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I7",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/07_zero_budget.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-I8",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+      "instance": "fixtures/messages/08_bye_not_drained.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-DEMAND-I",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/ObservationDemand",
+      "instance": "fixtures/demand.invalid.json",
+      "valid": false
+    },
+    {
+      "id": "RT-SCHEMA-REPLAY-SUITE",
+      "schema_id": "https://schemas.relink.invalid/business/v1/runtime/state.schema.json",
+      "instance": "fixtures/replay_cases.json",
+      "valid": true
+    }
+  ]
+}

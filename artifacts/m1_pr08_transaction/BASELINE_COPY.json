@@ -1,0 +1,12 @@
+{
+  "branch": "m1_pr08",
+  "field": "profile_commit_state",
+  "value": "review_only",
+  "committable": false,
+  "actions_enabled": false,
+  "activation_required": true,
+  "source_hash_preserved": true,
+  "image_file_write_count": 0,
+  "target_mode": "demo",
+  "config_schema": "LegacyImportPreview"
+}

@@ -1,0 +1,17 @@
+{
+  "status": "Match",
+  "primary_reason": "MATCH",
+  "reasons": [
+    {
+      "code": "MATCH",
+      "field": "",
+      "evidence_ref": null
+    }
+  ],
+  "rule_ref": {
+    "task_id": "task-01",
+    "revision": 1
+  },
+  "observation_id": "obs-01",
+  "eligible_for_action": false
+}

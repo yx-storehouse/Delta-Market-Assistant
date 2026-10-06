@@ -1,0 +1,8 @@
+{
+    "value":  "demo",
+    "actions_enabled":  false,
+    "branch":  "m1_pr05",
+    "mode":  "demo",
+    "image_file_write_count":  0,
+    "field":  "observation_source"
+}

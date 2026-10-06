@@ -1,0 +1,9 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\ida\\relink_studio\\build\\domain_tests.exe"
+  ],
+  "exit_status": 0,
+  "stdout": "PASS temporary_directory\nPASS synthetic_fixture_counts\nPASS atomic_save\nPASS schema_and_demo_marker\nPASS save_load_roundtrip\nPASS reject_range_transactional\nPASS reject_unknown_skin_transactional\nPASS reject_quantity_zero_transactional\nPASS reject_quantity_fraction_transactional\nPASS reject_quantity_overflow_transactional\nPASS reject_negative_price_transactional\nPASS reject_null_wear_transactional\nPASS reject_string_price_transactional\nPASS reject_non_demo_transactional\nPASS reject_unknown_schema_transactional\nPASS reject_duplicate_task_id_transactional\nPASS reject_duplicate_skin_id_transactional\nPASS reject_invalid_json_transactional\nPASS reject_non_object_root\nPASS missing_file_error\nPASS reject_nonfinite_save\nPASS restore_valid_fixture\nPASS csv_export\nPASS csv_utf8_demo_prices\nPASS csv_formula_escaping\nPASS paused_tick_noop\nPASS start_idempotent\nPASS simulation_local_matching\nPASS pause_idempotent_and_freezes_counts\nPASS simulation_respects_task_quantities\nPASS no_enabled_tasks_no_start\nPASS all_completed_autopause\nPASS successful_import_resets_runtime\nPASS bounded_log_buffer\nRESULT PASS failures=0\n",
+  "stderr": "",
+  "headless": true
+}

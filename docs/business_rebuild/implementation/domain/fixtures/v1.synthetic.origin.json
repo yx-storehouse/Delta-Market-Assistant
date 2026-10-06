@@ -1,0 +1,8 @@
+{
+  "source": "artifacts/BASELINE.json",
+  "source_kind": "existing_project_demo_fixture",
+  "sha256": "09e68c4462c78f3a6c80ab2531bcf9dfaac4a5c96709bd749fd72cfad264e6a7",
+  "bytes": 5100,
+  "copied_byte_for_byte": true,
+  "interpretation": "Synthetic presentation data; not an observed market snapshot or a successful order."
+}

@@ -1,0 +1,23 @@
+{
+  "example_only": true,
+  "protocol_version": 1,
+  "type": "result",
+  "request_id": "example-request-001",
+  "step_id": "example-step-001",
+  "image_saved": false,
+  "session_id": "example-session",
+  "frame_id": "example-frame-001",
+  "source_kind": "contract_example_without_pixels",
+  "image_sha256": null,
+  "viewport_generation": 1,
+  "provider": {"name": "mock", "model_id": null, "model_sha256": null},
+  "status": "ok",
+  "coordinate_space": "frame_physical_pixels",
+  "frame_size": {"width": 1920, "height": 1080},
+  "timing": {"clock_domain": "example_worker", "processing_elapsed_ms": 0},
+  "texts": [
+    {"text": "340", "score": 0.99, "roi_id": "example-price", "polygon": [[20,30],[80,30],[80,60],[20,60]]},
+    {"text": "A(1.187788)", "score": 0.98, "roi_id": "example-wear", "polygon": [[20,80],[180,80],[180,110],[20,110]]}
+  ],
+  "note": "合成协议示例；分数、框、耗时不是实测，不含任何真实图片。业务层需另做行关联和有效期判定。"
+}

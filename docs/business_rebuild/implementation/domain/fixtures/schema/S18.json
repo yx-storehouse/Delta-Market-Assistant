@@ -1,0 +1,84 @@
+{
+  "kind": "LegacyImportPreview",
+  "source_format": "bbzps_13",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "source_bytes": 139,
+  "encoding": "UTF-8",
+  "rows": [
+    {
+      "line": 1,
+      "raw_line": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限|不限",
+      "columns": [
+        "AUG突击步枪-天命",
+        "全部赛季",
+        "未拥有",
+        "史诗品阶",
+        "成色S",
+        "不限公示期",
+        "230",
+        "600",
+        "0.399",
+        "所有稀有度",
+        "默认排序",
+        "不限",
+        "不限"
+      ],
+      "status": "review",
+      "candidate": {
+        "task_id": "task-01",
+        "revision": 1,
+        "name": "合成边界任务",
+        "product_ref": "product-01",
+        "enabled": false,
+        "review_required": true,
+        "review_codes": [
+          "UNIT_UNREVIEWED"
+        ],
+        "filters": {
+          "season": {
+            "op": "any"
+          },
+          "ownership": {
+            "op": "any"
+          },
+          "grade": {
+            "op": "any"
+          },
+          "condition": {
+            "op": "eq",
+            "value": "S"
+          },
+          "publicity": {
+            "op": "any"
+          },
+          "rarity": {
+            "op": "any"
+          }
+        },
+        "price_range": null,
+        "max_wear": {
+          "unscaled": "399",
+          "scale": 3
+        },
+        "requested_sort": "default",
+        "quantity_candidate": null,
+        "quantity_semantics": "none",
+        "legacy_raw": null,
+        "extensions": {}
+      },
+      "diagnostics": [
+        {
+          "severity": "review",
+          "code": "UNIT_UNREVIEWED",
+          "line": 1,
+          "column": null,
+          "field": "price_range",
+          "message": "确认显示单位后再生成配置"
+        }
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "committable": true,
+  "extensions": {}
+}

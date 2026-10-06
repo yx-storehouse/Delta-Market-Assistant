@@ -1,0 +1,53 @@
+M1 PR07 UI TOOL TRANSACTION VERIFICATION
+DATE=2026-10-06
+TARGET=Import configuration path and read-only preview projection
+CHANGED_BRANCH=m1_pr07_ui
+CHANGED_FIELD=import_configuration_path
+SAFEGUARD=committable=false; actions_enabled=false; image_file_write_count=0; source_hash_preserved=true
+
+ARTIFACTS
+MODIFIED_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\MODIFIED_FILE.json
+DIFF_FILE=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\DIFF_FILE
+VERIFICATION=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\VERIFICATION.txt
+ROLLBACK_SCRIPT=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\ROLLBACK.sh
+BASELINE_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\BASELINE_COPY.json
+ROLLBACK_TEST_COPY=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\ROLLBACK_TEST_COPY.json
+
+ORIGINAL_HASH_SHA256=68f1a9fb48ce384cbd240403cf65f7ef56ddbe6bd97b8df1daf3ed37b2f6f798
+MODIFIED_HASH_SHA256=669ae87f9466a69018a72056b847e487d088ab6977f2443b68d02851592b696d
+RESTORED_HASH_SHA256=68f1a9fb48ce384cbd240403cf65f7ef56ddbe6bd97b8df1daf3ed37b2f6f798
+
+BASELINE_COMMAND
+python artifacts/run_m1_pr07_ui_transaction.py
+BASELINE_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\BASELINE_COPY.json
+BASELINE_LITERAL_OUTPUT
+DIRECT_LOAD value=direct_load committable=False actions_enabled=False image_file_write_count=0
+BASELINE_EXIT=0
+
+MODIFIED_COMMAND
+python artifacts/run_m1_pr07_ui_transaction.py
+MODIFIED_INPUT
+C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\MODIFIED_FILE.json
+MODIFIED_LITERAL_OUTPUT
+READONLY_PREVIEW value=readonly_preview committable=False actions_enabled=False image_file_write_count=0
+MODIFIED_EXIT=0
+
+ROLLBACK_COMMAND
+C:\Program Files\Git\bin\bash.exe C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\ROLLBACK.sh C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\ROLLBACK_TEST_COPY.json C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\BASELINE_COPY.json
+ROLLBACK_INPUT
+The script copied MODIFIED_FILE.json to ROLLBACK_TEST_COPY.json and restored BASELINE_COPY.json through the executable rollback script.
+ROLLBACK_LITERAL_OUTPUT
+ROLLBACK_RESTORED=C:\Users\Administrator\Desktop\price\artifacts\m1_pr07_ui_transaction\ROLLBACK_TEST_COPY.json
+DIRECT_LOAD value=direct_load committable=False actions_enabled=False image_file_write_count=0
+ROLLBACK_EXIT=0
+ROLLBACK_VERIFY_EXIT=0
+
+RESTORED_BEHAVIOR=PASS
+RESTORED_STATUS=value=direct_load; committable=false; actions_enabled=false; image_file_write_count=0
+MODIFIED_FILE_LEFT_CHANGED=PASS
+MODIFIED_STATUS=value=readonly_preview; committable=false; actions_enabled=false; image_file_write_count=0
+
+DIFF_SUMMARY
+The changed branch is m1_pr07_ui. The changed field is import_configuration_path, represented by direct_load -> readonly_preview.
+The modified branch keeps import preview read-only, preserves the source hash, writes no image files, and never enables an Apply action.

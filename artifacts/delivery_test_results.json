@@ -1,0 +1,66 @@
+[
+  {
+    "label": "DOMAIN",
+    "command": "build\\domain_tests.exe",
+    "input": "48 data-model assertions; package-only runtime PATH; QCoreApplication.",
+    "stdout": "PASS temporary_directory\nPASS synthetic_fixture_counts\nPASS atomic_save\nPASS schema_and_demo_marker\nPASS save_load_roundtrip\nPASS reject_range_transactional\nPASS reject_unknown_skin_transactional\nPASS reject_quantity_zero_transactional\nPASS reject_quantity_fraction_transactional\nPASS reject_quantity_overflow_transactional\nPASS reject_quantity_ui_limit_transactional\nPASS reject_task_name_ui_limit_transactional\nPASS reject_task_name_utf16_units_transactional\nPASS reject_task_price_ui_limit_transactional\nPASS reject_task_min_price_precision_transactional\nPASS reject_task_max_price_precision_transactional\nPASS reject_task_wear_ui_limit_transactional\nPASS reject_task_wear_precision_transactional\nPASS reject_negative_price_transactional\nPASS reject_null_wear_transactional\nPASS reject_string_price_transactional\nPASS reject_non_demo_transactional\nPASS reject_unknown_schema_transactional\nPASS reject_duplicate_task_id_transactional\nPASS reject_duplicate_skin_id_transactional\nPASS reject_invalid_json_transactional\nPASS reject_non_object_root\nPASS missing_file_error\nPASS reject_nonfinite_save\nPASS restore_valid_fixture\nPASS accept_task_exact_ui_boundaries\nPASS accept_task_float_noise_utf16_boundary_and_unrestricted_skin_precision\nPASS csv_export\nPASS csv_utf8_demo_prices\nPASS csv_formula_escaping\nPASS paused_tick_noop\nPASS start_idempotent\nPASS simulation_local_matching\nPASS pause_idempotent_and_freezes_counts\nPASS simulation_respects_task_quantities\nPASS no_enabled_tasks_no_start\nPASS all_completed_autopause\nPASS reset_task_preserves_aggregate_statistics_and_notifies\nPASS reset_completed_task_allows_new_skin_simulation\nPASS reset_disabled_task_keeps_disabled_status\nPASS reset_unknown_task_noop\nPASS successful_import_resets_runtime\nPASS bounded_log_buffer\nRESULT PASS failures=0\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "PACKAGE_UI",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --self-test --snapshot-dir artifacts\\screenshots --config artifacts\\ui-test-config.json",
+    "input": "Synthetic application state; package-only PATH; Qt offscreen; no screen capture/input.",
+    "stdout": "UI_SEVEN_PAGES=PASS\nUI_NAV_OVERVIEW=PASS\nUI_SNAPSHOT_OVERVIEW=PASS\nUI_NAV_FAVORITES=PASS\nUI_SNAPSHOT_FAVORITES=PASS\nUI_NAV_TASKS=PASS\nUI_SNAPSHOT_TASKS=PASS\nUI_NAV_PRICES=PASS\nUI_SNAPSHOT_PRICES=PASS\nUI_NAV_STATS=PASS\nUI_SNAPSHOT_STATS=PASS\nUI_NAV_LOGS=PASS\nUI_SNAPSHOT_LOGS=PASS\nUI_NAV_SETTINGS=PASS\nUI_SNAPSHOT_SETTINGS=PASS\nUI_FAVORITE_ROWS=PASS\nUI_FAVORITE_SEARCH=PASS\nUI_FAVORITE_EMPTY_SEARCH=PASS\nUI_FOLLOW_TOGGLE=PASS\nUI_TASK_EMPTY_NAME_REJECTED=PASS\nUI_TASK_PRICE_RANGE_REJECTED=PASS\nUI_TASK_CREATE=PASS\nUI_TASK_EDIT=PASS\nUI_TASK_DELETE=PASS\nUI_LOCAL_SIMULATION=PASS\nUI_SIMULATION_PAUSE=PASS\nUI_PRICE_ITEM_SELECTION=PASS\nUI_LOG_SEARCH=PASS\nUI_CONFIG_SAVE=PASS\nUI_CONFIG_RELOAD=PASS\nUI_CSV_EXPORT=PASS\nUI_CORRUPT_CONFIG_PRESERVED=PASS\nUI_COMPACT_RENDER=PASS\nUI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "DEMO_FIXTURE",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --write-demo-config artifacts\\BASELINE.json",
+    "input": "Fresh 12-skin / 5-task demo fixture.",
+    "stdout": "DEMO_CONFIG=PASS\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "BASELINE",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --validate-config artifacts\\BASELINE.json",
+    "input": "First task maxPrice=650, quantity=3.",
+    "stdout": "CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "MODIFIED",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --validate-config artifacts\\MODIFIED_FILE.json",
+    "input": "First task maxPrice=700, quantity=4.",
+    "stdout": "CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=700.00; first_quantity=4\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "EQUALS_HEADLESS",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --validate-config=artifacts\\BASELINE.json",
+    "input": "Equals-style CLI argument; still forced offscreen.",
+    "stdout": "CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "ROLLBACK",
+    "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe' -c 'chmod +x artifacts/ROLLBACK.sh && ./artifacts/ROLLBACK.sh artifacts/ROLLBACK_TEST.json'",
+    "input": "ROLLBACK_TEST.json copied byte-for-byte from MODIFIED_FILE.json.",
+    "stdout": "ROLLBACK=PASS; restored_equal_baseline=true; modified_left_changed=true\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "RESTORED",
+    "command": "dist\\RelinkStudio\\RelinkStudio.exe --validate-config artifacts\\ROLLBACK_TEST.json",
+    "input": "Restored baseline fixture.",
+    "stdout": "CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3\n",
+    "stderr": "",
+    "exit_status": 0
+  }
+]

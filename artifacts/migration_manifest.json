@@ -1,0 +1,94 @@
+{
+  "source": "C:\\Users\\Administrator\\Desktop\\ida\\relink_studio",
+  "destination": "C:\\Users\\Administrator\\Desktop\\price",
+  "source_file_count": 29561,
+  "destination_file_count": 29639,
+  "source_bytes": 1020285122,
+  "destination_bytes": 1024120848,
+  "critical_files": [
+    {
+      "path": "src/main.cpp",
+      "source_sha256": "502E069C9E027B2D8EA5C068F1A799676750D0334F9D1360AA40480B9B6CAA03",
+      "destination_sha256": "502E069C9E027B2D8EA5C068F1A799676750D0334F9D1360AA40480B9B6CAA03",
+      "equal": true
+    },
+    {
+      "path": "src/mainwindow.cpp",
+      "source_sha256": "52B36BE448E752B9CF9EB6FE1481FD597A0B28FC532A0F8EA43FD58F6613C036",
+      "destination_sha256": "52B36BE448E752B9CF9EB6FE1481FD597A0B28FC532A0F8EA43FD58F6613C036",
+      "equal": true
+    },
+    {
+      "path": "src/domain.cpp",
+      "source_sha256": "2374F09525A7CB0ACFEB8443A21EE2D07495A03F7165907550566079FFE8AD35",
+      "destination_sha256": "2374F09525A7CB0ACFEB8443A21EE2D07495A03F7165907550566079FFE8AD35",
+      "equal": true
+    },
+    {
+      "path": "src/widgets.cpp",
+      "source_sha256": "9EE7FC62A6129150272A31B490822162457996E085F6B8586E8B1F0C4BC750C6",
+      "destination_sha256": "9EE7FC62A6129150272A31B490822162457996E085F6B8586E8B1F0C4BC750C6",
+      "equal": true
+    },
+    {
+      "path": "src/mainwindow.h",
+      "source_sha256": "DCFB09C51C9F6C88E494E2662D9B7EFDA5E0A6EA1E1F4B5704E27BA4D558FFBC",
+      "destination_sha256": "DCFB09C51C9F6C88E494E2662D9B7EFDA5E0A6EA1E1F4B5704E27BA4D558FFBC",
+      "equal": true
+    },
+    {
+      "path": "src/domain.h",
+      "source_sha256": "D82A4C4E4CEA46AFDC16D456F1BA12C8525E5F02D0D7C8D6DE3584D19A6B1E36",
+      "destination_sha256": "D82A4C4E4CEA46AFDC16D456F1BA12C8525E5F02D0D7C8D6DE3584D19A6B1E36",
+      "equal": true
+    },
+    {
+      "path": "src/widgets.h",
+      "source_sha256": "458053D697EC2E810384E6240A889106C39687CFB28ABF74856868E74D7AE659",
+      "destination_sha256": "458053D697EC2E810384E6240A889106C39687CFB28ABF74856868E74D7AE659",
+      "equal": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "source_sha256": "CE9792910E45CB4B34E65D3B37EBB9B99F1025325B5D64AB47B437C5AD4397A4",
+      "destination_sha256": "CE9792910E45CB4B34E65D3B37EBB9B99F1025325B5D64AB47B437C5AD4397A4",
+      "equal": true
+    },
+    {
+      "path": "resources.qrc",
+      "source_sha256": "A948D7D260BDF094ACE07CAC6A6CCF4BB34002616AC8CF41C75E1DEE259F92D2",
+      "destination_sha256": "A948D7D260BDF094ACE07CAC6A6CCF4BB34002616AC8CF41C75E1DEE259F92D2",
+      "equal": true
+    },
+    {
+      "path": "README.md",
+      "source_sha256": "485271B18E2FAAC513C6A243A4BD0F6E3A523DB7EEBF3D95CD2B3C8EF4118A72",
+      "destination_sha256": "485271B18E2FAAC513C6A243A4BD0F6E3A523DB7EEBF3D95CD2B3C8EF4118A72",
+      "equal": true
+    },
+    {
+      "path": "dist/RelinkStudio/RelinkStudio.exe",
+      "source_sha256": "CCA03B73BF352C6D0343068A3017AB5AF42B9C67F0539CCD12D0F22DCA8D7E16",
+      "destination_sha256": "762F3A1B8C51AB8E4EFCEADE568FA3226B19074D2B27275F899DC18DA8EAB3B0",
+      "equal": false
+    },
+    {
+      "path": "artifacts/MODIFIED_FILE.json",
+      "source_sha256": "FCC23C0D3D28BC0598CE49CD9C27A27EBECEFD1508B803CAD6665E2DB8D8C2DD",
+      "destination_sha256": "FCC23C0D3D28BC0598CE49CD9C27A27EBECEFD1508B803CAD6665E2DB8D8C2DD",
+      "equal": true
+    },
+    {
+      "path": "artifacts/DIFF_FILE.diff",
+      "source_sha256": "5DA6AE6527A2CA492306AB394E50311656A313A8CD90EA11D6A384C604FCE466",
+      "destination_sha256": "5DA6AE6527A2CA492306AB394E50311656A313A8CD90EA11D6A384C604FCE466",
+      "equal": true
+    },
+    {
+      "path": "artifacts/ROLLBACK.sh",
+      "source_sha256": "9C0EB24C5DB34215704414C365667B510294D357AB3417985773567F451BCE47",
+      "destination_sha256": "9C0EB24C5DB34215704414C365667B510294D357AB3417985773567F451BCE47",
+      "equal": true
+    }
+  ]
+}

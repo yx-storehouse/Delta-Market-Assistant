@@ -1,0 +1,11 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-5",
+  "kind": "release_frame",
+  "body": {
+    "request_id": "request-1",
+    "slot_index": 0,
+    "slot_generation": 1
+  }
+}

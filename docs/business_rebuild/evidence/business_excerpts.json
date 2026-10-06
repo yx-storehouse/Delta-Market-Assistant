@@ -1,0 +1,704 @@
+[
+  {
+    "json_pointer": "/0",
+    "pattern": "修正剩余时间：<n>分<n>秒",
+    "historical_message_count": 4495814,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1815,
+      "byte_offset": 844120,
+      "level": "INFO",
+      "text": "修正剩余时间：0分36秒",
+      "timestamp": "2026-09-24 09:16:47,803"
+    }
+  },
+  {
+    "json_pointer": "/1",
+    "pattern": "等待购买结束。。。",
+    "historical_message_count": 91362,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2563,
+      "byte_offset": 960303,
+      "level": "INFO",
+      "text": "等待购买结束。。。",
+      "timestamp": "2026-09-24 09:17:39,818"
+    }
+  },
+  {
+    "json_pointer": "/2",
+    "pattern": "成功从 <n>/<n> 个服务器获取时间",
+    "historical_message_count": 57856,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1804,
+      "byte_offset": 843152,
+      "level": "INFO",
+      "text": "成功从 2/2 个服务器获取时间",
+      "timestamp": "2026-09-24 09:16:47,212"
+    }
+  },
+  {
+    "json_pointer": "/3",
+    "pattern": "点击第<n>次确认",
+    "historical_message_count": 47069,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2365,
+      "byte_offset": 933465,
+      "level": "INFO",
+      "text": "点击第1次确认",
+      "timestamp": "2026-09-24 09:17:24,839"
+    }
+  },
+  {
+    "json_pointer": "/4",
+    "pattern": "时间偏移 <n> ms在允许范围内，不调整系统时间",
+    "historical_message_count": 46068,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2312,
+      "byte_offset": 925158,
+      "level": "INFO",
+      "text": "时间偏移 0.860 ms在允许范围内，不调整系统时间",
+      "timestamp": "2026-09-24 09:17:17,756"
+    }
+  },
+  {
+    "json_pointer": "/5",
+    "pattern": "时间偏移量: +<n> 秒",
+    "historical_message_count": 36932,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2190,
+      "byte_offset": 906414,
+      "level": "INFO",
+      "text": "时间偏移量: +0.007410 秒",
+      "timestamp": "2026-09-24 09:17:11,314"
+    }
+  },
+  {
+    "json_pointer": "/6",
+    "pattern": "时间偏移量: -<n> 秒",
+    "historical_message_count": 20924,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1806,
+      "byte_offset": 843278,
+      "level": "INFO",
+      "text": "时间偏移量: -0.696740 秒",
+      "timestamp": "2026-09-24 09:16:47,213"
+    }
+  },
+  {
+    "json_pointer": "/7",
+    "pattern": "找到磨损值: <n>/<n>",
+    "historical_message_count": 18421,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 91,
+      "byte_offset": 81587,
+      "level": "INFO",
+      "text": "找到磨损值: 1.187788/1.249",
+      "timestamp": "2026-09-24 09:04:42,966"
+    }
+  },
+  {
+    "json_pointer": "/8",
+    "pattern": "价格匹配: <n>",
+    "historical_message_count": 18417,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 89,
+      "byte_offset": 80968,
+      "level": "INFO",
+      "text": "价格匹配: 340",
+      "timestamp": "2026-09-24 09:04:42,837"
+    }
+  },
+  {
+    "json_pointer": "/9",
+    "pattern": "磨损匹配成功: <n>",
+    "historical_message_count": 18085,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 92,
+      "byte_offset": 81653,
+      "level": "INFO",
+      "text": "磨损匹配成功: 1.187788",
+      "timestamp": "2026-09-24 09:04:42,966"
+    }
+  },
+  {
+    "json_pointer": "/10",
+    "pattern": "价格True:<n> 磨损True:<n> 符合条件[<n>]",
+    "historical_message_count": 18079,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 93,
+      "byte_offset": 81716,
+      "level": "INFO",
+      "text": "价格True:340 磨损True:1.187788 符合条件[1]",
+      "timestamp": "2026-09-24 09:04:42,966"
+    }
+  },
+  {
+    "json_pointer": "/11",
+    "pattern": "公示期匹配！",
+    "historical_message_count": 17304,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 64,
+      "byte_offset": 73371,
+      "level": "INFO",
+      "text": "公示期匹配！",
+      "timestamp": "2026-09-24 09:04:31,135"
+    }
+  },
+  {
+    "json_pointer": "/12",
+    "pattern": "首次检测到剩余<n>秒",
+    "historical_message_count": 15689,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2184,
+      "byte_offset": 906056,
+      "level": "INFO",
+      "text": "首次检测到剩余10秒",
+      "timestamp": "2026-09-24 09:17:11,242"
+    }
+  },
+  {
+    "json_pointer": "/13",
+    "pattern": "当前时间市场未开放，暂停操作...",
+    "historical_message_count": 13404,
+    "example": {
+      "file": "log/BBZ_20260924_182429.log",
+      "line": 658554,
+      "byte_offset": 109279063,
+      "level": "INFO",
+      "text": "当前时间市场未开放，暂停操作...",
+      "timestamp": "2026-09-25 05:00:00,052"
+    }
+  },
+  {
+    "json_pointer": "/14",
+    "pattern": "时间偏移 <n> ms超过阈值，正在设置系统时间...",
+    "historical_message_count": 11804,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1810,
+      "byte_offset": 843541,
+      "level": "INFO",
+      "text": "时间偏移 696.740 ms超过阈值，正在设置系统时间...",
+      "timestamp": "2026-09-24 09:16:47,213"
+    }
+  },
+  {
+    "json_pointer": "/15",
+    "pattern": "系统时间设置成功",
+    "historical_message_count": 11804,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1811,
+      "byte_offset": 843641,
+      "level": "INFO",
+      "text": "系统时间设置成功",
+      "timestamp": "2026-09-24 09:16:46,626"
+    }
+  },
+  {
+    "json_pointer": "/16",
+    "pattern": "时间偏移量已重置为: -<n> 秒",
+    "historical_message_count": 11768,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1812,
+      "byte_offset": 843700,
+      "level": "INFO",
+      "text": "时间偏移量已重置为: -0.109496 秒",
+      "timestamp": "2026-09-24 09:16:46,626"
+    }
+  },
+  {
+    "json_pointer": "/17",
+    "pattern": "已点击二次确认，本次延迟<n>ms",
+    "historical_message_count": 10225,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2375,
+      "byte_offset": 934007,
+      "level": "INFO",
+      "text": "已点击二次确认，本次延迟0.839ms",
+      "timestamp": "2026-09-24 09:17:25,397"
+    }
+  },
+  {
+    "json_pointer": "/18",
+    "pattern": "卡屏持续时间: <n>ms",
+    "historical_message_count": 9752,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2603,
+      "byte_offset": 963998,
+      "level": "INFO",
+      "text": "卡屏持续时间: 2954ms",
+      "timestamp": "2026-09-24 09:17:42,759"
+    }
+  },
+  {
+    "json_pointer": "/19",
+    "pattern": "购买时间过长，退出",
+    "historical_message_count": 8814,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2594,
+      "byte_offset": 963181,
+      "level": "INFO",
+      "text": "购买时间过长，退出",
+      "timestamp": "2026-09-24 09:17:42,403"
+    }
+  },
+  {
+    "json_pointer": "/20",
+    "pattern": "剩余皮肤价格高于设置价格本次收藏完毕",
+    "historical_message_count": 5718,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 75,
+      "byte_offset": 76893,
+      "level": "INFO",
+      "text": "剩余皮肤价格高于设置价格本次收藏完毕",
+      "timestamp": "2026-09-24 09:04:36,850"
+    }
+  },
+  {
+    "json_pointer": "/21",
+    "pattern": "服务器 ntp<n>.tencent.com 查询失败: No response received from ntp<n>.tencent.com.",
+    "historical_message_count": 2948,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 64825,
+      "byte_offset": 11664261,
+      "level": "WARNING",
+      "text": "服务器 ntp1.tencent.com 查询失败: No response received from ntp1.tencent.com.",
+      "timestamp": "2026-09-24 10:31:49,951"
+    }
+  },
+  {
+    "json_pointer": "/22",
+    "pattern": "服务器 time<n>.cloud.tencent.com 查询失败: No response received from time<n>.cloud.tencent.com.",
+    "historical_message_count": 2927,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 8432,
+      "byte_offset": 1871004,
+      "level": "WARNING",
+      "text": "服务器 time1.cloud.tencent.com 查询失败: No response received from time1.cloud.tencent.com.",
+      "timestamp": "2026-09-24 09:24:04,074"
+    }
+  },
+  {
+    "json_pointer": "/23",
+    "pattern": "服务器 ntp.aliyun.com 查询失败: No response received from ntp.aliyun.com.",
+    "historical_message_count": 620,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 7940,
+      "byte_offset": 1797040,
+      "level": "WARNING",
+      "text": "服务器 ntp.aliyun.com 查询失败: No response received from ntp.aliyun.com.",
+      "timestamp": "2026-09-24 09:23:29,055"
+    }
+  },
+  {
+    "json_pointer": "/24",
+    "pattern": "价格True:<n> 磨损False:<n> 不符合条件跳过收藏",
+    "historical_message_count": 336,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 55773,
+      "byte_offset": 9918115,
+      "level": "INFO",
+      "text": "价格True:10 磨损False:3.205833 不符合条件跳过收藏",
+      "timestamp": "2026-09-24 10:17:05,657"
+    }
+  },
+  {
+    "json_pointer": "/25",
+    "pattern": "购买全部结束",
+    "historical_message_count": 263,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 27809,
+      "byte_offset": 4913021,
+      "level": "INFO",
+      "text": "购买全部结束",
+      "timestamp": "2026-09-24 09:44:03,497"
+    }
+  },
+  {
+    "json_pointer": "/26",
+    "pattern": "开始执行: 全自动皮肤",
+    "historical_message_count": 97,
+    "example": {
+      "file": "log/BBZ_20260922_054256.log",
+      "line": 10,
+      "byte_offset": 843,
+      "level": "INFO",
+      "text": "开始执行: 全自动皮肤",
+      "timestamp": "2026-09-22 05:43:55,796"
+    }
+  },
+  {
+    "json_pointer": "/27",
+    "pattern": "最快服务器: ntp.aliyun.com (延迟: <n>ms)",
+    "historical_message_count": 82,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 9,
+      "byte_offset": 716,
+      "level": "INFO",
+      "text": "最快服务器: ntp.aliyun.com (延迟: 35.6ms)",
+      "timestamp": "2026-09-24 09:04:02,873"
+    }
+  },
+  {
+    "json_pointer": "/28",
+    "pattern": "服务器 ntp.aliyun.com 健康检查通过 - 延迟: <n>ms, 时间差: <n>ms",
+    "historical_message_count": 77,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 28107,
+      "byte_offset": 5058800,
+      "level": "INFO",
+      "text": "服务器 ntp.aliyun.com 健康检查通过 - 延迟: 35.4ms, 时间差: 25.6ms",
+      "timestamp": "2026-09-24 09:46:34,746"
+    }
+  },
+  {
+    "json_pointer": "/29",
+    "pattern": "服务器 time<n>.cloud.tencent.com 健康检查通过 - 延迟: <n>ms, 时间差: <n>ms",
+    "historical_message_count": 68,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 28111,
+      "byte_offset": 5059191,
+      "level": "INFO",
+      "text": "服务器 time1.cloud.tencent.com 健康检查通过 - 延迟: 37.9ms, 时间差: 23.5ms",
+      "timestamp": "2026-09-24 09:46:34,841"
+    }
+  },
+  {
+    "json_pointer": "/30",
+    "pattern": "服务器 ntp<n>.tencent.com 健康检查通过 - 延迟: <n>ms, 时间差: <n>ms",
+    "historical_message_count": 59,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 28109,
+      "byte_offset": 5058991,
+      "level": "INFO",
+      "text": "服务器 ntp1.tencent.com 健康检查通过 - 延迟: 40.6ms, 时间差: 27.1ms",
+      "timestamp": "2026-09-24 09:46:34,794"
+    }
+  },
+  {
+    "json_pointer": "/31",
+    "pattern": "已达关注上限停止关注，开始前往购买",
+    "historical_message_count": 43,
+    "example": {
+      "file": "log/BBZ_20260924_182429.log",
+      "line": 110218,
+      "byte_offset": 18446966,
+      "level": "INFO",
+      "text": "已达关注上限停止关注，开始前往购买",
+      "timestamp": "2026-09-24 20:29:12,413"
+    }
+  },
+  {
+    "json_pointer": "/32",
+    "pattern": "时间偏移量已重置为: <n> 秒",
+    "historical_message_count": 36,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 27047,
+      "byte_offset": 4793440,
+      "level": "INFO",
+      "text": "时间偏移量已重置为: 0.886772 秒",
+      "timestamp": "2026-09-24 09:43:12,485"
+    }
+  },
+  {
+    "json_pointer": "/33",
+    "pattern": "服务器 ntp<n>.tencent.com 健康检查通过 - 延迟: <n>ms, 时间差: -<n>ms",
+    "historical_message_count": 33,
+    "example": {
+      "file": "log/BBZ_20260922_054256.log",
+      "line": 5,
+      "byte_offset": 342,
+      "level": "INFO",
+      "text": "服务器 ntp1.tencent.com 健康检查通过 - 延迟: 35.9ms, 时间差: -432.6ms",
+      "timestamp": "2026-09-22 05:43:54,528"
+    }
+  },
+  {
+    "json_pointer": "/34",
+    "pattern": "服务器 time<n>.cloud.tencent.com 健康检查通过 - 延迟: <n>ms, 时间差: -<n>ms",
+    "historical_message_count": 27,
+    "example": {
+      "file": "log/BBZ_20260922_054256.log",
+      "line": 7,
+      "byte_offset": 544,
+      "level": "INFO",
+      "text": "服务器 time1.cloud.tencent.com 健康检查通过 - 延迟: 31.9ms, 时间差: -430.9ms",
+      "timestamp": "2026-09-22 05:43:54,560"
+    }
+  },
+  {
+    "json_pointer": "/35",
+    "pattern": "服务器 ntp.aliyun.com 健康检查通过 - 延迟: <n>ms, 时间差: -<n>ms",
+    "historical_message_count": 18,
+    "example": {
+      "file": "log/BBZ_20260922_054256.log",
+      "line": 3,
+      "byte_offset": 149,
+      "level": "INFO",
+      "text": "服务器 ntp.aliyun.com 健康检查通过 - 延迟: 37.5ms, 时间差: -429.2ms",
+      "timestamp": "2026-09-22 05:43:54,491"
+    }
+  },
+  {
+    "json_pointer": "/36",
+    "pattern": "所有服务器查询失败",
+    "historical_message_count": 16,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 8433,
+      "byte_offset": 1871140,
+      "level": "ERROR",
+      "text": "所有服务器查询失败",
+      "timestamp": "2026-09-24 09:24:04,074"
+    }
+  },
+  {
+    "json_pointer": "/37",
+    "pattern": "截图时出现异常: CreateCompatibleDC failed",
+    "historical_message_count": 10,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 31284,
+      "byte_offset": 5608944,
+      "level": "ERROR",
+      "text": "截图时出现异常: CreateCompatibleDC failed",
+      "timestamp": "2026-09-24 09:49:58,393"
+    }
+  },
+  {
+    "json_pointer": "/38",
+    "pattern": "最快服务器: time<n>.cloud.tencent.com (延迟: <n>ms)",
+    "historical_message_count": 9,
+    "example": {
+      "file": "log/BBZ_20260922_054256.log",
+      "line": 9,
+      "byte_offset": 751,
+      "level": "INFO",
+      "text": "最快服务器: time1.cloud.tencent.com (延迟: 31.9ms)",
+      "timestamp": "2026-09-22 05:43:54,561"
+    }
+  },
+  {
+    "json_pointer": "/39",
+    "pattern": "购买结果公示过长，退出",
+    "historical_message_count": 7,
+    "example": {
+      "file": "log/BBZ_20260927_105823.log",
+      "line": 392092,
+      "byte_offset": 66136762,
+      "level": "INFO",
+      "text": "购买结果公示过长，退出",
+      "timestamp": "2026-09-27 17:26:24,244"
+    }
+  },
+  {
+    "json_pointer": "/40",
+    "pattern": "最快服务器: ntp<n>.tencent.com (延迟: <n>ms)",
+    "historical_message_count": 6,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 28529,
+      "byte_offset": 4911289,
+      "level": "INFO",
+      "text": "最快服务器: ntp1.tencent.com (延迟: 35.4ms)",
+      "timestamp": "2026-09-25 08:46:49,355"
+    }
+  },
+  {
+    "json_pointer": "/41",
+    "pattern": "价格False:<n> 磨损True:<n> 不符合条件跳过收藏",
+    "historical_message_count": 6,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 731730,
+      "byte_offset": 119573880,
+      "level": "INFO",
+      "text": "价格False:20 磨损True:0.337278 不符合条件跳过收藏",
+      "timestamp": "2026-09-26 00:01:47,106"
+    }
+  },
+  {
+    "json_pointer": "/42",
+    "pattern": "服务器 ntp<n>.tencent.com 健康检查失败",
+    "historical_message_count": 5,
+    "example": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 5,
+      "byte_offset": 342,
+      "level": "WARNING",
+      "text": "服务器 ntp1.tencent.com 健康检查失败",
+      "timestamp": "2026-09-24 09:04:02,813"
+    }
+  },
+  {
+    "json_pointer": "/43",
+    "pattern": "服务器 ntp.aliyun.com 查询失败: [Errno <n>] getaddrinfo failed",
+    "historical_message_count": 4,
+    "example": {
+      "file": "log/BBZ_20261001_005534.log",
+      "line": 146280,
+      "byte_offset": 24140437,
+      "level": "WARNING",
+      "text": "服务器 ntp.aliyun.com 查询失败: [Errno 11001] getaddrinfo failed",
+      "timestamp": "2026-10-01 02:51:30,102"
+    }
+  },
+  {
+    "json_pointer": "/44",
+    "pattern": "开始执行: 发送测试",
+    "historical_message_count": 3,
+    "example": {
+      "file": "log/BBZ_20260924_182429.log",
+      "line": 1,
+      "byte_offset": 0,
+      "level": "INFO",
+      "text": "开始执行: 发送测试",
+      "timestamp": "2026-09-24 18:30:27,833"
+    }
+  },
+  {
+    "json_pointer": "/45",
+    "pattern": "服务器 ntp<n>.tencent.com 查询失败: [Errno <n>] getaddrinfo failed",
+    "historical_message_count": 3,
+    "example": {
+      "file": "log/BBZ_20261001_005534.log",
+      "line": 146279,
+      "byte_offset": 24140326,
+      "level": "WARNING",
+      "text": "服务器 ntp1.tencent.com 查询失败: [Errno 11001] getaddrinfo failed",
+      "timestamp": "2026-10-01 02:51:30,101"
+    }
+  },
+  {
+    "json_pointer": "/46",
+    "pattern": "服务器 time<n>.cloud.tencent.com 查询失败: [Errno <n>] getaddrinfo failed",
+    "historical_message_count": 3,
+    "example": {
+      "file": "log/BBZ_20261001_005534.log",
+      "line": 146281,
+      "byte_offset": 24140546,
+      "level": "WARNING",
+      "text": "服务器 time1.cloud.tencent.com 查询失败: [Errno 11001] getaddrinfo failed",
+      "timestamp": "2026-10-01 02:51:30,103"
+    }
+  },
+  {
+    "json_pointer": "/47",
+    "pattern": "找到磨损值: <n>e-<n>/<n>",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 1342622,
+      "byte_offset": 218083190,
+      "level": "INFO",
+      "text": "找到磨损值: 3.5e-05/0.399",
+      "timestamp": "2026-09-26 14:56:30,830"
+    }
+  },
+  {
+    "json_pointer": "/48",
+    "pattern": "磨损匹配成功: <n>e-<n>",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 1342623,
+      "byte_offset": 218083255,
+      "level": "INFO",
+      "text": "磨损匹配成功: 3.5e-05",
+      "timestamp": "2026-09-26 14:56:30,831"
+    }
+  },
+  {
+    "json_pointer": "/49",
+    "pattern": "价格True:<n> 磨损True:<n>e-<n> 符合条件[<n>]",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 1342624,
+      "byte_offset": 218083317,
+      "level": "INFO",
+      "text": "价格True:230 磨损True:3.5e-05 符合条件[65]",
+      "timestamp": "2026-09-26 14:56:30,831"
+    }
+  },
+  {
+    "json_pointer": "/50",
+    "pattern": "停止收藏",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260925_074346.log",
+      "line": 1991906,
+      "byte_offset": 323513629,
+      "level": "INFO",
+      "text": "停止收藏",
+      "timestamp": "2026-09-27 04:07:04,587"
+    }
+  },
+  {
+    "json_pointer": "/51",
+    "pattern": "点击异常:",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260927_105823.log",
+      "line": 300380,
+      "byte_offset": 51291148,
+      "level": "ERROR",
+      "text": "点击异常:",
+      "timestamp": "2026-09-27 15:57:40,307"
+    }
+  },
+  {
+    "json_pointer": "/52",
+    "pattern": "服务器 time<n>.cloud.tencent.com 健康检查失败",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260928_104709.log",
+      "line": 17,
+      "byte_offset": 1442,
+      "level": "WARNING",
+      "text": "服务器 time1.cloud.tencent.com 健康检查失败",
+      "timestamp": "2026-09-28 10:49:15,122"
+    }
+  },
+  {
+    "json_pointer": "/53",
+    "pattern": "服务器 ntp.aliyun.com 健康检查失败",
+    "historical_message_count": 2,
+    "example": {
+      "file": "log/BBZ_20260928_104709.log",
+      "line": 2560461,
+      "byte_offset": 435825840,
+      "level": "WARNING",
+      "text": "服务器 ntp.aliyun.com 健康检查失败",
+      "timestamp": "2026-09-29 19:01:05,351"
+    }
+  }
+]

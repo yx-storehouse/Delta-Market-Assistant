@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "contract_version": "0.3.0",
+  "config_id": "config-synthetic",
+  "revision": 1,
+  "catalog": [
+    {
+      "product_id": "product-01",
+      "name": "合成商品",
+      "series": null,
+      "season": null,
+      "grade": null,
+      "rarity": null,
+      "aliases": [],
+      "source_kind": "synthetic",
+      "extensions": {}
+    }
+  ],
+  "rules": [
+    {
+      "task_id": "task-01",
+      "revision": 1,
+      "name": "合成边界任务",
+      "product_ref": "product-01",
+      "enabled": true,
+      "review_required": false,
+      "review_codes": [],
+      "filters": {
+        "season": {
+          "op": "any"
+        },
+        "ownership": {
+          "op": "any"
+        },
+        "grade": {
+          "op": "any"
+        },
+        "condition": {
+          "op": "eq",
+          "value": "S"
+        },
+        "publicity": {
+          "op": "any"
+        },
+        "rarity": {
+          "op": "any"
+        }
+      },
+      "price_range": {
+        "min": {
+          "value": {
+            "unscaled": "230",
+            "scale": 0
+          },
+          "unit": "SYNTHETIC_CREDIT"
+        },
+        "max": {
+          "value": {
+            "unscaled": "600",
+            "scale": 0
+          },
+          "unit": "SYNTHETIC_CREDIT"
+        }
+      },
+      "max_wear": {
+        "unscaled": "399",
+        "scale": 3
+      },
+      "requested_sort": "default",
+      "quantity_candidate": null,
+      "quantity_semantics": "none",
+      "legacy_raw": null,
+      "extensions": {}
+    }
+  ],
+  "profiles": [
+    {
+      "profile_id": "profile-01",
+      "revision": 1,
+      "name": "合成回放方案",
+      "mode": "replay",
+      "rule_refs": [
+        {
+          "task_id": "task-01",
+          "revision": 1
+        }
+      ],
+      "ui_run_settings": {
+        "profile": "合成回放方案",
+        "hotkey": "F2",
+        "purchaseDelayMs": 830,
+        "dynamicDelay": false,
+        "queueFullTrigger": 1,
+        "queueFullStepMs": 1.0,
+        "publicityTrigger": 1,
+        "publicityStepMs": 1.0,
+        "burstClick": true,
+        "clickIntervalMs": 10,
+        "limitOrange": 10,
+        "limitPurple": 10,
+        "limitBlue": 10,
+        "refreshPage": false,
+        "skipLotteryPage": true,
+        "skipSuccessPage": true,
+        "autoCollect": true,
+        "collectOsd": false,
+        "scheduleEnabled": false,
+        "scheduleStart": "09:00",
+        "scheduleStop": "23:00"
+      },
+      "execution_policy": "not_bound",
+      "schedule_timezone": null,
+      "extensions": {}
+    }
+  ],
+  "active_profile_id": "profile-01",
+  "units": [
+    {
+      "unit_id": "SYNTHETIC_CREDIT",
+      "display_name": "合成测试单位",
+      "quantum": {
+        "unscaled": "1",
+        "scale": 12
+      },
+      "reviewed": true,
+      "synthetic": true
+    }
+  ],
+  "migration_decisions": [],
+  "extensions": {}
+}

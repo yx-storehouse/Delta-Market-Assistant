@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="theme.qss">src/theme.qss</file>
+    <file alias="assets/demo_skin_atlas.png">src/assets/demo_skin_atlas.png</file>
+    <file alias="icons/check.xpm">src/icons/check.xpm</file>
+    <file alias="icons/dash.xpm">src/icons/dash.xpm</file>
+    <file alias="icons/chevron-down.xpm">src/icons/chevron-down.xpm</file>
+    <file alias="icons/chevron-up.xpm">src/icons/chevron-up.xpm</file>
+  </qresource>
+</RCC>

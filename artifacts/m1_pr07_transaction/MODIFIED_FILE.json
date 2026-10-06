@@ -1,0 +1,10 @@
+{
+  "branch": "m1_pr07",
+  "field": "ui_import_preview_mode",
+  "value": "readonly_preview",
+  "preview_only": true,
+  "committable": false,
+  "actions_enabled": false,
+  "image_file_write_count": 0,
+  "source_hash_preserved": true
+}

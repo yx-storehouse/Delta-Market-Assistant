@@ -1,0 +1,9 @@
+{
+  "branch": "m1_pr07_ui",
+  "field": "import_configuration_path",
+  "value": "readonly_preview",
+  "committable": false,
+  "actions_enabled": false,
+  "image_file_write_count": 0,
+  "source_hash_preserved": true
+}

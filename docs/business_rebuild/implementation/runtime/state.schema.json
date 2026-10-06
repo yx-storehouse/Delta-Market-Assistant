@@ -1,0 +1,1288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.relink.invalid/business/v1/runtime/state.schema.json",
+  "title": "Run/attempt and M1 replay fixtures v1 — proposed not implemented",
+  "$ref": "#/$defs/ReplaySuite",
+  "$defs": {
+    "Attempt": {
+      "type": "object",
+      "properties": {
+        "attempt_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "intent_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "run_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "rule_ref": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/RuleRef"
+        },
+        "kind": {
+          "enum": [
+            "purchase",
+            "collection"
+          ]
+        },
+        "state": {
+          "enum": [
+            "Prepared",
+            "Dispatching",
+            "Sent",
+            "AwaitingReceipt",
+            "Unknown",
+            "Success",
+            "Failed",
+            "Cancelled"
+          ]
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "reservation_held": {
+          "type": "boolean"
+        },
+        "dispatch_proof": {
+          "enum": [
+            "not_dispatched",
+            "possibly_dispatched",
+            "acknowledged"
+          ]
+        },
+        "receipt_identity": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "attempt_id",
+        "intent_id",
+        "run_id",
+        "rule_ref",
+        "kind",
+        "state",
+        "quantity",
+        "reservation_held",
+        "dispatch_proof",
+        "receipt_identity"
+      ],
+      "additionalProperties": false
+    },
+    "TaskRun": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "clock_domain_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "step_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "cancel_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "viewport_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "run_state": {
+          "enum": [
+            "Ready",
+            "AwaitSchedule",
+            "Observe",
+            "ConfigureFilter",
+            "ScanListings",
+            "Evaluate",
+            "AwaitCollectReceipt",
+            "Watchlist",
+            "AwaitDeadline",
+            "Revalidate",
+            "AwaitConfirm",
+            "AwaitReceipt",
+            "PersistResult",
+            "Reconcile",
+            "Recover",
+            "Paused",
+            "Stopped",
+            "Completed"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "Replay",
+            "Observe"
+          ]
+        },
+        "now_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "auto_collect": {
+          "type": "boolean"
+        },
+        "target_quantity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        },
+        "confirmed_success": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "unresolved_reservations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "run_id",
+        "session_id",
+        "clock_domain_id",
+        "step_id",
+        "cancel_epoch",
+        "viewport_generation",
+        "run_state",
+        "mode",
+        "now_mono_ms",
+        "auto_collect",
+        "target_quantity",
+        "confirmed_success",
+        "unresolved_reservations",
+        "attempts"
+      ],
+      "additionalProperties": false
+    },
+    "ReplayEvent": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Start"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "configuration_reviewed": {
+                  "const": true
+                },
+                "schedule_due": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "configuration_reviewed",
+                "schedule_due"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Stop"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Pause"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Resume"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "PageRecognized"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "enum": [
+                    "watchlist",
+                    "market_home"
+                  ]
+                },
+                "complete": {
+                  "const": true
+                }
+              },
+              "required": [
+                "page",
+                "complete"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "QueueEmpty"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "WatchTick"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "DeadlineWake"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "schedule_generation": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "schedule_generation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Receipt"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "attempt_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "receipt_identity": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "outcome": {
+                  "enum": [
+                    "success",
+                    "failed",
+                    "unknown"
+                  ]
+                },
+                "association": {
+                  "enum": [
+                    "confirmed",
+                    "ambiguous"
+                  ]
+                }
+              },
+              "required": [
+                "attempt_id",
+                "receipt_identity",
+                "outcome",
+                "association"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "LedgerCommitted"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "attempt_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "transaction_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "terminal": {
+                  "enum": [
+                    "Success",
+                    "Failed"
+                  ]
+                },
+                "queue_empty": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "attempt_id",
+                "transaction_id",
+                "terminal",
+                "queue_empty"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "LedgerFailed"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "transaction_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "code": {
+                  "const": "E_STORAGE"
+                }
+              },
+              "required": [
+                "transaction_id",
+                "code"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "RestartLoaded"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "new_session_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "new_clock_domain_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                }
+              },
+              "required": [
+                "new_session_id",
+                "new_clock_domain_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "ViewportChanged"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "new_viewport_generation": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "new_viewport_generation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "RequestReconcile"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "ObservationDeadline"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "WorkerCrashed"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "Revalidated"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "decision": {
+                  "enum": [
+                    "Match",
+                    "NoMatch",
+                    "NeedsReview"
+                  ]
+                },
+                "association": {
+                  "enum": [
+                    "confirmed",
+                    "ambiguous"
+                  ]
+                }
+              },
+              "required": [
+                "decision",
+                "association"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "ReservationGranted"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "attempt_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "intent_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                }
+              },
+              "required": [
+                "attempt_id",
+                "intent_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "ReservationDenied"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "quota_full",
+                    "unresolved_conflict"
+                  ]
+                }
+              },
+              "required": [
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "ActionPossiblySent"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "attempt_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                }
+              },
+              "required": [
+                "attempt_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "DefinitelyNotSent"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "attempt_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "outbox_not_dispatched": {
+                  "const": true
+                }
+              },
+              "required": [
+                "attempt_id",
+                "outbox_not_dispatched"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "RuleDecision"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "decision": {
+                  "enum": [
+                    "Match",
+                    "NoMatch",
+                    "NeedsReview"
+                  ]
+                }
+              },
+              "required": [
+                "decision"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            "at_mono_ms": {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            "context": {
+              "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+            },
+            "type": {
+              "const": "PendingFrameReplaced"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "old_frame_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                },
+                "new_frame_id": {
+                  "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+                }
+              },
+              "required": [
+                "old_frame_id",
+                "new_frame_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "at_mono_ms",
+            "context",
+            "type",
+            "payload"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Expected": {
+      "type": "object",
+      "properties": {
+        "run_state": {
+          "enum": [
+            "Ready",
+            "AwaitSchedule",
+            "Observe",
+            "ConfigureFilter",
+            "ScanListings",
+            "Evaluate",
+            "AwaitCollectReceipt",
+            "Watchlist",
+            "AwaitDeadline",
+            "Revalidate",
+            "AwaitConfirm",
+            "AwaitReceipt",
+            "PersistResult",
+            "Reconcile",
+            "Recover",
+            "Paused",
+            "Stopped",
+            "Completed"
+          ]
+        },
+        "confirmed_success": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "unresolved_reservations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "attempt_states": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+          },
+          "additionalProperties": {
+            "enum": [
+              "Prepared",
+              "Dispatching",
+              "Sent",
+              "AwaitingReceipt",
+              "Unknown",
+              "Success",
+              "Failed",
+              "Cancelled"
+            ]
+          }
+        },
+        "demand_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "capture_request_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "image_file_write_count": {
+          "const": 0
+        },
+        "ignored_event_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "required_events": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "forbidden_events": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "exact_events": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "maxItems": 100
+            }
+          ]
+        }
+      },
+      "required": [
+        "run_state",
+        "confirmed_success",
+        "unresolved_reservations",
+        "attempt_states",
+        "demand_count",
+        "capture_request_count",
+        "image_file_write_count",
+        "ignored_event_count",
+        "required_events",
+        "forbidden_events",
+        "exact_events"
+      ],
+      "additionalProperties": false
+    },
+    "ReplayFixture": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "status": {
+          "const": "planned_not_run"
+        },
+        "basis": {
+          "const": "new_design_synthetic"
+        },
+        "business_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^B[0-9]{2}$"
+          },
+          "minItems": 1,
+          "maxItems": 20
+        },
+        "acceptance_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^T[0-9]{2}-[AB]$"
+          },
+          "minItems": 1,
+          "maxItems": 20
+        },
+        "initial": {
+          "$ref": "#/$defs/TaskRun"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReplayEvent"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "expected": {
+          "$ref": "#/$defs/Expected"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "status",
+        "basis",
+        "business_ids",
+        "acceptance_ids",
+        "initial",
+        "inputs",
+        "expected"
+      ],
+      "additionalProperties": false
+    },
+    "ReplaySuite": {
+      "type": "object",
+      "properties": {
+        "fixture_version": {
+          "const": 1
+        },
+        "status": {
+          "const": "planned_not_run"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReplayFixture"
+          },
+          "minItems": 8,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "fixture_version",
+        "status",
+        "description",
+        "cases"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

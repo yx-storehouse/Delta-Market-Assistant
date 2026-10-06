@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "zip_crc_and_member_hashes": "PASS",
+  "archive_members": 133,
+  "deliverables": [
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\index.html",
+      "bytes": 128770,
+      "sha256": "bfccd8ce4ac0e0e492d0070a6c72b9a3c54d391bed889dd151cf7a1aec1e1316"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\README.md",
+      "bytes": 6691,
+      "sha256": "1ff05ce4768fde7f150bd95f21152bb99dffa727836b429aa76beb6d0229dd7a"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\price\\deliverables\\RelinkStudio_Business_Development_2026-10-06.zip",
+      "bytes": 401792,
+      "sha256": "2effcdc43beadb4b12add19ac40a0b070522899be9b646d81cc28270c092e2f9"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\business_rebuild_docs\\VERIFICATION.txt",
+      "bytes": 9380,
+      "sha256": "61200cebebcf09faa15604fcbc438f47f57217e024c87266ffaa30c940ee77a3"
+    }
+  ]
+}

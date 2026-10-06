@@ -1,0 +1,191 @@
+{
+    "demo": true,
+    "schema_version": 1,
+    "skins": [
+        {
+            "change": -2.4,
+            "condition": "成色S",
+            "followed": true,
+            "id": "demo-01",
+            "name": "AUG · 天命",
+            "price": 628,
+            "rarity": "橙色",
+            "series": "S6 典藏",
+            "wear": 2.18
+        },
+        {
+            "change": 1.8,
+            "condition": "成色S",
+            "followed": true,
+            "id": "demo-02",
+            "name": "M4A1 · 星海回响",
+            "price": 468,
+            "rarity": "橙色",
+            "series": "S11 典藏",
+            "wear": 1.42
+        },
+        {
+            "change": -1.2,
+            "condition": "成色A",
+            "followed": true,
+            "id": "demo-03",
+            "name": "AKM · 赤焰",
+            "price": 215,
+            "rarity": "紫色",
+            "series": "S9 典藏",
+            "wear": 6.35
+        },
+        {
+            "change": -4.1,
+            "condition": "成色S",
+            "followed": true,
+            "id": "demo-04",
+            "name": "AWM · 极光",
+            "price": 892,
+            "rarity": "橙色",
+            "series": "S8 典藏",
+            "wear": 3.06
+        },
+        {
+            "change": 3.2,
+            "condition": "成色A",
+            "followed": true,
+            "id": "demo-05",
+            "name": "Vector · 霓虹脉冲",
+            "price": 176,
+            "rarity": "紫色",
+            "series": "S10 典藏",
+            "wear": 7.12
+        },
+        {
+            "change": -0.7,
+            "condition": "成色S",
+            "followed": true,
+            "id": "demo-06",
+            "name": "SCAR-H · 暮光",
+            "price": 538,
+            "rarity": "橙色",
+            "series": "S7 典藏",
+            "wear": 2.64
+        },
+        {
+            "change": 0,
+            "condition": "成色A",
+            "followed": true,
+            "id": "demo-07",
+            "name": "MP5 · 冰川",
+            "price": 92,
+            "rarity": "蓝色",
+            "series": "S9 典藏",
+            "wear": 8.48
+        },
+        {
+            "change": -2,
+            "condition": "成色A",
+            "followed": true,
+            "id": "demo-08",
+            "name": "G3 · 深空",
+            "price": 264,
+            "rarity": "紫色",
+            "series": "S10 典藏",
+            "wear": 5.73
+        },
+        {
+            "change": 1.3,
+            "condition": "成色B",
+            "followed": true,
+            "id": "demo-09",
+            "name": "M700 · 沙漠之眼",
+            "price": 158,
+            "rarity": "紫色",
+            "series": "S8 典藏",
+            "wear": 14.25
+        },
+        {
+            "change": -0.8,
+            "condition": "成色S",
+            "followed": true,
+            "id": "demo-10",
+            "name": "P90 · 碧海",
+            "price": 126,
+            "rarity": "蓝色",
+            "series": "S11 典藏",
+            "wear": 4.05
+        },
+        {
+            "change": 2.1,
+            "condition": "成色A",
+            "followed": false,
+            "id": "demo-11",
+            "name": "SR-3M · 幻影",
+            "price": 198,
+            "rarity": "紫色",
+            "series": "S7 典藏",
+            "wear": 9.16
+        },
+        {
+            "change": -3.6,
+            "condition": "成色B",
+            "followed": false,
+            "id": "demo-12",
+            "name": "M249 · 机械黎明",
+            "price": 384,
+            "rarity": "橙色",
+            "series": "S6 典藏",
+            "wear": 12.28
+        }
+    ],
+    "source": "synthetic_frontend_fixture",
+    "tasks": [
+        {
+            "enabled": true,
+            "id": "task-01",
+            "maxPrice": 700,
+            "maxWear": 5,
+            "minPrice": 100,
+            "name": "天命 · 低磨收藏",
+            "quantity": 4,
+            "skinId": "demo-01"
+        },
+        {
+            "enabled": true,
+            "id": "task-02",
+            "maxPrice": 450,
+            "maxWear": 5,
+            "minPrice": 100,
+            "name": "星海回响 · 价格观察",
+            "quantity": 2,
+            "skinId": "demo-02"
+        },
+        {
+            "enabled": true,
+            "id": "task-03",
+            "maxPrice": 240,
+            "maxWear": 10,
+            "minPrice": 150,
+            "name": "赤焰 · 区间筛选",
+            "quantity": 4,
+            "skinId": "demo-03"
+        },
+        {
+            "enabled": false,
+            "id": "task-04",
+            "maxPrice": 850,
+            "maxWear": 5,
+            "minPrice": 600,
+            "name": "极光 · 收藏备选",
+            "quantity": 1,
+            "skinId": "demo-04"
+        },
+        {
+            "enabled": true,
+            "id": "task-05",
+            "maxPrice": 550,
+            "maxWear": 5,
+            "minPrice": 300,
+            "name": "暮光 · 低价提醒",
+            "quantity": 2,
+            "skinId": "demo-06"
+        }
+    ]
+}

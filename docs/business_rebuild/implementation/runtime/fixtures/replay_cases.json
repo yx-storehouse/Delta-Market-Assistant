@@ -1,0 +1,1425 @@
+{
+  "fixture_version": 1,
+  "status": "planned_not_run",
+  "description": "Synthetic M1 event replay expectations. No backend/worker/capture implementation was executed. Entry effects before initial checkpoint are excluded from counters.",
+  "cases": [
+    {
+      "id": "RT-01",
+      "title": "空闲停止：零需求零采集",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B43"
+      ],
+      "acceptance_ids": [
+        "T43-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Ready",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Stop",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Stopped",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "RunStopped"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": [
+          "RunStopped"
+        ]
+      }
+    },
+    {
+      "id": "RT-02",
+      "title": "开始后暂停，旧页面结果不驱动",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B35",
+        "B43"
+      ],
+      "acceptance_ids": [
+        "T35-B",
+        "T43-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Ready",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Start",
+          "payload": {
+            "configuration_reviewed": true,
+            "schedule_due": true
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Pause",
+          "payload": {}
+        },
+        {
+          "event_id": "event-3",
+          "at_mono_ms": 300,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "PageRecognized",
+          "payload": {
+            "page": "watchlist",
+            "complete": true
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Paused",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 1,
+        "capture_request_count": 1,
+        "image_file_write_count": 0,
+        "ignored_event_count": 1,
+        "required_events": [
+          "ObservationRequested",
+          "RunPaused",
+          "StaleEventIgnored"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-03",
+      "title": "暂停恢复取得新屏障，再结束空队列",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B20",
+        "B43"
+      ],
+      "acceptance_ids": [
+        "T20-A",
+        "T43-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Paused",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Resume",
+          "payload": {}
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 1,
+            "viewport_generation": 1
+          },
+          "type": "PageRecognized",
+          "payload": {
+            "page": "watchlist",
+            "complete": true
+          }
+        },
+        {
+          "event_id": "event-3",
+          "at_mono_ms": 300,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s2",
+            "cancel_epoch": 1,
+            "viewport_generation": 1
+          },
+          "type": "QueueEmpty",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Completed",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 2,
+        "capture_request_count": 2,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "RunResumed",
+          "ObservationRequested",
+          "WatchlistEntered",
+          "RunCompleted"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-04",
+      "title": "长公示等待不采集，到有效唤醒才观察",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B22"
+      ],
+      "acceptance_ids": [
+        "T22-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitDeadline",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "WatchTick",
+          "payload": {}
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "DeadlineWake",
+          "payload": {
+            "schedule_generation": 0
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Revalidate",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 1,
+        "capture_request_count": 1,
+        "image_file_write_count": 0,
+        "ignored_event_count": 1,
+        "required_events": [
+          "UnexpectedEventIgnored",
+          "ObservationRequested"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-05",
+      "title": "未知回执保留数量预留，不自动重发",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B28",
+        "B30"
+      ],
+      "acceptance_ids": [
+        "T28-B",
+        "T30-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitReceipt",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "AwaitingReceipt",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "acknowledged",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "receipt-unknown",
+            "outcome": "unknown",
+            "association": "confirmed"
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Reconcile",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "Unknown"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "AttemptUnknown",
+          "ReconcileRequired"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten",
+          "ReservationReleased"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-06",
+      "title": "成功事务后重复回执不重复加数",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B30",
+        "B31"
+      ],
+      "acceptance_ids": [
+        "T30-A",
+        "T31-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitReceipt",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "AwaitingReceipt",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "acknowledged",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "receipt-success",
+            "outcome": "success",
+            "association": "confirmed"
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "LedgerCommitted",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "transaction_id": "tx-1",
+            "terminal": "Success",
+            "queue_empty": true
+          }
+        },
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 300,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "receipt-success",
+            "outcome": "success",
+            "association": "confirmed"
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Completed",
+        "confirmed_success": 1,
+        "unresolved_reservations": 0,
+        "attempt_states": {
+          "attempt-1": "Success"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 1,
+        "required_events": [
+          "ReceiptCommitRequested",
+          "AttemptSucceeded",
+          "RunCompleted",
+          "DuplicateEventIgnored"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-07",
+      "title": "本地未派发Prepared在停止时释放",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B28",
+        "B31"
+      ],
+      "acceptance_ids": [
+        "T28-A",
+        "T31-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitConfirm",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "Prepared",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "not_dispatched",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Stop",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Stopped",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {
+          "attempt-1": "Cancelled"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "AttemptCancelled",
+          "ReservationReleased",
+          "RunStopped"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-08",
+      "title": "Dispatching停止仍保留预留",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B28",
+        "B31"
+      ],
+      "acceptance_ids": [
+        "T28-B",
+        "T31-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitConfirm",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "Dispatching",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "possibly_dispatched",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Stop",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Stopped",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "Unknown"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "AttemptUnknown",
+          "RunStopped"
+        ],
+        "forbidden_events": [
+          "ReservationReleased",
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-09",
+      "title": "重启载入未决，旧会话回执丢弃",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B31",
+        "B44"
+      ],
+      "acceptance_ids": [
+        "T31-B",
+        "T44-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitReceipt",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "AwaitingReceipt",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "acknowledged",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "RestartLoaded",
+          "payload": {
+            "new_session_id": "session-2",
+            "new_clock_domain_id": "clock-2"
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "old-receipt",
+            "outcome": "success",
+            "association": "confirmed"
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Reconcile",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "Unknown"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 1,
+        "required_events": [
+          "AttemptUnknown",
+          "RunRecovered",
+          "StaleEventIgnored"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-10",
+      "title": "视口变化使旧OCR事件失效",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B06",
+        "B07"
+      ],
+      "acceptance_ids": [
+        "T06-B",
+        "T07-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Observe",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "ViewportChanged",
+          "payload": {
+            "new_viewport_generation": 2
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "PageRecognized",
+          "payload": {
+            "page": "watchlist",
+            "complete": true
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Recover",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 1,
+        "required_events": [
+          "ViewportInvalidated",
+          "StaleEventIgnored"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-11",
+      "title": "worker崩溃时暂停观察并进入恢复，不建新worker循环",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B35",
+        "B44"
+      ],
+      "acceptance_ids": [
+        "T35-A",
+        "T44-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Observe",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempts": []
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "WorkerCrashed",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Recover",
+        "confirmed_success": 0,
+        "unresolved_reservations": 0,
+        "attempt_states": {},
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "ObservationCancelled",
+          "WorkerLeaseQuarantined",
+          "RecoveryRequired"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-12",
+      "title": "未知预留占满额度，新的Match不能再发起",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B16",
+        "B28"
+      ],
+      "acceptance_ids": [
+        "T16-A",
+        "T28-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Revalidate",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "Unknown",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "possibly_dispatched",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Revalidated",
+          "payload": {
+            "decision": "Match",
+            "association": "confirmed"
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "ReservationDenied",
+          "payload": {
+            "reason": "unresolved_conflict"
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Reconcile",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "Unknown"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "ReservationRequested",
+          "ReservationRejected",
+          "ReconcileRequired"
+        ],
+        "forbidden_events": [
+          "FakeActionDispatched",
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-13",
+      "title": "仅显式核验申请观察，超时后继续Unknown且不落图",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B30",
+        "B35",
+        "B37"
+      ],
+      "acceptance_ids": [
+        "T30-B",
+        "T35-B",
+        "T37-A"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "Reconcile",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "Unknown",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "possibly_dispatched",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "RequestReconcile",
+          "payload": {}
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "ObservationDeadline",
+          "payload": {}
+        }
+      ],
+      "expected": {
+        "run_state": "Reconcile",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "Unknown"
+        },
+        "demand_count": 1,
+        "capture_request_count": 1,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "ObservationRequested",
+          "ObservationExpired",
+          "ReconcileRequired"
+        ],
+        "forbidden_events": [
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-14",
+      "title": "成功回执但持久化失败不先显示成交",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B30",
+        "B31"
+      ],
+      "acceptance_ids": [
+        "T30-A",
+        "T31-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitReceipt",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "AwaitingReceipt",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "acknowledged",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "receipt-success",
+            "outcome": "success",
+            "association": "confirmed"
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "LedgerFailed",
+          "payload": {
+            "transaction_id": "tx-1",
+            "code": "E_STORAGE"
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Paused",
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempt_states": {
+          "attempt-1": "AwaitingReceipt"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "ReceiptCommitRequested",
+          "StorageFailed",
+          "RunPaused"
+        ],
+        "forbidden_events": [
+          "AttemptSucceeded",
+          "ReservationReleased",
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    },
+    {
+      "id": "RT-15",
+      "title": "Pause does not hide an already committed receipt transaction",
+      "status": "planned_not_run",
+      "basis": "new_design_synthetic",
+      "business_ids": [
+        "B30",
+        "B31"
+      ],
+      "acceptance_ids": [
+        "T30-A",
+        "T31-B"
+      ],
+      "initial": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s0",
+        "cancel_epoch": 0,
+        "viewport_generation": 1,
+        "run_state": "AwaitReceipt",
+        "mode": "Replay",
+        "now_mono_ms": 0,
+        "auto_collect": false,
+        "target_quantity": 1,
+        "confirmed_success": 0,
+        "unresolved_reservations": 1,
+        "attempts": [
+          {
+            "attempt_id": "attempt-1",
+            "intent_id": "intent-1",
+            "run_id": "run-1",
+            "rule_ref": {
+              "task_id": "task-1",
+              "revision": 1
+            },
+            "kind": "purchase",
+            "state": "AwaitingReceipt",
+            "quantity": 1,
+            "reservation_held": true,
+            "dispatch_proof": "acknowledged",
+            "receipt_identity": null
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "event_id": "event-1",
+          "at_mono_ms": 100,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s0",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Receipt",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "receipt_identity": "receipt-success",
+            "outcome": "success",
+            "association": "confirmed"
+          }
+        },
+        {
+          "event_id": "event-2",
+          "at_mono_ms": 200,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "Pause",
+          "payload": {}
+        },
+        {
+          "event_id": "event-3",
+          "at_mono_ms": 300,
+          "context": {
+            "run_id": "run-1",
+            "session_id": "session-1",
+            "clock_domain_id": "clock-1",
+            "step_id": "s1",
+            "cancel_epoch": 0,
+            "viewport_generation": 1
+          },
+          "type": "LedgerCommitted",
+          "payload": {
+            "attempt_id": "attempt-1",
+            "transaction_id": "tx-1",
+            "terminal": "Success",
+            "queue_empty": true
+          }
+        }
+      ],
+      "expected": {
+        "run_state": "Paused",
+        "confirmed_success": 1,
+        "unresolved_reservations": 0,
+        "attempt_states": {
+          "attempt-1": "Success"
+        },
+        "demand_count": 0,
+        "capture_request_count": 0,
+        "image_file_write_count": 0,
+        "ignored_event_count": 0,
+        "required_events": [
+          "ReceiptCommitRequested",
+          "RunPaused",
+          "AttemptSucceeded"
+        ],
+        "forbidden_events": [
+          "RunCompleted",
+          "ObservationRequested",
+          "RealActionDispatched",
+          "ImageFileWritten"
+        ],
+        "exact_events": null
+      }
+    }
+  ]
+}

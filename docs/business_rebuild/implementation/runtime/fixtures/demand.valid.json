@@ -1,0 +1,31 @@
+{
+  "demand_id": "demand-1",
+  "context": {
+    "run_id": "run-1",
+    "session_id": "session-1",
+    "clock_domain_id": "clock-1",
+    "step_id": "s1",
+    "cancel_epoch": 0,
+    "viewport_generation": 1
+  },
+  "mode": "one_shot",
+  "purpose": "listing_fields",
+  "created_mono_ms": 100,
+  "not_before_mono_ms": 100,
+  "deadline_mono_ms": 1100,
+  "max_frame_age_ms": 250,
+  "frame_budget": 1,
+  "min_interval_ms": 0,
+  "roi_specs": [
+    {
+      "roi_id": "price",
+      "coordinate_space": "client_physical_px",
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 50,
+      "transform_version": 1
+    }
+  ],
+  "persistence": "none"
+}

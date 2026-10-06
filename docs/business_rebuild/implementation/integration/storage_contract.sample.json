@@ -1,0 +1,23 @@
+{
+  "example_only": true,
+  "contract_version": "0.3.0",
+  "backend": "in_memory_m1",
+  "sqlite_backend": {"enabled": false, "target_ticket": "PR10", "qt_sql_linked_in_current_build": false},
+  "ids": {"event": "evt-001", "attempt": "att-001", "intent": "intent-001", "receipt": "rcpt-001", "transaction": "tx-001", "reservation": "res-001"},
+  "operation_sequence": [
+    {"op": "reserve", "attempt_state": "Prepared", "reservation_state": "held"},
+    {"op": "dispatch", "attempt_state": "Sent", "dispatch_proof": "possibly_dispatched"},
+    {"op": "receipt", "outcome": "unknown", "attempt_state": "Unknown", "reservation_state": "unresolved"},
+    {"op": "reconcile", "outcome": "success", "attempt_state": "Success", "reservation_state": "consumed"},
+    {"op": "ledger_commit", "transaction_id": "tx-001"}
+  ],
+  "invariants": [
+    "duplicate receipt identity is idempotent",
+    "same identity with different payload is conflict",
+    "Unknown keeps reservation",
+    "Pause/Stop does not erase possibly dispatched attempt",
+    "LedgerCommitted after Stop updates ledger but does not resume run",
+    "image_ref is null unless explicit user export occurred"
+  ],
+  "execution": {"application_tests_run": false, "sample_executed": false}
+}

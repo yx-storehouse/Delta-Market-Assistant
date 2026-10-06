@@ -1,0 +1,11 @@
+--- BASELINE_COPY.json
++++ MODIFIED_FILE.json
+@@ -1,7 +1,7 @@
+ {
+   "branch": "m1_pr07_ui",
+   "field": "import_configuration_path",
+-  "value": "direct_load",
++  "value": "readonly_preview",
+   "committable": false,
+   "actions_enabled": false,
+   "image_file_write_count": 0,

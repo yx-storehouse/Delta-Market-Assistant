@@ -1,0 +1,38 @@
+{
+  "baseline_id": "m1_pr01_pr04",
+  "created_at": "2026-10-06",
+  "parent_baseline": "artifacts/business_rebuild_docs/project_baseline.json",
+  "scope": "PR01-PR04 domain/replay implementation and current M1 UI projection integration working tree",
+  "follow_on_changes": [
+    "PR05 UI projection is present in the current working tree and is recorded here without claiming full PR05 acceptance"
+  ],
+  "files": {
+    "CMakeLists.txt": "9f3e4c2faaae5cb000157832c5106937ddf0686caecd1ed4d4778a66722e334e",
+    "src/mainwindow.cpp": "edbcf13720cf08cc49220c3874a624376630d21df02cd63c42cd4d4b1f7ae49c",
+    "src/mainwindow.h": "cc05f70f5914352cdfb4001b5702b0370cfea4b7cafc4db82ba075f543dd0b90",
+    "src/business/matcher.cpp": "d326bd087cb581ecf29047683bf1ad9cf87e12ff5fd08335985d8db8b9b0e3ac",
+    "src/business/matcher.h": "cc9c6b652adb2c61b5f7b408cb5973d920502ab6e3c8c7330596fcc0d4e8321d",
+    "src/business/models.cpp": "a615447cf732d88aadedebaf1e70f404d4ef08d6c745b7f4e7009580f7362f8a",
+    "src/business/models.h": "94de021a7c8943725989a40135fd7dbe97d950a93db4d32a04c11bbfca0e5544",
+    "src/business/validation.h": "37bb7e417cfd106172679697546ef862c0ccf2e270be6312900a22fc4a0802e1",
+    "src/business/validator.cpp": "92456805b5783530f8f37bee3ef616950480004032f615461fff8fcd5a5db14b",
+    "src/business/validator.h": "8f88317039d50f43f7b6db0cb6d6a306c198a6d9044f169769cfc6135a2c08e9",
+    "src/business/value_types.cpp": "f40a640ba7aabd7a35d18dc0d9ffe65d80a19f278e812f92bc2b681b203ebfdc",
+    "src/business/value_types.h": "e39072c4e6adfba77291bc6adb2bb10270401bf689032a9310d6f818190d5d00",
+    "tests/business/business_tests.cpp": "38a658c4634b48ea1362568767a33ce069166e214e2edf1a2a5832b16c4791cf",
+    "tests/business/rule_tests.cpp": "cac3deae13ab67d668af30a255532378a4422d0da1825c77dba839cc7df51ff2",
+    "tests/business/value_tests.cpp": "436ebdb8e7fc321f15ce7c14cf0e5aaf2d80e25b47ba882799744207ea901a69",
+    "src/application/runtime/replay_controller.cpp": "3afb54c68d5af71b97c824d86881444ba2f9a5c0450df64e27fe25269b5e07be",
+    "src/application/runtime/replay_controller.h": "d6d6f8895ec18c73c69fe695c9aea0a6f156166a6aea148850a5aeeb5891a1da",
+    "src/application/runtime/runtime.cpp": "b4c757b73917aba53a84fc73181de03e041f0b9a2631443aca9630ab7d33e4b5",
+    "src/application/runtime/runtime.h": "77b6110c687b4a905e3ad76d4cd2b0fe30512c0644ded9e072bb75b09313d773",
+    "src/application/runtime/ui_projection.cpp": "bc3d85c8d870bdfd6d268bc4ade0559faf73b6300a39b9491bfd83cfda999f27",
+    "src/application/runtime/ui_projection.h": "85d76c639a0894fae2601194b660dd569d23db8a6738dccd50b6bbe734053486",
+    "tests/runtime/replay_tests.cpp": "dd477ec2cf8f63a7afd47bb7a0f681806327115936eb19e632d68cd839767c7d"
+  },
+  "expected_project_baseline_drift": [
+    "CMakeLists.txt",
+    "src/mainwindow.cpp",
+    "src/mainwindow.h"
+  ]
+}

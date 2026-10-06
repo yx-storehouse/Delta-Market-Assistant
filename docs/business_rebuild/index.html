@@ -1,0 +1,2664 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Relink Studio · 业务重构开发文档</title><style>
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:#f3f3f3;color:#252525;font:15px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}
+aside{position:fixed;inset:0 auto 0 0;width:254px;border-right:1px solid #ddd;padding:32px 22px;background:#f3f3f3;overflow:auto}
+.brand{font-size:19px;font-weight:650;letter-spacing:.3px}.sub{font-size:12px;color:#777;margin:6px 0 32px}nav a{display:block;padding:9px 12px;border-radius:9px;text-decoration:none;color:#444;margin:4px 0;font-size:13px}nav a:first-child{background:white;box-shadow:0 1px 4px #00000008;color:#151515;font-weight:600}nav a:hover{background:white}.aside-note{border-top:1px solid #ddd;margin-top:24px;padding-top:20px;font-size:12px;color:#777}
+main{margin-left:254px;padding:34px 42px 70px;max-width:1620px}.hero{padding:30px 34px;background:#fff;border:1px solid #e2e2e2;border-radius:20px;margin-bottom:24px}.eyebrow{font-size:12px;color:#777;letter-spacing:1px}.hero h1{font-size:33px;line-height:1.4;margin:12px 0}.hero p{color:#686868;margin:8px 0 22px}.stats{display:flex;gap:14px;flex-wrap:wrap}.stats span{border:1px solid #e3e3e3;border-radius:10px;padding:8px 14px;font-size:12px;background:#fafafa}.stats b{font-size:20px;margin-right:7px;color:#242424}.label{display:inline-block;padding:4px 10px;border-radius:6px;background:#efefef;font-size:12px;color:#555}
+section{scroll-margin-top:22px;padding:28px 32px;margin-bottom:22px;background:#fff;border:1px solid #e3e3e3;border-radius:18px;min-width:0}section>h1{font-size:25px;line-height:1.5;margin:0 0 22px}h2{font-size:20px;margin:34px 0 14px;padding-top:6px}h3{font-size:16px;margin-top:24px}p{margin:12px 0}a{color:#252525;text-decoration:underline;text-underline-offset:3px}a:hover{color:#666}blockquote{margin:18px 0;background:#f7f7f7;border-left:3px solid #aaa;padding:10px 17px;border-radius:0 8px 8px 0;color:#5c5c5c}blockquote p{margin:3px 0}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto;margin:18px 0;border:1px solid #ddd;border-radius:10px;overflow:hidden}th,td{padding:11px 12px;text-align:left;vertical-align:top;border-right:1px solid #eee;border-bottom:1px solid #e8e8e8;overflow-wrap:anywhere}th{background:#f4f4f4;font-weight:600}tr:last-child td{border-bottom:0}td:last-child,th:last-child{border-right:0}tr:nth-child(even) td{background:#fcfcfc}
+code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#f5f5f5;border:1px solid #e2e2e2;border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}pre code{background:none;padding:0}ul,ol{padding-left:24px}li{margin:7px 0}figure{margin:22px 0}svg{display:block;width:100%;height:auto}footer{padding:10px 4px;color:#777;font-size:12px}
+@media(max-width:1050px){aside{position:relative;width:auto;border-right:0;border-bottom:1px solid #ddd;padding:18px 22px}nav{display:flex;flex-wrap:wrap}.sub,.aside-note{display:none}main{margin-left:0;padding:20px}section{padding:22px 18px}.hero{padding:23px}table{font-size:12px}th,td{padding:9px}}
+@media print{aside{display:none}main{margin:0;padding:0;max-width:none}section,.hero{border:0;padding:0;break-before:page}section:first-of-type{break-before:auto}a{color:#222}body{background:white}table{font-size:10px}pre{white-space:pre-wrap}.hero{break-before:auto}}
+</style></head><body>
+<aside><div class="brand">Relink Studio</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav><a href="#doc-README">总览</a><a href="#doc-01_business">01 业务清单</a><a href="#doc-02_vision_architecture">02 图像识别 / 架构</a><a href="#doc-03_data_config">03 数据 / 参数</a><a href="#doc-04_state_machine">04 状态机</a><a href="#doc-05_delivery_tests">05 开发 / 验收</a><a href="#doc-06_evidence_references">06 证据 / 参考资料</a><a href="#doc-07_decisions">07 决策 / 待确认</a><a href="#doc-08_implementation_ready">08 开工标准 / 纵切片</a><a href="#doc-acceptance_cases">88 条验收规格</a><a href="#doc-NEXT_IMPLEMENTATION">下一轮开发交接</a></nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>步骤按需采集 · 内存识别<br>M1 已达到可开工规格<br>Ctrl + F 搜索业务与参数</div></aside>
+<main><header class="hero"><div class="eyebrow">业务规则独立重构 · 保留现有界面</div><h1>从业务证据，到开发规格。</h1><p>v0.3：M1 首条纵切片已经具备可开工契约；步骤按需采集，实时图像默认不落盘。OpenCV、OCR 与业务状态机分层，已确认事实与待决规则分开。</p><div class="stats"><span><b>44</b>业务 / 工程条目</span><span><b>88</b>待实施验收规格</span><span><b>16</b>已核查官方资料</span><span><b>12</b>证据 / 需求记录组</span></div></header>
+<section id="doc-README"><h1>Relink Studio · 业务重构开发文档</h1>
+<blockquote>
+<p>文档版本：0.3 · 2026-10-06 · 状态：M1 已达到可开工规格，业务引擎尚未实现。<br />
+依据：既有 BBZPS 静态证据、历史运行日志、当前 Relink Studio 0.6.0 源码及最新界面约定。此次只生成文档和文档验收工件，没有运行 BBZPS，也没有修改前端源码或发布程序。</p>
+</blockquote>
+<h2>先看结论</h2>
+<p><strong>v0.2 已按用户补充固定采集策略：到需要识别的业务步骤才取新画面，图像只走内存，默认不保存截图或临时图片。</strong> 空闲/暂停/长等待不持续采集和OCR；成功、报错也不自动落图。图片只在用户主动导出或显式开启限量调试时保存。配置和必要业务记录仍正常持久化，不逐帧写日志。[E12；ADR10]</p>
+<p><strong>采用“保留现有 Win11 白灰界面，独立重写业务层”的路线，不把原程序的 EXE、DLL 或授权组件搬过来。</strong> 最值得采用的是它的两阶段业务组织：先按条件找卖单并收藏，再在关注列表处理公示倒计时、确认与结果核验。[E03、E04]</p>
+<p><strong>它有 OpenCV，但不只是 OpenCV。</strong> 目录有 <code>cv2</code>，OCR 库里有 OpenCV 字符串；这份名为 <code>gdi32.dll</code> 的文件实际导出 <code>TomatoOCR</code>、<code>ocrScreen</code>、<code>ocrWindow</code>、<code>ocrImageData</code> 等接口。更准确的判断是“图像处理 + OCR + 页面语义 + 状态机”。<code>ppocrv5</code> 和 MNN 工程路径只是内部组件线索，尚不足以证明运行时选用了哪一个模型及什么参数。[E01、E02、E10]</p>
+<p><strong>我们需要重构的不是几个识别函数，而是完整的可核验流程。</strong> 数据上要分开商品、卖单观测、任务规则、运行实例和操作回执；工程上要分开 UI、截图、视觉识别、纯规则、调度与账本。先让离线数据回放正确，再做只读观察和自有测试窗口闭环。[E04、E08；本项目设计]</p>
+<p><strong>现在已经补到了可以真正开工的程度，但只对 M1 首条纵切片作出 Ready 判断。</strong> 域模型、规则原因码、状态/事件、按需采集与租约、UI命令投影、账本事务、任务票、GWT测试、构建基线和回退要求均有独立契约；M2 的真实捕获/OCR、M3 的旧延迟/限购语义、M4 的外部动作仍不能靠文档“假装完成”。[08、implementation/readiness]</p>
+<h2>从这里阅读</h2>
+<table>
+<thead>
+<tr>
+<th>文档</th>
+<th>解决什么问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#doc-01_business">01 · 业务清单与追踪矩阵</a></td>
+<td>44 项可见业务/重构能力，逐项列来源、现状、模块和验收</td>
+</tr>
+<tr>
+<td><a href="#doc-02_vision_architecture">02 · 图像识别与系统架构</a></td>
+<td>OpenCV / OCR 分工、Qt 工具链、worker 协议、截图与 DPI</td>
+</tr>
+<tr>
+<td><a href="#doc-03_data_config">03 · 数据结构与配置迁移</a></td>
+<td>13 列任务、全部可见运行参数、schema v1→v2、未知字段保留</td>
+</tr>
+<tr>
+<td><a href="#doc-04_state_machine">04 · 状态机与业务规则</a></td>
+<td>收藏/关注双阶段、倒计时、结果核验、数量预留、失败恢复</td>
+</tr>
+<tr>
+<td><a href="#doc-05_delivery_tests">05 · 开发计划与验收</a></td>
+<td>M0–M4 工作包、测试数据、验收门槛、发布和回退</td>
+</tr>
+<tr>
+<td><a href="#doc-06_evidence_references">06 · 证据与参考资料</a></td>
+<td>E→F→P 追踪链及 16 项官方资料、核查记录</td>
+</tr>
+<tr>
+<td><a href="#doc-07_decisions">07 · 决策与待确认项</a></td>
+<td>不猜填未知字段；阻塞点、默认处理及解除条件</td>
+</tr>
+<tr>
+<td><a href="#doc-acceptance_cases">88 条验收规格</a></td>
+<td>正常、边界、异常用例；目前均未执行后端验收</td>
+</tr>
+<tr>
+<td><a href="#doc-NEXT_IMPLEMENTATION">后续开发交接提示词</a></td>
+<td>下一轮可直接复用的 M1 开发任务</td>
+</tr>
+<tr>
+<td><a href="#doc-08_implementation_ready">08 · 开发开工标准与首条纵切片</a></td>
+<td>文档达到什么闭环才可写代码；M1/M2/M3/M4当前等级和PR01–PR05顺序</td>
+</tr>
+<tr>
+<td><a href="implementation/README.md">implementation/</a></td>
+<td>领域Schema、运行时协议、UI/存储集成、12张PR任务票和30条GWT测试</td>
+</tr>
+</tbody>
+</table>
+<p>便于直接阅读的单文件入口是同目录 <code>index.html</code>；不依赖在线脚本、字体或样本程序。Markdown 是可编辑源文件，JSON 是业务/用例/资料的机器可读索引。真正开工时先读 <code>08_implementation_ready.md</code>，再进入 <code>implementation/readiness/backlog.md</code>，不要直接从旧 <code>src/domain.h</code> 猜新业务。</p>
+<h2>文档中的事实等级</h2>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>含义</th>
+<th>使用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>证据确认</td>
+<td>配置、导出接口或历史日志直接支持</td>
+<td>说明看到的行为，不扩展为全部源代码行为</td>
+</tr>
+<tr>
+<td>合理推断</td>
+<td>多个证据支持，但没有完整函数或边界证据</td>
+<td>进入导入预览/待决表，不作为默认执行规则</td>
+</tr>
+<tr>
+<td>用户约定</td>
+<td>原 Relink 截图入口与本项目 AGENTS.md</td>
+<td>保留入口；不能声称 BBZPS 有完全相同实现</td>
+</tr>
+<tr>
+<td>重构设计</td>
+<td>为可靠性、可测试性提出的新方案</td>
+<td>接受后实施；不冒充原程序逻辑</td>
+</tr>
+<tr>
+<td>待决</td>
+<td>当前资料不足</td>
+<td>保留原值、记录影响和解除条件</td>
+</tr>
+</tbody>
+</table>
+<p>E 编号沿用上一轮分析并补充 E10、E11、E12；E12记录用户本次的按需采集要求，R 编号是官方技术资料。<strong>技术资料说明新实现可以如何做，不是证明 BBZPS 具体用了某个 API。</strong></p>
+<h2>当前基线和第一步</h2>
+<ul>
+<li>当前程序仍是 C++17 / Qt 6 Widgets 的 0.6.0 演示前端；配置为 <code>schema_version=1</code>、<code>demo=true</code>，<code>simulateTick()</code> 只处理合成数据。[E08]</li>
+<li>界面继续 Win11 / 微软商店浅色白灰：<code>#F3F3F3</code> 底、<code>#F9F9F9</code> 内容、白卡片、中性近黑强调，<strong>不使用蓝色</strong>；运行/任务页、关注列表、右侧编辑、底部价格图不重做。[E11]</li>
+<li>第一开发里程碑 M1：独立领域模型、纯规则解释器、旧配置导入预览、离线回放、InMemory事件账本和UI解释投影。截图/OCR 在 M2 接入；当前界面本身继续不发出点击或购买。[设计]</li>
+<li>M1首条纵切片顺序固定为 PR01→PR05：领域库/值对象→纯匹配→可控回放→现有UI显示；QtSql、OpenCV、OCR、WGC/DXGI和真实输入不进入首个PR。[08、implementation/readiness]</li>
+<li>完成代码修改后仍交付解压目录 <code>C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe</code>，并保留 DLL 和 <code>platforms</code>。本轮没有改这份 EXE。[E11]</li>
+</ul>
+<h2>文档交付复验</h2>
+<p>在项目根目录运行：</p>
+<pre><code class="language-powershell">python -I -X utf8 docs\business_rebuild\scripts\validate_docs.py
+python -I -X utf8 docs\business_rebuild\scripts\validate_docs.py --evidence E04
+</code></pre>
+<p>检查覆盖业务与用例互链、示例 JSON、证据哈希、官方资料核查记录、内部链接，以及源码/发布目录与本轮基线是否一致。它检查的是<strong>文档与示例契约</strong>，不是后端业务已经通过 88 条用例。实际输出见随包的 <a href="verification/VERIFICATION.txt">VERIFICATION.txt</a>，项目原始记录在 <code>artifacts/business_rebuild_docs/</code>。</p></section><section id="doc-01_business"><h1>01 · 全量可见业务清单与追踪矩阵</h1>
+<blockquote>
+<p>“全量”指本次配置、历史日志、静态接口和用户入口约定所覆盖的业务；不等于已恢复受保护主体的全部源码。44 项由证据确认、用户约定、合理推断和重构新增共同组成，类别逐行标注。</p>
+</blockquote>
+<p>本表的“阶段”是开发安排，不是已交付状态。M0 为文档，M1 为模型/回放，M2 为视觉/只读观察，M3 为双阶段流程回放，M4 为自有测试窗口闭环与发布准备。测试编号的用例均为<strong>待实现验收规格</strong>。</p>
+<p>证据 E 编号见 <a href="#doc-06_evidence_references">证据与参考资料</a>；R 编号是官方技术资料，不能代替样本行为证据。</p>
+<table>
+<thead>
+<tr>
+<th>ID / 业务</th>
+<th>依据 / 当前实现</th>
+<th>重构规则</th>
+<th>模块 / 阶段</th>
+<th>证据 / 技术参考 / 验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>B01 方案管理</strong></td>
+<td>用户约定<br>已有 profile 字段；独立多方案仓库待建</td>
+<td>方案有稳定 ID、版本、独立任务与运行参数；切换不隐式启动。</td>
+<td>CFG / M1</td>
+<td>E08 E11<br>R12<br>T01-A T01-B</td>
+</tr>
+<tr>
+<td><strong>B02 运行、暂停、停止与快捷键</strong></td>
+<td>用户约定<br>现有 start/pause 是模拟</td>
+<td>按 run_id 管理运行；暂停冻结新意图，停止取消待办；快捷键具有防抖且可显示冲突。</td>
+<td>RUN / M1</td>
+<td>E08 E11<br>R09 R10<br>T02-A T02-B</td>
+</tr>
+<tr>
+<td><strong>B03 定时与市场开放检查</strong></td>
+<td>证据确认+用户约定<br>已有起止时间配置</td>
+<td>用户定时与市场开放是独立条件；支持跨午夜及显式时区；未开放进入暂停而非失败。</td>
+<td>SCHED / M3</td>
+<td>E03 E04 E11<br>R08 R16<br>T03-A T03-B</td>
+</tr>
+<tr>
+<td><strong>B04 收藏任务编辑与成色规则</strong></td>
+<td>证据确认+用户约定<br>已有商品/价格/磨损/数量/成色</td>
+<td>区分成色枚举、磨损数值、品阶、稀有度；支持新增编辑删除、启停、复制；运行使用规则快照。</td>
+<td>CFG / M1</td>
+<td>E03 E08 E11<br>R12<br>T04-A T04-B</td>
+</tr>
+<tr>
+<td><strong>B05 BBZPS 13 列任务导入</strong></td>
+<td>证据确认+推断<br>尚未实现</td>
+<td>只解析文本；未知末两列和有歧义的价格/时间先保留 raw 与 review 状态；不导入凭据。</td>
+<td>CFG / M1</td>
+<td>E03<br>R12<br>T05-A T05-B</td>
+</tr>
+<tr>
+<td><strong>B06 步骤按需采集、DPI 与坐标变换</strong></td>
+<td>证据确认+用户补充<br>尚无截图模块</td>
+<td>仅业务步骤提出需求时获取新帧；空闲/暂停/长等待停采集；图像走内存。Frame带DPI、尺寸、代次与单调时间。</td>
+<td>CAP / M2</td>
+<td>E04 E12<br>R03 R04 R05<br>T06-A T06-B</td>
+</tr>
+<tr>
+<td><strong>B07 全屏/ROI 图像处理与 OCR</strong></td>
+<td>证据确认+用户补充<br>尚无视觉依赖</td>
+<td>OpenCV与独立OCR按步骤处理内存ROI；原图暂存有界缓冲区，用完释放；不编码或落盘中间图片。</td>
+<td>VIS / M2</td>
+<td>E02 E04 E10 E12<br>R01 R02 R06 R07<br>T07-A T07-B</td>
+</tr>
+<tr>
+<td><strong>B08 页面分类与导航状态</strong></td>
+<td>证据确认<br>尚未实现</td>
+<td>识别仓库、市场入口、筛选、商品列表、详情、关注列表、确认/结果弹窗；多锚点判定，Unknown 为正常状态。</td>
+<td>NAV / M2</td>
+<td>E04<br>R01 R06<br>T08-A T08-B</td>
+</tr>
+<tr>
+<td><strong>B09 赛季、拥有状态与品阶筛选</strong></td>
+<td>证据确认<br>Task 未包含这些字段</td>
+<td>设置前后读取实际筛选值；品阶与稀有度独立；不支持的筛选停在可解释的状态。</td>
+<td>NAV / M3</td>
+<td>E03 E04<br>R06<br>T09-A T09-B</td>
+</tr>
+<tr>
+<td><strong>B10 目标枪皮查找与翻页</strong></td>
+<td>证据确认<br>尚未实现</td>
+<td>名称归一化但保留原文；分页进度/重复页检测；找不到时记录原因并转下一任务。</td>
+<td>NAV / M3</td>
+<td>E04<br>R01 R06<br>T10-A T10-B</td>
+</tr>
+<tr>
+<td><strong>B11 成色筛选</strong></td>
+<td>证据确认<br>现有 condition 匹配</td>
+<td>不限与 S/A/B/C 分离；成色标签和磨损阈值共同约束，不把样例阈值当通用成色定义。</td>
+<td>RULE / M1</td>
+<td>E03 E04 E08<br>R06<br>T11-A T11-B</td>
+</tr>
+<tr>
+<td><strong>B12 公示期筛选</strong></td>
+<td>证据确认<br>尚未实现</td>
+<td>规则筛选公示状态与运行倒计时分开；缺失数据为 Unknown，原文可追溯。</td>
+<td>RULE / M3</td>
+<td>E03 E04<br>R06 R08<br>T12-A T12-B</td>
+</tr>
+<tr>
+<td><strong>B13 稀有度与排序</strong></td>
+<td>证据确认<br>当前 Skin.rarity 含义需迁移</td>
+<td>稀有度独立字段；区分请求排序和观测排序；默认排序不等于价格升序。</td>
+<td>NAV / M3</td>
+<td>E03 E04<br>R06<br>T13-A T13-B</td>
+</tr>
+<tr>
+<td><strong>B14 价格提取与区间判定</strong></td>
+<td>证据确认+推断<br>模拟含闭区间过滤</td>
+<td>金额按明确单位的定点整数处理；千分位经格式校验；上下限边界是新规格而不是样本确证。</td>
+<td>RULE / M1</td>
+<td>E03 E04<br>R06<br>T14-A T14-B</td>
+</tr>
+<tr>
+<td><strong>B15 磨损提取与阈值</strong></td>
+<td>证据确认<br>模拟含 maxWear 过滤</td>
+<td>磨损独立解析，保留原文和精度；新模型采用十进制定点；禁止凭成色反推实际磨损。</td>
+<td>RULE / M1</td>
+<td>E03 E04<br>R06<br>T15-A T15-B</td>
+</tr>
+<tr>
+<td><strong>B16 联合匹配与可解释原因</strong></td>
+<td>证据确认+重构设计<br>当前模拟布尔过滤</td>
+<td>纯函数输入规则和观测，返回 Match/NoMatch/NeedsReview 及逐字段原因；缺字段不放宽筛选。</td>
+<td>RULE / M1</td>
+<td>E04 E08<br>R06<br>T16-A T16-B</td>
+</tr>
+<tr>
+<td><strong>B17 自动收藏与成功回执</strong></td>
+<td>证据确认+用户约定<br>autoCollect 仅保存</td>
+<td>匹配→收藏意图→观测成功提示/关注状态；autoCollect 关闭仅展示匹配；回执与原条目关联。</td>
+<td>COLLECT / M3</td>
+<td>E04 E11<br>R08<br>T17-A T17-B</td>
+</tr>
+<tr>
+<td><strong>B18 超价提前结束扫描</strong></td>
+<td>证据确认+重构设计<br>尚未实现</td>
+<td>只有证实全局单调价格升序且分页排序稳定，才用超上限终止余项；否则逐条跳过。</td>
+<td>COLLECT / M3</td>
+<td>E04<br>R06<br>T18-A T18-B</td>
+</tr>
+<tr>
+<td><strong>B19 关注上限与阶段切换</strong></td>
+<td>证据确认<br>尚未实现</td>
+<td>观测到关注已满即停止收藏转向关注阶段；上限数值未知，不在实现硬编码。</td>
+<td>COLLECT / M3</td>
+<td>E04<br>R08<br>T19-A T19-B</td>
+</tr>
+<tr>
+<td><strong>B20 关注列表与卖单关联</strong></td>
+<td>证据确认+重构设计<br>当前关注是商品层演示</td>
+<td>商品与卖单分离；无稳定卖单ID时用 observation association 并标注不确定性；位置只是瞬时属性。</td>
+<td>LISTING / M1</td>
+<td>E04 E08<br>R06<br>T20-A T20-B</td>
+</tr>
+<tr>
+<td><strong>B21 时钟偏移估计</strong></td>
+<td>证据确认+重构设计<br>尚未实现</td>
+<td>估计服务端偏移及不确定度；单调时钟计算经过时间；不修改系统时间，失败标明 degraded。</td>
+<td>CLOCK / M3</td>
+<td>E03 E04<br>R08 R16<br>T21-A T21-B</td>
+</tr>
+<tr>
+<td><strong>B22 公示倒计时与队列</strong></td>
+<td>证据确认+用户补充<br>尚未实现</td>
+<td>倒计时采用区间和代次；长等待不持续取帧，到点唤醒再观察；临近阶段只开启有界观察。</td>
+<td>SCHED / M3</td>
+<td>E04 E12<br>R08 R09<br>T22-A T22-B</td>
+</tr>
+<tr>
+<td><strong>B23 固定购买延迟</strong></td>
+<td>用户约定+样本参数线索<br>purchaseDelayMs 默认830，仅保存</td>
+<td>新字段显式毫秒；触发基准必须在适配器规范中定义；BBZPS clicktime 单位未定，暂不换算。</td>
+<td>SCHED / M3</td>
+<td>E03 E08 E11<br>R08 R09<br>T23-A T23-B</td>
+</tr>
+<tr>
+<td><strong>B24 动态延迟区间/自调节</strong></td>
+<td>推断+用户约定<br>dynamicDelay 仅保存</td>
+<td>原程序精确公式未知；先定义策略接口及上下限/步长/证据记录，第一版默认关闭。</td>
+<td>SCHED / M3</td>
+<td>E03 E04 E11<br>R08 R09<br>T24-A T24-B</td>
+</tr>
+<tr>
+<td><strong>B25 队列已满减延迟</strong></td>
+<td>用户约定<br>queueFullTrigger/StepMs 仅保存</td>
+<td>与BBZPS参数映射未证实；拟每达到独立连续触发次数后减一个步长，重复帧不重复计数；待决D04。</td>
+<td>SCHED / M3</td>
+<td>E08 E11<br>R08 R09<br>T25-A T25-B</td>
+</tr>
+<tr>
+<td><strong>B26 公示期提示加延迟</strong></td>
+<td>用户约定<br>publicityTrigger/StepMs 仅保存</td>
+<td>拟以确认尝试后仍显示公示期的回执计数，而非日常倒计时画面；策略待决D04。</td>
+<td>SCHED / M3</td>
+<td>E08 E11<br>R08 R09<br>T26-A T26-B</td>
+</tr>
+<tr>
+<td><strong>B27 连点、间隔与次数</strong></td>
+<td>证据确认+用户约定<br>burstClick/clickIntervalMs 仅保存</td>
+<td>拆分用户连点参数与动作策略；停止/失焦/变页立即清空余项；未知结果不作为无限重试条件。</td>
+<td>ACTION / M4</td>
+<td>E03 E04 E11<br>R08 R09<br>T27-A T27-B</td>
+</tr>
+<tr>
+<td><strong>B28 数量目标与品级限购</strong></td>
+<td>用户约定+样本参数线索<br>Task.quantity 和橙紫蓝限购仅保存</td>
+<td>数量根据已确认成功+未决预留计算；限购周期、颜色到品阶映射待决D05；99999不默认解释为无限。</td>
+<td>LEDGER / M3</td>
+<td>E03 E08 E11<br>R13<br>T28-A T28-B</td>
+</tr>
+<tr>
+<td><strong>B29 确认与二次确认</strong></td>
+<td>证据确认<br>尚未实现</td>
+<td>动作前复核卖单/价格/窗口代次；确认弹窗是独立状态；发起和成功分别记账。</td>
+<td>ACTION / M4</td>
+<td>E04<br>R08<br>T29-A T29-B</td>
+</tr>
+<tr>
+<td><strong>B30 成交、已售、下架与未知结果</strong></td>
+<td>证据确认<br>simulateTick 只产生演示成功</td>
+<td>明确成功/明确失败/结果未知三分；已售或下架不是本人成交；购买全部结束不是成功依据。</td>
+<td>LEDGER / M3</td>
+<td>E04<br>R13<br>T30-A T30-B</td>
+</tr>
+<tr>
+<td><strong>B31 幂等账本与崩溃恢复</strong></td>
+<td>重构新增<br>尚未实现</td>
+<td>持久化意图/发起/回执；重启进入核验而不是重发；无订单ID时不承诺外部操作exactly-once。</td>
+<td>LEDGER / M1</td>
+<td>E04 E08<br>R13<br>T31-A T31-B</td>
+</tr>
+<tr>
+<td><strong>B32 挂机：刷新页面</strong></td>
+<td>用户约定<br>refreshPage 仅保存</td>
+<td>只在配置允许且无未决确认时刷新；刷新使旧观测、坐标和意图失效。</td>
+<td>NAV / M4</td>
+<td>E08 E11<br>R08<br>T32-A T32-B</td>
+</tr>
+<tr>
+<td><strong>B33 挂机：跳过抽奖页</strong></td>
+<td>用户约定<br>skipLotteryPage 仅保存</td>
+<td>需独立抽奖页样本及退出控件锚点；与购买确认页分开。</td>
+<td>NAV / M4</td>
+<td>E08 E11<br>R01 R06<br>T33-A T33-B</td>
+</tr>
+<tr>
+<td><strong>B34 挂机：跳过成功页</strong></td>
+<td>用户约定<br>skipSuccessPage 仅保存</td>
+<td>先核验/留证/提交账本，再关闭成功页；关闭不能替代成交确认。</td>
+<td>NAV / M4</td>
+<td>E04 E08 E11<br>R06 R13<br>T34-A T34-B</td>
+</tr>
+<tr>
+<td><strong>B35 异常、重试、超时与卡屏</strong></td>
+<td>证据确认+用户补充<br>尚无真实运行恢复</td>
+<td>观察重试有截止时间/帧预算；暂停停采集；错误留结构化记录但不自动落图；外部副作用不盲重试。</td>
+<td>RECOVERY / M3</td>
+<td>E04 E12<br>R08 R09<br>T35-A T35-B</td>
+</tr>
+<tr>
+<td><strong>B36 OSD 收藏状态叠层</strong></td>
+<td>用户约定<br>collectOsd 仅保存</td>
+<td>叠层只展示状态与停止入口；不覆盖关键识别区域，不参与自身OCR；多显示器DPI自适应。</td>
+<td>UI / M4</td>
+<td>E08 E11<br>R05 R10<br>T36-A T36-B</td>
+</tr>
+<tr>
+<td><strong>B37 记录、按需导出与日志轮转</strong></td>
+<td>证据确认+用户补充<br>有演示日志及统计</td>
+<td>只持久化必要事件；截图默认关闭，包括成功/失败；用户手动或有界调试才保存图片；不逐帧记录OCR全文。</td>
+<td>OBS / M1</td>
+<td>E04 E08 E11 E12<br>R13<br>T37-A T37-B</td>
+</tr>
+<tr>
+<td><strong>B38 价格历史图与数据导出</strong></td>
+<td>用户约定+重构设计<br>图表和CSV当前为演示</td>
+<td>观测价不等于成交价；曲线标注来源、成色、时间与缺口；CSV保留数据来源标签。</td>
+<td>UI / M1</td>
+<td>E08 E11<br>R12 R13<br>T38-A T38-B</td>
+</tr>
+<tr>
+<td><strong>B39 配置导入导出与版本迁移</strong></td>
+<td>用户约定<br>schema_version=1，demo=true</td>
+<td>新schema v2独立加载；旧版导出仍可回退；未知字段有保留容器；整份校验后原子提交。</td>
+<td>CFG / M1</td>
+<td>E08 E11<br>R12<br>T39-A T39-B</td>
+</tr>
+<tr>
+<td><strong>B40 优化入口</strong></td>
+<td>用户约定+待决<br>入口已保留，内容未定</td>
+<td>继续保留入口；先显示未配置的说明，不臆造清理/系统调参/自动提速功能。</td>
+<td>UI / M1</td>
+<td>E11<br>R12<br>T40-A T40-B</td>
+</tr>
+<tr>
+<td><strong>B41 帮助与诊断信息</strong></td>
+<td>用户约定<br>已有帮助入口</td>
+<td>帮助解释字段/单位/模式；诊断导出版本、模型哈希、DPI和错误摘要，不含凭据或整屏隐私。</td>
+<td>UI / M4</td>
+<td>E08 E11<br>R15<br>T41-A T41-B</td>
+</tr>
+<tr>
+<td><strong>B42 旧授权、依赖与附加功能的边界</strong></td>
+<td>证据确认+重构决定<br>项目不依赖样本组件</td>
+<td>复用业务事实而不复用原EXE/DLL、授权/远控链；无证据的后端账户业务不列为枪皮必要功能。</td>
+<td>PACK / M0</td>
+<td>E02 E03 E05 E07<br>R14 R15<br>T42-A T42-B</td>
+</tr>
+<tr>
+<td><strong>B43 演示、回放与观察模式隔离</strong></td>
+<td>重构新增+用户补充<br>当前只有演示</td>
+<td>Replay只读已有图片/JSON且不写中间图；Observe按步骤取内存新帧；模式切换撤销观察需求，前端不直接发输入。</td>
+<td>RUN / M1</td>
+<td>E08 E11 E12<br>R11 R12<br>T43-A T43-B</td>
+</tr>
+<tr>
+<td><strong>B44 视觉 worker 生命周期与兼容</strong></td>
+<td>重构新增+用户补充<br>尚未实现</td>
+<td>控制消息与内存像素分离；实时共享内存不转临时文件；1处理槽+1待处理槽；按租约归还、步骤/会话代次取消。</td>
+<td>VIS / M2</td>
+<td>E08 E12<br>R10 R11 R14<br>T44-A T44-B</td>
+</tr>
+</tbody>
+</table>
+<h2>入口覆盖检查</h2>
+<table>
+<thead>
+<tr>
+<th>原界面入口</th>
+<th>业务编号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方案、运行快捷键、定时</td>
+<td>B01–B03</td>
+</tr>
+<tr>
+<td>购买延迟、动态延迟、队列已满减延迟、公示期加延迟</td>
+<td>B23–B26</td>
+</tr>
+<tr>
+<td>连点、间隔、品级限购</td>
+<td>B27–B28</td>
+</tr>
+<tr>
+<td>挂机刷新、跳抽奖、跳成功页</td>
+<td>B32–B34</td>
+</tr>
+<tr>
+<td>自动收藏与 OSD、收藏任务含成色</td>
+<td>B04、B11、B17、B36</td>
+</tr>
+<tr>
+<td>优化、记录、帮助、右上角导入导出</td>
+<td>B37、B39–B41</td>
+</tr>
+<tr>
+<td>关注列表、条件编辑、底部价格图</td>
+<td>B04、B20、B38</td>
+</tr>
+</tbody>
+</table>
+<h2>开发所需机器可读数据</h2>
+<ul>
+<li><a href="business_catalog.json">business_catalog.json</a>：业务、证据、参考资料、开发阶段和验收 ID。</li>
+<li><a href="acceptance_cases.json">acceptance_cases.json</a>：每项至少一个正常情形、一个边界/异常情形，共 88 条验收规格。</li>
+<li><a href="#doc-acceptance_cases">全部验收用例</a>：便于人工逐条审查。</li>
+</ul></section><section id="doc-02_vision_architecture"><h1>02 · 图像识别与系统架构</h1>
+<h2>1. 回答“是不是 OpenCV 图像识别”</h2>
+<table>
+<thead>
+<tr>
+<th>本地证据</th>
+<th>能确认什么</th>
+<th>尚不能推出什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目录存在 <code>cv2</code>，E01 初始清单</td>
+<td>发行包包含 OpenCV Python 生态组件</td>
+<td>主业务的每种定位均由 OpenCV 执行</td>
+</tr>
+<tr>
+<td>E10 <code>gdi32.dll</code> 偏移 <code>0x4af010</code> 含 OpenCV / MatExpr</td>
+<td>OCR 相关库包含 OpenCV 实现痕迹</td>
+<td>确切编译版本、调用算法及参数</td>
+</tr>
+<tr>
+<td>E02 导出 <code>TomatoOCR</code>、<code>ocrScreen/ocrWindow/ocrImageData</code>；资源 <code>CLS/DET/REC/REC_NUMBER/REC_V3</code></td>
+<td>该文件实际承担 OCR 接口与模型资源角色</td>
+<td>所有资源都曾被运行时选中</td>
+</tr>
+<tr>
+<td>E10 <code>0x5045b0</code> 为 <code>ppocrv5</code>；<code>0x5d9238</code> 指向 MNN 工程的 TomatoOCR PDB</td>
+<td>存在 OCR 模型/推理工程线索</td>
+<td>运行时确定启用 PP-OCRv5、MNN 或具体权重</td>
+</tr>
+<tr>
+<td>E04 原始 <code>location/score/words</code>，归一化 <code>region/words/box/center</code>；全屏及局部区域</td>
+<td>文字、框和可信度参与页面/价格/磨损/时间业务</td>
+<td>仅凭日志完整复现原截图和图像算法</td>
+</tr>
+<tr>
+<td>E04 <code>CreateCompatibleDC failed</code></td>
+<td>存在 GDI 类截图路径线索</td>
+<td>所有截图模式都只使用 GDI</td>
+</tr>
+</tbody>
+</table>
+<p>因此，新方案把四层明确分开：<strong>截图获得像素 → 图像预处理/锚点 → OCR 文字与几何 → 页面/卖单语义</strong>。任何一层失败都产生可解释的 Unknown，不将空结果当成零价格或已到购买时间。[E02、E04、E10；设计]</p>
+<h3>特别区分：BBZPS反复识别，不等于反复落盘图片</h3>
+<p>历史日志能证明多次全屏/区域OCR记录；日志文件和部分历史结果PNG也确实存在。但这些证据尚未确认“每次OCR都重新获取一帧”，更没有确认“每次先写图片、再读图片、再删除图片”，也不证明它全天无间断采集。[E01、E04、E09]</p>
+<p>OCR库导出的 <code>ocrScreen/ocrWindow/ocrImageData/ocrFile</code> 说明接口选择存在，单看导出表尚不足以确定业务实际走哪条路径，也不排除库内部的其他行为。BBZPS逐帧图像是否落盘属于未确认项；本轮仍未运行它或跟踪其运行时磁盘IO。[E02]</p>
+<p>v0.1的“临时帧文件传给worker”是<strong>我们曾提出的重构草案</strong>，不是对BBZPS实现的结论。v0.2按用户要求改为按步骤申请、内存传图、默认零图片文件写入；这也是待实现的设计约束，不是新引擎已测性能。[E12]</p>
+<h2>2. 独立重构的推荐组合</h2>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>首轮决定</th>
+<th>比较项/退出条件</th>
+<th>资料</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI</td>
+<td>保留当前 Qt 6.8 / MinGW 工程</td>
+<td>不因为 OCR 选型重写界面</td>
+<td>E08、R14</td>
+</tr>
+<tr>
+<td>采集</td>
+<td><code>ICaptureSource</code>；步骤按需申请；先图片回放，再比较 Windows Graphics Capture 与 Desktop Duplication</td>
+<td>步骤之外停采集；按窗口、遮挡、缩放、多显示器实测；无临时图片写入</td>
+<td>E12、R03–R05</td>
+</tr>
+<tr>
+<td>图像</td>
+<td>独立来源的 OpenCV，原图及 ROI 暂存内存，用完归还缓冲区</td>
+<td>默认不编码/保存PNG或JPEG；模板和预处理候选用同一标注集评测</td>
+<td>E12、R01–R02</td>
+</tr>
+<tr>
+<td>OCR</td>
+<td><code>IOcrProvider</code>；优先评估独立 PaddleOCR 中文/数字方案</td>
+<td>记录检测+识别或已裁切识别两种路径；比较价格、磨损、倒计时字段正确率和延迟</td>
+<td>R06–R07</td>
+</tr>
+<tr>
+<td>视觉进程</td>
+<td>与 Qt UI 分离的可信本地 worker</td>
+<td>UI工具链保留；模型/推理依赖独立封装，使用版本化IPC</td>
+<td>R10–R11、R14</td>
+</tr>
+<tr>
+<td>规则/状态</td>
+<td>原生 C++ 纯函数+事件状态机</td>
+<td>与 OCR 实现无关；测试可注入人工标注观测</td>
+<td>本项目设计</td>
+</tr>
+<tr>
+<td>配置/账本</td>
+<td>QSaveFile 保存配置；SQLite 是账本候选</td>
+<td>配置提交失败保留旧文件；事务/重复回执/崩溃恢复单独测试</td>
+<td>R12–R13</td>
+</tr>
+</tbody>
+</table>
+<p><strong>这里的“优先评估”不是模型选型已完成。</strong> 本轮未安装生产 OCR、未下载运行模型、未给出识别率或速度实测。不能把原库的 <code>ppocrv5</code> 字符串当成必须选用同模型的理由。</p>
+<p>当前构建脚本指向 Qt 6.8.3 / MinGW 13.1.0。MSVC 编译的 C++ 库不能未经 ABI/运行库核对直接当成可链接的 MinGW 依赖。先以独立进程隔离推理工具链；若后续选择进程内 C++，要求统一编译器、架构、运行库和 Debug/Release 组合，并在干净机器验证。R14、R15 提供 Qt 工具链和部署背景；具体第三方包还需独立构建验证。</p>
+<h2>3. 模块边界</h2>
+<p><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 898" role="img" aria-labelledby="architecture-title architecture-desc">
+<title id="architecture-title">现有界面 + 独立业务后端</title><desc id="architecture-desc">下面是模块与数据流建议；除现有UI/配置外均待实现。</desc>
+<defs><marker id="architecture-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#696969"/></marker></defs>
+<rect width="1060" height="898" rx="20" fill="#f7f7f7"/>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif" fill="#202020">
+<text x="32" y="40" font-size="24" font-weight="600">现有界面 + 独立业务后端</text>
+<text x="32" y="68" font-size="14" fill="#666">下面是模块与数据流建议；除现有UI/配置外均待实现。</text>
+<rect x="32" y="94" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="121" font-size="17" font-weight="600">Qt UI / 配置快照</text>
+<text x="51" y="143" font-size="12" fill="#777">UI</text>
+<text x="410" y="127" font-size="15" fill="#4d4d4d">保留 Win11 白灰；开始、暂停、规则与模式命令</text>
+<rect x="32" y="190" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="217" font-size="17" font-weight="600">步骤按需采集 / 回放源</text>
+<text x="51" y="239" font-size="12" fill="#777">CAP</text>
+<text x="410" y="223" font-size="15" fill="#4d4d4d">内存像素；空闲停采集；默认不写图像文件</text>
+<rect x="32" y="286" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="313" font-size="17" font-weight="600">视觉 worker：OpenCV + OCR</text>
+<text x="51" y="335" font-size="12" fill="#777">VIS</text>
+<text x="410" y="319" font-size="15" fill="#4d4d4d">可信独立依赖；文字、框、分数与模型版本</text>
+<rect x="32" y="382" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="409" font-size="17" font-weight="600">页面 / 卖单语义</text>
+<text x="51" y="431" font-size="12" fill="#777">SEM</text>
+<text x="410" y="415" font-size="15" fill="#4d4d4d">正确页面、字段关联、条目新鲜度与歧义</text>
+<rect x="32" y="478" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="505" font-size="17" font-weight="600">纯规则匹配</text>
+<text x="51" y="527" font-size="12" fill="#777">RULE</text>
+<text x="410" y="511" font-size="15" fill="#4d4d4d">Match / NoMatch / NeedsReview + 可解释原因</text>
+<rect x="32" y="574" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="601" font-size="17" font-weight="600">双阶段状态机 / 调度</text>
+<text x="51" y="623" font-size="12" fill="#777">RUN</text>
+<text x="410" y="607" font-size="15" fill="#4d4d4d">步骤申请观察；长等待停采集；有界短时复核</text>
+<rect x="32" y="670" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="697" font-size="17" font-weight="600">意图适配器（先测试桩）</text>
+<text x="51" y="719" font-size="12" fill="#777">ACT</text>
+<text x="410" y="703" font-size="15" fill="#4d4d4d">发起不等于成功；真实输入接入单独决策</text>
+<rect x="32" y="766" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="793" font-size="17" font-weight="600">回执账本 / UI状态投影</text>
+<text x="51" y="815" font-size="12" fill="#777">LOG</text>
+<text x="410" y="799" font-size="15" fill="#4d4d4d">必要结果记录；不逐帧写日志，不自动保存截图</text>
+<path d="M202 158 V187" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 254 V283" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 350 V379" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 446 V475" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 542 V571" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 638 V667" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M202 734 V763" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#architecture-arrow)"/>
+<path d="M32 798 H16 V126 H29" fill="none" stroke="#969696" stroke-dasharray="4 4" marker-end="url(#architecture-arrow)"/>
+</g></svg></figure></p>
+<p>可编辑源：<a href="diagrams/architecture.mmd">architecture.mmd</a>。图中所有业务后端模块均是拟建；UI/配置属于现有基线，需按阶段扩展。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>输入 → 输出</th>
+<th>禁止混入的职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CAP</code></td>
+<td>步骤观察申请+窗口/已有回放素材 → 内存 <code>FrameEnvelope</code></td>
+<td>不在空闲时循环取帧，不生成临时图片，不识别价格</td>
+</tr>
+<tr>
+<td><code>VIS</code></td>
+<td>Frame + ROI配置 → OCR结果/锚点</td>
+<td>不决定交易、不私自改变任务</td>
+</tr>
+<tr>
+<td><code>NAV</code></td>
+<td>OCR/锚点+上下文 → <code>PageObservation</code></td>
+<td>不把单个按钮文字当成整页确认</td>
+</tr>
+<tr>
+<td><code>LISTING</code></td>
+<td>页面观测 → 独立卖单观测及关联质量</td>
+<td>不把坐标当永久ID</td>
+</tr>
+<tr>
+<td><code>RULE</code></td>
+<td>RuleSnapshot + ListingObservation → <code>Decision</code></td>
+<td>无输入操作、无截图、无系统时钟依赖</td>
+</tr>
+<tr>
+<td><code>RUN/COLLECT</code></td>
+<td>决策/回执/停止事件 → 状态变化/意图</td>
+<td>不直接依赖窗口API</td>
+</tr>
+<tr>
+<td><code>CLOCK/SCHED</code></td>
+<td>单调时间+倒计时观测+策略 → 有代次的计划</td>
+<td>不修改系统时间、不自行证明商品可买</td>
+</tr>
+<tr>
+<td><code>ACTION</code></td>
+<td>已核验意图 → 本地测试适配器的发起事件</td>
+<td>不充当成交事实来源；M1–M3默认不接真实动作</td>
+</tr>
+<tr>
+<td><code>LEDGER/OBS</code></td>
+<td>业务事件 → 持久化账本/统计；可选手动图片导出索引</td>
+<td>不逐帧落日志，不自动落图，不以“点击次数”填“成功数量”</td>
+</tr>
+<tr>
+<td><code>UI/CFG</code></td>
+<td>用户参数、状态投影 → 显示/配置/命令</td>
+<td>不在按钮槽函数写图像识别和动作循环</td>
+</tr>
+</tbody>
+</table>
+<h2>4. Frame 与坐标契约</h2>
+<h3>步骤触发与内存处理：已确认产品约定</h3>
+<p>用户在2026-10-06明确补充“到了步骤就实时采集”“截图不要保存磁盘”，记录为E12。<strong>这项约定取代v0.1的临时帧文件传递方案，也不采用常驻全速采集。</strong> 它是待实现的规格，不是当前前端已有能力。</p>
+<table>
+<thead>
+<tr>
+<th>业务时机</th>
+<th>观察方式</th>
+<th>停止条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>空闲、暂停、已结束</td>
+<td>不申请画面，停用/释放采集会话；OCR模型可驻留内存</td>
+<td>新业务步骤明确申请观察</td>
+</tr>
+<tr>
+<td>检查页面、字段、条件</td>
+<td>步骤开始后取新帧，优先处理指定ROI</td>
+<td>获得有效结果或到达重试预算</td>
+</tr>
+<tr>
+<td>翻页/切页/操作后等反馈</td>
+<td>开启短时 <code>bounded_watch</code>，只在该步骤内按间隔观察</td>
+<td>页面稳定、收到回执、超时、取消或帧数用尽</td>
+</tr>
+<tr>
+<td>长公示等待</td>
+<td>根据最近估计安排唤醒，不常驻取帧；唤醒后重新观察</td>
+<td>进入临近时段的有界观察或状态变化</td>
+</tr>
+<tr>
+<td>成交/失败回执阶段</td>
+<td>当前步骤内短时观察，并保存结构化结果</td>
+<td>回执可分类或进入Unknown；默认不落图</td>
+</tr>
+</tbody>
+</table>
+<p>观察申请必须带 <code>run_id/step_id/cancel_epoch/viewport_generation/ROI/timeout/frame_budget</code>；单次模式返回一个结果，有界观察模式允许在预算内重试。步骤结束即撤销需求，停止后续截图、OCR和定时器。暂停不只是丢弃OCR结果，采集端也要停止持续取帧。[设计，依据E12]</p>
+<p>需要实时观察时，图像始终以原始像素缓冲区/内存句柄传递，避免“写PNG → 识别进程读PNG”。默认采用<strong>1个处理槽+1个待处理槽</strong>；同一步骤中用新帧替换过期的待处理帧，用完归还缓冲区。跨步骤/窗口代次的帧作废，新步骤必须取得越过其新鲜度屏障的新画面。该槽数是初始设计，后续评估也必须维持明确内存上限。</p>
+<p>内存传递并不承诺GPU与CPU之间零复制；选择实际像素路径时测量转换和复制成本。应用层默认不写图片/临时帧文件；不为此关闭操作系统页面文件，也不把正常配置和业务账本写入算作截图行为。</p>
+<p>策略示例：<a href="examples/observation-policy.sample.json">observation-policy.sample.json</a>。默认 <code>on_success=false</code>、<code>on_error=false</code>、<code>temporary_image_files=false</code>；显式调试导出还需数量、容量及到期限制。离线回放可以只读已有测试图片，但不写中间截图。</p>
+<h3>坐标和新鲜度</h3>
+<p><code>FrameEnvelope</code> 至少包含：<code>frame_id</code>、<code>capture_session_id</code>、<code>source_kind</code>、窗口引用、客户区物理尺寸、DPI、视口代次、捕获起止单调时间、墙上时间标签、像素格式、帧摘要、图像句柄。截图完成时间不能冒充像素实际产生时间；初期用捕获区间表达不确定性。[设计]</p>
+<p>每个 ROI 含 <code>roi_id</code>、坐标空间、区域、变换版本。OCR 框先映回帧坐标，再映回客户区；动作适配器如将来使用屏幕坐标，再作最后一步转换。窗口移动、DPI/尺寸变化时递增 <code>viewport_generation</code>，让旧框、旧卖单位置和排队动作整体过期。[R05；设计]</p>
+<ul>
+<li>原始框采用四点多边形保留旋转信息；中心点只是派生字段，不作为身份字段。</li>
+<li>帧被裁切、缩放或二值化时在内存保留前后变换；调试结果可映射回内存原图，默认不保存图像文件。</li>
+<li>黑屏、零尺寸、访问丢失、目标窗口消失、OSD污染均有独立错误码。</li>
+<li>同时观察多个窗口时，不混用窗口引用、DPI或坐标代次。</li>
+</ul>
+<h2>5. 视觉 worker 协议草案 v1</h2>
+<p>初期使用 <code>QProcess</code> 启动项目自带、绝对路径指定的可信 worker，使用标准输入/输出传送 UTF-8 NDJSON；stderr 独立保存诊断，不把普通日志混入 JSON 通道。Qt 的 QProcess 提供独立进程和输出读取接口。[R11；其余是新协议设计]</p>
+<p>NDJSON只传控制消息、像素缓冲区描述和识别结果。实时像素通过进程内缓冲区或进程间共享内存交付；不将图像转成Base64塞入JSON，不以磁盘映射文件或临时图片作实时IPC。日志采用关键事件与限速汇总，默认不输出逐帧OCR全文。[E12；设计]</p>
+<table>
+<thead>
+<tr>
+<th>消息</th>
+<th>必备字段</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hello</code> / <code>ready</code></td>
+<td>protocol_version、session_id、worker_build、模型ID/哈希、能力列表</td>
+<td>不支持版本不开始任务</td>
+</tr>
+<tr>
+<td><code>recognize</code></td>
+<td>request_id、step_id、frame_id、共享内存描述符、ROI列表、generation、相对时间预算</td>
+<td>描述符包含像素格式/尺寸/stride/有效长度/租约ID；只接受本次会话分配的缓冲区；实时模式不接受文件路径</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td>request_id、frame_id、generation、provider、耗时、文字/框/分数、状态</td>
+<td>过期/旧会话结果丢弃；分数只作候选信号</td>
+</tr>
+<tr>
+<td><code>release_frame</code></td>
+<td>frame_id、租约ID、会话代次</td>
+<td>worker确认结束读取后再复用缓冲区；异常退出则先结束读取方再回收</td>
+</tr>
+<tr>
+<td><code>cancel</code></td>
+<td>request_id、step_id 或 session_id</td>
+<td>停止后结果不得继续驱动规则；撤销观察需求并回收资源</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>稳定错误码、可诊断消息、是否可重试</td>
+<td>错误不是有效空页面</td>
+</tr>
+</tbody>
+</table>
+<p>拟定限制：每行 JSON ≤ 1 MiB，单请求文本框 ≤ 2,000 个，图像像素数量和缓冲区字节数设独立上限；这些是协议保护上限，不是已测性能指标。步骤内队列采用上述双槽上限，禁止落后几秒仍按旧结果动作。步骤结束不再产帧；共享内存失败进入明确错误，不自动改用临时文件。绝对 deadline 使用协调端时钟；跨进程若不共享时基则只交换相对预算。[设计]</p>
+<p>示例：<a href="examples/vision-result.sample.json">vision-result.sample.json</a>。它标有 <code>example_only</code>，没有假造真实截图。</p>
+<h2>6. 识别决策和评估方法</h2>
+<ol>
+<li>建独立标注集：页面类型、字段文本、字段框、对应卖单、状态；划分训练/调参集与留出测试集。同一连续画面的近重复帧不跨集合。</li>
+<li>同一图片至少比较原图 OCR、有限预处理 OCR、ROI专用识别；模板候选只负责锚点，不拿模板相似度替代价格真值。[R01、R02、R06、R07]</li>
+<li>输出页面准确率/Unknown率、价格和磨损<strong>字段精确匹配率</strong>、行关联正确率、倒计时误差、误匹配率；不能只报平均 OCR 分数。</li>
+<li>测试空白、遮挡、弹窗、千分位、相似字符、非目标窗口、价格换行、同款相邻卖单、窗口切换和高DPI。</li>
+<li>记录 CPU/GPU、分辨率、provider/模型哈希、冷启动与热运行 P50/P95/P99、内存峰值和帧过期率。数字在 M2 实测，当前不填“实时/毫秒级”宣传值。</li>
+<li>分类阈值从验证集拟合，保留拒绝判定区；多个引擎的置信度不是天然可比较概率。低分或几何关联不明产生 NeedsReview。</li>
+</ol>
+<p>目前的历史日志能做业务事件回放，但多数原始截图未可用；不能用 OCR 的历史文字结果衡量 OCR 自身精度。缺失图片情况见 E09，新的视觉基准需独立建立。</p></section><section id="doc-03_data_config"><h1>03 · 数据结构与配置迁移</h1>
+<h2>1. 六类业务对象与一个事件流</h2>
+<p>以下为拟定 v2 模型，<strong>当前 0.6.0 的 schema v1 不接受这些新增字段</strong>。金额和磨损的定点设计属于我们选择，不代表样本内原本这样存储。[E08；设计]</p>
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th>核心字段</th>
+<th>约束/用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SkinCatalogEntry</code></td>
+<td>product_id、name、series、season、grade、rarity、aliases、source</td>
+<td>稳定商品资料；grade 与 rarity 分离；别名不能覆盖原文</td>
+</tr>
+<tr>
+<td><code>ListingObservation</code></td>
+<td>observation_id、product_ref、market_listing_id可空、association_ref、price、wear、condition、publicity、frame_ref、timestamps、field_evidence、confidence</td>
+<td>一次观测不可变；同款可有多条卖单；无稳定ID时关联只是推断</td>
+</tr>
+<tr>
+<td><code>TaskRule</code></td>
+<td>task_id、revision、filters、price_range、max_wear、quantity_target、enabled、review_required、legacy_raw</td>
+<td>业务匹配规则；未知字段和单位先保留、不激活</td>
+</tr>
+<tr>
+<td><code>TaskRun</code></td>
+<td>run_id、rule_revision、mode、state、cursor、pending_ids、started_at、cancel_epoch</td>
+<td>运行使用快照；编辑不会悄改已启动规则</td>
+</tr>
+<tr>
+<td><code>AttemptRecord</code></td>
+<td>attempt_id、intent_id、run_id、association_ref、intent_kind、prepared/sent/receipt times、status、reason、evidence_refs</td>
+<td>区分准备/发起/成功/失败/未知；支持崩溃核验</td>
+</tr>
+<tr>
+<td><code>RuntimeProfile</code></td>
+<td>profile_id、revision、mode、schedule、delay_policy、limits、capture/vision settings、schema_version</td>
+<td>运行参数与任务分离，单位显式</td>
+</tr>
+<tr>
+<td><code>BusinessEvent</code></td>
+<td>event_id、run_id、seq、monotonic_time、wall_time、type、payload、causation_id、evidence_refs</td>
+<td>可重放、可定位；seq决定顺序而非可回拨时间戳</td>
+</tr>
+</tbody>
+</table>
+<h3>数字、时间与身份</h3>
+<ul>
+<li><code>DecimalValue = {unscaled: 十进制整数字符串, scale: 非负整数}</code>。例 <code>1.187788 → {"unscaled":"1187788","scale":6}</code>；用十进制比较而非浮点近似。拟定 scale 上限12，超精度进入审查而不是截断。观察文本仍保留 raw。</li>
+<li><code>Money = DecimalValue + unit</code>。当前样本不足以确定所有场景的实际币种和最小面额；配置中的 340 按“市场显示单位”记录，不能标成人民币。单位未配置时不激活新执行规则。</li>
+<li><code>DeadlineEstimate = {earliest_ms, latest_ms, clock_domain, observed_frame}</code>。显示整数秒倒计时意味着区间不确定度；不能当成毫秒级截止真值。</li>
+<li><code>association_ref</code> 不是平台订单ID。无稳定ID时按商品、磨损、价格、公示状态、空间连续性关联，记录歧义。相同特征的两条仍可能是不同卖单。</li>
+<li>数量预留关联 <code>attempt_id</code>。回执丢失时保留未决预留，等待核验，不直接释放额度重复发起。</li>
+</ul>
+<h2>2. BBZPS 任务的 13 列</h2>
+<p>首行原样例来自 E03：</p>
+<pre><code class="language-text">AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限|不限
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>位置（1起）</th>
+<th>可见语义</th>
+<th>v2候选字段</th>
+<th>状态及处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>商品名</td>
+<td>product.name/raw_name</td>
+<td>确认；目录ID关联另做</td>
+</tr>
+<tr>
+<td>2</td>
+<td>赛季</td>
+<td>filters.season</td>
+<td>确认；不限独立枚举</td>
+</tr>
+<tr>
+<td>3</td>
+<td>拥有状态</td>
+<td>filters.ownership</td>
+<td>确认；未拥有不是数量0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>品阶</td>
+<td>filters.grade</td>
+<td>确认；不与稀有度混用</td>
+</tr>
+<tr>
+<td>5</td>
+<td>成色</td>
+<td>filters.condition</td>
+<td>确认；S/A/B/C与不限</td>
+</tr>
+<tr>
+<td>6</td>
+<td>公示期</td>
+<td>filters.publicity</td>
+<td>确认；与倒计时估计分开</td>
+</tr>
+<tr>
+<td>7</td>
+<td>价格下限候选230</td>
+<td>candidates.price_min</td>
+<td>推断；需导入预览确认</td>
+</tr>
+<tr>
+<td>8</td>
+<td>价格上限候选600</td>
+<td>candidates.price_max</td>
+<td>推断；包含边界不是静态确证</td>
+</tr>
+<tr>
+<td>9</td>
+<td>最大磨损0.399</td>
+<td>limits.max_wear</td>
+<td>配置与日志支持；保留原文</td>
+</tr>
+<tr>
+<td>10</td>
+<td>稀有度</td>
+<td>filters.rarity</td>
+<td>确认；不可用第4列覆盖</td>
+</tr>
+<tr>
+<td>11</td>
+<td>排序</td>
+<td>filters.requested_sort</td>
+<td>确认；运行中另有observed_sort</td>
+</tr>
+<tr>
+<td>12</td>
+<td>不限</td>
+<td>legacy_raw.columns[11]</td>
+<td>未知；不映射为quantity</td>
+</tr>
+<tr>
+<td>13</td>
+<td>不限</td>
+<td>legacy_raw.columns[12]</td>
+<td>未知；不映射为quantity</td>
+</tr>
+</tbody>
+</table>
+<p>现有配置共15条，每条13列。S/A/B/C阈值出现 <code>0.399/1.249/2.499/5.0</code>，这是该份配置的用户规则，不是通用成色定义。当前 INI 与2026-09-22至10-01的历史日志不是同一时刻快照，不能用最终配置解释所有旧执行。[E03、E04]</p>
+<h2>3. 全部可见运行参数字典</h2>
+<p>“可见”限于上一轮已脱敏配置；被保护业务可能存在其他内部默认。时间参数原始值不自动换算。[E03]</p>
+<table>
+<thead>
+<tr>
+<th>段/键</th>
+<th>原值</th>
+<th>证据可支持的用途</th>
+<th>迁移决定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MainWindow.mode</td>
+<td>BBZPS_134250</td>
+<td>UI/运行模式标识</td>
+<td>legacy metadata，不决定新模式</td>
+</tr>
+<tr>
+<td>GlobalSettings.addtime</td>
+<td>0.1</td>
+<td>时间增量样式参数，公式未定</td>
+<td>raw + review</td>
+</tr>
+<tr>
+<td>GlobalSettings.clicktime</td>
+<td>0.0005</td>
+<td>与点击时间有关的配置线索</td>
+<td>raw；与SkinTasks同名键不合并</td>
+</tr>
+<tr>
+<td>GlobalSettings.spt</td>
+<td>已脱敏</td>
+<td>含义和敏感性未定</td>
+<td>不导入原值</td>
+</tr>
+<tr>
+<td>GlobalSettings.watermark</td>
+<td>BBZ</td>
+<td>截图水印线索</td>
+<td>新程序使用自身配置，不搬旧品牌默认</td>
+</tr>
+<tr>
+<td>SkinTasks.click_mode</td>
+<td>轨迹运行</td>
+<td>操作模式</td>
+<td>保留原文，不自动选择输入实现</td>
+</tr>
+<tr>
+<td>SkinTasks.rool_mode</td>
+<td>老测试模式</td>
+<td>运行模式标识</td>
+<td>保留拼写和原值，语义待定</td>
+</tr>
+<tr>
+<td>SkinTasks.srot</td>
+<td>按稀有度升序</td>
+<td>排序配置</td>
+<td>保留旧拼写，映射候选sort；不等于价格升序</td>
+</tr>
+<tr>
+<td>SkinTasks.autocountdown</td>
+<td>2</td>
+<td>自动倒计时相关线索</td>
+<td>单位/触发意义待定</td>
+</tr>
+<tr>
+<td>SkinTasks.clickinterval</td>
+<td>0.005</td>
+<td>点击间隔候选</td>
+<td>raw，不从名称推断秒/毫秒</td>
+</tr>
+<tr>
+<td>SkinTasks.clickinterval2</td>
+<td>0.05</td>
+<td>第二间隔候选</td>
+<td>独立raw，不能与前项合并</td>
+</tr>
+<tr>
+<td>SkinTasks.autotime</td>
+<td>True</td>
+<td>时间自动处理开关，有日志支持</td>
+<td>新方案只估计时钟偏移</td>
+</tr>
+<tr>
+<td>SkinTasks.buynum</td>
+<td>99999</td>
+<td>购买数量样式字段</td>
+<td>含义/周期待确认，不默认无限</td>
+</tr>
+<tr>
+<td>SkinTasks.timesync</td>
+<td>三个NTP主机</td>
+<td>时间源配置</td>
+<td>可读为历史配置；新程序使用独立可配置源</td>
+</tr>
+<tr>
+<td>SkinTasks.clicknum</td>
+<td>3</td>
+<td>点击次数候选</td>
+<td>与运行日志逐次确认相符，作用阶段仍需确认</td>
+</tr>
+<tr>
+<td>SkinTasks.counting</td>
+<td>炼金计数</td>
+<td>计数模式标识</td>
+<td>保留原文，不臆造炼金业务</td>
+</tr>
+<tr>
+<td>SkinTasks.autoparameter</td>
+<td>True</td>
+<td>自动参数开关</td>
+<td>动态策略线索，未恢复公式</td>
+</tr>
+<tr>
+<td>SkinTasks.parameter</td>
+<td>0.005</td>
+<td>调参步长/量级候选</td>
+<td>raw + review，不直接映射queueFullStepMs</td>
+</tr>
+<tr>
+<td>SkinTasks.statistics</td>
+<td>True</td>
+<td>统计开关</td>
+<td>新统计独立按回执账本实现</td>
+</tr>
+<tr>
+<td>SkinTasks.clicktime</td>
+<td>0.847</td>
+<td>延迟区间参数候选</td>
+<td>单位待定</td>
+</tr>
+<tr>
+<td>SkinTasks.clicktime2</td>
+<td>0.857</td>
+<td>第二延迟/区间端点候选</td>
+<td>与clicktime关系待定，不宣称已还原上下界</td>
+</tr>
+</tbody>
+</table>
+<p>两个 <code>*.exe.ini</code> 中的登录/凭据字段不进入业务配置迁移。原授权库的登录、心跳、到期等导出只说明旧发行包还有商业授权层，不是枪皮任务模型必要组成。[E02、E03]</p>
+<h2>4. 当前 RunSettings 的新旧关系</h2>
+<table>
+<thead>
+<tr>
+<th>当前字段</th>
+<th>当前意义</th>
+<th>重构处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>profile / hotkey</td>
+<td>默认方案名 / F2，配置层</td>
+<td>新增方案ID、快捷键注册反馈，保留名称</td>
+</tr>
+<tr>
+<td>purchaseDelayMs</td>
+<td>默认830，范围由当前解析器验证</td>
+<td>新规格单位毫秒；作用基准待D03决策</td>
+</tr>
+<tr>
+<td>dynamicDelay</td>
+<td>默认false</td>
+<td>未确认策略前维持关闭</td>
+</tr>
+<tr>
+<td>queueFullTrigger / queueFullStepMs</td>
+<td>次数/每次减量</td>
+<td>独立事件计数、步长毫秒；触发语义待D04</td>
+</tr>
+<tr>
+<td>publicityTrigger / publicityStepMs</td>
+<td>次数/每次加量</td>
+<td>不拿普通公示倒计时作为调参错误回执</td>
+</tr>
+<tr>
+<td>burstClick / clickIntervalMs</td>
+<td>默认true / 10ms，只保存</td>
+<td>进入测试动作策略，不默认连接目标程序</td>
+</tr>
+<tr>
+<td>limitOrange / limitPurple / limitBlue</td>
+<td>各默认10</td>
+<td>颜色↔品阶映射及计数周期待D05</td>
+</tr>
+<tr>
+<td>refreshPage / skipLotteryPage / skipSuccessPage</td>
+<td>挂机三项</td>
+<td>分别绑定页面状态，不混成通用Esc</td>
+</tr>
+<tr>
+<td>autoCollect / collectOsd</td>
+<td>自动收藏/OSD</td>
+<td>识别数据流中防止OSD反向污染</td>
+</tr>
+<tr>
+<td>scheduleEnabled / scheduleStart / scheduleStop</td>
+<td>默认关闭，09:00/23:00</td>
+<td>明示时区、跨日区间和停止时未决动作处理</td>
+</tr>
+</tbody>
+</table>
+<p>这组字段来自原 Relink 入口要求，不证明其与 BBZPS 同名/异名参数一一等价。[E08、E11]</p>
+<h2>5. 导入事务和兼容策略</h2>
+<ol>
+<li>只读输入文件，记录哈希/编码/行号；不执行任何 INI 附带路径或命令。重复键、坏编码、超大文件、13列外的行给出逐行诊断。</li>
+<li>解析成 <code>LegacyImportPreview</code>，原值与候选字段并列；令 <code>enabled=false</code>、<code>review_required=true</code>。未知语义不自动填入数量/单位/延迟。</li>
+<li>用户确认候选价格上下限、币值单位、成色/品阶映射；每个决定写入 <code>migration_decisions</code>。</li>
+<li>校验整份候选配置、规则引用和ID唯一性；成功后以QSaveFile提交新路径。失败不改变当前内存状态/源文件。[R12]</li>
+<li>v1的缺失condition按“不限”；保留 <code>demo=true</code> 的来源，迁为mode=demo而非observe。v2初期只写新文件，不覆盖旧v1。</li>
+<li>回退时使用原v1备份和原程序；v2账本独立保留。不能把未知结果通过回退当成没有发生。</li>
+</ol>
+<p>示例：<a href="examples/schema-v2.sample.json">schema-v2.sample.json</a> 是<strong>待审导入结果草案</strong>，不是当前前端可直接载入的配置。它保留13列，价格字段仍是候选，任务禁用；没有从末两列猜出数量。</p>
+<h2>6. 持久化与隐私边界</h2>
+<p>配置使用可读JSON；事件/attempt/receipt可采用SQLite，表主键和唯一约束围绕 <code>event_id/intent_id/receipt_id</code>。WAL可作为候选模式，但不是“永不丢数据”的保证；事务持久性选项、磁盘失败、检查点、备份时的WAL一致性均需验收。备份使用数据库提供的一致性机制或关闭连接后完整备份，不运行中只复制主文件。[R13；设计]</p>
+<p>图像默认完全不落盘，包括成功、失败以及普通ROI截图；仅用户主动导出或明确启用有界调试时保存。实时图像不通过临时文件传给worker。账本保留字段值、观测时间、规则/模型版本等结构化证据，<code>image_ref</code>可空并标记“未保存图像”，不声称能重新打开已释放的内存帧。[E12；设计]</p>
+<p>配置与必要业务账本按事务保存；日志不含凭据，不逐帧写OCR全文或像素数据，普通诊断采用限速汇总和容量轮转。账本一致性不因节省IO而省掉必要事务。旧程序近1.77GB日志不作为新默认产出规模。[E04、E12；设计]</p></section><section id="doc-04_state_machine"><h1>04 · 状态机与业务规则</h1>
+<h2>1. 历史流程与新设计的分界</h2>
+<p>历史证据确认了“筛选收藏 → 关注列表 → 倒计时/确认 → 结果处理”的路径。[E04] 下图是结合新可靠性要求形成的<strong>建议状态机</strong>，不是已恢复的原程序函数调用图；其中代次取消、幂等账本和未决预留是新增设计。</p>
+<p><figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 898" role="img" aria-labelledby="business-title business-desc">
+<title id="business-title">两阶段业务与结果核验</title><desc id="business-desc">历史阶段来自 E04；账本、代次取消、Unknown核验为重构设计。</desc>
+<defs><marker id="business-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#696969"/></marker></defs>
+<rect width="1060" height="898" rx="20" fill="#f7f7f7"/>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif" fill="#202020">
+<text x="32" y="40" font-size="24" font-weight="600">两阶段业务与结果核验</text>
+<text x="32" y="68" font-size="14" fill="#666">历史阶段来自 E04；账本、代次取消、Unknown核验为重构设计。</text>
+<rect x="32" y="94" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="121" font-size="17" font-weight="600">方案 / 任务 / 时间窗口</text>
+<text x="51" y="143" font-size="12" fill="#777">READY</text>
+<text x="410" y="127" font-size="15" fill="#4d4d4d">读取已审规则；市场未开放则等待</text>
+<rect x="32" y="190" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="217" font-size="17" font-weight="600">阶段 A：页面与筛选</text>
+<text x="51" y="239" font-size="12" fill="#777">SCAN</text>
+<text x="410" y="223" font-size="15" fill="#4d4d4d">赛季、拥有、品阶、成色、公示、稀有度、排序</text>
+<rect x="32" y="286" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="313" font-size="17" font-weight="600">找商品 → 扫描具体卖单</text>
+<text x="51" y="335" font-size="12" fill="#777">MATCH</text>
+<text x="410" y="319" font-size="15" fill="#4d4d4d">价格与磨损联合匹配；不符合则下一条</text>
+<rect x="32" y="382" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="409" font-size="17" font-weight="600">收藏意图 → 收藏回执</text>
+<text x="51" y="431" font-size="12" fill="#777">COLLECT</text>
+<text x="410" y="415" font-size="15" fill="#4d4d4d">未见回执不计成功；满额停止收藏</text>
+<rect x="32" y="478" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="505" font-size="17" font-weight="600">阶段 B：关注列表 / 倒计时</text>
+<text x="51" y="527" font-size="12" fill="#777">WATCH</text>
+<text x="410" y="511" font-size="15" fill="#4d4d4d">关联卖单、估计期限；旧帧与旧定时器失效</text>
+<rect x="32" y="574" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="601" font-size="17" font-weight="600">再次核验 → 确认流程</text>
+<text x="51" y="623" font-size="12" fill="#777">CHECK</text>
+<text x="410" y="607" font-size="15" fill="#4d4d4d">对象、价格、页面、窗口、额度共同检查</text>
+<rect x="32" y="670" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="697" font-size="17" font-weight="600">等待回执：成功 / 失败 / 未知</text>
+<text x="51" y="719" font-size="12" fill="#777">RECEIPT</text>
+<text x="410" y="703" font-size="15" fill="#4d4d4d">已售下架不等于本人成交；超时不盲重试</text>
+<rect x="32" y="766" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="793" font-size="17" font-weight="600">结构化记录 / 下一轮或结束</text>
+<text x="51" y="815" font-size="12" fill="#777">PERSIST</text>
+<text x="410" y="799" font-size="15" fill="#4d4d4d">默认不保存图片；未知先核验，完成不等于全成功</text>
+<path d="M202 158 V187" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 254 V283" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 350 V379" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 446 V475" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 542 V571" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 638 V667" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M202 734 V763" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#business-arrow)"/>
+<path d="M32 798 H16 V510 H29" fill="none" stroke="#969696" stroke-dasharray="4 4" marker-end="url(#business-arrow)"/>
+</g></svg></figure></p>
+<p>可编辑源：<a href="diagrams/business.mmd">business.mmd</a>。总控事件 <code>Stop/WindowLost/ModeChanged</code> 可使任意待办失效；已经可能发出的外部操作进入核验，不当成已撤销。</p>
+<h2>2. 状态与转换契约</h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>进入条件</th>
+<th>允许产生的结果</th>
+<th>超时/异常</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ready</td>
+<td>方案有效、规则已审、模式明确</td>
+<td>创建run与规则快照</td>
+<td>未审配置留在Ready并显示原因</td>
+</tr>
+<tr>
+<td>AwaitSchedule</td>
+<td>用户定时/市场开放未满足</td>
+<td>等待观察，不生成业务动作</td>
+<td>时间/市场状态未知→Paused</td>
+</tr>
+<tr>
+<td>Observe</td>
+<td>捕获/页面状态可用</td>
+<td>确定页面，选择收藏或关注阶段</td>
+<td>有界观察重试后Recover</td>
+</tr>
+<tr>
+<td>ConfigureFilter</td>
+<td>目标页存在</td>
+<td>设置筛选意图并回读</td>
+<td>无回执不推进；未知页重新定位</td>
+</tr>
+<tr>
+<td>ScanListings</td>
+<td>筛选已确认</td>
+<td>翻页、关联卖单、字段提取</td>
+<td>重复页/找不到目标→记录并换任务</td>
+</tr>
+<tr>
+<td>Evaluate</td>
+<td>观测完整且新鲜</td>
+<td>Match / NoMatch / NeedsReview</td>
+<td>缺数据不会变宽松规则</td>
+</tr>
+<tr>
+<td>AwaitCollectReceipt</td>
+<td>已生成收藏意图</td>
+<td>明确成功后记入关注关系</td>
+<td>关注满→Watchlist；结果不明→Reconcile</td>
+</tr>
+<tr>
+<td>Watchlist</td>
+<td>收藏结束/满额/选择仅关注模式</td>
+<td>卖单观测、待公示队列</td>
+<td>目标消失→重新核验关联</td>
+</tr>
+<tr>
+<td>AwaitDeadline</td>
+<td>倒计时区间与计划存在</td>
+<td>到点唤醒并Revalidate</td>
+<td>观测反跳/旧帧/时钟退化→重新估计</td>
+</tr>
+<tr>
+<td>Revalidate</td>
+<td>唤醒后最新页面/卖单存在</td>
+<td>准备一次带有效期的意图</td>
+<td>价格/关联/窗口改变→取消旧意图</td>
+</tr>
+<tr>
+<td>AwaitConfirm</td>
+<td>意图已登记，测试适配器发起</td>
+<td>匹配确认弹窗，必要时二次确认</td>
+<td>不匹配/失焦→停止余项并核验</td>
+</tr>
+<tr>
+<td>AwaitReceipt</td>
+<td>操作可能已发出</td>
+<td>Success / Failed / Unknown</td>
+<td>超时→Unknown，非盲目重试</td>
+</tr>
+<tr>
+<td>PersistResult</td>
+<td>回执可关联且账本事务完成</td>
+<td>更新计数、留证、退出结果页</td>
+<td>存储失败→暂停，UI不先加成功数</td>
+</tr>
+<tr>
+<td>Reconcile</td>
+<td>未知结果/重启存在未决attempt</td>
+<td>重新观察、人工确认或保持未知</td>
+<td>无法区分时继续占用预留</td>
+</tr>
+<tr>
+<td>Recover</td>
+<td>捕获/OCR/导航失败</td>
+<td>有界回读、重新校准、恢复游标</td>
+<td>超过恢复预算→Paused</td>
+</tr>
+<tr>
+<td>Paused / Stopped / Completed</td>
+<td>用户或流程终止</td>
+<td>显示最终原因及未决项</td>
+<td>停止不删除账本、完成不等于全成功</td>
+</tr>
+</tbody>
+</table>
+<p>阶段开关：<code>autoCollect=false</code> 时不走收藏动作，但可仅观察关注页；没有有效关注条目就显示空队列。关注满额切换后保留未完成收藏游标，避免每轮从第一条无休止重复。</p>
+<p><strong>采集由上述状态提出需求，不使用常驻全速观察循环。</strong> ConfigureFilter/ScanListings/Revalidate等步骤取当前新帧；AwaitCollectReceipt/AwaitConfirm/AwaitReceipt只在有截止时间和帧预算的短窗口内观察。Ready/Paused/Stopped/Completed及长时间AwaitDeadline关闭采集，定时唤醒再核验。步骤退出即撤销需求、使旧帧/定时器失效。[E12；ADR10]</p>
+<p>本章“留证”默认指结构化回执、字段和版本记录，不代表写入截图。图像仅在当前步骤有界内存缓冲中存在，用完释放；成功或超时不会自动启动图片保存。[E12]</p>
+<h2>3. 匹配决策</h2>
+<p>新规则采用下列顺序，所有比较必须有可追溯观测：</p>
+<ol>
+<li>规则启用、审查完成、币值/磨损单位已确定。</li>
+<li>观测属于正确窗口/视口代次且尚未过期。</li>
+<li>商品关联足够明确；赛季、拥有状态、品阶、成色、稀有度、公示状态按显式条件判断。</li>
+<li>价格处于闭区间 <code>min ≤ price ≤ max</code>；磨损 <code>wear ≤ max_wear</code>；这是本项目拟定边界，<strong>不是BBZPS边界已确证</strong>。</li>
+<li>数量与品级限额有剩余空间、未决attempt没有冲突。</li>
+<li>输出结果与原因，不在规则函数中截图或点击。</li>
+</ol>
+<p>只返回布尔值会丢失“价格不符”和“价格根本没识别出”的差别。建议结果：</p>
+<pre><code class="language-text">Match: 所有必要字段已核验且符合
+NoMatch: 至少一个可靠字段明确不符合
+NeedsReview: 数据缺失、单位未知、关联歧义、观测过期或配置未确认
+</code></pre>
+<p>示例历史记录：<code>log/BBZ_20260924_090240.log</code> 第89/91/93行分别出现价格340、磨损1.187788/1.249和联合满足；其后有“成功添加至我的关注”。这证明一个实际的联合匹配/收藏路径，但不证明对应规则恰好等于后来保存的INI。[E04]</p>
+<h2>4. 时间和延迟：先定语义，再做调节</h2>
+<ul>
+<li>NTP是本机相对外部时间源的偏移参考，<strong>不是目标市场服务端接受操作时刻的权威证据</strong>。目标界面倒计时、帧龄、网络/渲染/输入延迟都影响结果。即使NTP正常也不能声称已获得精确解锁毫秒。[R16；设计判断]</li>
+<li>等待与超时用单调时钟；QElapsedTimer在对应Qt版本提供基于稳态时钟的经过时间测量。墙上时间只用于展示和跨日计划标签。[R08]</li>
+<li>Qt定时器可能晚到，触发回调后再次核验截止时间与有效期；<code>0.005</code>这类配置值不构成亚毫秒执行精度保证。[R09]</li>
+<li><code>purchaseDelayMs</code> 首个测试策略暂以“确认弹窗首次稳定出现”为 <code>t0</code>，计算 <code>planned=t0+delay</code>；此定义待D03确认，界面不得以为它已等同于原程序。公示解锁时间是另一个独立条件。</li>
+<li>动态策略仅在测试模式显式启用：<code>new = clamp(current + delta, min, max)</code>。队列满事件给负delta，尝试后仍在公示期给正delta；事件去重、连续次数阈值、成功后复位、最小调整间隔均可配置。<strong>这是拟定策略，不是已还原公式。</strong>[D04]</li>
+<li>最小值/最大值及触发阈值不填“最佳经验值”；M3先用可控回放验证收敛与边界，再决定产品默认。已有默认830ms属于前端字段，不是推荐最优值。</li>
+</ul>
+<h2>5. 动作、回执与数量</h2>
+<p>一个动作意图携带：<code>intent_id/run_id/task_revision/association_ref/frame_id/viewport_generation/cancel_epoch/expected_page/expires_at</code>。任何前提变化均使意图失效。前端只发运行/暂停/配置命令，不直接发底层输入；M4的动作适配器先连接自有测试窗口。[设计]</p>
+<p>账本先记准备，再记发起，再处理回执。<code>sent</code>不等于<code>success</code>。本地记账和外部点击之间存在崩溃窗口，不能许诺外部“严格只执行一次”；解决方式是预留、幂等入账和未知结果核验，而非声称有跨进程/目标应用事务。[设计]</p>
+<table>
+<thead>
+<tr>
+<th>观测结果</th>
+<th>账本状态</th>
+<th>数量和后续</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>明确且关联正确的获得/成交回执</td>
+<td>Success</td>
+<td>预留转成功计数，留证后可退出成功页</td>
+</tr>
+<tr>
+<td>明确已售/下架/失败回执</td>
+<td>Failed</td>
+<td>释放对应预留；不计本人成交</td>
+</tr>
+<tr>
+<td>仅有二次确认点击日志</td>
+<td>Sent / AwaitReceipt</td>
+<td>继续等待；不计成功</td>
+</tr>
+<tr>
+<td>超时、窗口丢失、崩溃、回执归属不明</td>
+<td>Unknown</td>
+<td>保留预留；进入核验</td>
+</tr>
+<tr>
+<td>只看到“购买全部结束”</td>
+<td>运行阶段结束</td>
+<td>逐条保留各自结果，不批量成功</td>
+</tr>
+</tbody>
+</table>
+<p>额度规则为 <code>confirmed_success + unresolved_reservations &lt; target</code> 才可再预留。颜色限购与数量目标同时满足；周期和品阶映射未确认前，只做测试配置而不激活实际策略。[D05]</p>
+<h2>6. 异常恢复和统计</h2>
+<p>观察性操作可以有界重试；可能产生外部副作用的操作以回执核验优先。原日志出现1/5重试，只能说明历史某条识别路径的上限，不将所有错误的重试都统一定成5。[E04]</p>
+<p>“卡屏”判断需要页面语义、期望变化与耗时联合判定；公示等待时画面长期近似不代表故障。超价提前结束必须证明<strong>全局</strong>价格升序，且翻页保持排序；否则只能跳过当前条目。[E04；改进设计]</p>
+<p>统计至少区分：扫描观测、唯一候选、规则匹配、收藏成功、动作发起、成交确认、明确失败、未知结果。历史18,079条联合符合、10,225条二次确认、9,659条价格解析失败是<strong>日志消息计数</strong>，不是订单或成交计数。[E04]</p>
+<p>停止流程：先增加取消代次并停止新意图；取消等待任务；已准备但未发出的标Cancelled；已可能发出的进入Reconcile；写入停止原因与未决数量。UI的停止完成与外部结果全部确定是两个不同状态。</p></section><section id="doc-05_delivery_tests"><h1>05 · 开发计划、验收与交付</h1>
+<h2>1. 里程碑与依赖</h2>
+<p>当前完成的是M0文档；以下后端功能都是开发计划，不能视作已接入。工作包以可运行结果拆分，不按“先搭一堆空壳”推进。</p>
+<table>
+<thead>
+<tr>
+<th>阶段 / 工作项</th>
+<th>输入与实现</th>
+<th>可交付结果</th>
+<th>通过条件 / 依赖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0 / WI00</td>
+<td>复用静态证据，整理业务和资料</td>
+<td>本文档、矩阵、样例、资料核查、文档验证</td>
+<td>业务有来源/验收，未知项已单列；本轮完成</td>
+</tr>
+<tr>
+<td>M1 / WI01</td>
+<td>新domain模型与值对象</td>
+<td>商品/卖单/规则/run/attempt类型；定点数字；纯匹配解释器</td>
+<td>正常/边界/缺失/歧义用例；无外部动作依赖</td>
+</tr>
+<tr>
+<td>M1 / WI02</td>
+<td>v1与13列文本导入</td>
+<td>只读预览、错误列表、候选映射、v2新路径导出</td>
+<td>15条样例不丢列；末两列保留；原文件不变</td>
+</tr>
+<tr>
+<td>M1 / WI03</td>
+<td>JSON观测/事件回放</td>
+<td>可控时钟、可暂停/单步的回放、决策轨迹</td>
+<td>相同输入→相同事件序列；回放不启动样本</td>
+</tr>
+<tr>
+<td>M1 / WI04</td>
+<td>事件账本与统计</td>
+<td>意图/回执表、去重、未决预留与重启状态</td>
+<td>发起后崩溃不自动重发；成功不重复计数</td>
+</tr>
+<tr>
+<td>M1 / WI05</td>
+<td>接到现有UI</td>
+<td>关注卖单、规则原因、模式/状态/记录；原布局保留</td>
+<td>所有原入口可达；demo/replay数据隔离；离屏回归</td>
+</tr>
+<tr>
+<td>M2 / WI06</td>
+<td>帧与DPI契约、截图候选对比</td>
+<td>回放源+只读捕获适配器，尺寸/代次处理</td>
+<td>标注坐标可往返，失效帧不驱动规则；依赖WI01/03</td>
+</tr>
+<tr>
+<td>M2 / WI07</td>
+<td>OCR候选评测/worker</td>
+<td>可替换provider、模型清单、CPU首轮测量、字段证据</td>
+<td>留出集报告含精度/拒识/误关联/延迟；依赖独立画面数据</td>
+</tr>
+<tr>
+<td>M2 / WI08</td>
+<td>页面及卖单观察</td>
+<td>只读识别状态、商品/卖单关联、结果叠层</td>
+<td>Unknown路径完整；不把OSD识成目标；依赖WI06/07</td>
+</tr>
+<tr>
+<td>M3 / WI09</td>
+<td>筛选收藏状态机回放</td>
+<td>页面回读、翻页、防重复、满额切换</td>
+<td>B09–B19的事件路径和错误路径；依赖WI03/08</td>
+</tr>
+<tr>
+<td>M3 / WI10</td>
+<td>关注/时间/延迟策略回放</td>
+<td>倒计时区间、代次取消、数量限制、动态策略测试</td>
+<td>假时钟回拨/迟到/失效事件通过；先关闭动态默认</td>
+</tr>
+<tr>
+<td>M4 / WI11</td>
+<td>自有测试页面与动作适配器</td>
+<td>测试桩消费意图，产生确认/成功/失败/未知画面</td>
+<td>完整业务闭环、停止/重启/变页检查；不是运行原样本</td>
+</tr>
+<tr>
+<td>M4 / WI12</td>
+<td>发布与诊断</td>
+<td>解压目录、独立依赖、资料/模型清单、回退包</td>
+<td>构建+离屏验收；干净环境检查；诊断脱敏</td>
+</tr>
+</tbody>
+</table>
+<p>真实目标输入适配器是M4之后的单独交付决策，需明确D03/D04/D05/D07等语义和验收结果。当前前端约定仍然是“不在界面层执行点击或购买”；本轮没有更改它。[E11]</p>
+<h2>2. 测试分层</h2>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>数据</th>
+<th>测什么</th>
+<th>不用它证明什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档校验（本轮）</td>
+<td>Markdown/JSON/哈希/引用</td>
+<td>44业务↔88规格↔E/R互链，样例语义完整，基线不变</td>
+<td>不证明业务引擎已实现</td>
+</tr>
+<tr>
+<td>Domain单测（M1）</td>
+<td>人工构造的结构化观测</td>
+<td>金额/磨损精度、匹配解释、未知字段、预留/去重</td>
+<td>不证明OCR正确</td>
+</tr>
+<tr>
+<td>历史事件回放（M1/M3）</td>
+<td>E04脱敏事件片段</td>
+<td>状态顺序、异常恢复、统计口径</td>
+<td>不证明能从像素恢复这些事件</td>
+</tr>
+<tr>
+<td>视觉测试（M2）</td>
+<td>新采集并人工标注的静态图片</td>
+<td>页面、字段、关联、DPI、拒识</td>
+<td>不证明外部操作成功</td>
+</tr>
+<tr>
+<td>测试桩闭环（M4）</td>
+<td>自有测试页面/画面提供器</td>
+<td>双阶段、确认、结果、停止、重启</td>
+<td>不宣称达到真实市场成交率</td>
+</tr>
+<tr>
+<td>发布验收</td>
+<td>自家源码/发布目录</td>
+<td>依赖齐全、配置回退、UI布局与模式标识</td>
+<td>不启动BBZPS或其DLL</td>
+</tr>
+</tbody>
+</table>
+<p>全部业务用例见 <a href="#doc-acceptance_cases">acceptance_cases.md</a>；每条现在是 <code>planned_not_run</code>。完成实现时逐条登记结果、构建版本、输入文件哈希、测试命令及证据，而不是批量把清单改成通过。</p>
+<h2>3. 第一轮视觉数据和指标</h2>
+<p><strong>以下是拟定评审门槛，不是本轮测量结果。</strong></p>
+<ul>
+<li>首批至少500张独立标注图片，覆盖所有定义页面；每类至少30张，错误/近似/遮挡/错窗口等负例不少于100张。</li>
+<li>按采集会话/场景划分开发集和留出集；从同一帧缩放/裁切出的变体必须留在同一分组。</li>
+<li>关键金额、磨损必须按字段精确值统计；同时记录拒识覆盖率和已接受样本正确率，不能靠拒绝全部输入得到“零误报”。</li>
+<li>留出集中的明确错页、过期帧、错行字段必须全部挡住；报告“该测试集未观测到误动作”，不外推为真实环境零风险。</li>
+<li>页面标签/价格/磨损具体精度发布阈值，在首轮基准后由产品目标决定并写入D09。任何真实动作接入前，必须对可接受误判、拒识率和核验方式作明确决定。</li>
+<li>性能报告列冷启动/热运行、P50/P95/P99、frame age、CPU/GPU/内存、队列丢帧；不预填硬件未知情况下的FPS或毫秒指标。</li>
+</ul>
+<p>样本历史PNG存在缺失，E09记录初始822项中788项复核未变、34项缺失、0项内容变化、0项新增；本轮不再把缺失图片当成可运行视觉测试集。现有历史文字可以作为业务线索，不可代替图像真值。</p>
+<h2>4. 必测的跨模块故障</h2>
+<ol>
+<li>worker在准备意图前/后退出，旧回包迟到，协议版本不符。</li>
+<li>窗口位置/大小/DPI变化；目标关闭、失焦、遮挡、最小化和设备捕获丢失。</li>
+<li>OCR将 <code>1,300</code> 分裂、将 <code>O/0</code> 混淆、把相邻行磨损配给另一价格。</li>
+<li>同款两卖单字段相同、列表刷新换位、条目消失后又出现。</li>
+<li>单调时钟正常而墙上时间前进/回拨；使用假时钟注入，不修改操作系统时间。</li>
+<li>倒计时10→8→9、定时器晚到、旧generation唤醒、多个任务同时满足。</li>
+<li>发起后未见回执、回执重复、保存失败、崩溃重启、停止时仍有未决attempt。</li>
+<li>schema v1/v2往返、未知字段、坏编码、单位不明、超长值、重复ID、导入失败回滚。</li>
+<li>日志/截图达到容量、磁盘写失败、数据库锁冲突、诊断脱敏。</li>
+<li>在demo/replay/observe间切换，演示成交不能混入真实统计；动态策略默认关闭。</li>
+</ol>
+<h3>按需采集与图像零落盘验收（v0.2）</h3>
+<p>这些是E12新增的实施验收要求，目前只校验文档/示例契约；还没有运行真实捕获与OCR测试。</p>
+<ul>
+<li>空闲、暂停、长等待及停止后，新增截图请求数和OCR请求数为0；采集端也停止，模型可以保留在内存待用。</li>
+<li>进入需要识别的步骤时申请新帧；单次观察结束即停止，有界观察必须受超时/帧数预算约束。</li>
+<li>覆盖正常、成功、失败、worker崩溃和共享内存失败路径；默认应用图像/临时帧文件创建数及图片写入字节数都为0。共享内存失败不得静默转成临时文件。</li>
+<li>实时worker请求只含已分配内存描述符；仅离线回放可读既有测试文件。模型/已有素材的正常读取与截图写入分别统计。</li>
+<li>工作槽1个、待处理槽1个；取消/重启后租约清理、内存上限、旧结果丢弃均测试，不能复用仍被worker读取的缓冲区。</li>
+<li>日志默认不含逐帧OCR全文或图像内容；配置和必要账本写入单独计量，不将“无截图文件”等同于“全进程无磁盘IO”。</li>
+<li>显式调试模式有到期/容量/数量限制，关闭后回到零自动图片写入；失败时也不自动开启调试。</li>
+</ul>
+<p>文档校验会检查 <a href="examples/observation-policy.sample.json">observation-policy.sample.json</a> 的上述默认值；最终图像IO和资源计数须在WI06–WI08实现后实测。</p>
+<h2>5. UI接入和发布约定</h2>
+<p>UI继续已有Win11白灰设计：顶部搜索、左栏、关注列表、右侧条件编辑、底部价格图。增加“模式/来源/观测时间/匹配原因/未知状态”等必要信息，但不借业务接入重新装修界面；参数页保留全部原入口。[E11]</p>
+<p>后续代码里程碑使用既有工程命令：</p>
+<pre><code class="language-powershell">powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Package
+</code></pre>
+<p>上述是<strong>后续应用构建命令</strong>，本轮文档交付没有运行它们。项目已有domain_tests和<code>QT_QPA_PLATFORM=offscreen</code>自检；业务实现时扩展测试并重新运行，不沿用旧的通过结果。[E08]</p>
+<p>固定交付路径：<code>C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe</code>。保留必需Qt DLL、<code>platforms</code>及新worker/模型清单；只提供ZIP不算交付。程序由用户自行打开，不启动前台窗口。依赖和模型应记录来源、许可证、版本、架构、哈希和构建工具链；Qt部署参考R15。</p>
+<h2>6. 业务版本回退方案</h2>
+<ul>
+<li>发布前把旧解压目录、schema v1配置、数据库一致性备份分别存为带版本目录；不用新安装直接覆盖唯一副本。</li>
+<li>配置迁移先写新路径，留下迁移报告；旧版程序只读旧schema文件。</li>
+<li>回退可执行程序不删除v2账本；有未决attempt时展示核验说明，不按零历史重新启动。</li>
+<li>先在另一份复制目录验证旧配置/旧程序可读，再替换发布目录。用户看到的程序路径保持固定。</li>
+<li>禁止把BBZPS任何EXE/DLL/插件列进交付依赖；文本证据和原程序仅供静态对照。</li>
+</ul>
+<p>本轮只有文档新增；源码及当前解压发布目录的102个基线文件均纳入哈希复核，实际结果见 <code>VERIFICATION.txt</code>。未执行样本，无需用运行样本来验证文档。</p></section><section id="doc-06_evidence_references"><h1>06 · 证据与参考资料</h1>
+<h2>1. 证据来源与复验</h2>
+<p>本轮复用上一轮已完成的静态资料，没有重新扫描约1.77GB日志、没有启动样本或加载其组件。证据索引保存的是实际文件SHA-256；本轮工作为开发设计，旧报告里的静态载荷分析不作为新程序代码来源。</p>
+<table>
+<thead>
+<tr>
+<th>E编号</th>
+<th>来源</th>
+<th>可支持的业务发现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E01</td>
+<td>source_manifest.json</td>
+<td>初始文件身份、cv2依赖线索；不证明所有依赖均执行</td>
+</tr>
+<tr>
+<td>E02</td>
+<td>pe_summary.json</td>
+<td>TomatoOCR导出/资源、授权层接口、Python/Qt生态</td>
+</tr>
+<tr>
+<td>E03</td>
+<td>task_schema.json / configs_redacted.json</td>
+<td>15条13列任务、可见运行参数、脱敏配置</td>
+</tr>
+<tr>
+<td>E04</td>
+<td>log_index.json / business_evidence.json / business_passages.json</td>
+<td>页面/筛选/收藏/关注/倒计时/确认/异常与原文件行号、字节偏移</td>
+</tr>
+<tr>
+<td>E05</td>
+<td>embedded_payload.json / nested_pe.json</td>
+<td>旧外层与内层及额外载荷的关系；仅用于解释不搬二进制的决定</td>
+</tr>
+<tr>
+<td>E06</td>
+<td>decoded_pe.json / decoded_api_calls.json</td>
+<td>上一轮静态恢复的证据摘要，不纳入实现</td>
+</tr>
+<tr>
+<td>E07</td>
+<td>ida_survey.json / 原反编译证据</td>
+<td>旧载荷代码能力已静态确认；开发沿用结论，不延伸载荷分析</td>
+</tr>
+<tr>
+<td>E08</td>
+<td>domain.h/.cpp / mainwindow.cpp / CMakeLists.txt / STORE_UI.md / build.ps1</td>
+<td>当前前端/模拟实现、字段、构建工具链</td>
+</tr>
+<tr>
+<td>E09</td>
+<td>source_audit_verification.json</td>
+<td>上一轮目录结束复核情况；34张历史PNG缺失，原因未核实</td>
+</tr>
+<tr>
+<td>E10</td>
+<td>gdi32.dll.interesting.json</td>
+<td>OpenCV、ppocrv5、TomatoOCR字符串偏移</td>
+</tr>
+<tr>
+<td>E11</td>
+<td>AGENTS.md</td>
+<td>最新Win11浅色白灰、全部功能入口和交付路径约定</td>
+</tr>
+<tr>
+<td>E12</td>
+<td>用户补充的采集要求记录</td>
+<td>按步骤触发，图像默认只走内存；取代临时帧文件IPC与常驻全速采集方案</td>
+</tr>
+</tbody>
+</table>
+<p>原文件完整路径与哈希见 <a href="evidence/index.json">evidence/index.json</a>；业务消息及原日志定位见 <a href="evidence/business_excerpts.json">business_excerpts.json</a>；动态参数区间等补充片段定位见 <a href="evidence/passage_locators.json">passage_locators.json</a>。<a href="evidence/task_schema.json">13列配置快照</a>、<a href="evidence/ocr_identity.json">OCR身份摘录</a> 和 <a href="evidence/static-analysis-report.md">上一轮完整静态报告</a> 随文档附带，均为文本资料。</p>
+<p>v0.2新增来源：<a href="evidence/2026-10-06_capture_requirement.md">用户的步骤采集与不落盘要求</a>。该项是产品要求，不是样本已具备低IO实现的证明。</p>
+<p>复验一组证据（只读哈希，不执行被检查文件）：</p>
+<pre><code class="language-powershell">python -I -X utf8 docs\business_rebuild\scripts\validate_docs.py --evidence E04
+</code></pre>
+<p>索引的source_ref以项目根目录为基准；上述复验需在本项目中进行。压缩包中的离线文档与摘录可直接阅读，但不包含原始日志或任何样本EXE/DLL。原始scope/timeline可在项目 <code>artifacts/bbzps_static/</code> 查阅。本轮入口与文档检验记录在 <code>artifacts/business_rebuild_docs/</code>。</p>
+<h2>2. Evidence → Finding → Path</h2>
+<table>
+<thead>
+<tr>
+<th>发现</th>
+<th>证据</th>
+<th>结论与强度</th>
+<th>开发影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BF01</td>
+<td>E03+E04</td>
+<td>高：存在筛选收藏/关注调度两阶段，不只是价格展示</td>
+<td>WI01/03/09/10</td>
+</tr>
+<tr>
+<td>BF02</td>
+<td>E01+E02+E10</td>
+<td>高：包含OpenCV及TomatoOCR接口；具体启用模型仍未知</td>
+<td>WI06/07；不复制OCR DLL</td>
+</tr>
+<tr>
+<td>BF03</td>
+<td>E08+E11</td>
+<td>高：现版本为配置与合成数据模拟，原入口需要保留</td>
+<td>WI01/05；不以演示成功充真实业务</td>
+</tr>
+<tr>
+<td>BF04</td>
+<td>E03+E04</td>
+<td>中：价格列、延迟区间存在语义候选；边界/单位/公式未确定</td>
+<td>WI02；D01–D04</td>
+</tr>
+<tr>
+<td>BF05</td>
+<td>E04</td>
+<td>高：结果超时、下架、识别失败、市场暂停是主流程分支</td>
+<td>WI04/09/10/11</td>
+</tr>
+<tr>
+<td>BF06</td>
+<td>E05+E07</td>
+<td>高：旧发行包有独立远控代码静态证据</td>
+<td>WI12使用独立依赖，不打包原二进制</td>
+</tr>
+<tr>
+<td>BF07</td>
+<td>E12</td>
+<td>用户确认：按步骤采集、实时图片默认不落盘</td>
+<td>ADR10、WI06–WI08/WI10；协议、统计与验收同步更新</td>
+</tr>
+</tbody>
+</table>
+<p>业务路径 BP01（历史行为还原）：E03任务 → E04页面/筛选 → E04价格和磨损匹配 → E04收藏回执 → E04关注/倒计时 → E04确认/结果；支撑BF01/BF05。新实现的账本、取消代次、进程隔离等是设计加固，不冒充上述历史代码路径。</p>
+<p>识别路径 BP02（接口/日志综合判断）：E02 OCR接口 + E10 OpenCV线索 → E04文字/框/分数 → E04页面分类与字段判断；支撑BF02。此路径是组件/数据关系，不代表已经恢复每一个函数调用。</p>
+<h2>3. 官方技术参考资料</h2>
+<p>以下是原始维护者的开发文档/标准，不是搜索摘要或二手博客。访问日期：2026-10-06。16项均实际取得HTTP 200并检查主题关键字；URL、最终地址、页面标题、获取时间、响应长度和SHA-256见 <a href="references.json">references.json</a>。Qt链接属于6.8文档分支，当前页面可能显示6.8.x较新补丁号，<strong>不代表本机Qt已升级</strong>。</p>
+<p>资料解释重构技术，不证明样本实际调用该API，也不是OCR性能达标证据。页面响应哈希是当次取证标识，不是将来网页永不变化的承诺。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>维护者 / 文献标题</th>
+<th>对应业务与用途</th>
+<th>核查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R01</strong></td>
+<td>OpenCV — Template Matching</td>
+<td>固定图标/锚点定位的候选方法；不证明样本实际调用了模板匹配。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R02</strong></td>
+<td>OpenCV — Image Thresholding</td>
+<td>对文字 ROI 的阈值处理做离线对照，原图仍需保留。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R03</strong></td>
+<td>Microsoft — Screen capture</td>
+<td>Windows Graphics Capture 捕获能力和约束；作为新实现候选。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R04</strong></td>
+<td>Microsoft — Desktop Duplication API</td>
+<td>桌面帧捕获候选、更新与移动区域；与窗口捕获方案对照。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R05</strong></td>
+<td>Microsoft — High-DPI desktop application development on Windows</td>
+<td>区分逻辑/物理像素，处理窗口和显示器 DPI 变化。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R06</strong></td>
+<td>PaddleOCR — OCR pipeline</td>
+<td>检测框、文字和置信度输出，作为独立 OCR 候选评测依据。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R07</strong></td>
+<td>PaddleOCR — Text recognition module</td>
+<td>按中文/数字场景评估识别模型；不是样本模型启用证明。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R08</strong></td>
+<td>Qt 6.8 — QElapsedTimer</td>
+<td>使用单调经过时间而不是可回拨的墙上时钟计算超时。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R09</strong></td>
+<td>Qt 6.8 — QTimer</td>
+<td>定时器可能延迟；事件触发后重核截止时间，不承诺亚毫秒精度。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R10</strong></td>
+<td>Qt 6.8 — QThread</td>
+<td>worker 与 GUI 的线程分工和 queued connections。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R11</strong></td>
+<td>Qt 6.8 — QProcess</td>
+<td>可信独立视觉 worker 的进程通信、退出及错误处理。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R12</strong></td>
+<td>Qt 6.8 — QSaveFile</td>
+<td>配置先写临时内容，成功后提交；保留原配置。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R13</strong></td>
+<td>SQLite — Write-Ahead Logging</td>
+<td>账本持久化候选；事务、检查点和备份需单独设计。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R14</strong></td>
+<td>Qt 6.8 — Supported Platforms</td>
+<td>记录 Windows 编译器组合；第三方库也需匹配工具链。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R15</strong></td>
+<td>Qt 6.8 — Qt for Windows Deployment</td>
+<td>打包 Qt DLL 和 platform plugins，检验干净环境运行。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R16</strong></td>
+<td>IETF RFC 5905 — Network Time Protocol Version 4</td>
+<td>网络时间偏移与测量不确定度参考；新程序不修改系统时间。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+</tbody>
+</table>
+<h2>4. 资料地址</h2>
+<ul>
+<li><strong>R01</strong>：<code>https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html</code></li>
+<li><strong>R02</strong>：<code>https://docs.opencv.org/4.x/d7/d4d/tutorial_py_thresholding.html</code></li>
+<li><strong>R03</strong>：<code>https://learn.microsoft.com/en-us/windows/uwp/audio-video-camera/screen-capture</code></li>
+<li><strong>R04</strong>：<code>https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/desktop-dup-api</code></li>
+<li><strong>R05</strong>：<code>https://learn.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows</code></li>
+<li><strong>R06</strong>：<code>https://www.paddleocr.ai/main/en/version3.x/pipeline_usage/OCR.html</code></li>
+<li><strong>R07</strong>：<code>https://www.paddleocr.ai/main/en/version3.x/module_usage/text_recognition.html</code></li>
+<li><strong>R08</strong>：<code>https://doc.qt.io/qt-6.8/qelapsedtimer.html</code></li>
+<li><strong>R09</strong>：<code>https://doc.qt.io/qt-6.8/qtimer.html</code></li>
+<li><strong>R10</strong>：<code>https://doc.qt.io/qt-6.8/qthread.html</code></li>
+<li><strong>R11</strong>：<code>https://doc.qt.io/qt-6.8/qprocess.html</code></li>
+<li><strong>R12</strong>：<code>https://doc.qt.io/qt-6.8/qsavefile.html</code></li>
+<li><strong>R13</strong>：<code>https://sqlite.org/wal.html</code></li>
+<li><strong>R14</strong>：<code>https://doc.qt.io/qt-6.8/supported-platforms.html</code></li>
+<li><strong>R15</strong>：<code>https://doc.qt.io/qt-6.8/windows-deployment.html</code></li>
+<li><strong>R16</strong>：<code>https://www.rfc-editor.org/rfc/rfc5905.html</code></li>
+</ul>
+<h2>5. 对应关系怎样使用</h2>
+<ul>
+<li>业务矩阵每行都有E/R/T：E说明为什么列此业务，R说明实现时参考什么，T说明做完怎样验收。</li>
+<li>同一R可能为多项业务提供工程背景；它不会替代未恢复的业务公式。例如R08/R09只能解释时钟/定时器，不能证明clicktime单位。</li>
+<li>参考实现由本项目重写；本轮没有咨询样本授权网站、连接控制端或下载样本依赖。</li>
+<li>主要未确定项见 <a href="#doc-07_decisions">决策表</a>，按文档明确缺口继续开发，不把检索资料填成样本事实。</li>
+</ul></section><section id="doc-07_decisions"><h1>07 · 架构决定和未决事项</h1>
+<h2>已选定的工作方向</h2>
+<table>
+<thead>
+<tr>
+<th>ADR</th>
+<th>决定</th>
+<th>理由 / 后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADR01</td>
+<td>保留0.6 Win11白灰UI，独立重写业务</td>
+<td>已有UI得到用户认可；不复制原EXE/DLL；前端和状态机解耦</td>
+</tr>
+<tr>
+<td>ADR02</td>
+<td>商品、卖单、规则、运行、attempt分开</td>
+<td>同款多卖单及不确定关联不能塞进Skin单一price字段</td>
+</tr>
+<tr>
+<td>ADR03</td>
+<td>先Replay，再Observe，再测试桩动作</td>
+<td>将规则正确性、像素识别、动作时序拆开验证</td>
+</tr>
+<tr>
+<td>ADR04</td>
+<td>Qt/MinGW不因OCR换工具链；优先独立worker</td>
+<td>避免直接混链不同C++工具链；新增协议与部署成本可测</td>
+</tr>
+<tr>
+<td>ADR05</td>
+<td>单调时间+独立偏移估计，不设置系统时间</td>
+<td>原历史日志有11804次设置成功和回拨；本项目不继承这种耦合</td>
+</tr>
+<tr>
+<td>ADR06</td>
+<td>Unknown是一等状态，外部结果需回执</td>
+<td>不以点击、结束或超时推断成功；数量预留配合核验</td>
+</tr>
+<tr>
+<td>ADR07</td>
+<td>当前任务的价格闭区间、磨损上界包含相等</td>
+<td>与前端模拟习惯衔接；明确这是新规格，旧导入仍要确认</td>
+</tr>
+<tr>
+<td>ADR08</td>
+<td>导入保留raw、证据来源和人工决定</td>
+<td>未知/推断项不猜填；schema v1和v2分文件</td>
+</tr>
+<tr>
+<td>ADR09</td>
+<td>原始事件/模型版本可追溯，日志有容量控制</td>
+<td>避免海量OCR日志成为唯一账本；支持复验和回归</td>
+</tr>
+<tr>
+<td>ADR10</td>
+<td>步骤按需采集，实时像素走内存，图片默认不落盘</td>
+<td>用户2026-10-06补充已确认（E12）；取代v0.1临时帧文件IPC。空闲/暂停/长等待停止采集；成功/失败不自动保存图像，导出/调试显式开启</td>
+</tr>
+</tbody>
+</table>
+<p>ADR表示本轮建议采用的工程基线；尚未实施的内容仍遵循M1–M4顺序。与用户后续决定冲突时更新本表和关联用例，而不是暗改含义。</p>
+<h2>未决表</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>问题 / 现有证据</th>
+<th>当前默认处理</th>
+<th>影响 / 解除条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D01</td>
+<td>第12/13列均为“不限”，语义未知（E03）</td>
+<td>原位保留，禁用自动映射</td>
+<td>不阻塞模型/回放；需要可信旧说明/界面字段对应或更多静态证据</td>
+</tr>
+<tr>
+<td>D02</td>
+<td>第7/8列为价格上下限推断；原比较边界未恢复</td>
+<td>导入需确认；新原生规则用闭区间</td>
+<td>不阻塞新规则；完成导入预览确认即可激活对应规则</td>
+</tr>
+<tr>
+<td>D03</td>
+<td>clicktime等单位、区间意义、购买延迟触发基准不确定（E03/E04）</td>
+<td>原值raw；新毫秒字段独立，样本字段不换算</td>
+<td>阻塞旧延迟忠实迁移；需要原界面单位或静态调用语义；新基准由产品明确</td>
+</tr>
+<tr>
+<td>D04</td>
+<td>动态公式、队列满/公示期触发计数规则未证实等价（E11）</td>
+<td>动态关闭；测试策略独立标记拟定</td>
+<td>阻塞产品默认动态策略；确认连续/累计、去重、复位、边界与调整基准</td>
+</tr>
+<tr>
+<td>D05</td>
+<td>品级颜色映射、限购周期、quantity含义和buynum=99999语义</td>
+<td>只在测试中显式设置；不将末两列补作数量</td>
+<td>阻塞正式限购激活；确认按run/天/方案/账户及0值含义</td>
+</tr>
+<tr>
+<td>D06</td>
+<td>关注上限具体数值、满额后再收藏条件未确认</td>
+<td>以可靠满额回执切阶段；不硬编码上限</td>
+<td>可先做回放；需观察空位/购买完成后恢复条件</td>
+</tr>
+<tr>
+<td>D07</td>
+<td>是否存在稳定卖单ID、如何区分完全相同条目</td>
+<td>关联标识+歧义状态；不宣称exactly-once</td>
+<td>影响动作去重和成交归属；需更多界面可见标识证据</td>
+</tr>
+<tr>
+<td>D08</td>
+<td>“优化”入口具体内容未定（用户明确约定）</td>
+<td>保留入口与说明，不改变系统/执行策略</td>
+<td>不阻塞核心业务；由用户定义实际功能</td>
+</tr>
+<tr>
+<td>D09</td>
+<td>OCR模型/provider、字段准确率与延迟目标未评测</td>
+<td>OpenCV+独立OCR候选，CPU首轮；无达标宣传</td>
+<td>M2收集数据/硬件信息与留出测试后选择</td>
+</tr>
+<tr>
+<td>D10</td>
+<td>捕获方式在具体目标窗口/遮挡/全屏条件下的适用性</td>
+<td>ICaptureSource双候选，只读验证</td>
+<td>M2记录系统/GPU/窗口模式；捕获失败有明确状态</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>市场开放时段、时区、日期例外和公示倒计时来源</td>
+<td>用户定时与观测市场状态取交集；未知暂停</td>
+<td>不把历史日期开放时间写成永久规则；需要实际产品规则</td>
+</tr>
+<tr>
+<td>D12</td>
+<td>“炼金计数”“老测试模式”等枚举具体业务</td>
+<td>保留原文为历史metadata，不扩展新功能</td>
+<td>更多资料证明后才形成独立需求；不从名称编造算法</td>
+</tr>
+<tr>
+<td>D13</td>
+<td>金额币种/最小单位、合法磨损精度、目录字典</td>
+<td>显式unit/scale与原文；非法/未知进入Review</td>
+<td>M1可用合成单位测试；正式导入前确认市场含义</td>
+</tr>
+</tbody>
+</table>
+<h2>无需等待这些决定就可以开始的开发</h2>
+<p>WI01–WI05可以立即开展：值对象、匹配解释、v1兼容、13列只读导入、原始字段保留、事件回放、结构化记录和UI模式标识。这些都不需要运行BBZPS，不需要猜动态延迟公式，也不依赖当前不完整的截图集。</p>
+<p>若新增证据推翻某项推断，按“新证据ID → 修改的决策 → 受影响业务ID → 新回归用例”记录。历史文档/配置原值保留，不回写伪造旧运行行为。</p></section><section id="doc-08_implementation_ready"><h1>08 · 开发开工标准与首条纵切片</h1>
+<blockquote>
+<p>这是在业务说明之后给开发者看的工程入口。它回答：文档细到什么程度才足以支撑写代码、第一批代码写什么、什么还不能碰。当前结论：<strong>M1 纯规则→回放→现有UI解释纵切片可以开工；M2捕获/OCR与M3/M4真实动作尚未达到生产Ready。</strong></p>
+</blockquote>
+<h2>1. 文档达到“可开工”的最低闭环</h2>
+<p>不是文档页数，而是以下信息同时闭合：</p>
+<ol>
+<li><strong>对象闭合</strong>：每个输入/输出有类型、ID、生命周期、必填/可空、单位、范围和未知语义。</li>
+<li><strong>规则闭合</strong>：输入校验、Review优先级、Match/NoMatch/NeedsReview、原因码和边界比较都能写成纯函数。</li>
+<li><strong>状态闭合</strong>：每个事件有前置状态、guard、效果、下一个状态、超时/乱序/迟到行为；Pause/Stop不靠文字解释。</li>
+<li><strong>副作用闭合</strong>：每个副作用有命令入口、事务边界、幂等键、失败回滚和重启恢复；图像默认零文件落盘规则可验证。</li>
+<li><strong>交互闭合</strong>：现有UI按钮对应应用命令和投影字段，不能在槽函数里藏业务循环。</li>
+<li><strong>测试闭合</strong>：每张开发票至少有一个固定输入、字段级预期、失败分支、命令计划和“不证明什么”。</li>
+<li><strong>交付闭合</strong>：实际build目录、Qt/MinGW工具链、QtSql/driver差距、固定EXE路径、回退副本和证据格式均写清楚。</li>
+</ol>
+<p>缺一个闭环就只能称“设计说明”，不能称“可直接开工”。本轮的闭合证据在 <code>implementation/domain</code>、<code>implementation/runtime</code>、<code>implementation/integration</code> 和 <code>implementation/readiness</code>。</p>
+<h2>2. 当前等级与允许动作</h2>
+<table>
+<thead>
+<tr>
+<th>范围</th>
+<th>等级</th>
+<th>现在能做什么</th>
+<th>现在不能做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1 domain / replay / UI解释</td>
+<td>Ready to implement</td>
+<td>写C++值对象、纯匹配、FakeClock回放、InMemory账本、投影到现有页</td>
+<td>不把演示成功当真实成交</td>
+</tr>
+<tr>
+<td>M1 v1导入 / profile</td>
+<td>可分票开工</td>
+<td>只读预览、人工确认、v2新路径、QSaveFile</td>
+<td>不猜13列末尾语义/单位/动态延迟</td>
+</tr>
+<tr>
+<td>M2 捕获/OCR/零图片文件</td>
+<td>契约Ready，运行实测未Ready</td>
+<td>写FakeCapture/worker协议测试和探针</td>
+<td>不宣称识别率、FPS、后台捕获兼容或零IO已实测</td>
+</tr>
+<tr>
+<td>M3 双阶段策略</td>
+<td>语义部分阻塞</td>
+<td>用合成倒计时/额度回放验证状态机</td>
+<td>不激活旧公式、真实限购、市场时段或卖单ID猜测</td>
+</tr>
+<tr>
+<td>M4 外部动作/发布</td>
+<td>Not ready</td>
+<td>先对自有测试窗口接FakeAction、准备发布脚本</td>
+<td>不连接原样本、不执行真实点击/购买</td>
+</tr>
+</tbody>
+</table>
+<h2>3. 首条最小纵切片（PR01→PR05）</h2>
+<pre><code class="language-text">固定合成Profile + 两条卖单观测
+  → 领域校验/精确十进制
+  → Match / NoMatch / NeedsReview + 原因列表
+  → FakeClock / ReplayReducer
+  → Pause/Resume/Stop/旧代次结果丢弃
+  → event projection 到关注列表、任务页、记录页
+</code></pre>
+<p>明确不含：截图、OCR、真实捕获、系统时钟修改、临时图片、QtSql、真实输入。成功标准是“同一输入两次回放产生同一状态/事件序列，UI显示来源与原因”，不是“自动买到”。</p>
+<p>开发顺序和每票输入/输出/回退见 <a href="implementation/readiness/backlog.md">12张任务票</a>；详细Given/When/Then见 <a href="implementation/readiness/test_matrix.md">测试矩阵</a>。</p>
+<h2>4. 五层契约的职责</h2>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>机器契约</th>
+<th>关键不变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain</td>
+<td><code>domain/core.schema.json</code>、<code>config-v2.schema.json</code>、<code>RULE_ENGINE.md</code></td>
+<td>精确值、Review优先、Match不授权、未知单位不激活</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td><code>runtime/state.schema.json</code>、<code>observation.schema.json</code>、<code>worker.schema.json</code></td>
+<td><code>cancel_epoch</code>、freshness、1处理+1待处理、Unknown保留预留</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td><code>integration/storage_contract.md</code>、<code>storage_schema.sql</code></td>
+<td>ID幂等、同ID不同payload冲突、事务后才更新UI</td>
+</tr>
+<tr>
+<td>UI</td>
+<td><code>integration/ui_integration.md</code></td>
+<td>命令/投影分离、模式显式、旧UI入口保留</td>
+</tr>
+<tr>
+<td>Readiness</td>
+<td><code>readiness/backlog.json</code>、<code>test_matrix.json</code></td>
+<td>票据可回退、结果可复验、计划不冒充通过</td>
+</tr>
+</tbody>
+</table>
+<h2>5. 开工前必须跑的文档检查</h2>
+<pre><code class="language-powershell">python -I -X utf8 docs\business_rebuild\scripts\validate_contracts.py
+python -I -X utf8 docs\business_rebuild\implementation\readiness\validate_readiness.py
+python -I -X utf8 docs\business_rebuild\scripts\validate_docs.py
+</code></pre>
+<p>这些命令只检查 schema、fixture、引用、链接、计划和基线；输出中的<code>APPLICATION_TESTS_RUN=0</code>、<code>BUSINESS_ENGINE_TESTS_EXECUTED=0</code>、<code>LIVE_CAPTURE_TESTS_EXECUTED=0</code>必须保留，不能改成开发已完成。</p>
+<h2>6. 第一批真实代码的建议边界</h2>
+<pre><code class="language-text">src/business/             value_types, models, validator, matcher
+src/application/runtime/  reducer, coordinator, fake_clock, replay_source
+src/ledger/                event_store, in_memory_event_store
+src/application/ui/        projection, command_bindings
+tests/business/            value/rule/import/replay/store tests
+tests/runtime/             replay/lease/protocol contract tests
+</code></pre>
+<p>PR01先建立独立QtCore静态目标和测试入口，不改旧演示逻辑；PR02/03写领域纯函数；PR04写回放；PR05接UI投影。QtSql、OpenCV、OCR和WGC/DXGI都不应在首个PR引入。</p>
+<h2>7. 仍需产品/实验确认的决策</h2>
+<p>D01/D02/D03/D04/D05/D07/D09/D10/D11/D13仍然显式保留。它们不阻塞M1值对象、纯规则、回放和UI解释，但阻塞相应真实策略或生产捕获。<code>优化</code>入口D08保留，不在本轮发明功能。任何新证据都按“证据ID→决定→受影响票→回归用例”更新，不暗改规则。</p></section><section id="doc-acceptance_cases"><h1>验收用例目录</h1>
+<blockquote>
+<p>状态全部为 planned_not_run：这里只完成了规格和追踪完整性检查，尚未执行后端业务验收。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>用例</th>
+<th>业务</th>
+<th>场景与预期结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T01-A</td>
+<td>B01</td>
+<td>切换两份不同方案后，各自任务/参数完整往返。</td>
+</tr>
+<tr>
+<td>T01-B</td>
+<td>B01</td>
+<td>切换时存在未保存编辑，明确保存或放弃，不污染另一方案。</td>
+</tr>
+<tr>
+<td>T02-A</td>
+<td>B02</td>
+<td>连续两次开始只有一个活动 run；停止后不再产生新意图。</td>
+</tr>
+<tr>
+<td>T02-B</td>
+<td>B02</td>
+<td>快捷键冲突或重复按键不启动第二个运行实例。</td>
+</tr>
+<tr>
+<td>T03-A</td>
+<td>B03</td>
+<td>09:00—23:00 与 23:00—次日01:00 两类区间边界按规格判定。</td>
+</tr>
+<tr>
+<td>T03-B</td>
+<td>B03</td>
+<td>市场状态未知或本机时钟回拨时不误判为可执行。</td>
+</tr>
+<tr>
+<td>T04-A</td>
+<td>B04</td>
+<td>同一枪皮的 S/A/B/C 四条规则独立保存并解释匹配。</td>
+</tr>
+<tr>
+<td>T04-B</td>
+<td>B04</td>
+<td>无效价格区间、空名称、重复 ID、运行中改规则均不悄悄改变旧 run。</td>
+</tr>
+<tr>
+<td>T05-A</td>
+<td>B05</td>
+<td>15 条现有样例均解析为 13 列、保留行号及原值；导入预览不启动。</td>
+</tr>
+<tr>
+<td>T05-B</td>
+<td>B05</td>
+<td>12/14 列、坏编码、非法数字的行进入错误列表且不覆盖原方案。</td>
+</tr>
+<tr>
+<td>T06-A</td>
+<td>B06</td>
+<td>缩放与移动保持坐标可映射；步骤开始取新帧，结束即停止；空闲/暂停新增采集请求为0。</td>
+</tr>
+<tr>
+<td>T06-B</td>
+<td>B06</td>
+<td>黑帧、窗口变化令旧ROI失效；实时路径在成功/失败时均不生成图片或临时帧文件。</td>
+</tr>
+<tr>
+<td>T07-A</td>
+<td>B07</td>
+<td>同一标注集得到整页/ROI结果；实时识别接收内存缓冲区，用完归还。</td>
+</tr>
+<tr>
+<td>T07-B</td>
+<td>B07</td>
+<td>空结果/低可信/推理失败不当成功；无观察需求时OCR请求为0，失败不自动保存图像。</td>
+</tr>
+<tr>
+<td>T08-A</td>
+<td>B08</td>
+<td>固定截图序列生成预期页面状态及证据锚点。</td>
+</tr>
+<tr>
+<td>T08-B</td>
+<td>B08</td>
+<td>单个同名文字出现在错页时不据此推进行为状态。</td>
+</tr>
+<tr>
+<td>T09-A</td>
+<td>B09</td>
+<td>全部赛季/未拥有/史诗品阶按顺序形成筛选意图，回读后确认。</td>
+</tr>
+<tr>
+<td>T09-B</td>
+<td>B09</td>
+<td>筛选点击无回执或菜单被遮挡时不假设已选中。</td>
+</tr>
+<tr>
+<td>T10-A</td>
+<td>B10</td>
+<td>目标分布在多页时各规则均被访问且同页不反复扫描。</td>
+</tr>
+<tr>
+<td>T10-B</td>
+<td>B10</td>
+<td>连续重复页或翻页无变化触发上限而不无限循环。</td>
+</tr>
+<tr>
+<td>T11-A</td>
+<td>B11</td>
+<td>成色A且磨损1.187788可由独立 A 规则判断。</td>
+</tr>
+<tr>
+<td>T11-B</td>
+<td>B11</td>
+<td>只满足磨损但成色不符，返回 condition_mismatch。</td>
+</tr>
+<tr>
+<td>T12-A</td>
+<td>B12</td>
+<td>不限公示期与明确状态规则生成不同匹配结果。</td>
+</tr>
+<tr>
+<td>T12-B</td>
+<td>B12</td>
+<td>公示期 OCR 缺失不自动解释为公示已结束。</td>
+</tr>
+<tr>
+<td>T13-A</td>
+<td>B13</td>
+<td>请求按稀有度升序后记录回读值，且不授权价格提前终止。</td>
+</tr>
+<tr>
+<td>T13-B</td>
+<td>B13</td>
+<td>排序未知、刚刷新或顺序反转时清除有序假设。</td>
+</tr>
+<tr>
+<td>T14-A</td>
+<td>B14</td>
+<td>字符串1,300解析1300单位；候选340命中含340的闭区间。</td>
+</tr>
+<tr>
+<td>T14-B</td>
+<td>B14</td>
+<td>+3、34O、NaN、负数及跨行错配不进入有效金额。</td>
+</tr>
+<tr>
+<td>T15-A</td>
+<td>B15</td>
+<td>1.187788 ≤ 1.249通过；边界精确相等通过。</td>
+</tr>
+<tr>
+<td>T15-B</td>
+<td>B15</td>
+<td>空值、溢出、错行数字或阈值外的结果返回原因，不截断凑阈值。</td>
+</tr>
+<tr>
+<td>T16-A</td>
+<td>B16</td>
+<td>名称/价格/磨损/成色同时满足时才输出匹配，并携带 rule_revision。</td>
+</tr>
+<tr>
+<td>T16-B</td>
+<td>B16</td>
+<td>价格符合而磨损不符返回 wear_exceeded，不进入收藏意图。</td>
+</tr>
+<tr>
+<td>T17-A</td>
+<td>B17</td>
+<td>回放匹配后出现成功添加至我的关注，写一次收藏完成事件。</td>
+</tr>
+<tr>
+<td>T17-B</td>
+<td>B17</td>
+<td>意图已发出但无回执归为未知/待核验，不计收藏成功。</td>
+</tr>
+<tr>
+<td>T18-A</td>
+<td>B18</td>
+<td>已验证全局价格升序下首个超上限条目终止扫描。</td>
+</tr>
+<tr>
+<td>T18-B</td>
+<td>B18</td>
+<td>默认/稀有度排序或仅局部升序时，高价之后的低价仍被扫描。</td>
+</tr>
+<tr>
+<td>T19-A</td>
+<td>B19</td>
+<td>关注满额事件只触发一次阶段切换，并保存未完成游标。</td>
+</tr>
+<tr>
+<td>T19-B</td>
+<td>B19</td>
+<td>误识别或低可信提示先复核；来回提示不导致两阶段抖动。</td>
+</tr>
+<tr>
+<td>T20-A</td>
+<td>B20</td>
+<td>同款不同价格/磨损的两条卖单可独立展示并关联观测。</td>
+</tr>
+<tr>
+<td>T20-B</td>
+<td>B20</td>
+<td>刷新后坐标交换或两条特征完全相同，不误合并为同一可操作订单。</td>
+</tr>
+<tr>
+<td>T21-A</td>
+<td>B21</td>
+<td>时间回拨5秒时既有超时长度保持不变；偏移估计单独更新。</td>
+</tr>
+<tr>
+<td>T21-B</td>
+<td>B21</td>
+<td>所有时间源失败或延迟异常时不继续声称时间精准。</td>
+</tr>
+<tr>
+<td>T22-A</td>
+<td>B22</td>
+<td>新观测更新候选并取消旧定时器；长等待的截图/OCR请求为0，唤醒后获取新帧。</td>
+</tr>
+<tr>
+<td>T22-B</td>
+<td>B22</td>
+<td>反跳/条目消失/迟到不盲用旧坐标；取消后待唤醒任务不会重开采集。</td>
+</tr>
+<tr>
+<td>T23-A</td>
+<td>B23</td>
+<td>本地测试事件t0加830ms形成计划时间，日志记录计划/实际误差。</td>
+</tr>
+<tr>
+<td>T23-B</td>
+<td>B23</td>
+<td>原值0.847的导入不自动转换成847ms或0.847ms。</td>
+</tr>
+<tr>
+<td>T24-A</td>
+<td>B24</td>
+<td>测试策略在明确触发事件后调整且始终处于拟定边界内。</td>
+</tr>
+<tr>
+<td>T24-B</td>
+<td>B24</td>
+<td>缺少单位、未确认触发或样本不足时维持原值并显示未启用原因。</td>
+</tr>
+<tr>
+<td>T25-A</td>
+<td>B25</td>
+<td>测试注入两个独立触发及threshold=2，减一个步长并记录原因。</td>
+</tr>
+<tr>
+<td>T25-B</td>
+<td>B25</td>
+<td>同一个提示连续20帧只计一个事件；成功后计数复位。</td>
+</tr>
+<tr>
+<td>T26-A</td>
+<td>B26</td>
+<td>独立尝试达到设定次数才增加一个步长。</td>
+</tr>
+<tr>
+<td>T26-B</td>
+<td>B26</td>
+<td>只是在等待公示期的普通画面不触发增量。</td>
+</tr>
+<tr>
+<td>T27-A</td>
+<td>B27</td>
+<td>测试窗口执行有界意图序列，记录计划次数和真实发起次数。</td>
+</tr>
+<tr>
+<td>T27-B</td>
+<td>B27</td>
+<td>第2次前页面改变或取消，后续意图全部失效。</td>
+</tr>
+<tr>
+<td>T28-A</td>
+<td>B28</td>
+<td>目标3且成功2/预留1时，第四个意图被阻止。</td>
+</tr>
+<tr>
+<td>T28-B</td>
+<td>B28</td>
+<td>未知结果不释放预留；重启恢复后不重复占用或丢失额度。</td>
+</tr>
+<tr>
+<td>T29-A</td>
+<td>B29</td>
+<td>模拟窗口依次给出首确认和二次确认，产生同一个attempt下的不同阶段事件。</td>
+</tr>
+<tr>
+<td>T29-B</td>
+<td>B29</td>
+<td>弹窗对应名称/价格不一致时终止该意图并要求复核。</td>
+</tr>
+<tr>
+<td>T30-A</td>
+<td>B30</td>
+<td>可关联成功回执只增加一次成功数；下架只写失败原因。</td>
+</tr>
+<tr>
+<td>T30-B</td>
+<td>B30</td>
+<td>仅有已点击二次确认或流程结束事件时成功数维持不变。</td>
+</tr>
+<tr>
+<td>T31-A</td>
+<td>B31</td>
+<td>重复回执ID只入账一次；发起后进程退出，恢复为Unknown待核验。</td>
+</tr>
+<tr>
+<td>T31-B</td>
+<td>B31</td>
+<td>回执写库失败时不更新UI成功数，也不立即重新发起。</td>
+</tr>
+<tr>
+<td>T32-A</td>
+<td>B32</td>
+<td>本地测试页面刷新后创建新frame/viewport generation。</td>
+</tr>
+<tr>
+<td>T32-B</td>
+<td>B32</td>
+<td>有待核验结果时不通过刷新抹去证据。</td>
+</tr>
+<tr>
+<td>T33-A</td>
+<td>B33</td>
+<td>测试抽奖页且开关开启时生成退出意图。</td>
+</tr>
+<tr>
+<td>T33-B</td>
+<td>B33</td>
+<td>只有近似文字或开关关闭时不生成退出动作。</td>
+</tr>
+<tr>
+<td>T34-A</td>
+<td>B34</td>
+<td>成功回执入账成功后才生成关页意图。</td>
+</tr>
+<tr>
+<td>T34-B</td>
+<td>B34</td>
+<td>存储失败或回执关联不明时保留证据，不先关弹窗。</td>
+</tr>
+<tr>
+<td>T35-A</td>
+<td>B35</td>
+<td>预算耗尽进入暂停并释放观察资源；最后已识别字段保留，图片标记未保存。</td>
+</tr>
+<tr>
+<td>T35-B</td>
+<td>B35</td>
+<td>正常倒计时等待不误报卡死；错误风暴不产生截图文件、逐帧日志或无界内存积压。</td>
+</tr>
+<tr>
+<td>T36-A</td>
+<td>B36</td>
+<td>测试帧不含叠层或已排除叠层区域；显示任务/阶段/识别状态。</td>
+</tr>
+<tr>
+<td>T36-B</td>
+<td>B36</td>
+<td>叠层被捕获时识别器不把自身文字当作目标应用回执。</td>
+</tr>
+<tr>
+<td>T37-A</td>
+<td>B37</td>
+<td>各阶段计数独立，attempt可追到字段/规则版本；默认全流程图像写入字节数和图片文件数为0。</td>
+</tr>
+<tr>
+<td>T37-B</td>
+<td>B37</td>
+<td>未保存图像不显示可回看；显式调试到期后恢复默认零图片写入；账本失败仍明确提示。</td>
+</tr>
+<tr>
+<td>T38-A</td>
+<td>B38</td>
+<td>商品有多卖单时曲线标注聚合方式并能查看样本数。</td>
+</tr>
+<tr>
+<td>T38-B</td>
+<td>B38</td>
+<td>数据源断开不补出虚构价格，也不把演示点混入真实曲线。</td>
+</tr>
+<tr>
+<td>T39-A</td>
+<td>B39</td>
+<td>v1缺condition时按不限迁移，原文件保留；v2往返不丢未知字段。</td>
+</tr>
+<tr>
+<td>T39-B</td>
+<td>B39</td>
+<td>新版文件不交给0.6解析器直接覆盖；失败导入不改变当前状态。</td>
+</tr>
+<tr>
+<td>T40-A</td>
+<td>B40</td>
+<td>入口可到达且清楚显示功能尚待定义。</td>
+</tr>
+<tr>
+<td>T40-B</td>
+<td>B40</td>
+<td>点击入口不会执行脚本、改变系统参数或悄悄开启动态延迟。</td>
+</tr>
+<tr>
+<td>T41-A</td>
+<td>B41</td>
+<td>诊断包可复現捕获布局和配置版本，帮助说明演示与观察的区别。</td>
+</tr>
+<tr>
+<td>T41-B</td>
+<td>B41</td>
+<td>文本配置的凭据字段在诊断预览和导出中均被排除。</td>
+</tr>
+<tr>
+<td>T42-A</td>
+<td>B42</td>
+<td>文档/安装清单只列独立依赖，所有旧授权原值排除。</td>
+</tr>
+<tr>
+<td>T42-B</td>
+<td>B42</td>
+<td>安装包扫描不包含BBZPS.sp.exe、HD_BBZPS.sp.exe或样本gdi32.dll。</td>
+</tr>
+<tr>
+<td>T43-A</td>
+<td>B43</td>
+<td>相同回放产生相同决策；实时模式没有文件路径图像输入或临时帧写入。</td>
+</tr>
+<tr>
+<td>T43-B</td>
+<td>B43</td>
+<td>切换模式后旧观察申请/帧/worker结果失效，既有测试图片不会误作实时新画面。</td>
+</tr>
+<tr>
+<td>T44-A</td>
+<td>B44</td>
+<td>重启握手一致；租约确认后才复用内存，步骤完成停止取帧，UI可停止。</td>
+</tr>
+<tr>
+<td>T44-B</td>
+<td>B44</td>
+<td>共享内存失败明确报错而不落盘；旧代次回包丢弃，仍被读取的缓冲区不提前复用。</td>
+</tr>
+</tbody>
+</table></section><section id="doc-NEXT_IMPLEMENTATION"><h1>下一轮开发交接任务：M1 业务模型与离线回放</h1>
+<p>下面的提示词可直接交给后续开发会话；只执行M1，不把计划误认作已实现。</p>
+<pre><code class="language-text">工作目录：C:\Users\Administrator\Desktop\price。
+先读取AGENTS.md、SESSION_START.md、docs/business_rebuild/README.md、08_implementation_ready.md和implementation/README.md。
+复用现有Relink Studio 0.6.0的C++17/Qt Widgets工程。
+
+本轮已完成 PR01→PR06 与 PR09；下一阶段只推进 PR07、PR08、PR10、PR11、PR12，已完成的 PR06/PR09 以实现与测试证据为准，不重复规划。
+1. 分离商品、卖单观测、任务规则、运行实例、动作尝试和事件类型。
+2. 实现确定性的纯规则判断，输出Match/NoMatch/NeedsReview及逐字段原因。
+3. 实现金额/磨损精确十进制比较；未知单位、歧义关联、过期观测不自动匹配。
+4. 实现schema v1兼容及BBZPS 13列文本的只读导入预览。
+   第7/8列价格为候选，第12/13列保留raw；时间参数不自动换算；不导入凭据。
+5. 实现基于人工结构化JSON/历史事件片段的回放、可控时钟和状态记录。
+6. 先实现回执账本、未决数量预留和重复事件去重；不把模拟成功混为实际成交。
+7. 在现有界面接入模式、来源、观测时间、匹配原因与回放控制。
+8. 用implementation/domain、implementation/runtime的固定schema/fixture，以及business_catalog.json/acceptance_cases.json登记实际实现和用例结果。
+
+执行约束：
+- 不运行、加载、调用或打包BBZPS目录中的EXE、DLL、脚本、插件和恢复载荷。
+- 不接入真实点击/购买；UI继续只保存配置并展示后端回放状态。
+- 不改系统时间；使用假时钟/单调时钟测试。
+- 遵守ADR10/E12：步骤需要观察时才申请新帧，空闲/暂停/长等待不持续采集或OCR。
+- 实时像素走内存缓冲区/共享内存，禁止PNG/JPEG临时文件、逐帧图片日志及磁盘文件IPC。
+- 正常/成功/失败默认都不保存截图，只有用户主动导出或显式启用有界调试才允许。
+- 配置和必要账本正常保存；日志限速汇总。共享内存失败不静默改走临时文件。
+- Win11浅色白灰，不使用蓝色，保留商店布局和所有原功能入口。
+- 优化入口保留未定义状态，不替用户发明内容。
+- 不自动启动前台窗口。
+
+验收和交付：
+新增领域和迁移测试，执行现有build.ps1 -Test和-Package，离屏截图验收。
+备份旧程序与旧配置后更新解压发布目录，保留DLL/platforms。
+最终给出C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe，
+列出实际通过的测试、未完成项和回退路径；不宣称M2/M3/M4完成。
+</code></pre></section><footer>本文是开发规格，不是完成接入的声明。离线阅读无在线脚本和字体依赖；Markdown、JSON与图表源文件在同目录。</footer></main></body></html>

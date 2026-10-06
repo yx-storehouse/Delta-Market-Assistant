@@ -1,0 +1,5156 @@
+{
+  "kind": "rule_golden_specification",
+  "contract_version": "0.3.0",
+  "cases": [
+    {
+      "id": "G01",
+      "description": "普通匹配",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G02",
+      "description": "价格恰等于下界仍匹配",
+      "specification_only": true,
+      "trace": [
+        "B14",
+        "T14-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "230",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"230\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G03",
+      "description": "价格恰等于上界仍匹配",
+      "specification_only": true,
+      "trace": [
+        "B14",
+        "T14-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "60000",
+              "scale": 2
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"60000\",\"scale\":2},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G04",
+      "description": "价格比下界低0.000000000001",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "229999999999999",
+              "scale": 12
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"229999999999999\",\"scale\":12},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "PRICE_BELOW_MIN",
+          "reasons": [
+            {
+              "code": "PRICE_BELOW_MIN",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G05",
+      "description": "价格比上界高0.000000000001",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "600000000000001",
+              "scale": 12
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"600000000000001\",\"scale\":12},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "PRICE_ABOVE_MAX",
+          "reasons": [
+            {
+              "code": "PRICE_ABOVE_MAX",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G06",
+      "description": "磨损上界等值不同scale",
+      "specification_only": true,
+      "trace": [
+        "B15",
+        "T15-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "399000",
+            "scale": 6
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"399000\",\"scale\":6}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G07",
+      "description": "磨损刚高于阈值",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "399000000001",
+            "scale": 12
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"399000000001\",\"scale\":12}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "WEAR_ABOVE_MAX",
+          "reasons": [
+            {
+              "code": "WEAR_ABOVE_MAX",
+              "field": "wear",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G08",
+      "description": "币值单位缺失不是人民币",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": null
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":null}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "UNIT_UNKNOWN",
+          "reasons": [
+            {
+              "code": "UNIT_UNKNOWN",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G09",
+      "description": "单位不同不做隐式换算",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "OTHER_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"OTHER_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT",
+            "OTHER_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "UNIT_MISMATCH",
+          "reasons": [
+            {
+              "code": "UNIT_MISMATCH",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G10",
+      "description": "缺磨损且规则限制磨损",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": null,
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "FIELD_MISSING",
+          "reasons": [
+            {
+              "code": "FIELD_MISSING",
+              "field": "wear",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G11",
+      "description": "无磨损限制时缺磨损可以匹配",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": null,
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": null,
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G12",
+      "description": "成色标签不一致",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "A",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "A",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "CONDITION_MISMATCH",
+          "reasons": [
+            {
+              "code": "CONDITION_MISMATCH",
+              "field": "condition",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G13",
+      "description": "导入未审禁用规则优先提示审查",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": false,
+          "review_required": true,
+          "review_codes": [
+            "PRICE_MAPPING_UNREVIEWED"
+          ],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "RULE_REVIEW_REQUIRED",
+          "reasons": [
+            {
+              "code": "RULE_REVIEW_REQUIRED",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G14",
+      "description": "普通禁用规则",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": false,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "RULE_DISABLED",
+          "reasons": [
+            {
+              "code": "RULE_DISABLED",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G15",
+      "description": "同款相似卖单关联有歧义",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "ambiguous"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "ASSOCIATION_AMBIGUOUS",
+          "reasons": [
+            {
+              "code": "ASSOCIATION_AMBIGUOUS",
+              "field": "association",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G16",
+      "description": "过期1毫秒",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 2001,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "OBSERVATION_STALE",
+          "reasons": [
+            {
+              "code": "OBSERVATION_STALE",
+              "field": "observed_mono_ms",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G17",
+      "description": "年龄恰等于max_age允许",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 2000,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G18",
+      "description": "旧视口代次",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 2,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "CONTEXT_MISMATCH",
+          "reasons": [
+            {
+              "code": "CONTEXT_MISMATCH",
+              "field": "viewport_generation",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G19",
+      "description": "未来帧不负年龄放行",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1101,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "OBSERVATION_FUTURE",
+          "reasons": [
+            {
+              "code": "OBSERVATION_FUTURE",
+              "field": "observed_mono_ms",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G20",
+      "description": "未知赛季且规则为不限不阻塞",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G21",
+      "description": "稀有度和品阶独立",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "eq",
+              "value": "epic"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "eq",
+              "value": "rare"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": "epic",
+          "rarity": "common",
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "observed",
+              "raw": "epic",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "observed",
+              "raw": "common",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NoMatch",
+          "primary_reason": "RARITY_MISMATCH",
+          "reasons": [
+            {
+              "code": "RARITY_MISMATCH",
+              "field": "rarity",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G22",
+      "description": "卖单价格存在但识别被标为歧义",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "ambiguous",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "FIELD_AMBIGUOUS",
+          "reasons": [
+            {
+              "code": "FIELD_AMBIGUOUS",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G23",
+      "description": "筛选阶段允许临时关联",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "provisional"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "Match",
+          "primary_reason": "MATCH",
+          "reasons": [
+            {
+              "code": "MATCH",
+              "field": "",
+              "evidence_ref": null
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G24",
+      "description": "意图候选要求关联已确认",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "provisional"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "intent_candidate",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "ASSOCIATION_PROVISIONAL",
+          "reasons": [
+            {
+              "code": "ASSOCIATION_PROVISIONAL",
+              "field": "association",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    },
+    {
+      "id": "G25",
+      "description": "最高精度超界拒绝不截断",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "1",
+            "scale": 13
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"1\",\"scale\":13}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "structural_validation",
+        "diagnostic_code": "SCHEMA_INVALID"
+      }
+    },
+    {
+      "id": "G26",
+      "description": "不接受double型金额",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": 340.0,
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "340.0",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "structural_validation",
+        "diagnostic_code": "SCHEMA_INVALID"
+      }
+    },
+    {
+      "id": "G27",
+      "description": "上下限倒置语义拒绝",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "601",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "340",
+              "scale": 0
+            },
+            "unit": "SYNTHETIC_CREDIT"
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"340\",\"scale\":0},\"unit\":\"SYNTHETIC_CREDIT\"}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "semantic_validation",
+        "diagnostic_code": "PRICE_RANGE_REVERSED"
+      }
+    },
+    {
+      "id": "G28",
+      "description": "单位未知高于已知价格不匹配优先",
+      "specification_only": true,
+      "trace": [
+        "B16",
+        "T16-A",
+        "WI01"
+      ],
+      "input": {
+        "rule": {
+          "task_id": "task-01",
+          "revision": 1,
+          "name": "合成边界任务",
+          "product_ref": "product-01",
+          "enabled": true,
+          "review_required": false,
+          "review_codes": [],
+          "filters": {
+            "season": {
+              "op": "any"
+            },
+            "ownership": {
+              "op": "any"
+            },
+            "grade": {
+              "op": "any"
+            },
+            "condition": {
+              "op": "eq",
+              "value": "S"
+            },
+            "publicity": {
+              "op": "any"
+            },
+            "rarity": {
+              "op": "any"
+            }
+          },
+          "price_range": {
+            "min": {
+              "value": {
+                "unscaled": "230",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            },
+            "max": {
+              "value": {
+                "unscaled": "600",
+                "scale": 0
+              },
+              "unit": "SYNTHETIC_CREDIT"
+            }
+          },
+          "max_wear": {
+            "unscaled": "399",
+            "scale": 3
+          },
+          "requested_sort": "default",
+          "quantity_candidate": null,
+          "quantity_semantics": "none",
+          "legacy_raw": null,
+          "extensions": {}
+        },
+        "observation": {
+          "observation_id": "obs-01",
+          "product_ref": "product-01",
+          "market_listing_id": null,
+          "association": {
+            "association_ref": "assoc-01",
+            "status": "confirmed"
+          },
+          "price": {
+            "value": {
+              "unscaled": "999",
+              "scale": 0
+            },
+            "unit": null
+          },
+          "wear": {
+            "unscaled": "3",
+            "scale": 1
+          },
+          "condition": "S",
+          "season": null,
+          "ownership": null,
+          "grade": null,
+          "rarity": null,
+          "publicity": null,
+          "frame_ref": "frame-01",
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "observed_mono_ms": 1000,
+          "viewport_generation": 1,
+          "field_evidence": {
+            "product_ref": {
+              "status": "observed",
+              "raw": "product-01",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "price": {
+              "status": "observed",
+              "raw": "{\"value\":{\"unscaled\":\"999\",\"scale\":0},\"unit\":null}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "wear": {
+              "status": "observed",
+              "raw": "{\"unscaled\":\"3\",\"scale\":1}",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "condition": {
+              "status": "observed",
+              "raw": "S",
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "season": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "ownership": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "grade": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "rarity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            },
+            "publicity": {
+              "status": "missing",
+              "raw": null,
+              "confidence": null,
+              "source_ref": "frame-01"
+            }
+          },
+          "extensions": {}
+        },
+        "context": {
+          "session_id": "session-01",
+          "clock_domain_id": "clock-01",
+          "viewport_generation": 1,
+          "as_of_mono_ms": 1100,
+          "max_age_ms": 1000,
+          "purpose": "filter_only",
+          "known_units": [
+            "SYNTHETIC_CREDIT"
+          ]
+        }
+      },
+      "expected": {
+        "stage": "decision",
+        "decision": {
+          "status": "NeedsReview",
+          "primary_reason": "UNIT_UNKNOWN",
+          "reasons": [
+            {
+              "code": "UNIT_UNKNOWN",
+              "field": "price",
+              "evidence_ref": "frame-01"
+            }
+          ],
+          "rule_ref": {
+            "task_id": "task-01",
+            "revision": 1
+          },
+          "observation_id": "obs-01",
+          "eligible_for_action": false
+        }
+      }
+    }
+  ]
+}

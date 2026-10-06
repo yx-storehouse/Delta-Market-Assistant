@@ -1,0 +1,42 @@
+{
+  "task_id": "task-01",
+  "revision": 1,
+  "name": "合成边界任务",
+  "product_ref": "product-01",
+  "enabled": false,
+  "review_required": true,
+  "review_codes": [
+    "UNIT_UNREVIEWED"
+  ],
+  "filters": {
+    "season": {
+      "op": "any"
+    },
+    "ownership": {
+      "op": "any"
+    },
+    "grade": {
+      "op": "any"
+    },
+    "condition": {
+      "op": "eq",
+      "value": "S"
+    },
+    "publicity": {
+      "op": "any"
+    },
+    "rarity": {
+      "op": "any"
+    }
+  },
+  "price_range": null,
+  "max_wear": {
+    "unscaled": "399",
+    "scale": 3
+  },
+  "requested_sort": "default",
+  "quantity_candidate": null,
+  "quantity_semantics": "none",
+  "legacy_raw": null,
+  "extensions": {}
+}

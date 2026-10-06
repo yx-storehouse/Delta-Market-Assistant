@@ -1,0 +1,17 @@
+flowchart TD
+    READY["方案 / 任务 / 时间窗口"]
+    SCAN["阶段 A：页面与筛选"]
+    MATCH["找商品 → 扫描具体卖单"]
+    COLLECT["收藏意图 → 收藏回执"]
+    WATCH["阶段 B：关注列表 / 倒计时"]
+    CHECK["再次核验 → 确认流程"]
+    RECEIPT["等待回执：成功 / 失败 / 未知"]
+    PERSIST["结构化记录 / 下一轮或结束"]
+    READY -->|"就绪"| SCAN
+    SCAN -->|"筛选回读"| MATCH
+    MATCH -->|"匹配"| COLLECT
+    COLLECT -->|"收藏完成或满额"| WATCH
+    WATCH -->|"到点再核验"| CHECK
+    CHECK -->|"确认"| RECEIPT
+    RECEIPT -->|"分类与持久化"| PERSIST
+    PERSIST -->|"下一条/核验"| WATCH

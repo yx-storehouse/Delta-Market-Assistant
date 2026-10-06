@@ -1,0 +1,31 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-1",
+  "kind": "hello",
+  "body": {
+    "supported_versions": [
+      1
+    ],
+    "transport": "win32_named_shared_memory",
+    "pixel_formats": [
+      "BGRA8"
+    ],
+    "max_line_bytes": 1048576,
+    "max_frame_bytes": 134217728,
+    "max_tokens": 2000,
+    "max_in_flight": 1,
+    "memory_pool": [
+      {
+        "slot_index": 0,
+        "mapping_name": "Local\\RelinkVision_session-1_0",
+        "capacity_bytes": 20000
+      },
+      {
+        "slot_index": 1,
+        "mapping_name": "Local\\RelinkVision_session-1_1",
+        "capacity_bytes": 20000
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 898" role="img" aria-labelledby="title desc">
+<title id="title">两阶段业务与结果核验</title><desc id="desc">历史阶段来自 E04；账本、代次取消、Unknown核验为重构设计。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#696969"/></marker></defs>
+<rect width="1060" height="898" rx="20" fill="#f7f7f7"/>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif" fill="#202020">
+<text x="32" y="40" font-size="24" font-weight="600">两阶段业务与结果核验</text>
+<text x="32" y="68" font-size="14" fill="#666">历史阶段来自 E04；账本、代次取消、Unknown核验为重构设计。</text>
+<rect x="32" y="94" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="121" font-size="17" font-weight="600">方案 / 任务 / 时间窗口</text>
+<text x="51" y="143" font-size="12" fill="#777">READY</text>
+<text x="410" y="127" font-size="15" fill="#4d4d4d">读取已审规则；市场未开放则等待</text>
+<rect x="32" y="190" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="217" font-size="17" font-weight="600">阶段 A：页面与筛选</text>
+<text x="51" y="239" font-size="12" fill="#777">SCAN</text>
+<text x="410" y="223" font-size="15" fill="#4d4d4d">赛季、拥有、品阶、成色、公示、稀有度、排序</text>
+<rect x="32" y="286" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="313" font-size="17" font-weight="600">找商品 → 扫描具体卖单</text>
+<text x="51" y="335" font-size="12" fill="#777">MATCH</text>
+<text x="410" y="319" font-size="15" fill="#4d4d4d">价格与磨损联合匹配；不符合则下一条</text>
+<rect x="32" y="382" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="409" font-size="17" font-weight="600">收藏意图 → 收藏回执</text>
+<text x="51" y="431" font-size="12" fill="#777">COLLECT</text>
+<text x="410" y="415" font-size="15" fill="#4d4d4d">未见回执不计成功；满额停止收藏</text>
+<rect x="32" y="478" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="505" font-size="17" font-weight="600">阶段 B：关注列表 / 倒计时</text>
+<text x="51" y="527" font-size="12" fill="#777">WATCH</text>
+<text x="410" y="511" font-size="15" fill="#4d4d4d">关联卖单、估计期限；旧帧与旧定时器失效</text>
+<rect x="32" y="574" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="601" font-size="17" font-weight="600">再次核验 → 确认流程</text>
+<text x="51" y="623" font-size="12" fill="#777">CHECK</text>
+<text x="410" y="607" font-size="15" fill="#4d4d4d">对象、价格、页面、窗口、额度共同检查</text>
+<rect x="32" y="670" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="697" font-size="17" font-weight="600">等待回执：成功 / 失败 / 未知</text>
+<text x="51" y="719" font-size="12" fill="#777">RECEIPT</text>
+<text x="410" y="703" font-size="15" fill="#4d4d4d">已售下架不等于本人成交；超时不盲重试</text>
+<rect x="32" y="766" width="340" height="64" rx="12" fill="#fff" stroke="#d5d5d5"/>
+<text x="51" y="793" font-size="17" font-weight="600">结构化记录 / 下一轮或结束</text>
+<text x="51" y="815" font-size="12" fill="#777">PERSIST</text>
+<text x="410" y="799" font-size="15" fill="#4d4d4d">默认不保存图片；未知先核验，完成不等于全成功</text>
+<path d="M202 158 V187" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 254 V283" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 350 V379" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 446 V475" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 542 V571" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 638 V667" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M202 734 V763" fill="none" stroke="#696969" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M32 798 H16 V510 H29" fill="none" stroke="#969696" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+</g></svg>

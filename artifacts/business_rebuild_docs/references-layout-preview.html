@@ -1,0 +1,287 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Relink Studio · 业务重构开发文档</title><style>
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:#f3f3f3;color:#252525;font:15px/1.85 "Segoe UI","Microsoft YaHei",sans-serif}
+aside{position:fixed;inset:0 auto 0 0;width:254px;border-right:1px solid #ddd;padding:32px 22px;background:#f3f3f3;overflow:auto}
+.brand{font-size:19px;font-weight:650;letter-spacing:.3px}.sub{font-size:12px;color:#777;margin:6px 0 32px}nav a{display:block;padding:9px 12px;border-radius:9px;text-decoration:none;color:#444;margin:4px 0;font-size:13px}nav a:first-child{background:white;box-shadow:0 1px 4px #00000008;color:#151515;font-weight:600}nav a:hover{background:white}.aside-note{border-top:1px solid #ddd;margin-top:24px;padding-top:20px;font-size:12px;color:#777}
+main{margin-left:254px;padding:34px 42px 70px;max-width:1620px}.hero{padding:30px 34px;background:#fff;border:1px solid #e2e2e2;border-radius:20px;margin-bottom:24px}.eyebrow{font-size:12px;color:#777;letter-spacing:1px}.hero h1{font-size:33px;line-height:1.4;margin:12px 0}.hero p{color:#686868;margin:8px 0 22px}.stats{display:flex;gap:14px;flex-wrap:wrap}.stats span{border:1px solid #e3e3e3;border-radius:10px;padding:8px 14px;font-size:12px;background:#fafafa}.stats b{font-size:20px;margin-right:7px;color:#242424}.label{display:inline-block;padding:4px 10px;border-radius:6px;background:#efefef;font-size:12px;color:#555}
+section{scroll-margin-top:22px;padding:28px 32px;margin-bottom:22px;background:#fff;border:1px solid #e3e3e3;border-radius:18px;min-width:0}section>h1{font-size:25px;line-height:1.5;margin:0 0 22px}h2{font-size:20px;margin:34px 0 14px;padding-top:6px}h3{font-size:16px;margin-top:24px}p{margin:12px 0}a{color:#252525;text-decoration:underline;text-underline-offset:3px}a:hover{color:#666}blockquote{margin:18px 0;background:#f7f7f7;border-left:3px solid #aaa;padding:10px 17px;border-radius:0 8px 8px 0;color:#5c5c5c}blockquote p{margin:3px 0}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto;margin:18px 0;border:1px solid #ddd;border-radius:10px;overflow:hidden}th,td{padding:11px 12px;text-align:left;vertical-align:top;border-right:1px solid #eee;border-bottom:1px solid #e8e8e8;overflow-wrap:anywhere}th{background:#f4f4f4;font-weight:600}tr:last-child td{border-bottom:0}td:last-child,th:last-child{border-right:0}tr:nth-child(even) td{background:#fcfcfc}
+code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#f5f5f5;border:1px solid #e2e2e2;border-radius:10px;padding:16px 18px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}pre code{background:none;padding:0}ul,ol{padding-left:24px}li{margin:7px 0}figure{margin:22px 0}svg{display:block;width:100%;height:auto}footer{padding:10px 4px;color:#777;font-size:12px}
+@media(max-width:1050px){aside{position:relative;width:auto;border-right:0;border-bottom:1px solid #ddd;padding:18px 22px}nav{display:flex;flex-wrap:wrap}.sub,.aside-note{display:none}main{margin-left:0;padding:20px}section{padding:22px 18px}.hero{padding:23px}table{font-size:12px}th,td{padding:9px}}
+@media print{aside{display:none}main{margin:0;padding:0;max-width:none}section,.hero{border:0;padding:0;break-before:page}section:first-of-type{break-before:auto}a{color:#222}body{background:white}table{font-size:10px}pre{white-space:pre-wrap}.hero{break-before:auto}}
+</style></head><body>
+<aside><div class="brand">Relink Studio</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav><a href="#doc-README">总览</a><a href="#doc-01_business">01 业务清单</a><a href="#doc-02_vision_architecture">02 图像识别 / 架构</a><a href="#doc-03_data_config">03 数据 / 参数</a><a href="#doc-04_state_machine">04 状态机</a><a href="#doc-05_delivery_tests">05 开发 / 验收</a><a href="#doc-06_evidence_references">06 证据 / 参考资料</a><a href="#doc-07_decisions">07 决策 / 待确认</a><a href="#doc-08_implementation_ready">08 开工标准 / 纵切片</a><a href="#doc-acceptance_cases">88 条验收规格</a><a href="#doc-NEXT_IMPLEMENTATION">下一轮开发交接</a></nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>步骤按需采集 · 内存识别<br>M1 已达到可开工规格<br>Ctrl + F 搜索业务与参数</div></aside>
+<main>
+<section id="doc-06_evidence_references"><h1>06 · 证据与参考资料</h1>
+<h2>1. 证据来源与复验</h2>
+<p>本轮复用上一轮已完成的静态资料，没有重新扫描约1.77GB日志、没有启动样本或加载其组件。证据索引保存的是实际文件SHA-256；本轮工作为开发设计，旧报告里的静态载荷分析不作为新程序代码来源。</p>
+<table>
+<thead>
+<tr>
+<th>E编号</th>
+<th>来源</th>
+<th>可支持的业务发现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E01</td>
+<td>source_manifest.json</td>
+<td>初始文件身份、cv2依赖线索；不证明所有依赖均执行</td>
+</tr>
+<tr>
+<td>E02</td>
+<td>pe_summary.json</td>
+<td>TomatoOCR导出/资源、授权层接口、Python/Qt生态</td>
+</tr>
+<tr>
+<td>E03</td>
+<td>task_schema.json / configs_redacted.json</td>
+<td>15条13列任务、可见运行参数、脱敏配置</td>
+</tr>
+<tr>
+<td>E04</td>
+<td>log_index.json / business_evidence.json / business_passages.json</td>
+<td>页面/筛选/收藏/关注/倒计时/确认/异常与原文件行号、字节偏移</td>
+</tr>
+<tr>
+<td>E05</td>
+<td>embedded_payload.json / nested_pe.json</td>
+<td>旧外层与内层及额外载荷的关系；仅用于解释不搬二进制的决定</td>
+</tr>
+<tr>
+<td>E06</td>
+<td>decoded_pe.json / decoded_api_calls.json</td>
+<td>上一轮静态恢复的证据摘要，不纳入实现</td>
+</tr>
+<tr>
+<td>E07</td>
+<td>ida_survey.json / 原反编译证据</td>
+<td>旧载荷代码能力已静态确认；开发沿用结论，不延伸载荷分析</td>
+</tr>
+<tr>
+<td>E08</td>
+<td>domain.h/.cpp / mainwindow.cpp / CMakeLists.txt / STORE_UI.md / build.ps1</td>
+<td>当前前端/模拟实现、字段、构建工具链</td>
+</tr>
+<tr>
+<td>E09</td>
+<td>source_audit_verification.json</td>
+<td>上一轮目录结束复核情况；34张历史PNG缺失，原因未核实</td>
+</tr>
+<tr>
+<td>E10</td>
+<td>gdi32.dll.interesting.json</td>
+<td>OpenCV、ppocrv5、TomatoOCR字符串偏移</td>
+</tr>
+<tr>
+<td>E11</td>
+<td>AGENTS.md</td>
+<td>最新Win11浅色白灰、全部功能入口和交付路径约定</td>
+</tr>
+<tr>
+<td>E12</td>
+<td>用户补充的采集要求记录</td>
+<td>按步骤触发，图像默认只走内存；取代临时帧文件IPC与常驻全速采集方案</td>
+</tr>
+</tbody>
+</table>
+<p>原文件完整路径与哈希见 <a href="evidence/index.json">evidence/index.json</a>；业务消息及原日志定位见 <a href="evidence/business_excerpts.json">business_excerpts.json</a>；动态参数区间等补充片段定位见 <a href="evidence/passage_locators.json">passage_locators.json</a>。<a href="evidence/task_schema.json">13列配置快照</a>、<a href="evidence/ocr_identity.json">OCR身份摘录</a> 和 <a href="evidence/static-analysis-report.md">上一轮完整静态报告</a> 随文档附带，均为文本资料。</p>
+<p>v0.2新增来源：<a href="evidence/2026-10-06_capture_requirement.md">用户的步骤采集与不落盘要求</a>。该项是产品要求，不是样本已具备低IO实现的证明。</p>
+<p>复验一组证据（只读哈希，不执行被检查文件）：</p>
+<pre><code class="language-powershell">python -I -X utf8 docs\business_rebuild\scripts\validate_docs.py --evidence E04
+</code></pre>
+<p>索引的source_ref以项目根目录为基准；上述复验需在本项目中进行。压缩包中的离线文档与摘录可直接阅读，但不包含原始日志或任何样本EXE/DLL。原始scope/timeline可在项目 <code>artifacts/bbzps_static/</code> 查阅。本轮入口与文档检验记录在 <code>artifacts/business_rebuild_docs/</code>。</p>
+<h2>2. Evidence → Finding → Path</h2>
+<table>
+<thead>
+<tr>
+<th>发现</th>
+<th>证据</th>
+<th>结论与强度</th>
+<th>开发影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BF01</td>
+<td>E03+E04</td>
+<td>高：存在筛选收藏/关注调度两阶段，不只是价格展示</td>
+<td>WI01/03/09/10</td>
+</tr>
+<tr>
+<td>BF02</td>
+<td>E01+E02+E10</td>
+<td>高：包含OpenCV及TomatoOCR接口；具体启用模型仍未知</td>
+<td>WI06/07；不复制OCR DLL</td>
+</tr>
+<tr>
+<td>BF03</td>
+<td>E08+E11</td>
+<td>高：现版本为配置与合成数据模拟，原入口需要保留</td>
+<td>WI01/05；不以演示成功充真实业务</td>
+</tr>
+<tr>
+<td>BF04</td>
+<td>E03+E04</td>
+<td>中：价格列、延迟区间存在语义候选；边界/单位/公式未确定</td>
+<td>WI02；D01–D04</td>
+</tr>
+<tr>
+<td>BF05</td>
+<td>E04</td>
+<td>高：结果超时、下架、识别失败、市场暂停是主流程分支</td>
+<td>WI04/09/10/11</td>
+</tr>
+<tr>
+<td>BF06</td>
+<td>E05+E07</td>
+<td>高：旧发行包有独立远控代码静态证据</td>
+<td>WI12使用独立依赖，不打包原二进制</td>
+</tr>
+<tr>
+<td>BF07</td>
+<td>E12</td>
+<td>用户确认：按步骤采集、实时图片默认不落盘</td>
+<td>ADR10、WI06–WI08/WI10；协议、统计与验收同步更新</td>
+</tr>
+</tbody>
+</table>
+<p>业务路径 BP01（历史行为还原）：E03任务 → E04页面/筛选 → E04价格和磨损匹配 → E04收藏回执 → E04关注/倒计时 → E04确认/结果；支撑BF01/BF05。新实现的账本、取消代次、进程隔离等是设计加固，不冒充上述历史代码路径。</p>
+<p>识别路径 BP02（接口/日志综合判断）：E02 OCR接口 + E10 OpenCV线索 → E04文字/框/分数 → E04页面分类与字段判断；支撑BF02。此路径是组件/数据关系，不代表已经恢复每一个函数调用。</p>
+<h2>3. 官方技术参考资料</h2>
+<p>以下是原始维护者的开发文档/标准，不是搜索摘要或二手博客。访问日期：2026-10-06。16项均实际取得HTTP 200并检查主题关键字；URL、最终地址、页面标题、获取时间、响应长度和SHA-256见 <a href="references.json">references.json</a>。Qt链接属于6.8文档分支，当前页面可能显示6.8.x较新补丁号，<strong>不代表本机Qt已升级</strong>。</p>
+<p>资料解释重构技术，不证明样本实际调用该API，也不是OCR性能达标证据。页面响应哈希是当次取证标识，不是将来网页永不变化的承诺。</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>维护者 / 文献标题</th>
+<th>对应业务与用途</th>
+<th>核查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R01</strong></td>
+<td>OpenCV — Template Matching</td>
+<td>固定图标/锚点定位的候选方法；不证明样本实际调用了模板匹配。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R02</strong></td>
+<td>OpenCV — Image Thresholding</td>
+<td>对文字 ROI 的阈值处理做离线对照，原图仍需保留。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R03</strong></td>
+<td>Microsoft — Screen capture</td>
+<td>Windows Graphics Capture 捕获能力和约束；作为新实现候选。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R04</strong></td>
+<td>Microsoft — Desktop Duplication API</td>
+<td>桌面帧捕获候选、更新与移动区域；与窗口捕获方案对照。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R05</strong></td>
+<td>Microsoft — High-DPI desktop application development on Windows</td>
+<td>区分逻辑/物理像素，处理窗口和显示器 DPI 变化。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R06</strong></td>
+<td>PaddleOCR — OCR pipeline</td>
+<td>检测框、文字和置信度输出，作为独立 OCR 候选评测依据。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R07</strong></td>
+<td>PaddleOCR — Text recognition module</td>
+<td>按中文/数字场景评估识别模型；不是样本模型启用证明。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R08</strong></td>
+<td>Qt 6.8 — QElapsedTimer</td>
+<td>使用单调经过时间而不是可回拨的墙上时钟计算超时。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R09</strong></td>
+<td>Qt 6.8 — QTimer</td>
+<td>定时器可能延迟；事件触发后重核截止时间，不承诺亚毫秒精度。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R10</strong></td>
+<td>Qt 6.8 — QThread</td>
+<td>worker 与 GUI 的线程分工和 queued connections。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R11</strong></td>
+<td>Qt 6.8 — QProcess</td>
+<td>可信独立视觉 worker 的进程通信、退出及错误处理。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R12</strong></td>
+<td>Qt 6.8 — QSaveFile</td>
+<td>配置先写临时内容，成功后提交；保留原配置。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R13</strong></td>
+<td>SQLite — Write-Ahead Logging</td>
+<td>账本持久化候选；事务、检查点和备份需单独设计。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R14</strong></td>
+<td>Qt 6.8 — Supported Platforms</td>
+<td>记录 Windows 编译器组合；第三方库也需匹配工具链。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R15</strong></td>
+<td>Qt 6.8 — Qt for Windows Deployment</td>
+<td>打包 Qt DLL 和 platform plugins，检验干净环境运行。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+<tr>
+<td><strong>R16</strong></td>
+<td>IETF RFC 5905 — Network Time Protocol Version 4</td>
+<td>网络时间偏移与测量不确定度参考；新程序不修改系统时间。</td>
+<td>HTTP 200 / verified</td>
+</tr>
+</tbody>
+</table>
+<h2>4. 资料地址</h2>
+<ul>
+<li><strong>R01</strong>：<code>https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html</code></li>
+<li><strong>R02</strong>：<code>https://docs.opencv.org/4.x/d7/d4d/tutorial_py_thresholding.html</code></li>
+<li><strong>R03</strong>：<code>https://learn.microsoft.com/en-us/windows/uwp/audio-video-camera/screen-capture</code></li>
+<li><strong>R04</strong>：<code>https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/desktop-dup-api</code></li>
+<li><strong>R05</strong>：<code>https://learn.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows</code></li>
+<li><strong>R06</strong>：<code>https://www.paddleocr.ai/main/en/version3.x/pipeline_usage/OCR.html</code></li>
+<li><strong>R07</strong>：<code>https://www.paddleocr.ai/main/en/version3.x/module_usage/text_recognition.html</code></li>
+<li><strong>R08</strong>：<code>https://doc.qt.io/qt-6.8/qelapsedtimer.html</code></li>
+<li><strong>R09</strong>：<code>https://doc.qt.io/qt-6.8/qtimer.html</code></li>
+<li><strong>R10</strong>：<code>https://doc.qt.io/qt-6.8/qthread.html</code></li>
+<li><strong>R11</strong>：<code>https://doc.qt.io/qt-6.8/qprocess.html</code></li>
+<li><strong>R12</strong>：<code>https://doc.qt.io/qt-6.8/qsavefile.html</code></li>
+<li><strong>R13</strong>：<code>https://sqlite.org/wal.html</code></li>
+<li><strong>R14</strong>：<code>https://doc.qt.io/qt-6.8/supported-platforms.html</code></li>
+<li><strong>R15</strong>：<code>https://doc.qt.io/qt-6.8/windows-deployment.html</code></li>
+<li><strong>R16</strong>：<code>https://www.rfc-editor.org/rfc/rfc5905.html</code></li>
+</ul>
+<h2>5. 对应关系怎样使用</h2>
+<ul>
+<li>业务矩阵每行都有E/R/T：E说明为什么列此业务，R说明实现时参考什么，T说明做完怎样验收。</li>
+<li>同一R可能为多项业务提供工程背景；它不会替代未恢复的业务公式。例如R08/R09只能解释时钟/定时器，不能证明clicktime单位。</li>
+<li>参考实现由本项目重写；本轮没有咨询样本授权网站、连接控制端或下载样本依赖。</li>
+<li>主要未确定项见 <a href="#doc-07_decisions">决策表</a>，按文档明确缺口继续开发，不把检索资料填成样本事实。</li>
+</ul></section><footer>本文是开发规格，不是完成接入的声明。离线阅读无在线脚本和字体依赖；Markdown、JSON与图表源文件在同目录。</footer></main></body></html>

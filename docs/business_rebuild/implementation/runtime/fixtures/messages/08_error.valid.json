@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-8",
+  "kind": "error",
+  "body": {
+    "request_id": "request-1",
+    "code": "E_SHM_OPEN",
+    "retryable": false,
+    "message": "Synthetic fixture: no fallback to file transport"
+  }
+}

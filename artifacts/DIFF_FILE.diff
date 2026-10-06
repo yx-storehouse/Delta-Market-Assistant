@@ -1,0 +1,16 @@
+--- BASELINE.json
++++ MODIFIED_FILE.json
+@@ -140,11 +140,11 @@
+         {
+             "enabled": true,
+             "id": "task-01",
+-            "maxPrice": 650,
++            "maxPrice": 700,
+             "maxWear": 5,
+             "minPrice": 100,
+             "name": "天命 · 低磨收藏",
+-            "quantity": 3,
++            "quantity": 4,
+             "skinId": "demo-01"
+         },
+         {

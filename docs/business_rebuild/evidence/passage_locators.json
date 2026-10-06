@@ -1,0 +1,145 @@
+[
+  {
+    "json_pointer": "/0",
+    "pattern": "价格True:<n> 磨损True:<n> 符合条件[<n>]",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 93,
+      "byte_offset": 81716,
+      "level": "INFO",
+      "text": "价格True:340 磨损True:1.187788 符合条件[1]",
+      "timestamp": "2026-09-24 09:04:42,966"
+    },
+    "window_byte_start": 78216
+  },
+  {
+    "json_pointer": "/1",
+    "pattern": "剩余皮肤价格高于设置价格本次收藏完毕",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 75,
+      "byte_offset": 76893,
+      "level": "INFO",
+      "text": "剩余皮肤价格高于设置价格本次收藏完毕",
+      "timestamp": "2026-09-24 09:04:36,850"
+    },
+    "window_byte_start": 73393
+  },
+  {
+    "json_pointer": "/2",
+    "pattern": "已达关注上限停止关注，开始前往购买",
+    "source": {
+      "file": "log/BBZ_20260924_182429.log",
+      "line": 110218,
+      "byte_offset": 18446966,
+      "level": "INFO",
+      "text": "已达关注上限停止关注，开始前往购买",
+      "timestamp": "2026-09-24 20:29:12,413"
+    },
+    "window_byte_start": 18443466
+  },
+  {
+    "json_pointer": "/3",
+    "pattern": "首次检测到剩余<n>秒",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2184,
+      "byte_offset": 906056,
+      "level": "INFO",
+      "text": "首次检测到剩余10秒",
+      "timestamp": "2026-09-24 09:17:11,242"
+    },
+    "window_byte_start": 902556
+  },
+  {
+    "json_pointer": "/4",
+    "pattern": "已点击二次确认，本次延迟<n>ms",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2375,
+      "byte_offset": 934007,
+      "level": "INFO",
+      "text": "已点击二次确认，本次延迟0.839ms",
+      "timestamp": "2026-09-24 09:17:25,397"
+    },
+    "window_byte_start": 930507
+  },
+  {
+    "json_pointer": "/5",
+    "pattern": "当前区间为<n>~<n>",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 7858,
+      "byte_offset": 1787792,
+      "level": "INFO",
+      "text": "当前区间为0.833~0.848",
+      "timestamp": "2026-09-24 09:23:18,641"
+    },
+    "window_byte_start": 1784292
+  },
+  {
+    "json_pointer": "/6",
+    "pattern": "购买全部结束",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 27809,
+      "byte_offset": 4913021,
+      "level": "INFO",
+      "text": "购买全部结束",
+      "timestamp": "2026-09-24 09:44:03,497"
+    },
+    "window_byte_start": 4909521
+  },
+  {
+    "json_pointer": "/7",
+    "pattern": "购买时间过长，退出",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 2594,
+      "byte_offset": 963181,
+      "level": "INFO",
+      "text": "购买时间过长，退出",
+      "timestamp": "2026-09-24 09:17:42,403"
+    },
+    "window_byte_start": 959681
+  },
+  {
+    "json_pointer": "/8",
+    "pattern": "当前时间市场未开放，暂停操作...",
+    "source": {
+      "file": "log/BBZ_20260924_182429.log",
+      "line": 658554,
+      "byte_offset": 109279063,
+      "level": "INFO",
+      "text": "当前时间市场未开放，暂停操作...",
+      "timestamp": "2026-09-25 05:00:00,052"
+    },
+    "window_byte_start": 109275563
+  },
+  {
+    "json_pointer": "/9",
+    "pattern": "系统时间设置成功",
+    "source": {
+      "file": "log/BBZ_20260924_090240.log",
+      "line": 1811,
+      "byte_offset": 843641,
+      "level": "INFO",
+      "text": "系统时间设置成功",
+      "timestamp": "2026-09-24 09:16:46,626"
+    },
+    "window_byte_start": 840141
+  },
+  {
+    "json_pointer": "/10",
+    "pattern": "多次重试后仍未获取到有效识别结果",
+    "source": {
+      "file": "log/BBZ_20261001_005534.log",
+      "line": 83,
+      "byte_offset": 68099,
+      "level": "INFO",
+      "text": "多次重试后仍未获取到有效识别结果",
+      "timestamp": "2026-10-01 00:56:49,630"
+    },
+    "window_byte_start": 64599
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "example_only": true,
+  "policy_version": 1,
+  "source_evidence": "E12",
+  "trigger": "business_step_demand",
+  "idle_capture_enabled": false,
+  "paused_capture_enabled": false,
+  "long_wait_capture_enabled": false,
+  "observation_modes": ["one_shot", "bounded_watch"],
+  "require_step_id": true,
+  "require_fresh_frame_after_step_barrier": true,
+  "bounded_watch_requires_deadline": true,
+  "bounded_watch_requires_frame_budget": true,
+  "default_roi_scope": "requested_regions",
+  "frame_transport": "shared_memory_descriptor",
+  "memory_pool": {"max_in_flight": 1, "max_pending": 1, "replace_stale_pending": true},
+  "image_persistence": {
+    "normal_run": false,
+    "on_success": false,
+    "on_error": false,
+    "temporary_image_files": false,
+    "disk_file_ipc": false,
+    "debug_export_enabled": false,
+    "manual_export_requires_explicit_request": true,
+    "debug_session_requires_limits": true
+  },
+  "logging": {"per_frame_image_payload": false, "per_frame_ocr_dump": false, "key_business_events": true},
+  "replay": {"existing_fixture_reads_allowed": true, "write_intermediate_images": false},
+  "note": "待实现契约示例；不表示程序已具备采集/OCR模块，也不保证操作系统层面没有换页IO。"
+}

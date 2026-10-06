@@ -1,0 +1,18 @@
+--- BASELINE_COPY.json
++++ MODIFIED_FILE.json
+@@ -1,12 +1,13 @@
+ {
+   "branch": "m1_pr08",
+   "field": "profile_commit_state",
+-  "value": "review_only",
++  "value": "atomic_config_v2",
+   "committable": false,
+   "actions_enabled": false,
+   "activation_required": true,
+   "source_hash_preserved": true,
+   "image_file_write_count": 0,
+   "target_mode": "demo",
+-  "config_schema": "LegacyImportPreview"
++  "config_schema": "ConfigV2",
++  "revision_policy": "same_profile_id_increments"
+ }

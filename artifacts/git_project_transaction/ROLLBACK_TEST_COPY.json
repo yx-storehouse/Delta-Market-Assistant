@@ -1,0 +1,10 @@
+{
+  "branch": "git_project",
+  "field": "repository_state",
+  "value": "uninitialized",
+  "branch_name": "main",
+  "bbzps_ignored": false,
+  "large_artifacts_ignored": false,
+  "dist_preserved_local": true,
+  "secret_files_staged": 0
+}

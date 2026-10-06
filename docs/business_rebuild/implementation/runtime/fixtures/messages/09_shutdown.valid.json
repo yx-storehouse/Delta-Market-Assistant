@@ -1,0 +1,9 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-9",
+  "kind": "shutdown",
+  "body": {
+    "reason": "normal"
+  }
+}

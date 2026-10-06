@@ -1,0 +1,11 @@
+--- BASELINE_COPY.json
++++ MODIFIED_FILE.json
+@@ -1,7 +1,7 @@
+ {
+   "branch": "m1_pr06_pr09",
+   "field": "preview_ledger_state",
+-  "value": "preview_only",
++  "value": "review_diagnostics",
+   "committable": false,
+   "actions_enabled": false,
+   "live_market_data": false,

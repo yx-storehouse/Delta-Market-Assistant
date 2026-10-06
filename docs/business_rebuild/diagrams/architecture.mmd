@@ -1,0 +1,17 @@
+flowchart TD
+    UI["Qt UI / 配置快照"]
+    CAP["步骤按需采集 / 回放源"]
+    VIS["视觉 worker：OpenCV + OCR"]
+    SEM["页面 / 卖单语义"]
+    RULE["纯规则匹配"]
+    RUN["双阶段状态机 / 调度"]
+    ACT["意图适配器（先测试桩）"]
+    LOG["回执账本 / UI状态投影"]
+    UI -->|"模式/配置"| CAP
+    CAP -->|"像素"| VIS
+    VIS -->|"识别结果"| SEM
+    SEM -->|"观测"| RULE
+    RULE -->|"决策"| RUN
+    RUN -->|"带代次的意图"| ACT
+    ACT -->|"发起与回执"| LOG
+    LOG -->|"状态投影"| UI

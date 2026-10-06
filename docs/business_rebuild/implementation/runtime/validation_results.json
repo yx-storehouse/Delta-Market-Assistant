@@ -1,0 +1,328 @@
+{
+  "checked_at": "2026-10-06T06:05:24.251760+00:00",
+  "kind": "document_schema_validation_only",
+  "registered_schema_count": 6,
+  "cases": [
+    {
+      "id": "RT-SCHEMA-DEMAND",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-FRAME",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V1",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V2",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V3",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V4",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V5",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V6",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V7",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V8",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V9",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-V10",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    },
+    {
+      "id": "RT-SCHEMA-I1",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I2",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I3",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I4",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I5",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I6",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I7",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-I8",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-DEMAND-I",
+      "expected_valid": false,
+      "actual_valid": false,
+      "passed": true,
+      "error_count": 1
+    },
+    {
+      "id": "RT-SCHEMA-REPLAY-SUITE",
+      "expected_valid": true,
+      "actual_valid": true,
+      "passed": true,
+      "error_count": 0
+    }
+  ],
+  "local_links": [
+    {
+      "source": "observation_contract.md",
+      "target": "observation.schema.json",
+      "exists": true
+    },
+    {
+      "source": "observation_contract.md",
+      "target": "../../05_delivery_tests.md",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "state_machine.md",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "observation_contract.md",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "worker_protocol.md",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "fixtures/replay_cases.json",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "validation_manifest.json",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "../domain/core.schema.json",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "references.runtime.json",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "../../evidence/2026-10-06_capture_requirement.md",
+      "exists": true
+    },
+    {
+      "source": "README.md",
+      "target": "../../07_decisions.md",
+      "exists": true
+    },
+    {
+      "source": "state_machine.md",
+      "target": "../../04_state_machine.md",
+      "exists": true
+    },
+    {
+      "source": "state_machine.md",
+      "target": "observation_contract.md",
+      "exists": true
+    },
+    {
+      "source": "state_machine.md",
+      "target": "fixtures/replay_cases.json",
+      "exists": true
+    }
+  ],
+  "replay_structure_invariants": [
+    {
+      "id": "RT-01",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-02",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-03",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-04",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-05",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-06",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-07",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-08",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-09",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-10",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-11",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-12",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-13",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-14",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    },
+    {
+      "id": "RT-15",
+      "initial_quota_consistent": true,
+      "timestamps_nondecreasing": true,
+      "expected_not_executed": true
+    }
+  ],
+  "passed": true,
+  "backend_executed": false,
+  "sample_executed": false
+}

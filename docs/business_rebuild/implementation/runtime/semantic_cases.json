@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "status": "planned_not_run",
+  "description": "Runtime semantic checks beyond JSON Schema. Inputs are synthetic; no backend tests have run.",
+  "cases": [
+    {
+      "id": "RT-SEM-01",
+      "input": {
+        "demand_created_mono_ms": 100,
+        "not_before_mono_ms": 100,
+        "deadline_mono_ms": 99
+      },
+      "expected": {
+        "accept": false,
+        "reason": "invalid_deadline",
+        "capture_requests": 0
+      }
+    },
+    {
+      "id": "RT-SEM-02",
+      "input": {
+        "width": 100,
+        "height": 50,
+        "stride_bytes": 400,
+        "valid_bytes": 19999
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_SHM_BOUNDS",
+        "worker_requests": 0
+      }
+    },
+    {
+      "id": "RT-SEM-03",
+      "input": {
+        "roi": {
+          "x": 80,
+          "y": 0,
+          "width": 30,
+          "height": 10
+        },
+        "frame": {
+          "width": 100,
+          "height": 50
+        }
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_ROI_OUT_OF_BOUNDS"
+      }
+    },
+    {
+      "id": "RT-SEM-04",
+      "input": {
+        "barrier_ms": 100,
+        "source_mono_ms": 105,
+        "source_uncertainty_ms": 10
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_STALE_OR_UNPROVEN_FRAME",
+        "calculated_lower_bound_ms": 95
+      }
+    },
+    {
+      "id": "RT-SEM-05",
+      "input": {
+        "freshness_basis": "unproven",
+        "capture_start_mono_ms": 101,
+        "barrier_ms": 100
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_STALE_OR_UNPROVEN_FRAME"
+      }
+    },
+    {
+      "id": "RT-SEM-06",
+      "input": {
+        "request_context": {
+          "session_id": "session-2",
+          "cancel_epoch": 1
+        },
+        "result_context": {
+          "session_id": "session-1",
+          "cancel_epoch": 0
+        }
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_CONTEXT_MISMATCH",
+        "business_transitions": 0
+      }
+    },
+    {
+      "id": "RT-SEM-07",
+      "input": {
+        "current_lease": {
+          "lease_id": "new-lease",
+          "slot_generation": 2
+        },
+        "release": {
+          "lease_id": "old-lease",
+          "slot_generation": 1
+        }
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_LEASE_UNKNOWN",
+        "current_slot_reusable": false
+      }
+    },
+    {
+      "id": "RT-SEM-08",
+      "input": {
+        "lease_state": "InUse",
+        "events": [
+          "cancel",
+          "cancelled"
+        ]
+      },
+      "expected": {
+        "lease_state": "AwaitRelease",
+        "current_slot_reusable": false,
+        "additional_capture_requests": 0
+      }
+    },
+    {
+      "id": "RT-SEM-09",
+      "input": {
+        "lease_state": "InUse",
+        "events": [
+          "worker_exit_confirmed",
+          "close_local_mapping"
+        ]
+      },
+      "expected": {
+        "lease_state": "Free",
+        "current_slot_reusable": true,
+        "image_file_writes": 0
+      }
+    },
+    {
+      "id": "RT-SEM-10",
+      "input": {
+        "transport": "win32_named_shared_memory",
+        "open_error": "access_denied"
+      },
+      "expected": {
+        "error": "E_SHM_OPEN",
+        "fallback_file_transport": false,
+        "image_file_writes": 0
+      }
+    },
+    {
+      "id": "RT-SEM-11",
+      "input": {
+        "one_shot_frame_budget": 1,
+        "capture_result": "E_EMPTY_FRAME"
+      },
+      "expected": {
+        "capture_requests": 1,
+        "hidden_capture_retry": false
+      }
+    },
+    {
+      "id": "RT-SEM-12",
+      "input": {
+        "published_lease_id": "lease-1",
+        "pending_lease_id": "lease-2",
+        "new_frame": "frame-3"
+      },
+      "expected": {
+        "overwritten_lease": "lease-2",
+        "published_lease_unchanged": true,
+        "max_pixel_slots": 2
+      }
+    },
+    {
+      "id": "RT-SEM-13",
+      "input": {
+        "request_clock_domain": "clock-2",
+        "frame_clock_domain": "clock-1",
+        "frame_age_numeric_ms": 1
+      },
+      "expected": {
+        "accept": false,
+        "error": "E_CONTEXT_MISMATCH",
+        "age_comparison_performed": false
+      }
+    },
+    {
+      "id": "RT-SEM-14",
+      "input": {
+        "mode": "Observe",
+        "auto_collect": true,
+        "decision": "Match",
+        "phase": "M2"
+      },
+      "expected": {
+        "reservation_requests": 0,
+        "action_commands": 0
+      }
+    },
+    {
+      "id": "RT-SEM-15",
+      "input": {
+        "mode": "Observe",
+        "phase": "M1",
+        "command": "Start"
+      },
+      "expected": {
+        "run_state": "Ready",
+        "reason": "capability_not_enabled",
+        "capture_requests": 0
+      }
+    }
+  ]
+}

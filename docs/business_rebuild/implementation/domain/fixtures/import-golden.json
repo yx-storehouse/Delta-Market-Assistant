@@ -1,0 +1,400 @@
+{
+  "kind": "import_golden_specification",
+  "contract_version": "0.3.0",
+  "assembly": "Resolve base_ref relative to this fixture file, verify SHA-256, deep copy, apply operations in listed order, UTF-8 serialize, then import. No source file is modified.",
+  "cases": [
+    {
+      "id": "I01",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_status": "review",
+        "enabled": false,
+        "review_required": true,
+        "raw_columns": [
+          "AUG突击步枪-天命",
+          "全部赛季",
+          "未拥有",
+          "史诗品阶",
+          "成色S",
+          "不限公示期",
+          "230",
+          "600",
+          "0.399",
+          "所有稀有度",
+          "默认排序",
+          "不限",
+          "不限"
+        ],
+        "quantity_candidate": null,
+        "diagnostic_codes": [
+          "PRICE_MAPPING_UNREVIEWED",
+          "UNIT_UNREVIEWED",
+          "PRODUCT_UNRESOLVED",
+          "TAXONOMY_UNREVIEWED",
+          "UNKNOWN_TRAILING_COLUMNS"
+        ],
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I02",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_status": "invalid",
+        "candidate": null,
+        "diagnostic_codes": [
+          "COLUMN_COUNT"
+        ],
+        "error_line": 1,
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I03",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|601|600|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_status": "invalid",
+        "diagnostic_codes": [
+          "PRICE_RANGE_REVERSED"
+        ],
+        "error_line": 1,
+        "error_column": 7,
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I04",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|2O0|600|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_status": "invalid",
+        "diagnostic_codes": [
+          "DECIMAL_INVALID"
+        ],
+        "error_line": 1,
+        "error_column": 7,
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I05",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限|不限\nAUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_count": 2,
+        "deduplicated": false,
+        "diagnostic_codes": [
+          "POSSIBLE_DUPLICATE_ROW"
+        ],
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I06",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|230|600|0.399|所有稀有度|默认排序|7|9",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "last_columns": [
+          "7",
+          "9"
+        ],
+        "quantity_candidate": null,
+        "diagnostic_codes": [
+          "UNKNOWN_TRAILING_COLUMNS"
+        ],
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I07",
+      "input": {
+        "format": "schema_v1",
+        "base_ref": "v1.synthetic.json",
+        "base_sha256": "09e68c4462c78f3a6c80ab2531bcf9dfaac4a5c96709bd749fd72cfad264e6a7",
+        "operations": [
+          {
+            "op": "remove_if_present",
+            "path": "/tasks/0/condition"
+          },
+          {
+            "op": "replace",
+            "path": "/tasks/0/quantity",
+            "value": 3
+          }
+        ]
+      },
+      "expected": {
+        "condition_filter": {
+          "op": "any"
+        },
+        "quantity_candidate": 3,
+        "quantity_semantics": "demo_count_only",
+        "target_mode": "demo",
+        "review_required": true,
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I08",
+      "input": {
+        "format": "schema_v1",
+        "base_ref": "v1.synthetic.json",
+        "base_sha256": "09e68c4462c78f3a6c80ab2531bcf9dfaac4a5c96709bd749fd72cfad264e6a7",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "/tasks/0/minPrice",
+            "value": 0.30000000000000004
+          }
+        ]
+      },
+      "expected": {
+        "decimal_candidate": {
+          "unscaled": "30",
+          "scale": 2
+        },
+        "diagnostic_codes": [
+          "V1_FLOAT_NOISE_NORMALIZED"
+        ],
+        "normalization_audit_required": true
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I09",
+      "input": {
+        "format": "schema_v1",
+        "base_ref": "v1.synthetic.json",
+        "base_sha256": "09e68c4462c78f3a6c80ab2531bcf9dfaac4a5c96709bd749fd72cfad264e6a7",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "/tasks/0/minPrice",
+            "value": 0.301
+          }
+        ]
+      },
+      "expected": {
+        "row_status": "invalid",
+        "diagnostic_codes": [
+          "V1_PRECISION_INVALID"
+        ],
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I10",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|1,000|1,500|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "candidate_min": {
+          "unscaled": "1000",
+          "scale": 0
+        },
+        "candidate_max": {
+          "unscaled": "1500",
+          "scale": 0
+        },
+        "row_status": "review"
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I11",
+      "input": {
+        "format": "bbzps_13",
+        "text": "AUG突击步枪-天命|全部赛季|未拥有|史诗品阶|成色S|不限公示期|1,00|600|0.399|所有稀有度|默认排序|不限|不限",
+        "encoding": "UTF-8"
+      },
+      "expected": {
+        "row_status": "invalid",
+        "diagnostic_codes": [
+          "DECIMAL_GROUPING_INVALID"
+        ],
+        "committable": false
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I12",
+      "input": {
+        "format": "commit",
+        "candidate_ready": true,
+        "output_exists": true,
+        "destination_equals_source": false
+      },
+      "expected": {
+        "result": "rejected",
+        "diagnostic_codes": [
+          "OUTPUT_EXISTS"
+        ],
+        "source_unchanged": true,
+        "active_config_unchanged": true
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I13",
+      "input": {
+        "format": "commit",
+        "candidate_ready": true,
+        "write_fault": "commit_failed"
+      },
+      "expected": {
+        "result": "failed",
+        "diagnostic_codes": [
+          "COMMIT_FAILED"
+        ],
+        "source_unchanged": true,
+        "active_config_unchanged": true
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    },
+    {
+      "id": "I14",
+      "input": {
+        "format": "commit",
+        "candidate_ready": true,
+        "source_hash_changed_after_preview": true
+      },
+      "expected": {
+        "result": "rejected",
+        "diagnostic_codes": [
+          "SOURCE_CHANGED"
+        ],
+        "active_config_unchanged": true
+      },
+      "specification_only": true,
+      "trace": [
+        "B05",
+        "B39",
+        "T05-B",
+        "T39-B",
+        "WI02"
+      ]
+    }
+  ]
+}

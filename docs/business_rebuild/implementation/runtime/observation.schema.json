@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json",
+  "title": "Runtime observation contract v1 — proposed not implemented",
+  "$ref": "#/$defs/ObservationDemand",
+  "$defs": {
+    "Context": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "clock_domain_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "step_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "cancel_epoch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "viewport_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "run_id",
+        "session_id",
+        "clock_domain_id",
+        "step_id",
+        "cancel_epoch",
+        "viewport_generation"
+      ],
+      "additionalProperties": false
+    },
+    "Roi": {
+      "type": "object",
+      "properties": {
+        "roi_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "coordinate_space": {
+          "const": "client_physical_px"
+        },
+        "x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8191
+        },
+        "y": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8191
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "transform_version": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "roi_id",
+        "coordinate_space",
+        "x",
+        "y",
+        "width",
+        "height",
+        "transform_version"
+      ],
+      "additionalProperties": false
+    },
+    "ObservationDemand": {
+      "type": "object",
+      "properties": {
+        "demand_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "mode": {
+          "enum": [
+            "one_shot",
+            "bounded_watch"
+          ]
+        },
+        "purpose": {
+          "enum": [
+            "page_check",
+            "listing_fields",
+            "receipt",
+            "revalidate",
+            "countdown"
+          ]
+        },
+        "created_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "not_before_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "deadline_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "max_frame_age_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        },
+        "frame_budget": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 600
+        },
+        "min_interval_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "roi_specs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Roi"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "persistence": {
+          "const": "none"
+        }
+      },
+      "required": [
+        "demand_id",
+        "context",
+        "mode",
+        "purpose",
+        "created_mono_ms",
+        "not_before_mono_ms",
+        "deadline_mono_ms",
+        "max_frame_age_ms",
+        "frame_budget",
+        "min_interval_ms",
+        "roi_specs",
+        "persistence"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "one_shot"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "frame_budget": {
+                "const": 1
+              },
+              "min_interval_ms": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SharedMemoryDescriptor": {
+      "type": "object",
+      "properties": {
+        "transport": {
+          "const": "win32_named_shared_memory"
+        },
+        "mapping_name": {
+          "type": "string",
+          "pattern": "^Local\\\\RelinkVision_[A-Za-z0-9_-]+_[01]$",
+          "maxLength": 200
+        },
+        "lease_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "slot_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "slot_generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "offset_bytes": {
+          "const": 0
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 134217728
+        },
+        "capacity_bytes": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 134217728
+        }
+      },
+      "required": [
+        "transport",
+        "mapping_name",
+        "lease_id",
+        "slot_index",
+        "slot_generation",
+        "offset_bytes",
+        "byte_length",
+        "capacity_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "FrameEnvelope": {
+      "type": "object",
+      "properties": {
+        "frame_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "demand_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "capture_session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "source_kind": {
+          "enum": [
+            "replay",
+            "wgc",
+            "dxgi"
+          ]
+        },
+        "window_ref": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "dpi_x": {
+          "type": "integer",
+          "minimum": 48,
+          "maximum": 768
+        },
+        "dpi_y": {
+          "type": "integer",
+          "minimum": 48,
+          "maximum": 768
+        },
+        "pixel_format": {
+          "const": "BGRA8"
+        },
+        "stride_bytes": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 32768
+        },
+        "valid_bytes": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 134217728
+        },
+        "capture_start_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "capture_end_mono_ms": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+        },
+        "freshness_basis": {
+          "enum": [
+            "source_timestamp",
+            "post_barrier_capture",
+            "unproven"
+          ]
+        },
+        "source_mono_ms": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_uncertainty_ms": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "descriptor": {
+          "$ref": "#/$defs/SharedMemoryDescriptor"
+        }
+      },
+      "required": [
+        "frame_id",
+        "demand_id",
+        "capture_session_id",
+        "context",
+        "source_kind",
+        "window_ref",
+        "width",
+        "height",
+        "dpi_x",
+        "dpi_y",
+        "pixel_format",
+        "stride_bytes",
+        "valid_bytes",
+        "capture_start_mono_ms",
+        "capture_end_mono_ms",
+        "freshness_basis",
+        "source_mono_ms",
+        "source_uncertainty_ms",
+        "descriptor"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "freshness_basis": {
+                "const": "source_timestamp"
+              }
+            },
+            "required": [
+              "freshness_basis"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_mono_ms": {
+                "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs"
+              },
+              "source_uncertainty_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 60000
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "source_mono_ms": {
+                "type": "null"
+              },
+              "source_uncertainty_ms": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

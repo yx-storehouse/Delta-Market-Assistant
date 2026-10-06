@@ -1,0 +1,162 @@
+Relink Studio frontend verification — 2026-10-04
+Working directory: C:\Users\Administrator\Desktop\price
+Changed fields in a TEST CONFIG COPY: tasks[0].maxPrice 650 -> 700; tasks[0].quantity 3 -> 4.
+The fixture is not the default user configuration. No original game/helper EXE was patched.
+MODIFIED_FILE: C:\Users\Administrator\Desktop\price\artifacts\MODIFIED_FILE.json
+DIFF_FILE: C:\Users\Administrator\Desktop\price\artifacts\DIFF_FILE.diff
+VERIFICATION: C:\Users\Administrator\Desktop\price\artifacts\VERIFICATION.txt
+ROLLBACK: C:\Users\Administrator\Desktop\price\artifacts\ROLLBACK.sh
+Baseline SHA256: 09e68c4462c78f3a6c80ab2531bcf9dfaac4a5c96709bd749fd72cfad264e6a7
+Modified SHA256: fcc23c0d3d28bc0598ce49cd9c27a27ebecefd1508b803cad6665e2db8d8c2dd
+Packaged EXE SHA256: 762f3a1b8c51ab8e4efceade568fa3226b19074d2b27275f899dc18da8eab3b0
+UI assertion count: 33
+All UI tests use Qt offscreen. Packaged tests use no SDK paths. Native interactive desktop testing was not performed.
+
+DOMAIN
+COMMAND: build\domain_tests.exe
+INPUT: 48 data-model assertions; package-only runtime PATH; QCoreApplication.
+STDOUT:
+PASS temporary_directory
+PASS synthetic_fixture_counts
+PASS atomic_save
+PASS schema_and_demo_marker
+PASS save_load_roundtrip
+PASS reject_range_transactional
+PASS reject_unknown_skin_transactional
+PASS reject_quantity_zero_transactional
+PASS reject_quantity_fraction_transactional
+PASS reject_quantity_overflow_transactional
+PASS reject_quantity_ui_limit_transactional
+PASS reject_task_name_ui_limit_transactional
+PASS reject_task_name_utf16_units_transactional
+PASS reject_task_price_ui_limit_transactional
+PASS reject_task_min_price_precision_transactional
+PASS reject_task_max_price_precision_transactional
+PASS reject_task_wear_ui_limit_transactional
+PASS reject_task_wear_precision_transactional
+PASS reject_negative_price_transactional
+PASS reject_null_wear_transactional
+PASS reject_string_price_transactional
+PASS reject_non_demo_transactional
+PASS reject_unknown_schema_transactional
+PASS reject_duplicate_task_id_transactional
+PASS reject_duplicate_skin_id_transactional
+PASS reject_invalid_json_transactional
+PASS reject_non_object_root
+PASS missing_file_error
+PASS reject_nonfinite_save
+PASS restore_valid_fixture
+PASS accept_task_exact_ui_boundaries
+PASS accept_task_float_noise_utf16_boundary_and_unrestricted_skin_precision
+PASS csv_export
+PASS csv_utf8_demo_prices
+PASS csv_formula_escaping
+PASS paused_tick_noop
+PASS start_idempotent
+PASS simulation_local_matching
+PASS pause_idempotent_and_freezes_counts
+PASS simulation_respects_task_quantities
+PASS no_enabled_tasks_no_start
+PASS all_completed_autopause
+PASS reset_task_preserves_aggregate_statistics_and_notifies
+PASS reset_completed_task_allows_new_skin_simulation
+PASS reset_disabled_task_keeps_disabled_status
+PASS reset_unknown_task_noop
+PASS successful_import_resets_runtime
+PASS bounded_log_buffer
+RESULT PASS failures=0
+STDERR: <empty>
+EXIT_STATUS: 0
+
+PACKAGE_UI
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir artifacts\screenshots --config artifacts\ui-test-config.json
+INPUT: Synthetic application state; package-only PATH; Qt offscreen; no screen capture/input.
+STDOUT:
+UI_SEVEN_PAGES=PASS
+UI_NAV_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_NAV_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_NAV_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NAV_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_NAV_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NAV_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NAV_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDIT=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_COMPACT_RENDER=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR: <empty>
+EXIT_STATUS: 0
+
+DEMO_FIXTURE
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --write-demo-config artifacts\BASELINE.json
+INPUT: Fresh 12-skin / 5-task demo fixture.
+STDOUT:
+DEMO_CONFIG=PASS
+STDERR: <empty>
+EXIT_STATUS: 0
+
+BASELINE
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --validate-config artifacts\BASELINE.json
+INPUT: First task maxPrice=650, quantity=3.
+STDOUT:
+CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3
+STDERR: <empty>
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --validate-config artifacts\MODIFIED_FILE.json
+INPUT: First task maxPrice=700, quantity=4.
+STDOUT:
+CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=700.00; first_quantity=4
+STDERR: <empty>
+EXIT_STATUS: 0
+
+EQUALS_HEADLESS
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --validate-config=artifacts\BASELINE.json
+INPUT: Equals-style CLI argument; still forced offscreen.
+STDOUT:
+CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3
+STDERR: <empty>
+EXIT_STATUS: 0
+
+ROLLBACK
+COMMAND: & 'C:\Program Files\Git\bin\bash.exe' -c 'chmod +x artifacts/ROLLBACK.sh && ./artifacts/ROLLBACK.sh artifacts/ROLLBACK_TEST.json'
+INPUT: ROLLBACK_TEST.json copied byte-for-byte from MODIFIED_FILE.json.
+STDOUT:
+ROLLBACK=PASS; restored_equal_baseline=true; modified_left_changed=true
+STDERR: <empty>
+EXIT_STATUS: 0
+
+RESTORED
+COMMAND: dist\RelinkStudio\RelinkStudio.exe --validate-config artifacts\ROLLBACK_TEST.json
+INPUT: Restored baseline fixture.
+STDOUT:
+CONFIG_VALIDATION=PASS; skins=12; tasks=5; first_max_price=650.00; first_quantity=3
+STDERR: <empty>
+EXIT_STATUS: 0
+
+RESTORED: test copy equals BASELINE.json exactly and the application validator accepts 650.00 / 3.
+LEFT CHANGED: MODIFIED_FILE.json remains 700 / 4.
+APPLICATION: delivered executable unchanged by baseline/modified/rollback tests.

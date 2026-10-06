@@ -1,0 +1,11 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-7",
+  "kind": "cancelled",
+  "body": {
+    "target_kind": "request",
+    "target_id": "request-1",
+    "registered": true
+  }
+}

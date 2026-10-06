@@ -1,0 +1,638 @@
+{
+  "document_version": "0.3",
+  "status": "specification_only",
+  "application_tests_run": 0,
+  "cases": [
+    {
+      "id": "X01",
+      "layer": "document_schema",
+      "phase": "M0",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B39",
+        "T39-B"
+      ],
+      "tickets": [
+        "PR02",
+        "PR08"
+      ],
+      "given": "有效config、disabled preview和缺单位/坏类型反例均在schema manifest中",
+      "when": "离线JSON Schema验证manifest并对照expected_valid",
+      "then": "正例接受、反例在预期路径拒绝；preview不是可执行profile",
+      "fixture": "domain/validation_manifest.json及schema fixture",
+      "command_plan": "由根implementation验证入口运行JSON Schema批次",
+      "not_proved": "只证明schema形状/明示约束，不证明C++解析或业务函数"
+    },
+    {
+      "id": "X02",
+      "layer": "document_traceability",
+      "phase": "M0",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B01",
+        "B44",
+        "T01-A",
+        "T44-B"
+      ],
+      "tickets": [
+        "PR01"
+      ],
+      "given": "12张票、44业务、88规格和D01-D13存在",
+      "when": "运行readiness文档自检",
+      "then": "票依赖无环、WI01-WI05全覆盖、B/T/E/R合法、测试状态非已执行",
+      "fixture": "backlog.json + test_matrix.json",
+      "command_plan": "python -I -X utf8 docs\\business_rebuild\\implementation\\readiness\\validate_readiness.py",
+      "not_proved": "不证明业务实现"
+    },
+    {
+      "id": "X03",
+      "layer": "pure_value",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B14",
+        "B15",
+        "T14-A",
+        "T15-B"
+      ],
+      "tickets": [
+        "PR02"
+      ],
+      "given": "23.0/23.00、24位上界、scale12及非法指数/负数等golden",
+      "when": "执行值对象解析/比较",
+      "then": "每个结果与expected一致；不经double、不溢出、不截断",
+      "fixture": "domain/fixtures/rule-golden.json + value边界fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；注册business_value_tests",
+      "not_proved": "不证明OCR读数准确"
+    },
+    {
+      "id": "X04",
+      "layer": "pure_rule",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B14",
+        "B15",
+        "B16",
+        "T14-A",
+        "T15-A",
+        "T16-A"
+      ],
+      "tickets": [
+        "PR03"
+      ],
+      "given": "明确单位、有效观察，价格恰好上下界且wear等于阈值",
+      "when": "调用match",
+      "then": "Match和逐字段满足原因；eligible_for_action=false",
+      "fixture": "domain/fixtures/rule-golden.json",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；business_rule_tests",
+      "not_proved": "匹配不是动作许可"
+    },
+    {
+      "id": "X05",
+      "layer": "pure_rule",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B16",
+        "T16-B"
+      ],
+      "tickets": [
+        "PR03"
+      ],
+      "given": "价格可靠超界，同时必要磨损缺失",
+      "when": "调用match",
+      "then": "按canonical优先级NeedsReview，缺失原因可见；不让超价掩盖不可靠输入",
+      "fixture": "domain/fixtures/rule-golden.json混合反例",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；business_rule_tests",
+      "not_proved": "不是用OCR分数代表可靠性"
+    },
+    {
+      "id": "X06",
+      "layer": "pure_rule",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B20",
+        "B28",
+        "T20-B",
+        "T28-B"
+      ],
+      "tickets": [
+        "PR03",
+        "PR09"
+      ],
+      "given": "相同特征的两个卖单、身份歧义；或真实quota scope未明确",
+      "when": "匹配并申请执行资格",
+      "then": "关联歧义Review；缺quota许可不发新意图，不静默当无限",
+      "fixture": "domain关联fixture + runtime额度fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；business_rule_tests/ledger_tests",
+      "not_proved": "合成ID不证明真实市场有稳定ID"
+    },
+    {
+      "id": "X07",
+      "layer": "migration",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B39",
+        "T39-A",
+        "T39-B"
+      ],
+      "tickets": [
+        "PR06"
+      ],
+      "given": "旧v1缺condition/run_settings，旧demo=true；另有坏引用输入",
+      "when": "迁移预览再提交新路径",
+      "then": "合法默认与旧解析一致且仍demo；非法不改当前状态、源hash、活动路径",
+      "fixture": "版本化v1 golden与domain/import-golden.json",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；migration_tests",
+      "not_proved": "不把旧double演示价当真实精确行情"
+    },
+    {
+      "id": "X08",
+      "layer": "migration",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B05",
+        "T05-A",
+        "T05-B"
+      ],
+      "tickets": [
+        "PR07"
+      ],
+      "given": "E03 15条13列与12/14列、乱码、超长反例",
+      "when": "导入preview",
+      "then": "原值、行号、13列保真；候选禁用；错误逐行，凭据不输出",
+      "fixture": "evidence/task_schema.json + domain/fixtures/import-golden.json",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；migration_tests",
+      "not_proved": "不证明第12/13列业务含义"
+    },
+    {
+      "id": "X09",
+      "layer": "migration",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B01",
+        "B39",
+        "T01-B",
+        "T39-B"
+      ],
+      "tickets": [
+        "PR08"
+      ],
+      "given": "可用旧配置、待写新配置、注入写入/提交失败",
+      "when": "QSaveFile提交或取消切方案",
+      "then": "旧文件字节与内存不变、configPath不变、原run快照不变",
+      "fixture": "profile_store临时目录和可注入故障writer",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；profile_store_tests",
+      "not_proved": "合法配置持久化不证明策略已被批准"
+    },
+    {
+      "id": "X10",
+      "layer": "replay",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B43",
+        "T43-A"
+      ],
+      "tickets": [
+        "PR04"
+      ],
+      "given": "同一事件fixture/相同初始状态和FakeClock",
+      "when": "回放两次",
+      "then": "state/event/decision序列一致；无真实capture、OCR或input启动",
+      "fixture": "runtime/fixtures/replay_cases.json",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；replay_tests",
+      "not_proved": "不证明从像素可提取这些事件"
+    },
+    {
+      "id": "X11",
+      "layer": "replay",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B02",
+        "B35",
+        "T02-A",
+        "T35-B"
+      ],
+      "tickets": [
+        "PR04"
+      ],
+      "given": "观察请求在途、cancel_epoch=1，随后暂停到epoch2",
+      "when": "送回epoch1的有效旧结果并重复pause",
+      "then": "旧结果不推进业务；无新需求；重复pause幂等；资源可draining而run=Paused",
+      "fixture": "runtime/fixtures/replay_cases.json取消用例",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；replay_tests",
+      "not_proved": "资源draining不能冒充已经回收"
+    },
+    {
+      "id": "X12",
+      "layer": "replay",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B22",
+        "T22-B"
+      ],
+      "tickets": [
+        "PR04"
+      ],
+      "given": "长等待10000ms、无近期观察需求；FakeClock墙钟回拨",
+      "when": "推进单调时钟并送旧timer唤醒",
+      "then": "长等待中需求数0；过期代次timer无效；唤醒只在新step申请",
+      "fixture": "runtime时钟/长等待fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；replay_tests",
+      "not_proved": "不证明真实定时器亚毫秒精度"
+    },
+    {
+      "id": "X13",
+      "layer": "replay",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B02",
+        "B43",
+        "T02-A",
+        "T43-B"
+      ],
+      "tickets": [
+        "PR04",
+        "PR05"
+      ],
+      "given": "运行中编辑规则或切换mode",
+      "when": "继续送旧run事件",
+      "then": "旧run用旧revision；新mode不消费旧事件；日志/统计不串",
+      "fixture": "runtime规则快照/mode fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；replay_tests/ui_offscreen",
+      "not_proved": "不证明后台全局快捷键已实现"
+    },
+    {
+      "id": "X14",
+      "layer": "ledger",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B28",
+        "B30",
+        "B31",
+        "T28-B",
+        "T30-B",
+        "T31-A"
+      ],
+      "tickets": [
+        "PR09"
+      ],
+      "given": "target=1，一条sent后无回执的attempt",
+      "when": "超时、stop、重放Start",
+      "then": "保持Unknown预留；新尝试不获额度；停止不删除未决",
+      "fixture": "integration ledger oracle + runtime Attempt fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；ledger_tests",
+      "not_proved": "不宣称外部exactly-once"
+    },
+    {
+      "id": "X15",
+      "layer": "ledger",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B30",
+        "B31",
+        "T30-A",
+        "T31-B"
+      ],
+      "tickets": [
+        "PR09",
+        "PR10"
+      ],
+      "given": "同receipt_id两次相同payload，再一次不同payload",
+      "when": "提交事务并读取投影",
+      "then": "前两次成功只计1；不同payload冲突明确，历史不被覆写",
+      "fixture": "integration receipt/idempotency fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；ledger_tests",
+      "not_proved": "收到成功文字但归属不明仍不能套入此正例"
+    },
+    {
+      "id": "X16",
+      "layer": "ledger_storage",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B31",
+        "T31-A",
+        "T31-B"
+      ],
+      "tickets": [
+        "PR10"
+      ],
+      "given": "DB事务在提交前/后、intent已durable而回执未到的状态",
+      "when": "在精确注入点结束自家测试子进程并重新打开DB",
+      "then": "提交前无半条记录；提交后可重读；未决保持待核验，不重发",
+      "fixture": "integration/storage_contract.md故障注入点 +临时DB",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；sqlite_ledger_tests（自家子进程hidden）",
+      "not_proved": "不运行BBZPS或外部动作；不以正常关闭替代崩溃测试"
+    },
+    {
+      "id": "X17",
+      "layer": "ledger_storage",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B37",
+        "T37-A",
+        "T37-B"
+      ],
+      "tickets": [
+        "PR10"
+      ],
+      "given": "数据库锁忙/满/磁盘写失败；UI订阅成功计数",
+      "when": "尝试提交结果",
+      "then": "提交失败则UI不加成功数，暂停并保存可读诊断；恢复后不重计",
+      "fixture": "IEventStore故障注入实现",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；sqlite_ledger_tests",
+      "not_proved": "日志降采样不允许省略必要交易事务"
+    },
+    {
+      "id": "X18",
+      "layer": "ledger_storage",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B31",
+        "B39",
+        "T31-A",
+        "T39-B"
+      ],
+      "tickets": [
+        "PR10",
+        "PR12"
+      ],
+      "given": "含WAL数据/未决attempt的账本与独立v1备份",
+      "when": "按契约一致性备份并在副本恢复旧程序",
+      "then": "新账本与未决数据保留；旧程序只读v1；不只复制运行中主DB",
+      "fixture": "integration备份fixture +发布副本",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；sqlite_ledger_tests/发布回退计划",
+      "not_proved": "不保证任意故障硬件上的绝对不丢数据"
+    },
+    {
+      "id": "X19",
+      "layer": "image_quality",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B07",
+        "B08",
+        "T07-A",
+        "T08-B"
+      ],
+      "tickets": [],
+      "given": "独立采集会话划分的标注集，含页面/框/文本/卖单关联",
+      "when": "离线评测候选OCR与预处理",
+      "then": "每字段精确率/拒识/覆盖/行关联/误匹配单独报告；同帧变体不跨集",
+      "fixture": "待M2建立的有来源图像真值清单",
+      "command_plan": "拟新增vision_benchmark CLI；在WI07注册后固定命令与模型hash",
+      "not_proved": "结构化历史OCR输出不能证明OCR精度"
+    },
+    {
+      "id": "X20",
+      "layer": "image_quality",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B14",
+        "B15",
+        "B20",
+        "T14-B",
+        "T15-B",
+        "T20-B"
+      ],
+      "tickets": [],
+      "given": "价格千分位断裂、O/0、邻行磨损、重复商品、高DPI负例",
+      "when": "从原始像素到ListingObservation",
+      "then": "错误/歧义保留Unknown/Review；不把相邻行字段拼成合格卖单",
+      "fixture": "M2逐字段人工真值及负例集",
+      "command_plan": "拟新增vision_benchmark --suite fields-negative",
+      "not_proved": "零观测误报只能描述该测试集，不能外推真实零风险"
+    },
+    {
+      "id": "X21",
+      "layer": "capture_contract",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B06",
+        "B44",
+        "T06-A",
+        "T44-B"
+      ],
+      "tickets": [],
+      "given": "step_id/epoch/viewport明确的新帧需求与两个占用槽",
+      "when": "resize/DPI变化并送旧frame",
+      "then": "旧代次失效；ROI映射往返在定义容差内；目标关闭为错误非空页",
+      "fixture": "runtime帧/ROI schema +合成DPI场景",
+      "command_plan": "拟新增capture_contract_tests",
+      "not_proved": "不证明具体目标的全屏/遮挡捕获兼容"
+    },
+    {
+      "id": "X22",
+      "layer": "capture_lifecycle",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B06",
+        "B44",
+        "T06-B",
+        "T44-B"
+      ],
+      "tickets": [],
+      "given": "worker正读取租约，coordinator已cancel且超时",
+      "when": "观察释放/退出前后buffer复用",
+      "then": "取消立即停新需求；release或确认退出前不复用；回收后计数归零",
+      "fixture": "runtime租约状态fixture+可信mock worker",
+      "command_plan": "拟新增worker_contract_tests --suite lease-lifetime",
+      "not_proved": "逻辑取消不等于线程/进程已停止读内存"
+    },
+    {
+      "id": "X23",
+      "layer": "capture_io",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B06",
+        "B07",
+        "B37",
+        "B44",
+        "T06-B",
+        "T07-B",
+        "T37-B",
+        "T44-B"
+      ],
+      "tickets": [],
+      "given": "默认持久化false；覆盖正常/成功/失败/worker崩溃/共享内存失败",
+      "when": "执行自有只读捕获测试并观测应用进程树文件操作",
+      "then": "图像/临时帧文件创建次数0、图像写入bytes0；配置和必要账本另计",
+      "fixture": "runtime默认policy；自有测试窗口；进程树/路径/写入观测报告",
+      "command_plan": "拟新增capture_io_tests +受控文件IO观察，WI06前冻结操作命令",
+      "not_proved": "不承诺全机零IO/禁用分页；不可只搜索.png扩展名"
+    },
+    {
+      "id": "X24",
+      "layer": "capture_io",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B06",
+        "B22",
+        "B35",
+        "T06-A",
+        "T22-B",
+        "T35-B"
+      ],
+      "tickets": [],
+      "given": "Ready/Paused/Stopped/长等待/已超时step，worker模型可驻留",
+      "when": "等待观测窗口超过两个正常取帧周期",
+      "then": "新增capture请求=0、OCR请求=0；bounded_watch帧/时间预算不越界",
+      "fixture": "runtime观察计数fixture+instrumented真实provider",
+      "command_plan": "拟新增capture_io_tests --suite demand-boundaries",
+      "not_proved": "M1假源计数不替代本层真实采集计数"
+    },
+    {
+      "id": "X25",
+      "layer": "capture_io",
+      "phase": "M2",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B37",
+        "T37-A",
+        "T37-B"
+      ],
+      "tickets": [],
+      "given": "手动导出或显式有到期/容量/张数限制调试会话",
+      "when": "达到预算/关闭/异常",
+      "then": "仅显式会话允许保存；到期后零自动图像写；异常不偷偷续期开启",
+      "fixture": "有界调试policy及文件IO报告",
+      "command_plan": "拟新增capture_io_tests --suite explicit-export",
+      "not_proved": "正常业务默认仍不落图，不以测试导出更改默认"
+    },
+    {
+      "id": "X26",
+      "layer": "ui_offscreen",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B16",
+        "B20",
+        "B38",
+        "B43",
+        "T16-A",
+        "T20-A",
+        "T38-B",
+        "T43-B"
+      ],
+      "tickets": [
+        "PR05",
+        "PR11"
+      ],
+      "given": "replay包含Match/NoMatch/Review及同品两卖单",
+      "when": "离屏加载、单步、暂停、切回demo",
+      "then": "各行来源/观测时间/原因明确，曲线不混数据；暂停后不变",
+      "fixture": "domain+runtime黄金fixture与UI视图断言",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；ui_offscreen扩展",
+      "not_proved": "UI截图是测试产物，不是实时目标采集落盘"
+    },
+    {
+      "id": "X27",
+      "layer": "ui_offscreen",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B01",
+        "B04",
+        "B40",
+        "T01-B",
+        "T04-A",
+        "T40-A",
+        "T40-B"
+      ],
+      "tickets": [
+        "PR05",
+        "PR11"
+      ],
+      "given": "原界面全部入口、100%/125%/150%缩放、长中文/错误信息",
+      "when": "运行自家Qt离屏布局检查",
+      "then": "Win11白灰/无蓝色；导航/关注/右编辑/底图保留；控件不遮挡；优化不臆造",
+      "fixture": "E11入口清单、离屏snapshot与geometry assertions",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；另以QT_SCALE_FACTOR矩阵跑ui_offscreen",
+      "not_proved": "截图肉眼好看不替代字段/可达性断言"
+    },
+    {
+      "id": "X28",
+      "layer": "release_package",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B41",
+        "B42",
+        "T41-A",
+        "T42-A",
+        "T42-B"
+      ],
+      "tickets": [
+        "PR12"
+      ],
+      "given": "当前revision新构建、QtSql新增依赖、旧目录备份",
+      "when": "build -Test -Package，清空SDK路径后离屏启动发布EXE",
+      "then": "二进制hash一致；Qt DLL/platforms/qsqlite齐；无样本组件；命令退出0",
+      "fixture": "发布manifest与SDK隔离环境",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test -Package；参数化verify_delivery",
+      "not_proved": "SDK环境下通过不证明发布依赖完整"
+    },
+    {
+      "id": "X29",
+      "layer": "release_package",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B39",
+        "B43",
+        "T39-A",
+        "T43-B"
+      ],
+      "tickets": [
+        "PR12"
+      ],
+      "given": "备份旧解压目录/旧v1、新v2账本含未知attempt",
+      "when": "在另一副本执行回退并打开旧配置（离屏）",
+      "then": "旧行为恢复；新账本未删除；固定交付目录可切换；无可见窗口",
+      "fixture": "独立rollback-test目录与hash清单",
+      "command_plan": "PR12回退脚本（仅验证副本）；按包manifest复核",
+      "not_proved": "单纯复制旧EXE不是完整回退"
+    },
+    {
+      "id": "X30",
+      "layer": "logging_budget",
+      "phase": "M1",
+      "status": "planned_not_run",
+      "business_acceptance_refs": [
+        "B37",
+        "T37-A",
+        "T37-B"
+      ],
+      "tickets": [
+        "PR09",
+        "PR10",
+        "PR11"
+      ],
+      "given": "大量重复诊断、少量关键状态/intent/receipt；默认无逐帧OCR全文",
+      "when": "压测必要事件和日志汇总",
+      "then": "关键账本不丢，重复诊断限速并有被抑制计数；容量有限、记录不含像素/凭据",
+      "fixture": "integration日志预算与必要事件fixture",
+      "command_plan": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\build.ps1 -Test；ledger_tests与UI响应观察",
+      "not_proved": "降低日志量不能等同数据持久性已充分验证"
+    }
+  ]
+}

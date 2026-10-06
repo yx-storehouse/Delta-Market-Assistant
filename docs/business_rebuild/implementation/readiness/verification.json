@@ -1,0 +1,30 @@
+{
+  "result": "PASS",
+  "checked_at": "2026-10-06T10:54:44.488881+00:00",
+  "ticket_count": 12,
+  "detailed_test_spec_count": 30,
+  "work_items": [
+    "WI01",
+    "WI02",
+    "WI03",
+    "WI04",
+    "WI05"
+  ],
+  "decision_mapping_count": 13,
+  "markdown_links": 13,
+  "application_tests_run": 0,
+  "sample_executions": 0,
+  "files_sha256": {
+    "backlog.json": "f141de98ec7543d77f0db931267348fe9c4df7af65dcc36e405934069e862cfe",
+    "backlog.md": "8f6ebc638e57a19c6bbcc3fbf67d746ef0403ef13457d92de6b9f4b7c6529aaf",
+    "build_readiness.py": "4d0356b255feea04c3fd1663e1c8f272da80ba19910ab0e4e660fc7f85f4635f",
+    "cross_contract_review.md": "13e9dcc5d1a01656f4ead372d61d313665617ecf5bfc6711e1fe0c9c2c4db52d",
+    "engineering_baseline.md": "58bc05d3005de63c25ded6746fb079ecb96f3efb6cdd5beccc77fb95ebbe87df",
+    "readiness_gates.md": "689bb249252174fe9cb761846713b35f0c6edc10edbc20519fd7eba16335f787",
+    "README.md": "5a295d8a2afc031a1d46e3764688c5837e1920cae0e03713bfd41a183a44a193",
+    "test_matrix.json": "32d1f3d43ff009b73c84b93e1fb78f0ca0224b80b7a1f4c44e78ddf6049746b5",
+    "test_matrix.md": "6f817abb3a49538236ba9fd9f0114a14ae407ad671ed3f8a58093fcffc120670",
+    "validate_readiness.py": "964020c76d582fbf64573064d0acd326bbac5c2c5c86493314d28edf3ba4cd8d"
+  },
+  "note": "Only planning structure, references, dependency graph and document links; no business engine/vision/IO verification."
+}

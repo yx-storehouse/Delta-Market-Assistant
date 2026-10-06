@@ -1,0 +1,67 @@
+{
+  "protocol_version": 1,
+  "session_id": "session-1",
+  "message_id": "message-3",
+  "kind": "recognize",
+  "body": {
+    "request_id": "request-1",
+    "demand_id": "demand-1",
+    "context": {
+      "run_id": "run-1",
+      "session_id": "session-1",
+      "clock_domain_id": "clock-1",
+      "step_id": "s1",
+      "cancel_epoch": 0,
+      "viewport_generation": 1
+    },
+    "frame": {
+      "frame_id": "frame-1",
+      "demand_id": "demand-1",
+      "capture_session_id": "capture-1",
+      "context": {
+        "run_id": "run-1",
+        "session_id": "session-1",
+        "clock_domain_id": "clock-1",
+        "step_id": "s1",
+        "cancel_epoch": 0,
+        "viewport_generation": 1
+      },
+      "source_kind": "replay",
+      "window_ref": "fixture-window",
+      "width": 100,
+      "height": 50,
+      "dpi_x": 96,
+      "dpi_y": 96,
+      "pixel_format": "BGRA8",
+      "stride_bytes": 400,
+      "valid_bytes": 20000,
+      "capture_start_mono_ms": 101,
+      "capture_end_mono_ms": 105,
+      "freshness_basis": "post_barrier_capture",
+      "source_mono_ms": null,
+      "source_uncertainty_ms": null,
+      "descriptor": {
+        "transport": "temporary_file",
+        "mapping_name": "Local\\RelinkVision_session1_0",
+        "lease_id": "lease-1",
+        "slot_index": 0,
+        "slot_generation": 1,
+        "offset_bytes": 0,
+        "byte_length": 20000,
+        "capacity_bytes": 20000
+      }
+    },
+    "roi_specs": [
+      {
+        "roi_id": "price",
+        "coordinate_space": "client_physical_px",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50,
+        "transform_version": 1
+      }
+    ],
+    "relative_budget_ms": 995
+  }
+}

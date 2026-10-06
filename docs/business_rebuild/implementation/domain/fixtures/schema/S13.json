@@ -1,0 +1,88 @@
+{
+  "observation_id": "obs-01",
+  "product_ref": "product-01",
+  "market_listing_id": null,
+  "association": {
+    "association_ref": "assoc-01",
+    "status": "confirmed"
+  },
+  "price": {
+    "value": {
+      "unscaled": "340",
+      "scale": 0
+    },
+    "unit": "SYNTHETIC_CREDIT"
+  },
+  "wear": {
+    "unscaled": "3",
+    "scale": 1
+  },
+  "condition": "SS",
+  "season": null,
+  "ownership": null,
+  "grade": null,
+  "rarity": null,
+  "publicity": null,
+  "frame_ref": "frame-01",
+  "session_id": "session-01",
+  "clock_domain_id": "clock-01",
+  "observed_mono_ms": 1000,
+  "viewport_generation": 1,
+  "field_evidence": {
+    "product_ref": {
+      "status": "observed",
+      "raw": "product-01",
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "price": {
+      "status": "observed",
+      "raw": "{'value': {'unscaled': '340', 'scale': 0}, 'unit': 'SYNTHETIC_CREDIT'}",
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "wear": {
+      "status": "observed",
+      "raw": "{'unscaled': '3', 'scale': 1}",
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "condition": {
+      "status": "observed",
+      "raw": "S",
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "season": {
+      "status": "missing",
+      "raw": null,
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "ownership": {
+      "status": "missing",
+      "raw": null,
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "grade": {
+      "status": "missing",
+      "raw": null,
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "rarity": {
+      "status": "missing",
+      "raw": null,
+      "confidence": null,
+      "source_ref": "frame-01"
+    },
+    "publicity": {
+      "status": "missing",
+      "raw": null,
+      "confidence": null,
+      "source_ref": "frame-01"
+    }
+  },
+  "extensions": {}
+}

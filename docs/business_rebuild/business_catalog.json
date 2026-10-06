@@ -1,0 +1,959 @@
+[
+  {
+    "id": "B01",
+    "name": "方案管理",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R12"
+    ],
+    "module": "CFG",
+    "phase": "M1",
+    "current_implementation": "已有 profile 字段；独立多方案仓库待建",
+    "rebuild_requirement": "方案有稳定 ID、版本、独立任务与运行参数；切换不隐式启动。",
+    "acceptance_ids": [
+      "T01-A",
+      "T01-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B02",
+    "name": "运行、暂停、停止与快捷键",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R09",
+      "R10"
+    ],
+    "module": "RUN",
+    "phase": "M1",
+    "current_implementation": "现有 start/pause 是模拟",
+    "rebuild_requirement": "按 run_id 管理运行；暂停冻结新意图，停止取消待办；快捷键具有防抖且可显示冲突。",
+    "acceptance_ids": [
+      "T02-A",
+      "T02-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B03",
+    "name": "定时与市场开放检查",
+    "basis": "证据确认+用户约定",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R16"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "已有起止时间配置",
+    "rebuild_requirement": "用户定时与市场开放是独立条件；支持跨午夜及显式时区；未开放进入暂停而非失败。",
+    "acceptance_ids": [
+      "T03-A",
+      "T03-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B04",
+    "name": "收藏任务编辑与成色规则",
+    "basis": "证据确认+用户约定",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R12"
+    ],
+    "module": "CFG",
+    "phase": "M1",
+    "current_implementation": "已有商品/价格/磨损/数量/成色",
+    "rebuild_requirement": "区分成色枚举、磨损数值、品阶、稀有度；支持新增编辑删除、启停、复制；运行使用规则快照。",
+    "acceptance_ids": [
+      "T04-A",
+      "T04-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B05",
+    "name": "BBZPS 13 列任务导入",
+    "basis": "证据确认+推断",
+    "evidence_ids": [
+      "E03"
+    ],
+    "reference_ids": [
+      "R12"
+    ],
+    "module": "CFG",
+    "phase": "M1",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "只解析文本；未知末两列和有歧义的价格/时间先保留 raw 与 review 状态；不导入凭据。",
+    "acceptance_ids": [
+      "T05-A",
+      "T05-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B06",
+    "name": "步骤按需采集、DPI 与坐标变换",
+    "basis": "证据确认+用户补充",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ],
+    "reference_ids": [
+      "R03",
+      "R04",
+      "R05"
+    ],
+    "module": "CAP",
+    "phase": "M2",
+    "current_implementation": "尚无截图模块",
+    "rebuild_requirement": "仅业务步骤提出需求时获取新帧；空闲/暂停/长等待停采集；图像走内存。Frame带DPI、尺寸、代次与单调时间。",
+    "acceptance_ids": [
+      "T06-A",
+      "T06-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B07",
+    "name": "全屏/ROI 图像处理与 OCR",
+    "basis": "证据确认+用户补充",
+    "evidence_ids": [
+      "E02",
+      "E04",
+      "E10",
+      "E12"
+    ],
+    "reference_ids": [
+      "R01",
+      "R02",
+      "R06",
+      "R07"
+    ],
+    "module": "VIS",
+    "phase": "M2",
+    "current_implementation": "尚无视觉依赖",
+    "rebuild_requirement": "OpenCV与独立OCR按步骤处理内存ROI；原图暂存有界缓冲区，用完释放；不编码或落盘中间图片。",
+    "acceptance_ids": [
+      "T07-A",
+      "T07-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B08",
+    "name": "页面分类与导航状态",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R01",
+      "R06"
+    ],
+    "module": "NAV",
+    "phase": "M2",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "识别仓库、市场入口、筛选、商品列表、详情、关注列表、确认/结果弹窗；多锚点判定，Unknown 为正常状态。",
+    "acceptance_ids": [
+      "T08-A",
+      "T08-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B09",
+    "name": "赛季、拥有状态与品阶筛选",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "NAV",
+    "phase": "M3",
+    "current_implementation": "Task 未包含这些字段",
+    "rebuild_requirement": "设置前后读取实际筛选值；品阶与稀有度独立；不支持的筛选停在可解释的状态。",
+    "acceptance_ids": [
+      "T09-A",
+      "T09-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B10",
+    "name": "目标枪皮查找与翻页",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R01",
+      "R06"
+    ],
+    "module": "NAV",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "名称归一化但保留原文；分页进度/重复页检测；找不到时记录原因并转下一任务。",
+    "acceptance_ids": [
+      "T10-A",
+      "T10-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B11",
+    "name": "成色筛选",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E08"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "RULE",
+    "phase": "M1",
+    "current_implementation": "现有 condition 匹配",
+    "rebuild_requirement": "不限与 S/A/B/C 分离；成色标签和磨损阈值共同约束，不把样例阈值当通用成色定义。",
+    "acceptance_ids": [
+      "T11-A",
+      "T11-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B12",
+    "name": "公示期筛选",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R06",
+      "R08"
+    ],
+    "module": "RULE",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "规则筛选公示状态与运行倒计时分开；缺失数据为 Unknown，原文可追溯。",
+    "acceptance_ids": [
+      "T12-A",
+      "T12-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B13",
+    "name": "稀有度与排序",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "NAV",
+    "phase": "M3",
+    "current_implementation": "当前 Skin.rarity 含义需迁移",
+    "rebuild_requirement": "稀有度独立字段；区分请求排序和观测排序；默认排序不等于价格升序。",
+    "acceptance_ids": [
+      "T13-A",
+      "T13-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B14",
+    "name": "价格提取与区间判定",
+    "basis": "证据确认+推断",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "RULE",
+    "phase": "M1",
+    "current_implementation": "模拟含闭区间过滤",
+    "rebuild_requirement": "金额按明确单位的定点整数处理；千分位经格式校验；上下限边界是新规格而不是样本确证。",
+    "acceptance_ids": [
+      "T14-A",
+      "T14-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B15",
+    "name": "磨损提取与阈值",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "RULE",
+    "phase": "M1",
+    "current_implementation": "模拟含 maxWear 过滤",
+    "rebuild_requirement": "磨损独立解析，保留原文和精度；新模型采用十进制定点；禁止凭成色反推实际磨损。",
+    "acceptance_ids": [
+      "T15-A",
+      "T15-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B16",
+    "name": "联合匹配与可解释原因",
+    "basis": "证据确认+重构设计",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "RULE",
+    "phase": "M1",
+    "current_implementation": "当前模拟布尔过滤",
+    "rebuild_requirement": "纯函数输入规则和观测，返回 Match/NoMatch/NeedsReview 及逐字段原因；缺字段不放宽筛选。",
+    "acceptance_ids": [
+      "T16-A",
+      "T16-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B17",
+    "name": "自动收藏与成功回执",
+    "basis": "证据确认+用户约定",
+    "evidence_ids": [
+      "E04",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08"
+    ],
+    "module": "COLLECT",
+    "phase": "M3",
+    "current_implementation": "autoCollect 仅保存",
+    "rebuild_requirement": "匹配→收藏意图→观测成功提示/关注状态；autoCollect 关闭仅展示匹配；回执与原条目关联。",
+    "acceptance_ids": [
+      "T17-A",
+      "T17-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B18",
+    "name": "超价提前结束扫描",
+    "basis": "证据确认+重构设计",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "COLLECT",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "只有证实全局单调价格升序且分页排序稳定，才用超上限终止余项；否则逐条跳过。",
+    "acceptance_ids": [
+      "T18-A",
+      "T18-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B19",
+    "name": "关注上限与阶段切换",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R08"
+    ],
+    "module": "COLLECT",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "观测到关注已满即停止收藏转向关注阶段；上限数值未知，不在实现硬编码。",
+    "acceptance_ids": [
+      "T19-A",
+      "T19-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B20",
+    "name": "关注列表与卖单关联",
+    "basis": "证据确认+重构设计",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ],
+    "reference_ids": [
+      "R06"
+    ],
+    "module": "LISTING",
+    "phase": "M1",
+    "current_implementation": "当前关注是商品层演示",
+    "rebuild_requirement": "商品与卖单分离；无稳定卖单ID时用 observation association 并标注不确定性；位置只是瞬时属性。",
+    "acceptance_ids": [
+      "T20-A",
+      "T20-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B21",
+    "name": "时钟偏移估计",
+    "basis": "证据确认+重构设计",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ],
+    "reference_ids": [
+      "R08",
+      "R16"
+    ],
+    "module": "CLOCK",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "估计服务端偏移及不确定度；单调时钟计算经过时间；不修改系统时间，失败标明 degraded。",
+    "acceptance_ids": [
+      "T21-A",
+      "T21-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B22",
+    "name": "公示倒计时与队列",
+    "basis": "证据确认+用户补充",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "倒计时采用区间和代次；长等待不持续取帧，到点唤醒再观察；临近阶段只开启有界观察。",
+    "acceptance_ids": [
+      "T22-A",
+      "T22-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B23",
+    "name": "固定购买延迟",
+    "basis": "用户约定+样本参数线索",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "purchaseDelayMs 默认830，仅保存",
+    "rebuild_requirement": "新字段显式毫秒；触发基准必须在适配器规范中定义；BBZPS clicktime 单位未定，暂不换算。",
+    "acceptance_ids": [
+      "T23-A",
+      "T23-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B24",
+    "name": "动态延迟区间/自调节",
+    "basis": "推断+用户约定",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "dynamicDelay 仅保存",
+    "rebuild_requirement": "原程序精确公式未知；先定义策略接口及上下限/步长/证据记录，第一版默认关闭。",
+    "acceptance_ids": [
+      "T24-A",
+      "T24-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B25",
+    "name": "队列已满减延迟",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "queueFullTrigger/StepMs 仅保存",
+    "rebuild_requirement": "与BBZPS参数映射未证实；拟每达到独立连续触发次数后减一个步长，重复帧不重复计数；待决D04。",
+    "acceptance_ids": [
+      "T25-A",
+      "T25-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B26",
+    "name": "公示期提示加延迟",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "SCHED",
+    "phase": "M3",
+    "current_implementation": "publicityTrigger/StepMs 仅保存",
+    "rebuild_requirement": "拟以确认尝试后仍显示公示期的回执计数，而非日常倒计时画面；策略待决D04。",
+    "acceptance_ids": [
+      "T26-A",
+      "T26-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B27",
+    "name": "连点、间隔与次数",
+    "basis": "证据确认+用户约定",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "ACTION",
+    "phase": "M4",
+    "current_implementation": "burstClick/clickIntervalMs 仅保存",
+    "rebuild_requirement": "拆分用户连点参数与动作策略；停止/失焦/变页立即清空余项；未知结果不作为无限重试条件。",
+    "acceptance_ids": [
+      "T27-A",
+      "T27-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B28",
+    "name": "数量目标与品级限购",
+    "basis": "用户约定+样本参数线索",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R13"
+    ],
+    "module": "LEDGER",
+    "phase": "M3",
+    "current_implementation": "Task.quantity 和橙紫蓝限购仅保存",
+    "rebuild_requirement": "数量根据已确认成功+未决预留计算；限购周期、颜色到品阶映射待决D05；99999不默认解释为无限。",
+    "acceptance_ids": [
+      "T28-A",
+      "T28-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B29",
+    "name": "确认与二次确认",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R08"
+    ],
+    "module": "ACTION",
+    "phase": "M4",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "动作前复核卖单/价格/窗口代次；确认弹窗是独立状态；发起和成功分别记账。",
+    "acceptance_ids": [
+      "T29-A",
+      "T29-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B30",
+    "name": "成交、已售、下架与未知结果",
+    "basis": "证据确认",
+    "evidence_ids": [
+      "E04"
+    ],
+    "reference_ids": [
+      "R13"
+    ],
+    "module": "LEDGER",
+    "phase": "M3",
+    "current_implementation": "simulateTick 只产生演示成功",
+    "rebuild_requirement": "明确成功/明确失败/结果未知三分；已售或下架不是本人成交；购买全部结束不是成功依据。",
+    "acceptance_ids": [
+      "T30-A",
+      "T30-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B31",
+    "name": "幂等账本与崩溃恢复",
+    "basis": "重构新增",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ],
+    "reference_ids": [
+      "R13"
+    ],
+    "module": "LEDGER",
+    "phase": "M1",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "持久化意图/发起/回执；重启进入核验而不是重发；无订单ID时不承诺外部操作exactly-once。",
+    "acceptance_ids": [
+      "T31-A",
+      "T31-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B32",
+    "name": "挂机：刷新页面",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R08"
+    ],
+    "module": "NAV",
+    "phase": "M4",
+    "current_implementation": "refreshPage 仅保存",
+    "rebuild_requirement": "只在配置允许且无未决确认时刷新；刷新使旧观测、坐标和意图失效。",
+    "acceptance_ids": [
+      "T32-A",
+      "T32-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B33",
+    "name": "挂机：跳过抽奖页",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R01",
+      "R06"
+    ],
+    "module": "NAV",
+    "phase": "M4",
+    "current_implementation": "skipLotteryPage 仅保存",
+    "rebuild_requirement": "需独立抽奖页样本及退出控件锚点；与购买确认页分开。",
+    "acceptance_ids": [
+      "T33-A",
+      "T33-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B34",
+    "name": "挂机：跳过成功页",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R06",
+      "R13"
+    ],
+    "module": "NAV",
+    "phase": "M4",
+    "current_implementation": "skipSuccessPage 仅保存",
+    "rebuild_requirement": "先核验/留证/提交账本，再关闭成功页；关闭不能替代成交确认。",
+    "acceptance_ids": [
+      "T34-A",
+      "T34-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B35",
+    "name": "异常、重试、超时与卡屏",
+    "basis": "证据确认+用户补充",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ],
+    "reference_ids": [
+      "R08",
+      "R09"
+    ],
+    "module": "RECOVERY",
+    "phase": "M3",
+    "current_implementation": "尚无真实运行恢复",
+    "rebuild_requirement": "观察重试有截止时间/帧预算；暂停停采集；错误留结构化记录但不自动落图；外部副作用不盲重试。",
+    "acceptance_ids": [
+      "T35-A",
+      "T35-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B36",
+    "name": "OSD 收藏状态叠层",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R05",
+      "R10"
+    ],
+    "module": "UI",
+    "phase": "M4",
+    "current_implementation": "collectOsd 仅保存",
+    "rebuild_requirement": "叠层只展示状态与停止入口；不覆盖关键识别区域，不参与自身OCR；多显示器DPI自适应。",
+    "acceptance_ids": [
+      "T36-A",
+      "T36-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B37",
+    "name": "记录、按需导出与日志轮转",
+    "basis": "证据确认+用户补充",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11",
+      "E12"
+    ],
+    "reference_ids": [
+      "R13"
+    ],
+    "module": "OBS",
+    "phase": "M1",
+    "current_implementation": "有演示日志及统计",
+    "rebuild_requirement": "只持久化必要事件；截图默认关闭，包括成功/失败；用户手动或有界调试才保存图片；不逐帧记录OCR全文。",
+    "acceptance_ids": [
+      "T37-A",
+      "T37-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B38",
+    "name": "价格历史图与数据导出",
+    "basis": "用户约定+重构设计",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R12",
+      "R13"
+    ],
+    "module": "UI",
+    "phase": "M1",
+    "current_implementation": "图表和CSV当前为演示",
+    "rebuild_requirement": "观测价不等于成交价；曲线标注来源、成色、时间与缺口；CSV保留数据来源标签。",
+    "acceptance_ids": [
+      "T38-A",
+      "T38-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B39",
+    "name": "配置导入导出与版本迁移",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R12"
+    ],
+    "module": "CFG",
+    "phase": "M1",
+    "current_implementation": "schema_version=1，demo=true",
+    "rebuild_requirement": "新schema v2独立加载；旧版导出仍可回退；未知字段有保留容器；整份校验后原子提交。",
+    "acceptance_ids": [
+      "T39-A",
+      "T39-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B40",
+    "name": "优化入口",
+    "basis": "用户约定+待决",
+    "evidence_ids": [
+      "E11"
+    ],
+    "reference_ids": [
+      "R12"
+    ],
+    "module": "UI",
+    "phase": "M1",
+    "current_implementation": "入口已保留，内容未定",
+    "rebuild_requirement": "继续保留入口；先显示未配置的说明，不臆造清理/系统调参/自动提速功能。",
+    "acceptance_ids": [
+      "T40-A",
+      "T40-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B41",
+    "name": "帮助与诊断信息",
+    "basis": "用户约定",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ],
+    "reference_ids": [
+      "R15"
+    ],
+    "module": "UI",
+    "phase": "M4",
+    "current_implementation": "已有帮助入口",
+    "rebuild_requirement": "帮助解释字段/单位/模式；诊断导出版本、模型哈希、DPI和错误摘要，不含凭据或整屏隐私。",
+    "acceptance_ids": [
+      "T41-A",
+      "T41-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B42",
+    "name": "旧授权、依赖与附加功能的边界",
+    "basis": "证据确认+重构决定",
+    "evidence_ids": [
+      "E02",
+      "E03",
+      "E05",
+      "E07"
+    ],
+    "reference_ids": [
+      "R14",
+      "R15"
+    ],
+    "module": "PACK",
+    "phase": "M0",
+    "current_implementation": "项目不依赖样本组件",
+    "rebuild_requirement": "复用业务事实而不复用原EXE/DLL、授权/远控链；无证据的后端账户业务不列为枪皮必要功能。",
+    "acceptance_ids": [
+      "T42-A",
+      "T42-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B43",
+    "name": "演示、回放与观察模式隔离",
+    "basis": "重构新增+用户补充",
+    "evidence_ids": [
+      "E08",
+      "E11",
+      "E12"
+    ],
+    "reference_ids": [
+      "R11",
+      "R12"
+    ],
+    "module": "RUN",
+    "phase": "M1",
+    "current_implementation": "当前只有演示",
+    "rebuild_requirement": "Replay只读已有图片/JSON且不写中间图；Observe按步骤取内存新帧；模式切换撤销观察需求，前端不直接发输入。",
+    "acceptance_ids": [
+      "T43-A",
+      "T43-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  },
+  {
+    "id": "B44",
+    "name": "视觉 worker 生命周期与兼容",
+    "basis": "重构新增+用户补充",
+    "evidence_ids": [
+      "E08",
+      "E12"
+    ],
+    "reference_ids": [
+      "R10",
+      "R11",
+      "R14"
+    ],
+    "module": "VIS",
+    "phase": "M2",
+    "current_implementation": "尚未实现",
+    "rebuild_requirement": "控制消息与内存像素分离；实时共享内存不转临时文件；1处理槽+1待处理槽；按租约归还、步骤/会话代次取消。",
+    "acceptance_ids": [
+      "T44-A",
+      "T44-B"
+    ],
+    "implementation_status": "specified_not_implemented"
+  }
+]

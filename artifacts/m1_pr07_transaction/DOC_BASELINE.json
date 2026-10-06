@@ -1,0 +1,20 @@
+{
+  "baseline_id": "m1_pr07_docs_transaction",
+  "created_at": "2026-10-06",
+  "parent_baseline": "artifacts/business_rebuild_docs/m1_pr06_pr09_baseline.json",
+  "scope": "PR07 UI projection contract and transaction evidence only; not the final application M1 baseline",
+  "files": {
+    "docs/business_rebuild/implementation/ui_projection_pr07.md": "7996c97dd089c94656831569ac85f699d966b2144de2a69594ff60e52be58099",
+    "artifacts/prepare_m1_pr07_transaction.py": "0c4ec4ab90c710341fad0469cb428f9aedd0fc74dcc5361501d962c89d6e90d7",
+    "artifacts/run_m1_pr07_transaction.py": "d1e396c38c9cf48cc12f65add392757a4db3ad020e4f2b3d3acc62180f5a7c0c",
+    "artifacts/m1_pr07_transaction/BASELINE_COPY.json": "3327478a9cb2b7b028f4345de66d7d74cbf4f982790c6a5676f77785ee2b7166",
+    "artifacts/m1_pr07_transaction/MODIFIED_FILE.json": "364f209e66eccbcc0d685733e20f251d770fd3a0b5003ab6ecd132f602bac045",
+    "artifacts/m1_pr07_transaction/DIFF_FILE": "135b1aad8e09f17a41789f4b412691ee1db5b54d4c168cfa55d18c250c29538c",
+    "artifacts/m1_pr07_transaction/VERIFICATION.txt": "de53eff2fba7f3b62640e9aaf4b9320406417b6f01b2f810d70b1be848b59b73",
+    "artifacts/m1_pr07_transaction/ROLLBACK.sh": "97520223e333c1ab71a65ce5f18638c734f61dbf358a75e5410f602e493d0763"
+  },
+  "notes": [
+    "This scoped document baseline deliberately lives beside the transaction artifacts so it cannot supersede validate_docs.py's newest application baseline.",
+    "The final PR07 implementation baseline must be generated after UI source/tests are merged and must retain all historical baselines."
+  ]
+}

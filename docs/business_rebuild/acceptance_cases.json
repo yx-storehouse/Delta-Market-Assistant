@@ -1,0 +1,984 @@
+[
+  {
+    "id": "T01-A",
+    "business_id": "B01",
+    "scenario_and_expected_result": "切换两份不同方案后，各自任务/参数完整往返。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T01-B",
+    "business_id": "B01",
+    "scenario_and_expected_result": "切换时存在未保存编辑，明确保存或放弃，不污染另一方案。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T02-A",
+    "business_id": "B02",
+    "scenario_and_expected_result": "连续两次开始只有一个活动 run；停止后不再产生新意图。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T02-B",
+    "business_id": "B02",
+    "scenario_and_expected_result": "快捷键冲突或重复按键不启动第二个运行实例。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T03-A",
+    "business_id": "B03",
+    "scenario_and_expected_result": "09:00—23:00 与 23:00—次日01:00 两类区间边界按规格判定。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T03-B",
+    "business_id": "B03",
+    "scenario_and_expected_result": "市场状态未知或本机时钟回拨时不误判为可执行。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T04-A",
+    "business_id": "B04",
+    "scenario_and_expected_result": "同一枪皮的 S/A/B/C 四条规则独立保存并解释匹配。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T04-B",
+    "business_id": "B04",
+    "scenario_and_expected_result": "无效价格区间、空名称、重复 ID、运行中改规则均不悄悄改变旧 run。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T05-A",
+    "business_id": "B05",
+    "scenario_and_expected_result": "15 条现有样例均解析为 13 列、保留行号及原值；导入预览不启动。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03"
+    ]
+  },
+  {
+    "id": "T05-B",
+    "business_id": "B05",
+    "scenario_and_expected_result": "12/14 列、坏编码、非法数字的行进入错误列表且不覆盖原方案。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03"
+    ]
+  },
+  {
+    "id": "T06-A",
+    "business_id": "B06",
+    "scenario_and_expected_result": "缩放与移动保持坐标可映射；步骤开始取新帧，结束即停止；空闲/暂停新增采集请求为0。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T06-B",
+    "business_id": "B06",
+    "scenario_and_expected_result": "黑帧、窗口变化令旧ROI失效；实时路径在成功/失败时均不生成图片或临时帧文件。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T07-A",
+    "business_id": "B07",
+    "scenario_and_expected_result": "同一标注集得到整页/ROI结果；实时识别接收内存缓冲区，用完归还。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E02",
+      "E04",
+      "E10",
+      "E12"
+    ]
+  },
+  {
+    "id": "T07-B",
+    "business_id": "B07",
+    "scenario_and_expected_result": "空结果/低可信/推理失败不当成功；无观察需求时OCR请求为0，失败不自动保存图像。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E02",
+      "E04",
+      "E10",
+      "E12"
+    ]
+  },
+  {
+    "id": "T08-A",
+    "business_id": "B08",
+    "scenario_and_expected_result": "固定截图序列生成预期页面状态及证据锚点。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T08-B",
+    "business_id": "B08",
+    "scenario_and_expected_result": "单个同名文字出现在错页时不据此推进行为状态。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T09-A",
+    "business_id": "B09",
+    "scenario_and_expected_result": "全部赛季/未拥有/史诗品阶按顺序形成筛选意图，回读后确认。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T09-B",
+    "business_id": "B09",
+    "scenario_and_expected_result": "筛选点击无回执或菜单被遮挡时不假设已选中。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T10-A",
+    "business_id": "B10",
+    "scenario_and_expected_result": "目标分布在多页时各规则均被访问且同页不反复扫描。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T10-B",
+    "business_id": "B10",
+    "scenario_and_expected_result": "连续重复页或翻页无变化触发上限而不无限循环。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T11-A",
+    "business_id": "B11",
+    "scenario_and_expected_result": "成色A且磨损1.187788可由独立 A 规则判断。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T11-B",
+    "business_id": "B11",
+    "scenario_and_expected_result": "只满足磨损但成色不符，返回 condition_mismatch。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T12-A",
+    "business_id": "B12",
+    "scenario_and_expected_result": "不限公示期与明确状态规则生成不同匹配结果。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T12-B",
+    "business_id": "B12",
+    "scenario_and_expected_result": "公示期 OCR 缺失不自动解释为公示已结束。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T13-A",
+    "business_id": "B13",
+    "scenario_and_expected_result": "请求按稀有度升序后记录回读值，且不授权价格提前终止。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T13-B",
+    "business_id": "B13",
+    "scenario_and_expected_result": "排序未知、刚刷新或顺序反转时清除有序假设。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T14-A",
+    "business_id": "B14",
+    "scenario_and_expected_result": "字符串1,300解析1300单位；候选340命中含340的闭区间。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T14-B",
+    "business_id": "B14",
+    "scenario_and_expected_result": "+3、34O、NaN、负数及跨行错配不进入有效金额。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T15-A",
+    "business_id": "B15",
+    "scenario_and_expected_result": "1.187788 ≤ 1.249通过；边界精确相等通过。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T15-B",
+    "business_id": "B15",
+    "scenario_and_expected_result": "空值、溢出、错行数字或阈值外的结果返回原因，不截断凑阈值。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T16-A",
+    "business_id": "B16",
+    "scenario_and_expected_result": "名称/价格/磨损/成色同时满足时才输出匹配，并携带 rule_revision。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T16-B",
+    "business_id": "B16",
+    "scenario_and_expected_result": "价格符合而磨损不符返回 wear_exceeded，不进入收藏意图。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T17-A",
+    "business_id": "B17",
+    "scenario_and_expected_result": "回放匹配后出现成功添加至我的关注，写一次收藏完成事件。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T17-B",
+    "business_id": "B17",
+    "scenario_and_expected_result": "意图已发出但无回执归为未知/待核验，不计收藏成功。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T18-A",
+    "business_id": "B18",
+    "scenario_and_expected_result": "已验证全局价格升序下首个超上限条目终止扫描。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T18-B",
+    "business_id": "B18",
+    "scenario_and_expected_result": "默认/稀有度排序或仅局部升序时，高价之后的低价仍被扫描。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T19-A",
+    "business_id": "B19",
+    "scenario_and_expected_result": "关注满额事件只触发一次阶段切换，并保存未完成游标。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T19-B",
+    "business_id": "B19",
+    "scenario_and_expected_result": "误识别或低可信提示先复核；来回提示不导致两阶段抖动。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T20-A",
+    "business_id": "B20",
+    "scenario_and_expected_result": "同款不同价格/磨损的两条卖单可独立展示并关联观测。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T20-B",
+    "business_id": "B20",
+    "scenario_and_expected_result": "刷新后坐标交换或两条特征完全相同，不误合并为同一可操作订单。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T21-A",
+    "business_id": "B21",
+    "scenario_and_expected_result": "时间回拨5秒时既有超时长度保持不变；偏移估计单独更新。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T21-B",
+    "business_id": "B21",
+    "scenario_and_expected_result": "所有时间源失败或延迟异常时不继续声称时间精准。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04"
+    ]
+  },
+  {
+    "id": "T22-A",
+    "business_id": "B22",
+    "scenario_and_expected_result": "新观测更新候选并取消旧定时器；长等待的截图/OCR请求为0，唤醒后获取新帧。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T22-B",
+    "business_id": "B22",
+    "scenario_and_expected_result": "反跳/条目消失/迟到不盲用旧坐标；取消后待唤醒任务不会重开采集。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T23-A",
+    "business_id": "B23",
+    "scenario_and_expected_result": "本地测试事件t0加830ms形成计划时间，日志记录计划/实际误差。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T23-B",
+    "business_id": "B23",
+    "scenario_and_expected_result": "原值0.847的导入不自动转换成847ms或0.847ms。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T24-A",
+    "business_id": "B24",
+    "scenario_and_expected_result": "测试策略在明确触发事件后调整且始终处于拟定边界内。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T24-B",
+    "business_id": "B24",
+    "scenario_and_expected_result": "缺少单位、未确认触发或样本不足时维持原值并显示未启用原因。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T25-A",
+    "business_id": "B25",
+    "scenario_and_expected_result": "测试注入两个独立触发及threshold=2，减一个步长并记录原因。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T25-B",
+    "business_id": "B25",
+    "scenario_and_expected_result": "同一个提示连续20帧只计一个事件；成功后计数复位。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T26-A",
+    "business_id": "B26",
+    "scenario_and_expected_result": "独立尝试达到设定次数才增加一个步长。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T26-B",
+    "business_id": "B26",
+    "scenario_and_expected_result": "只是在等待公示期的普通画面不触发增量。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T27-A",
+    "business_id": "B27",
+    "scenario_and_expected_result": "测试窗口执行有界意图序列，记录计划次数和真实发起次数。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T27-B",
+    "business_id": "B27",
+    "scenario_and_expected_result": "第2次前页面改变或取消，后续意图全部失效。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E04",
+      "E11"
+    ]
+  },
+  {
+    "id": "T28-A",
+    "business_id": "B28",
+    "scenario_and_expected_result": "目标3且成功2/预留1时，第四个意图被阻止。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T28-B",
+    "business_id": "B28",
+    "scenario_and_expected_result": "未知结果不释放预留；重启恢复后不重复占用或丢失额度。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E03",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T29-A",
+    "business_id": "B29",
+    "scenario_and_expected_result": "模拟窗口依次给出首确认和二次确认，产生同一个attempt下的不同阶段事件。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T29-B",
+    "business_id": "B29",
+    "scenario_and_expected_result": "弹窗对应名称/价格不一致时终止该意图并要求复核。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T30-A",
+    "business_id": "B30",
+    "scenario_and_expected_result": "可关联成功回执只增加一次成功数；下架只写失败原因。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T30-B",
+    "business_id": "B30",
+    "scenario_and_expected_result": "仅有已点击二次确认或流程结束事件时成功数维持不变。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04"
+    ]
+  },
+  {
+    "id": "T31-A",
+    "business_id": "B31",
+    "scenario_and_expected_result": "重复回执ID只入账一次；发起后进程退出，恢复为Unknown待核验。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T31-B",
+    "business_id": "B31",
+    "scenario_and_expected_result": "回执写库失败时不更新UI成功数，也不立即重新发起。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08"
+    ]
+  },
+  {
+    "id": "T32-A",
+    "business_id": "B32",
+    "scenario_and_expected_result": "本地测试页面刷新后创建新frame/viewport generation。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T32-B",
+    "business_id": "B32",
+    "scenario_and_expected_result": "有待核验结果时不通过刷新抹去证据。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T33-A",
+    "business_id": "B33",
+    "scenario_and_expected_result": "测试抽奖页且开关开启时生成退出意图。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T33-B",
+    "business_id": "B33",
+    "scenario_and_expected_result": "只有近似文字或开关关闭时不生成退出动作。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T34-A",
+    "business_id": "B34",
+    "scenario_and_expected_result": "成功回执入账成功后才生成关页意图。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T34-B",
+    "business_id": "B34",
+    "scenario_and_expected_result": "存储失败或回执关联不明时保留证据，不先关弹窗。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T35-A",
+    "business_id": "B35",
+    "scenario_and_expected_result": "预算耗尽进入暂停并释放观察资源；最后已识别字段保留，图片标记未保存。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T35-B",
+    "business_id": "B35",
+    "scenario_and_expected_result": "正常倒计时等待不误报卡死；错误风暴不产生截图文件、逐帧日志或无界内存积压。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E12"
+    ]
+  },
+  {
+    "id": "T36-A",
+    "business_id": "B36",
+    "scenario_and_expected_result": "测试帧不含叠层或已排除叠层区域；显示任务/阶段/识别状态。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T36-B",
+    "business_id": "B36",
+    "scenario_and_expected_result": "叠层被捕获时识别器不把自身文字当作目标应用回执。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T37-A",
+    "business_id": "B37",
+    "scenario_and_expected_result": "各阶段计数独立，attempt可追到字段/规则版本；默认全流程图像写入字节数和图片文件数为0。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11",
+      "E12"
+    ]
+  },
+  {
+    "id": "T37-B",
+    "business_id": "B37",
+    "scenario_and_expected_result": "未保存图像不显示可回看；显式调试到期后恢复默认零图片写入；账本失败仍明确提示。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E04",
+      "E08",
+      "E11",
+      "E12"
+    ]
+  },
+  {
+    "id": "T38-A",
+    "business_id": "B38",
+    "scenario_and_expected_result": "商品有多卖单时曲线标注聚合方式并能查看样本数。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T38-B",
+    "business_id": "B38",
+    "scenario_and_expected_result": "数据源断开不补出虚构价格，也不把演示点混入真实曲线。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T39-A",
+    "business_id": "B39",
+    "scenario_and_expected_result": "v1缺condition时按不限迁移，原文件保留；v2往返不丢未知字段。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T39-B",
+    "business_id": "B39",
+    "scenario_and_expected_result": "新版文件不交给0.6解析器直接覆盖；失败导入不改变当前状态。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T40-A",
+    "business_id": "B40",
+    "scenario_and_expected_result": "入口可到达且清楚显示功能尚待定义。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E11"
+    ]
+  },
+  {
+    "id": "T40-B",
+    "business_id": "B40",
+    "scenario_and_expected_result": "点击入口不会执行脚本、改变系统参数或悄悄开启动态延迟。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E11"
+    ]
+  },
+  {
+    "id": "T41-A",
+    "business_id": "B41",
+    "scenario_and_expected_result": "诊断包可复現捕获布局和配置版本，帮助说明演示与观察的区别。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T41-B",
+    "business_id": "B41",
+    "scenario_and_expected_result": "文本配置的凭据字段在诊断预览和导出中均被排除。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11"
+    ]
+  },
+  {
+    "id": "T42-A",
+    "business_id": "B42",
+    "scenario_and_expected_result": "文档/安装清单只列独立依赖，所有旧授权原值排除。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E02",
+      "E03",
+      "E05",
+      "E07"
+    ]
+  },
+  {
+    "id": "T42-B",
+    "business_id": "B42",
+    "scenario_and_expected_result": "安装包扫描不包含BBZPS.sp.exe、HD_BBZPS.sp.exe或样本gdi32.dll。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E02",
+      "E03",
+      "E05",
+      "E07"
+    ]
+  },
+  {
+    "id": "T43-A",
+    "business_id": "B43",
+    "scenario_and_expected_result": "相同回放产生相同决策；实时模式没有文件路径图像输入或临时帧写入。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11",
+      "E12"
+    ]
+  },
+  {
+    "id": "T43-B",
+    "business_id": "B43",
+    "scenario_and_expected_result": "切换模式后旧观察申请/帧/worker结果失效，既有测试图片不会误作实时新画面。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E11",
+      "E12"
+    ]
+  },
+  {
+    "id": "T44-A",
+    "business_id": "B44",
+    "scenario_and_expected_result": "重启握手一致；租约确认后才复用内存，步骤完成停止取帧，UI可停止。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E12"
+    ]
+  },
+  {
+    "id": "T44-B",
+    "business_id": "B44",
+    "scenario_and_expected_result": "共享内存失败明确报错而不落盘；旧代次回包丢弃，仍被读取的缓冲区不提前复用。",
+    "status": "planned_not_run",
+    "environment": "离线数据或自有测试窗口；不是样本运行",
+    "evidence_ids": [
+      "E08",
+      "E12"
+    ]
+  }
+]

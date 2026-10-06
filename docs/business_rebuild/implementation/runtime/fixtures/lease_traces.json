@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "status": "planned_not_run",
+  "description": "Lease lifecycle sequencing expectations, not live shared-memory execution.",
+  "cases": [
+    {
+      "id": "RT-LEASE-01",
+      "initial": "Free",
+      "events": [
+        "AcquireSlot",
+        "CaptureCompleted",
+        "RecognizePublished",
+        "ResultReceived",
+        "ReleaseFrame"
+      ],
+      "expected_states": [
+        "Writing",
+        "Pending",
+        "InUse",
+        "AwaitRelease",
+        "Free"
+      ],
+      "image_file_writes": 0
+    },
+    {
+      "id": "RT-LEASE-02",
+      "initial": "Pending",
+      "events": [
+        "ReplaceWithNewFrame",
+        "CaptureCompleted"
+      ],
+      "expected_states": [
+        "Writing",
+        "Pending"
+      ],
+      "worker_reads_old_frame": false,
+      "image_file_writes": 0
+    },
+    {
+      "id": "RT-LEASE-03",
+      "initial": "InUse",
+      "events": [
+        "Pause",
+        "CancelledAck",
+        "LateResult",
+        "ReleaseFrame"
+      ],
+      "expected_states": [
+        "AwaitRelease",
+        "AwaitRelease",
+        "AwaitRelease",
+        "Free"
+      ],
+      "accepted_late_results": 0,
+      "image_file_writes": 0
+    },
+    {
+      "id": "RT-LEASE-04",
+      "initial": "InUse",
+      "events": [
+        "WorkerUnresponsive",
+        "CancelGraceExpired",
+        "ProcessExitNotConfirmed"
+      ],
+      "expected_states": [
+        "Quarantined",
+        "Quarantined",
+        "Quarantined"
+      ],
+      "new_pool_allowed": false,
+      "image_file_writes": 0
+    },
+    {
+      "id": "RT-LEASE-05",
+      "initial": "InUse",
+      "events": [
+        "WorkerCrashed",
+        "ProcessExitConfirmed",
+        "LocalMappingClosed"
+      ],
+      "expected_states": [
+        "Quarantined",
+        "Quarantined",
+        "Free"
+      ],
+      "new_session_required": true,
+      "image_file_writes": 0
+    },
+    {
+      "id": "RT-LEASE-06",
+      "initial": "Free",
+      "events": [
+        "DuplicateReleaseOldLease"
+      ],
+      "expected_states": [
+        "Free"
+      ],
+      "idempotent": true,
+      "image_file_writes": 0
+    }
+  ]
+}

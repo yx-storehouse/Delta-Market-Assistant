@@ -1,0 +1,37 @@
+{
+  "example_only": true,
+  "schema_version": 2,
+  "mode": "replay",
+  "profile": {"id": "example-profile", "revision": 1, "name": "BBZPS 导入预览"},
+  "tasks": [
+    {
+      "task_id": "legacy-preview-001",
+      "revision": 1,
+      "enabled": false,
+      "review_required": true,
+      "product": {"id": null, "name": "AUG突击步枪-天命"},
+      "filters": {
+        "season": "全部赛季", "ownership": "未拥有", "grade": "史诗品阶",
+        "condition": "成色S", "publicity": "不限公示期", "rarity": "所有稀有度", "requested_sort": "默认排序"
+      },
+      "candidates": {
+        "price_min": {"unscaled": "230", "scale": 0, "unit": "market_display_unit_unconfirmed"},
+        "price_max": {"unscaled": "600", "scale": 0, "unit": "market_display_unit_unconfirmed"},
+        "price_boundaries": "needs_confirmation"
+      },
+      "limits": {"max_wear": {"unscaled": "399", "scale": 3}, "quantity_target": null},
+      "legacy_raw": {
+        "source_evidence": "E03", "source_row": 1,
+        "columns": ["AUG突击步枪-天命", "全部赛季", "未拥有", "史诗品阶", "成色S", "不限公示期", "230", "600", "0.399", "所有稀有度", "默认排序", "不限", "不限"]
+      },
+      "migration_decisions": []
+    }
+  ],
+  "runtime": {
+    "observation_policy_example": "observation-policy.sample.json",
+    "actions_enabled": false,
+    "delay_policy": {"type": "disabled_pending_review", "legacy_raw": {"SkinTasks.clicktime": "0.847", "SkinTasks.clicktime2": "0.857"}},
+    "clock": {"set_system_time": false},
+    "schedule": {"enabled": false, "timezone": "Asia/Shanghai"}
+  }
+}

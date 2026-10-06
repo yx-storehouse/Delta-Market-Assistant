@@ -1,0 +1,745 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.relink.invalid/business/v1/runtime/worker.schema.json",
+  "title": "NDJSON control message v1 — proposed not implemented",
+  "$defs": {
+    "Hello": {
+      "type": "object",
+      "properties": {
+        "supported_versions": {
+          "const": [
+            1
+          ]
+        },
+        "transport": {
+          "const": "win32_named_shared_memory"
+        },
+        "pixel_formats": {
+          "const": [
+            "BGRA8"
+          ]
+        },
+        "max_line_bytes": {
+          "const": 1048576
+        },
+        "max_frame_bytes": {
+          "const": 134217728
+        },
+        "max_tokens": {
+          "const": 2000
+        },
+        "max_in_flight": {
+          "const": 1
+        },
+        "memory_pool": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "slot_index": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "mapping_name": {
+                "type": "string",
+                "pattern": "^Local\\\\RelinkVision_[A-Za-z0-9_-]+_[01]$",
+                "maxLength": 200
+              },
+              "capacity_bytes": {
+                "type": "integer",
+                "minimum": 4,
+                "maximum": 134217728
+              }
+            },
+            "required": [
+              "slot_index",
+              "mapping_name",
+              "capacity_bytes"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "supported_versions",
+        "transport",
+        "pixel_formats",
+        "max_line_bytes",
+        "max_frame_bytes",
+        "max_tokens",
+        "max_in_flight",
+        "memory_pool"
+      ],
+      "additionalProperties": false
+    },
+    "Ready": {
+      "type": "object",
+      "properties": {
+        "selected_version": {
+          "const": 1
+        },
+        "worker_build": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "provider": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "model_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "model_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "capabilities": {
+          "const": [
+            "BGRA8",
+            "win32_named_shared_memory",
+            "cancel",
+            "release_frame"
+          ]
+        }
+      },
+      "required": [
+        "selected_version",
+        "worker_build",
+        "provider",
+        "model_id",
+        "model_sha256",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "Recognize": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "demand_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "context": {
+          "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+        },
+        "frame": {
+          "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/FrameEnvelope"
+        },
+        "roi_specs": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Roi"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "relative_budget_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        }
+      },
+      "required": [
+        "request_id",
+        "demand_id",
+        "context",
+        "frame",
+        "roi_specs",
+        "relative_budget_ms"
+      ],
+      "additionalProperties": false
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "roi_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "box_px": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 8192
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "roi_id",
+        "text",
+        "score",
+        "box_px"
+      ],
+      "additionalProperties": false
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "demand_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "frame_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "lease_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "context": {
+          "$ref": "https://schemas.relink.invalid/business/v1/runtime/observation.schema.json#/$defs/Context"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "unknown"
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "E_UNKNOWN_PAGE",
+                "E_NO_TEXT"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provider": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "model_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "elapsed_ms": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3600000
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Token"
+          },
+          "minItems": 0,
+          "maxItems": 2000
+        }
+      },
+      "required": [
+        "request_id",
+        "demand_id",
+        "frame_id",
+        "lease_id",
+        "context",
+        "status",
+        "reason_code",
+        "provider",
+        "model_id",
+        "elapsed_ms",
+        "tokens"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ok"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason_code": {
+                "enum": [
+                  "E_UNKNOWN_PAGE",
+                  "E_NO_TEXT"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ReleaseFrame": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "lease_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "slot_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "slot_generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "request_id",
+        "lease_id",
+        "slot_index",
+        "slot_generation"
+      ],
+      "additionalProperties": false
+    },
+    "Cancel": {
+      "type": "object",
+      "properties": {
+        "target_kind": {
+          "enum": [
+            "request",
+            "demand"
+          ]
+        },
+        "target_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "reason": {
+          "enum": [
+            "pause",
+            "stop",
+            "step_exit",
+            "deadline",
+            "viewport_changed",
+            "shutdown"
+          ]
+        }
+      },
+      "required": [
+        "target_kind",
+        "target_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "Cancelled": {
+      "type": "object",
+      "properties": {
+        "target_kind": {
+          "enum": [
+            "request",
+            "demand"
+          ]
+        },
+        "target_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "registered": {
+          "const": true
+        }
+      },
+      "required": [
+        "target_kind",
+        "target_id",
+        "registered"
+      ],
+      "additionalProperties": false
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "code": {
+          "enum": [
+            "E_PROTOCOL_VERSION",
+            "E_HANDSHAKE_REQUIRED",
+            "E_MESSAGE_TOO_LARGE",
+            "E_MESSAGE_INVALID",
+            "E_SHM_OPEN",
+            "E_SHM_BOUNDS",
+            "E_LEASE_UNKNOWN",
+            "E_ROI_OUT_OF_BOUNDS",
+            "E_PIXEL_FORMAT",
+            "E_CANCELLED",
+            "E_DEADLINE",
+            "E_WORKER_CRASH",
+            "E_WORKER_UNRESPONSIVE",
+            "E_CAPTURE_LOST",
+            "E_WINDOW_LOST",
+            "E_EMPTY_FRAME",
+            "E_STALE_OR_UNPROVEN_FRAME",
+            "E_CONTEXT_MISMATCH",
+            "E_OCR_PROVIDER",
+            "E_MODEL_MISMATCH",
+            "E_UNKNOWN_PAGE",
+            "E_NO_TEXT",
+            "E_DUPLICATE_MESSAGE"
+          ]
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "request_id",
+        "code",
+        "retryable",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "Shutdown": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "enum": [
+            "normal",
+            "fault",
+            "user_stop"
+          ]
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "Bye": {
+      "type": "object",
+      "properties": {
+        "all_leases_closed": {
+          "const": true
+        }
+      },
+      "required": [
+        "all_leases_closed"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "hello"
+        },
+        "body": {
+          "$ref": "#/$defs/Hello"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "ready"
+        },
+        "body": {
+          "$ref": "#/$defs/Ready"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "recognize"
+        },
+        "body": {
+          "$ref": "#/$defs/Recognize"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "result"
+        },
+        "body": {
+          "$ref": "#/$defs/Result"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "release_frame"
+        },
+        "body": {
+          "$ref": "#/$defs/ReleaseFrame"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "cancel"
+        },
+        "body": {
+          "$ref": "#/$defs/Cancel"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "cancelled"
+        },
+        "body": {
+          "$ref": "#/$defs/Cancelled"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "error"
+        },
+        "body": {
+          "$ref": "#/$defs/Error"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "shutdown"
+        },
+        "body": {
+          "$ref": "#/$defs/Shutdown"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "session_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "message_id": {
+          "$ref": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id"
+        },
+        "kind": {
+          "const": "bye"
+        },
+        "body": {
+          "$ref": "#/$defs/Bye"
+        }
+      },
+      "required": [
+        "protocol_version",
+        "session_id",
+        "message_id",
+        "kind",
+        "body"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

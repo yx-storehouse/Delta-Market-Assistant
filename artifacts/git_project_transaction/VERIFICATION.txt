@@ -1,0 +1,38 @@
+GIT PROJECT TOOL TRANSACTION VERIFICATION
+DATE=2026-10-06
+TARGET=price project Git initialization fixture
+CHANGED_BRANCH=git_project
+CHANGED_FIELD=repository_state (value)
+SAFEGUARD=BBZPS excluded; large artifacts excluded; local dist preserved; secret_files_staged=0
+
+MODIFIED_FILE=artifacts\git_project_transaction\MODIFIED_FILE.json
+DIFF_FILE=artifacts\git_project_transaction\DIFF_FILE
+VERIFICATION=artifacts\git_project_transaction\VERIFICATION.txt
+ROLLBACK_SCRIPT=artifacts\git_project_transaction\ROLLBACK.sh
+BASELINE_COPY=artifacts\git_project_transaction\BASELINE_COPY.json
+ROLLBACK_TEST_COPY=artifacts\git_project_transaction\ROLLBACK_TEST_COPY.json
+
+ORIGINAL_HASH_SHA256=4b27b45aad894002af1420b36af529b2a2382f54210a27b71227c38c2a85007d
+MODIFIED_HASH_SHA256=e6edfb6157db824066e8ef055e0a145c82aeea41d12279f75b1c675618594aa7
+
+BASELINE_COMMAND
+python artifacts/git_project_transaction/run_transaction.py --baseline
+BASELINE_LITERAL_OUTPUT=UNINITIALIZED value=uninitialized branch_name=main bbzps_ignored=False large_artifacts_ignored=False dist_preserved_local=True secret_files_staged=0
+BASELINE_EXIT_STATUS=0
+
+MODIFIED_COMMAND
+python artifacts/git_project_transaction/run_transaction.py --modified
+MODIFIED_LITERAL_OUTPUT=INITIALIZED_MAIN value=initialized_main branch_name=main bbzps_ignored=True large_artifacts_ignored=True dist_preserved_local=True secret_files_staged=0
+MODIFIED_EXIT_STATUS=0
+
+ROLLBACK_COMMAND
+C:/Program Files/Git/bin/bash.exe "C:\Users\Administrator\Desktop\price\artifacts\git_project_transaction\ROLLBACK.sh" "C:\Users\Administrator\Desktop\price\artifacts\git_project_transaction\ROLLBACK_TEST_COPY.json" "C:\Users\Administrator\Desktop\price\artifacts\git_project_transaction\BASELINE_COPY.json"
+ROLLBACK_LITERAL_OUTPUT=ROLLBACK_RESTORED=C:\Users\Administrator\Desktop\price\artifacts\git_project_transaction\ROLLBACK_TEST_COPY.json
+ROLLBACK_EXIT_STATUS=0
+ROLLBACK_VERIFY_LITERAL_OUTPUT=UNINITIALIZED value=uninitialized branch_name=main bbzps_ignored=False large_artifacts_ignored=False dist_preserved_local=True secret_files_staged=0
+ROLLBACK_VERIFY_EXIT_STATUS=0
+
+RESTORED_BEHAVIOR=PASS
+MODIFIED_FILE_LEFT_CHANGED=PASS
+RESTORED_STATUS=value=uninitialized; branch_name=main; bbzps_ignored=false; large_artifacts_ignored=false; secret_files_staged=0
+MODIFIED_STATUS=value=initialized_main; branch_name=main; bbzps_ignored=true; large_artifacts_ignored=true; secret_files_staged=0

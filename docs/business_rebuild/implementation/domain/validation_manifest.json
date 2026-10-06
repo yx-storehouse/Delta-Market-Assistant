@@ -1,0 +1,124 @@
+{
+  "cases": [
+    {
+      "id": "S01",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/config-v2.schema.json",
+      "instance": "fixtures/schema/S01.json",
+      "valid": true
+    },
+    {
+      "id": "S02",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "fixtures/schema/S02.json",
+      "valid": true
+    },
+    {
+      "id": "S03",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/ListingObservation",
+      "instance": "fixtures/schema/S03.json",
+      "valid": true
+    },
+    {
+      "id": "S04",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "fixtures/schema/S04.json",
+      "valid": true
+    },
+    {
+      "id": "S05",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "fixtures/schema/S05.json",
+      "valid": false
+    },
+    {
+      "id": "S06",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "fixtures/schema/S06.json",
+      "valid": false
+    },
+    {
+      "id": "S07",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "fixtures/schema/S07.json",
+      "valid": false
+    },
+    {
+      "id": "S08",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/DecimalValue",
+      "instance": "fixtures/schema/S08.json",
+      "valid": false
+    },
+    {
+      "id": "S09",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "fixtures/schema/S09.json",
+      "valid": false
+    },
+    {
+      "id": "S10",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "fixtures/schema/S10.json",
+      "valid": false
+    },
+    {
+      "id": "S11",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "fixtures/schema/S11.json",
+      "valid": false
+    },
+    {
+      "id": "S12",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/TaskRule",
+      "instance": "fixtures/schema/S12.json",
+      "valid": true
+    },
+    {
+      "id": "S13",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/ListingObservation",
+      "instance": "fixtures/schema/S13.json",
+      "valid": false
+    },
+    {
+      "id": "S14",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Id",
+      "instance": "fixtures/schema/S14.json",
+      "valid": false
+    },
+    {
+      "id": "S15",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/config-v2.schema.json",
+      "instance": "fixtures/schema/S15.json",
+      "valid": false
+    },
+    {
+      "id": "S16",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/MonoMs",
+      "instance": "fixtures/schema/S16.json",
+      "valid": false
+    },
+    {
+      "id": "S17",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/import-preview.schema.json",
+      "instance": "fixtures/schema/S17.json",
+      "valid": true
+    },
+    {
+      "id": "S18",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/import-preview.schema.json",
+      "instance": "fixtures/schema/S18.json",
+      "valid": false
+    },
+    {
+      "id": "S19",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Decision",
+      "instance": "fixtures/schema/S19.json",
+      "valid": true
+    },
+    {
+      "id": "S20",
+      "schema_id": "https://schemas.relink.invalid/business/v1/domain/core.schema.json#/$defs/Decision",
+      "instance": "fixtures/schema/S20.json",
+      "valid": false
+    }
+  ]
+}
