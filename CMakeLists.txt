@@ -11,8 +11,9 @@ else()
   add_compile_options(-Wall -Wextra -finput-charset=UTF-8 -fexec-charset=UTF-8)
 endif()
 qt_add_executable(RelinkStudio WIN32
-  src/main.cpp src/mainwindow.cpp src/mainwindow.h src/fluenttheme.cpp src/fluenttheme.h
-  src/domain.cpp src/domain.h src/widgets.cpp src/widgets.h
+  src/main.cpp src/mainwindow.cpp src/mainwindow.h
+  src/application/startup_config.cpp src/application/startup_config.h
+  src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
@@ -20,11 +21,25 @@ qt_add_executable(RelinkStudio WIN32
   resources.qrc)
 target_include_directories(RelinkStudio PRIVATE src)
 target_link_libraries(RelinkStudio PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
+# Pages own their controls and publish UI intents. This library and its tests
+# deliberately have no workspace controller, runtime or SQLite link dependency.
+add_library(relink_ui STATIC
+  src/domain.cpp src/domain.h src/widgets.cpp src/widgets.h
+  src/fluenttheme.cpp src/fluenttheme.h
+  src/ui/presentation/ui_helpers.cpp src/ui/presentation/ui_helpers.h
+  src/ui/pages/task_page.cpp src/ui/pages/task_page.h
+  src/ui/pages/run_settings_page.cpp src/ui/pages/run_settings_page.h
+  src/ui/pages/workspace_records_panel.cpp src/ui/pages/workspace_records_panel.h
+  src/ui/dialogs/task_editor_dialog.cpp src/ui/dialogs/task_editor_dialog.h)
+target_include_directories(relink_ui PUBLIC src)
+target_link_libraries(relink_ui PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(RelinkStudio PRIVATE relink_ui)
 if(WIN32)
   # Explorer and the taskbar show the same neutral icon the window paints.
   enable_language(RC)
   target_sources(RelinkStudio PRIVATE src/app.rc)
   target_link_libraries(RelinkStudio PRIVATE dwmapi)
+  target_link_libraries(relink_ui PRIVATE dwmapi)
 endif()
 add_executable(domain_tests tests/domain_tests.cpp src/domain.cpp src/domain.h)
 target_include_directories(domain_tests PRIVATE src)
@@ -94,13 +109,18 @@ target_link_libraries(RelinkStudio PRIVATE relink_sqlite)
 
 add_library(relink_workspace STATIC
   src/application/workspace/workspace_controller.cpp
-  src/application/workspace/workspace_controller.h)
+  src/application/workspace/workspace_controller.h
+  src/application/workspace/workspace_projection.h)
 target_include_directories(relink_workspace PUBLIC src)
 target_link_libraries(relink_workspace PUBLIC relink_business relink_runtime relink_sqlite Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_workspace)
 
 add_executable(workspace_tests tests/application/workspace_tests.cpp)
 target_link_libraries(workspace_tests PRIVATE relink_workspace)
+
+add_executable(ui_module_tests tests/ui/ui_module_tests.cpp
+  src/application/startup_config.cpp src/application/startup_config.h resources.qrc)
+target_link_libraries(ui_module_tests PRIVATE relink_ui)
 
 add_executable(sqlite_ledger_tests tests/ledger/sqlite_ledger_tests.cpp)
 target_link_libraries(sqlite_ledger_tests PRIVATE relink_sqlite relink_ledger)
@@ -121,6 +141,8 @@ add_test(NAME ui_projection_tests COMMAND ui_projection_tests)
 add_test(NAME ledger_tests COMMAND ledger_tests)
 add_test(NAME sqlite_ledger_tests COMMAND sqlite_ledger_tests)
 add_test(NAME workspace_tests COMMAND workspace_tests)
+add_test(NAME ui_module_tests COMMAND ui_module_tests)
+set_tests_properties(ui_module_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
 set_tests_properties(workspace_tests PROPERTIES TIMEOUT 120)
 add_test(NAME storage_self_test COMMAND RelinkStudio --storage-self-test)
 set_tests_properties(sqlite_ledger_tests PROPERTIES TIMEOUT 120)

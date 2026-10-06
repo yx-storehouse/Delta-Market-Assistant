@@ -48,8 +48,10 @@ try {
             $env:PATH = "$Dest;$env:SystemRoot\System32;$env:SystemRoot"
             $env:QT_PLUGIN_PATH = $Dest
             $env:QT_QPA_PLATFORM_PLUGIN_PATH = Join-Path $Dest 'platforms'
-            & (Join-Path $Dest 'RelinkStudio.exe') --storage-self-test
-            if ($LASTEXITCODE -ne 0) { throw 'Packaged QSQLITE persistence self-test failed.' }
+            # A GUI-subsystem process may return before it exits in PowerShell.
+            # Wait explicitly and check its own status rather than a stale LASTEXITCODE.
+            $Smoke = Start-Process -FilePath (Join-Path $Dest 'RelinkStudio.exe') -ArgumentList '--storage-self-test' -Wait -PassThru -WindowStyle Hidden
+            if ($Smoke.ExitCode -ne 0) { throw 'Packaged QSQLITE persistence self-test failed.' }
         } finally {
             $env:PATH = $SavedPath
             $env:QT_PLUGIN_PATH = $SavedPluginPath

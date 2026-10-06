@@ -1,14 +1,16 @@
 # Relink Studio — new session entry
 
-## 当前开发节点：PR11 持久化方案与回放界面已接入
+## 当前开发节点：PR12A 页面模块化已完成
 
-- 当前仓库为 `yx-storehouse/Delta-Market-Assistant`，项目名为三角洲市场助手；构建目标/文件名保留 `RelinkStudio`。
-- 先读 `docs/business_rebuild/09_m1_progress.md` 和 `NEXT_IMPLEMENTATION.md`；下一阶段为 PR12，不重复实施 PR07–PR11。
-- `src/application/workspace/workspace_controller.*` 连接独立 ProfileStore/QSaveFile 和 SQLite。正常程序创建 `AppLocalDataLocation/business` 工作区；离屏自测使用独立临时工作区。
-- 运行页支持方案选择/审定另存，工作台提供持久化回放单步与推进，日志和统计显示已提交事实；历史恢复只读、未知预留保留、不自动重发。内置八步样例才产生模拟账本，保存方案仍未启用。
-- PR10 修正未知/歧义回执被计为成功的问题，并修复历史 UI 中文乱码；配色、布局和功能入口不变。
-- 构建验收入口仍为 `build.ps1 -Test -Package`；发布程序增加 `--storage-self-test`，只操作临时数据库，不打开前台窗口。
-- 本轮完整证据：`artifacts/m1_pr11_transaction/VERIFICATION.txt`。旧解压程序保留在该目录下 `baseline/release/`；回退脚本恢复程序文件并保留新数据库。
+- PR01–PR11 的领域、方案、持久化回放与账本功能保持；PR12A 是原 PR12 总体验收前的第一轮维护性整理。
+- `src/ui/pages/` 独立拥有任务页、运行参数页和记录面板；`src/ui/dialogs/` 独立任务编辑器；共享呈现工具在 `src/ui/presentation/`。
+- `main.cpp` 为 164 行启动入口；完整离屏验收搬到 `src/diagnostics/ui_self_test_runner.*`，仍链接进 EXE 保持 CLI 兼容，不宣称包体缩小。
+- `relink_ui` 只链接 Qt Core/Gui/Widgets 与 Windows DWM；独立 `ui_module_tests` 不依赖 MainWindow/WorkspaceController/SQLite。
+- 阅读 `docs/business_rebuild/implementation/ui_modularization_pr12a.md`、`09_m1_progress.md` 和 `NEXT_IMPLEMENTATION.md`。下一步 PR12B 服务/历史查询整理，随后才是原 PR12 总体验收和 M2。
+- 本轮 14/14 CTest、90 条独立模块断言、400 条 workspace 服务断言、58 条 workspace UI 断言、22 条存储自检通过。
+- 构建发布：`build.ps1 -Test -Package`；发布验收：`python -I -X utf8 tests/release/verify_pr12a_package.py modified`。
+- 证据 `artifacts/m1_pr12a_transaction/VERIFICATION.txt`；旧程序在其 `baseline/release/`，回退在独立副本验证并保留新账本/方案。
+- 页面构造后由宿主显式调用 `refresh()`；旧 Demo 与新业务仍分开，新功能不堆入旧页面。
 
 ## 当前 UI 版本：0.6 Windows 11 浅色 · 微软商店布局
 

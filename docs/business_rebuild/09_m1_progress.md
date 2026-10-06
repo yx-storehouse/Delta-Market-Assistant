@@ -4,9 +4,9 @@
 
 ## 当前结论
 
-M1 已完成 PR01–PR11，PR11 将方案审定保存、SQLite 已提交账本、回放控制、恢复与历史记录接入现有 Win11 界面；本轮 13/13 CTest、400 条工作区断言、58 条工作区 UI 断言、22 条发布存储自检及真实副本回退复验通过，详见下方 PR11 验证节。导入预览保持 `committable=false`，审定保存后规则保持禁用，账本事务由显式 `commit()` / `rollback()` 控制。当前数据来自 Demo/Replay 合成输入，不运行或加载 BBZPS，也没有真实捕获、OCR、鼠标键盘输入、市场动作或购买。
+M1 已完成 PR01–PR11，并在原 PR12 总体验收前完成 **PR12A 页面/诊断模块化**。本轮 14/14 CTest、90 条独立页面断言、400 条工作区服务断言、58 条工作区 UI 断言、22 条发布存储自检及独立副本回退通过。功能语义与 PR11 相同，Win11 白灰布局与功能入口不变。
 
-PR11 正常前台使用 AppLocalDataLocation/business 工作区，`--workspace-dir` 可显式覆盖，`--workspace-read-only` 提供只读诊断。已保存方案仅作禁用规则的解释性评估，内置八步 fixture 才产生模拟账本。PR12 整套端到端与发布里程碑仍为下一阶段；Win11 白灰配色与原功能入口保持不变。PR10 的历史通过数保留在独立节，不作为本轮 PR11 结果。
+PR12A 不是完整 PR12 完成：下一票是 PR12B 服务/历史查询职责整理，之后逐项完成原 PR12 验收。已保存方案继续禁用，只有显式内置合成样例产生模拟账本；当前没有真实捕获/OCR/市场动作。PR11、PR10 的历史通过数保留在下方对应节。
 
 ## 已完成 PR
 
@@ -23,8 +23,31 @@ PR11 正常前台使用 AppLocalDataLocation/business 工作区，`--workspace-d
 | PR09 | 完成 | InMemoryEventStore、事件幂等、attempt/quota reservation、receipt、ledger、快照、恢复与显式事务回滚 |
 | PR10 | 完成 | SqliteEventStore、v1→v2 迁移、提交快照、回执门槛、进程恢复、一致备份与包内 QSQLITE 验证 |
 | PR11 | 完成 | WorkspaceController、审定保存、持久化合成回放、已提交投影、历史快照、恢复提示、CSV 与错误交互 |
+| PR12A | 完成 | 页面/编辑器/诊断入口解耦，独立 UI 模块与回归；原 PR12 总体验收仍待完成 |
 
-## PR11 本轮实施范围
+## PR12A 本轮实施范围与验证
+
+详见 [页面模块化实现记录](implementation/ui_modularization_pr12a.md)。
+
+- 独立 `TaskPage`、`RunSettingsPage`、`WorkspaceRecordsPanel`、`TaskEditorDialog`；控件和回调由所属页面持有，主窗口只保留组合引用。
+- 共享呈现工具不重复复制；WorkspaceProjection DTO 独立头文件，记录面板不依赖 controller/SQL。
+- `main.cpp` 1,037 → 164 行，`mainwindow.cpp` 3,032 → 1,912 行。只是第一轮抽离，剩余页面/服务职责仍待整理。
+- `relink_ui` 是静态模块，不引入后台服务/插件系统；独立页面测试不链接 SQLite。完整离屏自检仍在发布程序中，不等同于包体或内存优化。
+- 发布脚本显式等待包内存储自检进程，并检查该进程的 ExitCode，避免依赖遗留 `$LASTEXITCODE`。
+
+| 本轮实际验收 | 结果 |
+|---|---|
+| 完整 CTest | 14/14 通过 |
+| 独立 UI 模块测试 | 90 断言，0 失败 |
+| 原完整 UI 检查 | 206 项通过 |
+| 工作区服务 / UI | 400 / 58 断言通过 |
+| 包内存储自检 | 22 断言通过 |
+| 基线 / 修改 / 副本回退 / 恢复 | exit 0；固定发布保留新版，新数据库和方案哨兵保留 |
+| 抽取页面视觉保真 | 任务页、任务编辑器、运行页及其完整页、关注页、价格页共 6 张离屏图像与基线逐像素相同 |
+
+发布程序继续在固定解压目录。精确命令/输入/输出/退出码/哈希见 `artifacts/m1_pr12a_transaction/VERIFICATION.txt`；图像比较见同目录 `visual_comparison.json`。自动化截图只是显式测试产物，业务 `imageFileWriteCount=0` 保持。历史 baseline/schema/fixture/backlog 不覆盖。
+
+## PR11 历史实施范围
 
 详细接口、数据路径、八步 fixture 与 UI 行为见 [持久化工作区实现记录](implementation/workspace_pr11.md)。
 

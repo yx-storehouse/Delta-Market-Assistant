@@ -1,5 +1,7 @@
 # Delta Market Assistant · 业务重构开发文档
 
+> 当前补充：PR12A 页面与诊断模块化已完成，见 [实现记录](implementation/ui_modularization_pr12a.md)；下一步 PR12B 服务/历史查询整理，之后完成原 PR12 总体验收。
+
 > 文档版本：0.5 · 2026-10-06 · 状态：PR01–PR11 已完成；PR11 的方案审定、持久化回放、已提交账本和历史记录已接入 UI；本轮最终验收见 [09 · 实施进度](09_m1_progress.md)。PR12 完整端到端回归仍为下一阶段。
 >
 > 项目名为 Delta Market Assistant（三角洲市场助手），现有构建目标及程序文件仍名为 RelinkStudio。原始静态分析与设计规格保留；当前实现、实测结果和新基线见 [09 · 实施进度](09_m1_progress.md)，不再将整个项目描述为“尚未实现”。

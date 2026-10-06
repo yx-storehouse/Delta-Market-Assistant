@@ -1,0 +1,86 @@
+[
+  {
+    "image": "tasks.png",
+    "baseline_size": [
+      1560,
+      980
+    ],
+    "modified_size": [
+      1560,
+      980
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "task_editor.png",
+    "baseline_size": [
+      540,
+      533
+    ],
+    "modified_size": [
+      540,
+      533
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "run.png",
+    "baseline_size": [
+      1560,
+      980
+    ],
+    "modified_size": [
+      1560,
+      980
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "run_full.png",
+    "baseline_size": [
+      1470,
+      2474
+    ],
+    "modified_size": [
+      1470,
+      2474
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "favorites.png",
+    "baseline_size": [
+      1560,
+      980
+    ],
+    "modified_size": [
+      1560,
+      980
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "prices.png",
+    "baseline_size": [
+      1560,
+      980
+    ],
+    "modified_size": [
+      1560,
+      980
+    ],
+    "pixel_identical": true
+  },
+  {
+    "image": "settings.png",
+    "baseline_size": [
+      1560,
+      980
+    ],
+    "modified_size": [
+      1560,
+      980
+    ],
+    "pixel_identical": false
+  }
+]

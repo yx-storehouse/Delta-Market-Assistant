@@ -5,11 +5,9 @@
 #include <QJsonObject>
 #include <QVector>
 #include <QPointer>
-
-#include <functional>
-
 namespace relink::runtime { class ReplayController; }
 namespace relink::workspace { class WorkspaceController; }
+namespace relink::ui { class TaskPage; class RunSettingsPage; class WorkspaceRecordsPanel; }
 
 class AppState;
 class QStackedWidget;
@@ -65,16 +63,11 @@ private:
     void refreshOverview();
     void refreshFavorites();
     void refreshFavoriteDetail();
-    void refreshTasks();
     void refreshPrices();
     void refreshStats();
     void refreshLogs();
-    void refreshRunSettings();
     void refreshReplayProjection();
     void showHelp();
-    void editTask(const QString& id = QString(), const QString& skinId = QString());
-    void deleteSelectedTasks();
-    void setSelectedTasksEnabled(bool enabled);
     void importConfiguration();
     void previewImportBytes(const QByteArray& bytes, const QString& sourceName);
     void showImportPreview(const QJsonObject& preview, const QString& sourceName);
@@ -82,7 +75,6 @@ private:
     void exportPrices();
     void saveSettings();
     void applyDensity();
-    QString selectedTaskId() const;
     QString selectedFavoriteId() const;
     void createInspectorTask();
     void fitWatchlistColumns();
@@ -93,26 +85,25 @@ private:
     bool confirmWorkspaceTransition(const QString& action);
     bool configurationDirty() const;
 
+    relink::ui::TaskPage* m_taskPage = nullptr;
+    relink::ui::RunSettingsPage* m_runSettingsPage = nullptr;
+    relink::ui::WorkspaceRecordsPanel* m_workspaceRecordsPanel = nullptr;
     AppState* m_state;
     relink::workspace::WorkspaceController* m_workspace = nullptr;
     QByteArray m_savedConfiguration;
     QPointer<QDialog> m_reviewDialog;
     QComboBox* m_workspaceMode = nullptr;
     QComboBox* m_workspaceProfiles = nullptr;
-    QComboBox* m_workspaceRuns = nullptr;
     QLabel* m_workspaceProfileMeta = nullptr;
     QLabel* m_workspaceReviewState = nullptr;
     QLabel* m_workspaceError = nullptr;
     QLabel* m_workspaceRecovery = nullptr;
     QLabel* m_workspaceLedger = nullptr;
     QLabel* m_workspaceClock = nullptr;
-    QLabel* m_workspaceRecordsState = nullptr;
     QLabel* m_workspaceStatsSummary = nullptr;
     QVector<MetricCard*> m_workspaceStatsCards;
     QTableWidget* m_workspaceListings = nullptr;
-    QTableWidget* m_workspaceRecords = nullptr;
     QPushButton* m_workspaceFixture = nullptr;
-    QPushButton* m_workspaceExport = nullptr;
     QPushButton* m_replayStepButton = nullptr;
     QPushButton* m_replayAdvanceButton = nullptr;
     bool m_refreshing = false;
@@ -161,9 +152,6 @@ private:
     QVector<PillButton*> m_catalogFilters;
     QString m_catalogFilter = QStringLiteral("all");
     QString m_inspectorSkinId;
-    QTableWidget* m_tasksTable = nullptr;
-    QLabel* m_taskCount = nullptr;
-    QPushButton* m_taskStart = nullptr;
     QComboBox* m_priceSkin = nullptr;
     QVector<MetricCard*> m_priceCards;
     PriceChart* m_priceChart = nullptr;
@@ -180,7 +168,4 @@ private:
     QCheckBox* m_autoScrollLogs = nullptr;
     QCheckBox* m_compactTables = nullptr;
     QLabel* m_settingsMessage = nullptr;
-    QLabel* m_runTaskSummary = nullptr;
-    QPushButton* m_importPreviewButton = nullptr;
-    QVector<std::function<void()>> m_runBinders;
 };

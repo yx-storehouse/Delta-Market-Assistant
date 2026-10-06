@@ -34,6 +34,11 @@ artifacts/m1_pr11_transaction/logs/
 artifacts/m1_pr11_transaction/MODIFIED_FILE.exe
 artifacts/m1_pr11_transaction/*-config.json
 artifacts/m1_pr11_transaction/selftest-config*.json
+artifacts/m1_pr12a_transaction/baseline/
+artifacts/m1_pr12a_transaction/rollback_test/
+artifacts/m1_pr12a_transaction/snapshots/
+artifacts/m1_pr12a_transaction/MODIFIED_FILE.exe
+artifacts/m1_pr12a_transaction/*-config.json
 __pycache__/
 *.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/

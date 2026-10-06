@@ -1,10 +1,12 @@
 # Delta Market Assistant · 三角洲市场助手
 
-## 当前开发进度：PR11 方案与账本界面
+## 当前开发进度：PR12A 页面与验收模块化
 
 项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR11 已接入领域规则、只读导入预览、审定方案保存、持久化合成回放、已提交账本与历史记录。运行页可选择审定方案或内置回放样例；工作台提供回放单步/快速推进，日志页查看并导出历史事实。已保存方案持续未启用，只有显式选择的内置合成样例产生模拟账本，不连接真实市场。
 
 开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/workspace_pr11.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。正常业务数据位于应用本地数据目录的 `business` 子目录；`--workspace-dir` 可指定独立目录，`--workspace-read-only` 用于只读查看。界面显示中文状态，完整原始 ID 和原因码保留在提示中。
+
+本轮在 PR11 业务不变的前提下完成 PR12A：独立任务页、运行参数页、记录面板、任务编辑器，以及离屏验收 runner；新增不链接 SQLite 的 `relink_ui` 与 90 条模块断言。维护入口见 `docs/business_rebuild/implementation/ui_modularization_pr12a.md`。下一步先做 PR12B 服务/历史查询整理，再完成原 PR12 总体验收。
 
 ## 当前版本：0.6 Windows 11 浅色 · 微软商店布局
 
@@ -51,14 +53,20 @@
 ## 工程结构
 
 ```text
-src/main.cpp          启动、配置保存、离屏交互验收
-src/mainwindow.*      商店式外壳、8 页界面、运行参数、任务编辑、帮助、导入导出
+src/main.cpp          启动参数、主题与配置/工作区生命周期
+src/mainwindow.*      商店式外壳、页面组合、剩余页面与跨页协调
+src/ui/pages/         任务页、运行参数页、工作区记录面板（各自拥有控件）
+src/ui/dialogs/       本地任务编辑草稿与校验
+src/ui/presentation/  共享表格、卡片、按钮与显示文字
+src/diagnostics/      原有离屏几何/文字/交互验收 runner
+src/application/startup_config.*  启动配置恢复的共享入口
 src/domain.*          演示数据、运行参数、事务配置校验、模拟状态与 CSV
 src/widgets.*         导航项、筛选胶囊、开关、星标、下拉/数字框、指标、价格曲线
 src/theme.qss         Win11 浅色公共样式
 src/fluenttheme.*     WinUI 浅色色值、字体、Fluent 图标、应用图标、标题栏主题请求
 src/app.rc            EXE 文件图标
 tests/domain_tests.cpp 数据层测试
+tests/ui/             独立页面模块测试，无 MainWindow/SQLite
 build.ps1             构建、测试和打包（不启动可见窗口）
 artifacts/            离屏页面图与校验记录
 ```

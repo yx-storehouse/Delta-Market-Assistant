@@ -1,0 +1,15 @@
+{
+  "business_source_unchanged_files": 30,
+  "ui_module_direct_imports": [
+    "DLL Name: Qt6Core.dll",
+    "DLL Name: Qt6Gui.dll",
+    "DLL Name: Qt6Widgets.dll",
+    "DLL Name: dwmapi.dll",
+    "DLL Name: libgcc_s_seh-1.dll",
+    "DLL Name: KERNEL32.dll",
+    "DLL Name: msvcrt.dll",
+    "DLL Name: libstdc++-6.dll"
+  ],
+  "main_lines": 164,
+  "mainwindow_lines": 1912
+}
