@@ -4,10 +4,12 @@
 #include <QByteArray>
 #include <QJsonObject>
 #include <QVector>
+#include <QPointer>
 
 #include <functional>
 
 namespace relink::runtime { class ReplayController; }
+namespace relink::workspace { class WorkspaceController; }
 
 class AppState;
 class QStackedWidget;
@@ -23,6 +25,8 @@ class QSpinBox;
 class QFrame;
 class QAction;
 class QResizeEvent;
+class QCloseEvent;
+class QDialog;
 class MetricCard;
 class PriceChart;
 class PillButton;
@@ -31,10 +35,12 @@ class ArtworkView;
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    explicit MainWindow(AppState* state, QWidget* parent = nullptr);
+    explicit MainWindow(AppState* state, QWidget* parent = nullptr,
+                        relink::workspace::WorkspaceController* workspace = nullptr);
     void setPage(int index);
     QString currentPageName() const;
     void refreshAll();
+    bool exportWorkspaceRecordsTo(const QString& path);
 
 public slots:
     // Deterministic in-memory entry used by the offscreen self-test.  It opens
@@ -43,6 +49,7 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     QWidget* buildTitleBar();
@@ -79,8 +86,35 @@ private:
     QString selectedFavoriteId() const;
     void createInspectorTask();
     void fitWatchlistColumns();
+    QWidget* buildWorkspaceSettings();
+    QWidget* buildWorkspaceRecords();
+    void refreshWorkspace();
+    void showProfileReview(const QJsonObject& preview, const QString& sourceName);
+    bool confirmWorkspaceTransition(const QString& action);
+    bool configurationDirty() const;
 
     AppState* m_state;
+    relink::workspace::WorkspaceController* m_workspace = nullptr;
+    QByteArray m_savedConfiguration;
+    QPointer<QDialog> m_reviewDialog;
+    QComboBox* m_workspaceMode = nullptr;
+    QComboBox* m_workspaceProfiles = nullptr;
+    QComboBox* m_workspaceRuns = nullptr;
+    QLabel* m_workspaceProfileMeta = nullptr;
+    QLabel* m_workspaceReviewState = nullptr;
+    QLabel* m_workspaceError = nullptr;
+    QLabel* m_workspaceRecovery = nullptr;
+    QLabel* m_workspaceLedger = nullptr;
+    QLabel* m_workspaceClock = nullptr;
+    QLabel* m_workspaceRecordsState = nullptr;
+    QLabel* m_workspaceStatsSummary = nullptr;
+    QVector<MetricCard*> m_workspaceStatsCards;
+    QTableWidget* m_workspaceListings = nullptr;
+    QTableWidget* m_workspaceRecords = nullptr;
+    QPushButton* m_workspaceFixture = nullptr;
+    QPushButton* m_workspaceExport = nullptr;
+    QPushButton* m_replayStepButton = nullptr;
+    QPushButton* m_replayAdvanceButton = nullptr;
     bool m_refreshing = false;
     QStackedWidget* m_pages = nullptr;
     QVector<QPushButton*> m_nav;

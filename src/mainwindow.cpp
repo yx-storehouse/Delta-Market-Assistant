@@ -3,12 +3,14 @@
 #include "config/v1_adapter.h"
 #include "application/runtime/replay_controller.h"
 #include "application/runtime/ui_projection.h"
+#include "application/workspace/workspace_controller.h"
 #include "widgets.h"
 #include "fluenttheme.h"
 
 #include <QAction>
 #include <QApplication>
 #include <QCheckBox>
+#include <QCloseEvent>
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialog>
@@ -17,8 +19,10 @@
 #include <QEvent>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFormLayout>
 #include <QFrame>
 #include <QGridLayout>
+#include <QHash>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QItemSelectionModel>
@@ -70,6 +74,101 @@ enum Tone { ToneNeutral, ToneAccent, ToneSuccess, ToneCaution, ToneCritical, Ton
 enum class RowStyle { Cards, Lines };
 enum class ButtonKind { Standard, Accent, Subtle, Link };
 
+// Display-only translations: controller values, combo item data and exported
+// records keep their original machine-readable identifiers.
+QString workspaceText(const QString& value)
+{
+    static const QHash<QString, QString> labels{
+        {QStringLiteral("SyntheticOnly"), QStringLiteral("内置回放样例")},
+        {QStringLiteral("ReviewedDisabled"), QStringLiteral("已审定·未启用")},
+        {QStringLiteral("Replay"), QStringLiteral("回放")},
+        {QStringLiteral("Demo"), QStringLiteral("本地演示")},
+        {QStringLiteral("synthetic_replay"), QStringLiteral("合成回放")},
+        {QStringLiteral("synthetic_demo"), QStringLiteral("本地演示")},
+        {QStringLiteral("synthetic_fixture"), QStringLiteral("内置合成样例")},
+        {QStringLiteral("committed_recovery_audit"), QStringLiteral("恢复审计")},
+        {QStringLiteral("Ready"), QStringLiteral("就绪")},
+        {QStringLiteral("Observe"), QStringLiteral("观察中")},
+        {QStringLiteral("Watchlist"), QStringLiteral("关注列表")},
+        {QStringLiteral("Paused"), QStringLiteral("已暂停")},
+        {QStringLiteral("Stopped"), QStringLiteral("已停止")},
+        {QStringLiteral("Completed"), QStringLiteral("已完成")},
+        {QStringLiteral("Recovered"), QStringLiteral("已恢复")},
+        {QStringLiteral("Recover"), QStringLiteral("等待恢复")},
+        {QStringLiteral("Reconcile"), QStringLiteral("待核验")},
+        {QStringLiteral("PersistResult"), QStringLiteral("保存回执")},
+        {QStringLiteral("AwaitDeadline"), QStringLiteral("等待计划")},
+        {QStringLiteral("Revalidate"), QStringLiteral("重新核验")},
+        {QStringLiteral("Start"), QStringLiteral("开始回放")},
+        {QStringLiteral("Observation"), QStringLiteral("采集观测")},
+        {QStringLiteral("FixtureStep"), QStringLiteral("样例推进")},
+        {QStringLiteral("DispatchSimulated"), QStringLiteral("模拟发起")},
+        {QStringLiteral("ReceiptConfirmed"), QStringLiteral("回执确认")},
+        {QStringLiteral("ReceiptFailed"), QStringLiteral("回执失败")},
+        {QStringLiteral("ReceiptSkipped"), QStringLiteral("跳过回执")},
+        {QStringLiteral("Pause"), QStringLiteral("暂停回放")},
+        {QStringLiteral("Resume"), QStringLiteral("继续回放")},
+        {QStringLiteral("Stop"), QStringLiteral("停止回放")},
+        {QStringLiteral("Recovery"), QStringLiteral("恢复记录")},
+        {QStringLiteral("Match"), QStringLiteral("匹配")},
+        {QStringLiteral("NoMatch"), QStringLiteral("不匹配")},
+        {QStringLiteral("NeedsReview"), QStringLiteral("待审定")},
+        {QStringLiteral("Unknown"), QStringLiteral("结果未知")},
+        {QStringLiteral("MATCH"), QStringLiteral("条件匹配")},
+        {QStringLiteral("OBSERVATION_STALE"), QStringLiteral("观测已过期")},
+        {QStringLiteral("FIELD_MISSING"), QStringLiteral("字段缺失")},
+        {QStringLiteral("FIELD_INVALID"), QStringLiteral("字段无效")},
+        {QStringLiteral("FIELD_AMBIGUOUS"), QStringLiteral("字段待核验")},
+        {QStringLiteral("PRICE_BELOW_MIN"), QStringLiteral("价格低于下限")},
+        {QStringLiteral("PRICE_ABOVE_MAX"), QStringLiteral("价格高于上限")},
+        {QStringLiteral("WEAR_ABOVE_MAX"), QStringLiteral("磨损高于上限")},
+        {QStringLiteral("PRODUCT_MISMATCH"), QStringLiteral("商品不匹配")},
+        {QStringLiteral("RULE_DISABLED"), QStringLiteral("规则未启用")},
+        {QStringLiteral("RULE_INVALID"), QStringLiteral("规则待修正")},
+        {QStringLiteral("SYNTHETIC_ONLY"), QStringLiteral("仅合成样例")},
+        {QStringLiteral("SAVED_PROFILE_DISABLED"), QStringLiteral("已保存方案未启用")},
+        {QStringLiteral("SYNTHETIC_REJECTED"), QStringLiteral("模拟回执拒绝")},
+        {QStringLiteral("SIMULATED_CONFIRMED_RECEIPT"), QStringLiteral("模拟回执已确认")},
+        {QStringLiteral("SKIPPED_UNKNOWN_NO_AUTOMATIC_RECONCILIATION"), QStringLiteral("结果未知，未自动核验")},
+        {QStringLiteral("price"), QStringLiteral("价格")},
+        {QStringLiteral("product_ref"), QStringLiteral("商品关联")}
+    };
+    return labels.value(value, value.isEmpty() ? QStringLiteral("—") : value);
+}
+
+QString shortWorkspaceId(const QString& value)
+{
+    if (value.isEmpty()) return QStringLiteral("—");
+    return value.size() > 18 ? value.left(13) + QStringLiteral("…") + value.right(4) : value;
+}
+
+// Review edits remain visible on save failure; Escape and the title-bar close
+// take the same explicit discard path as the Cancel command.
+class ReviewDialog final : public QDialog {
+public:
+    explicit ReviewDialog(QWidget* parent) : QDialog(parent) {}
+    bool dirty = false;
+    void reject() override {
+        if (dirty) {
+            QMessageBox prompt(QMessageBox::Question, QStringLiteral("保留审定草稿"),
+                QStringLiteral("审定内容尚未保存。继续编辑，或明确放弃本次草稿？"),
+                QMessageBox::NoButton, this);
+            prompt.setObjectName(QStringLiteral("profileReviewDiscardDialog"));
+            auto* keep = prompt.addButton(QStringLiteral("继续编辑"), QMessageBox::RejectRole);
+            auto* discard = prompt.addButton(QStringLiteral("放弃草稿"), QMessageBox::DestructiveRole);
+            prompt.setDefaultButton(keep);
+            prompt.exec();
+            if (prompt.clickedButton() != discard) return;
+        }
+        QDialog::reject();
+    }
+protected:
+    void closeEvent(QCloseEvent* event) override {
+        event->ignore();
+        reject();
+    }
+};
+
 QColor toneColor(int tone)
 {
     switch (tone) {
@@ -104,6 +203,9 @@ int levelTone(const QString& level)
 QLabel* label(const QString& text, const QString& name = QString())
 {
     auto* item = new QLabel(text);
+    // Imported names and diagnostics are data, never markup. The one rich-text
+    // status badge explicitly opts in below.
+    item->setTextFormat(Qt::PlainText);
     if (!name.isEmpty()) item->setObjectName(name);
     return item;
 }
@@ -606,10 +708,14 @@ QScrollArea* scrollablePage(QWidget* page)
 }
 } // namespace
 
-MainWindow::MainWindow(AppState* state, QWidget* parent) : QMainWindow(parent), m_state(state)
+MainWindow::MainWindow(AppState* state, QWidget* parent, relink::workspace::WorkspaceController* workspace)
+    : QMainWindow(parent), m_state(state), m_workspace(workspace)
 {
-    m_replayController = new relink::runtime::ReplayController(this);
-    connect(m_replayController, &relink::runtime::ReplayController::changed, this, &MainWindow::refreshReplayProjection);
+    if (!m_workspace) {
+        m_replayController = new relink::runtime::ReplayController(this);
+        connect(m_replayController, &relink::runtime::ReplayController::changed, this, &MainWindow::refreshReplayProjection);
+    }
+    m_savedConfiguration = QJsonDocument(encodeV1Config(m_state->skins, m_state->tasks, m_state->run)).toJson(QJsonDocument::Compact);
     setObjectName(QStringLiteral("mainWindow"));
     setWindowTitle(QStringLiteral("Relink Studio"));
     setWindowIcon(FluentTheme::appIcon());
@@ -646,6 +752,10 @@ MainWindow::MainWindow(AppState* state, QWidget* parent) : QMainWindow(parent), 
     body->addWidget(layer, 1);
     shell->addLayout(body, 1);
     connect(m_state, &AppState::changed, this, &MainWindow::refreshAll);
+    if (m_workspace) {
+        connect(m_workspace, &relink::workspace::WorkspaceController::changed, this, &MainWindow::refreshWorkspace);
+        connect(m_workspace, &relink::workspace::WorkspaceController::errorOccurred, this, [this](const QString&) { refreshWorkspace(); });
+    }
     QSettings preferences;
     m_autoScrollLogs->setChecked(preferences.value(QStringLiteral("ui/autoScrollLogs"), true).toBool());
     m_compactTables->setChecked(preferences.value(QStringLiteral("ui/compactTables"), false).toBool());
@@ -755,15 +865,14 @@ QWidget* MainWindow::buildOverview()
     }
     layout->addWidget(strip);
 
-    // M1 replay branch: this card is intentionally separate from the existing
-    // local demo controls above. It drives only ReplayController/FakeClock and
-    // never starts capture, OCR, mouse, keyboard, or an external process.
+    // Persistent replay commands share the injected workspace controller. The
+    // independent v1 demo remains available only in its explicit Demo mode.
     auto* replayPanel = card(QStringLiteral("replayPanel"));
     auto* replayLayout = new QGridLayout(replayPanel);
     replayLayout->setContentsMargins(16, 12, 16, 12);
     replayLayout->setHorizontalSpacing(16);
     replayLayout->setVerticalSpacing(6);
-    auto* replayTitle = label(QStringLiteral("M1 回放验证"), QStringLiteral("replayTitle"));
+    auto* replayTitle = label(m_workspace ? QStringLiteral("回放工作区 · 已提交账本") : QStringLiteral("M1 回放验证"), QStringLiteral("replayTitle"));
     replayTitle->setProperty("section", true);
     replayLayout->addWidget(replayTitle, 0, 0, 1, 2);
     m_replaySourceLabel = label(QString(), QStringLiteral("replaySourceLabel"));
@@ -789,15 +898,35 @@ QWidget* MainWindow::buildOverview()
     replayCommands->addWidget(m_replayStartButton);
     replayCommands->addWidget(m_replayPauseButton);
     replayCommands->addWidget(m_replayResumeButton);
+    if (m_workspace) {
+        m_replayStepButton = button(QStringLiteral("单步"), QStringLiteral("replayStepButton"));
+        m_replayAdvanceButton = button(QStringLiteral("快速推进"), QStringLiteral("replayAdvanceButton"));
+        replayCommands->addWidget(m_replayStepButton);
+        replayCommands->addWidget(m_replayAdvanceButton);
+        connect(m_replayStepButton, &QPushButton::clicked, this, [this] { m_workspace->step(); });
+        connect(m_replayAdvanceButton, &QPushButton::clicked, this, [this] { m_workspace->advance(); });
+    }
     replayCommands->addWidget(m_replayStopButton);
     replayCommands->addStretch();
+    if (m_workspace) {
+        auto* manage = button(QStringLiteral("选择方案"), QStringLiteral("workspaceManageButton"), ButtonKind::Subtle);
+        replayCommands->addWidget(manage);
+        connect(manage, &QPushButton::clicked, this, [this] { setPage(RunPage); });
+    }
     replayLayout->addLayout(replayCommands, 5, 0, 1, 2);
     layout->addWidget(replayPanel);
     layout->addSpacing(28);
-    connect(m_replayStartButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::startReplay);
-    connect(m_replayPauseButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::pauseReplay);
-    connect(m_replayResumeButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::resumeReplay);
-    connect(m_replayStopButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::stopReplay);
+    if (m_workspace) {
+        connect(m_replayStartButton, &QPushButton::clicked, this, [this] { if (confirmWorkspaceTransition(QStringLiteral("开始回放"))) m_workspace->start(); });
+        connect(m_replayPauseButton, &QPushButton::clicked, this, [this] { m_workspace->pause(); });
+        connect(m_replayResumeButton, &QPushButton::clicked, this, [this] { m_workspace->resume(); });
+        connect(m_replayStopButton, &QPushButton::clicked, this, [this] { m_workspace->stop(); });
+    } else {
+        connect(m_replayStartButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::startReplay);
+        connect(m_replayPauseButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::pauseReplay);
+        connect(m_replayResumeButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::resumeReplay);
+        connect(m_replayStopButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::stopReplay);
+    }
 
     auto* middle = new QHBoxLayout;
     middle->setSpacing(16);
@@ -1206,6 +1335,31 @@ QWidget* MainWindow::buildStats()
     auto* layout = pageLayout(page);
     pageHeader(layout, titles[4]);
     layout->addSpacing(20);
+    if (m_workspace) {
+        auto* ledger = card(QStringLiteral("workspaceStatsPanel"));
+        auto* ledgerLayout = new QVBoxLayout(ledger);
+        ledgerLayout->setContentsMargins(16, 14, 16, 14);
+        ledgerLayout->addWidget(label(QStringLiteral("已提交回放账本"), QStringLiteral("sectionTitle")));
+        auto* values = new QHBoxLayout;
+        values->setSpacing(0);
+        const QStringList names{QStringLiteral("模拟确认成功"), QStringLiteral("模拟确认失败"),
+                                QStringLiteral("结果未知"), QStringLiteral("仍占用预留")};
+        for (int i = 0; i < names.size(); ++i) {
+            auto* metric = new MetricCard(names[i], QStringLiteral("0"), QStringLiteral("仅已提交数据"));
+            metric->setObjectName(QStringLiteral("workspaceStatsMetric%1").arg(i));
+            metric->setProperty("separator", i < names.size() - 1);
+            m_workspaceStatsCards.append(metric);
+            values->addWidget(metric, 1);
+        }
+        ledgerLayout->addLayout(values);
+        m_workspaceStatsSummary = label(QString(), QStringLiteral("workspaceStatsSummary"));
+        m_workspaceStatsSummary->setWordWrap(true);
+        ledgerLayout->addWidget(m_workspaceStatsSummary);
+        layout->addWidget(ledger);
+        layout->addSpacing(24);
+        layout->addWidget(label(QStringLiteral("本地演示统计 · 独立口径"), QStringLiteral("groupLabel")));
+        layout->addSpacing(10);
+    }
     auto* strip = card(QStringLiteral("metricStrip"));
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
@@ -1307,6 +1461,12 @@ QWidget* MainWindow::buildLogs()
     auto* clear = button(QStringLiteral("清空日志"), QStringLiteral("clearLogsButton"), ButtonKind::Standard, Glyph::Delete);
     header->addWidget(clear, 0, Qt::AlignVCenter);
     layout->addSpacing(20);
+    if (m_workspace) {
+        layout->addWidget(buildWorkspaceRecords());
+        layout->addSpacing(24);
+        layout->addWidget(label(QStringLiteral("本地演示日志 · 与回放账本分开"), QStringLiteral("groupLabel")));
+        layout->addSpacing(8);
+    }
     auto* box = card(QStringLiteral("logPanel"));
     auto* boxLayout = new QVBoxLayout(box);
     boxLayout->setContentsMargins(12, 6, 12, 8);
@@ -1401,8 +1561,15 @@ QWidget* MainWindow::buildRunSettings()
     header->addWidget(runMessage, 0, Qt::AlignVCenter);
     header->addSpacing(8);
     header->addWidget(save, 0, Qt::AlignVCenter);
-    m_runBinders.append([this, profileCaption] { profileCaption->setText(QStringLiteral("方案 %1").arg(m_state->run.profile)); });
+    m_runBinders.append([this, profileCaption] {
+        profileCaption->setText((m_workspace ? QStringLiteral("本地演示参数 %1") : QStringLiteral("方案 %1")).arg(m_state->run.profile));
+    });
     connect(save, &QPushButton::clicked, this, [this, runMessage] { saveSettings(); runMessage->setText(m_settingsMessage->text()); });
+    if (m_workspace) {
+        layout->addSpacing(20);
+        layout->addWidget(buildWorkspaceSettings());
+        layout->addSpacing(20);
+    }
 
     const auto group = [&](const QString& text, bool first = false) {
         layout->addSpacing(first ? 20 : 28);
@@ -1416,7 +1583,7 @@ QWidget* MainWindow::buildRunSettings()
     m_importPreviewButton = button(QStringLiteral("打开只读预览"), QStringLiteral("runImportPreviewButton"), ButtonKind::Standard, Glyph::Import);
     connect(m_importPreviewButton, &QPushButton::clicked, this, &MainWindow::previewImportDemo);
     row(settingsCard(glyphLabel(Glyph::Import), QStringLiteral("导入预览"),
-                     QStringLiteral("先检查 schema、行状态和诊断；当前阶段不会写入配置，也不会启用任何任务。"),
+                     QStringLiteral("先检查行状态与诊断；预览始终只读，完整审定后可另存方案，保存不启用规则。"),
                      m_importPreviewButton));
     const auto text = [](const QString& value) { return label(value); };
     const auto strip = [](std::initializer_list<QWidget*> parts) {
@@ -1659,6 +1826,7 @@ void MainWindow::refreshAll()
     m_configDirectory->setText(QDir::toNativeSeparators(path));
     m_configDirectory->setCursorPosition(0);
     m_refreshing = false;
+    refreshWorkspace();
 }
 
 void MainWindow::refreshRunSettings()
@@ -2333,9 +2501,16 @@ void MainWindow::showImportPreview(const QJsonObject& preview, const QString& so
     commandRow->setContentsMargins(24, 16, 24, 16);
     commandRow->setSpacing(8);
     commandRow->addStretch();
-    auto* apply = button(QStringLiteral("应用（暂不可用）"), QStringLiteral("importPreviewApplyButton"));
+    auto* apply = button(QStringLiteral("直接应用（只读）"), QStringLiteral("importPreviewApplyButton"));
     apply->setEnabled(false);
-    apply->setToolTip(QStringLiteral("PR08 才会提供审定提交；本阶段始终只读"));
+    apply->setToolTip(QStringLiteral("LegacyImportPreview 始终只读；审定另存为会生成独立方案，不会应用或修改本预览。"));
+    if (m_workspace) {
+        auto* review = button(QStringLiteral("审定另存为"), QStringLiteral("importPreviewReviewButton"));
+        review->setEnabled(view.errorCount == 0 && view.invalidRows == 0 && m_workspace->projection().opened
+                           && !m_workspace->projection().readOnly && !m_workspace->projection().active);
+        commandRow->addWidget(review);
+        connect(review, &QPushButton::clicked, this, [this, preview, sourceName] { showProfileReview(preview, sourceName); });
+    }
     auto* close = button(QStringLiteral("关闭"), QStringLiteral("importPreviewCloseButton"), ButtonKind::Accent);
     close->setDefault(true);
     close->setMinimumWidth(112);
@@ -2345,6 +2520,456 @@ void MainWindow::showImportPreview(const QJsonObject& preview, const QString& so
     connect(close, &QPushButton::clicked, dialog, &QDialog::accept);
     dialog->open();
 }
+
+QWidget* MainWindow::buildWorkspaceSettings()
+{
+    auto* panel = card(QStringLiteral("workspacePanel"));
+    auto* layout = new QVBoxLayout(panel);
+    layout->setContentsMargins(20, 18, 20, 18);
+    layout->setSpacing(10);
+    auto* heading = new QHBoxLayout;
+    heading->addWidget(label(QStringLiteral("方案与回放"), QStringLiteral("sectionTitle")));
+    heading->addStretch();
+    m_workspaceMode = new FluentComboBox;
+    m_workspaceMode->setObjectName(QStringLiteral("workspaceModeCombo"));
+    m_workspaceMode->addItem(QStringLiteral("回放 · 合成数据"), QStringLiteral("Replay"));
+    m_workspaceMode->addItem(QStringLiteral("本地演示 · 旧配置"), QStringLiteral("Demo"));
+    m_workspaceMode->setMinimumWidth(180);
+    heading->addWidget(m_workspaceMode);
+    auto* control = button(QStringLiteral("回放控制"), QStringLiteral("workspaceOpenReplayButton"), ButtonKind::Subtle, Glyph::Play);
+    heading->addWidget(control);
+    connect(control, &QPushButton::clicked, this, [this] { setPage(0); });
+    layout->addLayout(heading);
+    auto* profiles = new QHBoxLayout;
+    profiles->addWidget(label(QStringLiteral("已保存方案")));
+    m_workspaceProfiles = new FluentComboBox;
+    m_workspaceProfiles->setObjectName(QStringLiteral("workspaceProfileCombo"));
+    m_workspaceProfiles->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    m_workspaceProfiles->setMinimumContentsLength(18);
+    profiles->addWidget(m_workspaceProfiles, 1);
+    m_workspaceFixture = button(QStringLiteral("选择内建回放样例"), QStringLiteral("workspaceFixtureButton"));
+    profiles->addWidget(m_workspaceFixture);
+    layout->addLayout(profiles);
+    m_workspaceProfileMeta = label(QString(), QStringLiteral("workspaceProfileMeta"));
+    m_workspaceProfileMeta->setWordWrap(true);
+    m_workspaceProfileMeta->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    layout->addWidget(m_workspaceProfileMeta);
+    m_workspaceReviewState = label(QString(), QStringLiteral("workspaceReviewState"));
+    m_workspaceReviewState->setWordWrap(true);
+    layout->addWidget(m_workspaceReviewState);
+    auto* note = label(QStringLiteral("审定保存、当前选择与运行快照相互独立。审定方案保存后仍为未启用；内建样例用于验证合成回放流程。"), QStringLiteral("workspaceProfileNote"));
+    note->setProperty("tertiary", true);
+    note->setWordWrap(true);
+    layout->addWidget(note);
+    m_workspaceError = label(QString(), QStringLiteral("workspaceErrorLabel"));
+    m_workspaceError->setWordWrap(true);
+    m_workspaceError->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    m_workspaceError->setProperty("status", "negative");
+    layout->addWidget(m_workspaceError);
+    m_workspaceRecovery = label(QString(), QStringLiteral("workspaceRecoveryLabel"));
+    m_workspaceRecovery->setWordWrap(true);
+    m_workspaceRecovery->setProperty("status", "caution");
+    layout->addWidget(m_workspaceRecovery);
+    m_workspaceLedger = label(QString(), QStringLiteral("workspaceLedgerSummary"));
+    m_workspaceLedger->setWordWrap(true);
+    layout->addWidget(m_workspaceLedger);
+    m_workspaceClock = label(QString(), QStringLiteral("workspaceClockLabel"));
+    m_workspaceClock->setWordWrap(true);
+    m_workspaceClock->setProperty("tertiary", true);
+    layout->addWidget(m_workspaceClock);
+    auto* listingHeading = label(QStringLiteral("回放卖单 · 观测价与模拟成交价分开记录"), QStringLiteral("groupLabel"));
+    layout->addWidget(listingHeading);
+    m_workspaceListings = table({QStringLiteral("商品 / 卖单"), QStringLiteral("观测价"), QStringLiteral("模拟成交价"),
+                                 QStringLiteral("状态 / 原因"), QStringLiteral("来源 / 时点")},
+                                QStringLiteral("workspaceListingsTable"), RowStyle::Lines);
+    auto* columns = m_workspaceListings->horizontalHeader();
+    columns->setStretchLastSection(false);
+    columns->setSectionResizeMode(0, QHeaderView::Stretch);
+    columns->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    columns->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    columns->setSectionResizeMode(3, QHeaderView::Stretch);
+    columns->setSectionResizeMode(4, QHeaderView::Stretch);
+    m_workspaceListings->setMinimumHeight(200);
+    m_workspaceListings->setMaximumHeight(320);
+    m_workspaceListings->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    layout->addWidget(m_workspaceListings);
+    connect(m_workspaceMode, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if (m_refreshing || index < 0) return;
+        const auto mode = m_workspaceMode->itemData(index).toString();
+        if (mode == m_workspace->projection().mode) return;
+        if (!confirmWorkspaceTransition(QStringLiteral("切换模式"))) { refreshWorkspace(); return; }
+        if (m_workspace->setMode(mode) && mode != QStringLiteral("Demo")) m_state->pauseSimulation();
+        refreshWorkspace();
+    });
+    connect(m_workspaceProfiles, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if (m_refreshing || index < 0) return;
+        const auto id = m_workspaceProfiles->itemData(index).toString();
+        if (id.isEmpty() || id == m_workspace->projection().selectedProfileId) return;
+        if (!confirmWorkspaceTransition(QStringLiteral("切换方案"))) { refreshWorkspace(); return; }
+        m_workspace->selectProfile(id);
+        refreshWorkspace();
+    });
+    connect(m_workspaceFixture, &QPushButton::clicked, this, [this] {
+        if (confirmWorkspaceTransition(QStringLiteral("选择内建回放样例"))) m_workspace->selectBuiltInFixture();
+    });
+    return panel;
+}
+
+QWidget* MainWindow::buildWorkspaceRecords()
+{
+    auto* panel = card(QStringLiteral("workspaceRecordsPanel"));
+    auto* layout = new QVBoxLayout(panel);
+    layout->setContentsMargins(20, 18, 20, 18);
+    layout->setSpacing(10);
+    auto* heading = new QHBoxLayout;
+    heading->addWidget(label(QStringLiteral("回放记录 · 已提交"), QStringLiteral("sectionTitle")));
+    heading->addStretch();
+    m_workspaceRuns = new FluentComboBox;
+    m_workspaceRuns->setObjectName(QStringLiteral("workspaceRunCombo"));
+    m_workspaceRuns->setMinimumWidth(300);
+    m_workspaceRuns->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    m_workspaceRuns->setMinimumContentsLength(28);
+    heading->addWidget(m_workspaceRuns);
+    m_workspaceExport = button(QStringLiteral("导出 CSV"), QStringLiteral("workspaceExportCsvButton"), ButtonKind::Standard, Glyph::Export);
+    heading->addWidget(m_workspaceExport);
+    layout->addLayout(heading);
+    m_workspaceRecordsState = label(QString(), QStringLiteral("workspaceRecordsState"));
+    m_workspaceRecordsState->setWordWrap(true);
+    layout->addWidget(m_workspaceRecordsState);
+    m_workspaceRecords = table({QStringLiteral("序号 / 时点"), QStringLiteral("事件"), QStringLiteral("关联 / 原因"),
+                                QStringLiteral("观测 / 模拟成交价"), QStringLiteral("来源 / 时钟")},
+                               QStringLiteral("workspaceRecordsTable"), RowStyle::Lines);
+    auto* columns = m_workspaceRecords->horizontalHeader();
+    columns->setStretchLastSection(false);
+    columns->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    // The custom delegate's generic size hint can size this column to the
+    // two-character heading. Keep full event names legible instead of "开始…".
+    columns->setSectionResizeMode(1, QHeaderView::Fixed);
+    m_workspaceRecords->setColumnWidth(1, 124);
+    columns->setSectionResizeMode(2, QHeaderView::Stretch);
+    columns->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    columns->setSectionResizeMode(4, QHeaderView::Stretch);
+    m_workspaceRecords->setMinimumHeight(280);
+    m_workspaceRecords->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    layout->addWidget(m_workspaceRecords);
+    connect(m_workspaceRuns, &QComboBox::currentIndexChanged, this, [this](int index) {
+        if (m_refreshing || index < 0) return;
+        m_workspace->selectRun(m_workspaceRuns->itemData(index).toString());
+        refreshWorkspace();
+    });
+    connect(m_workspaceExport, &QPushButton::clicked, this, [this] {
+        const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出已提交回放记录"),
+            QStringLiteral("replay-records.csv"), QStringLiteral("CSV (*.csv)"));
+        if (!path.isEmpty()) exportWorkspaceRecordsTo(path);
+    });
+    return panel;
+}
+
+bool MainWindow::exportWorkspaceRecordsTo(const QString& path)
+{
+    if (!m_workspace || path.isEmpty()) return false;
+    const bool result = m_workspace->exportRecordsCsv(path);
+    refreshWorkspace();
+    if (result && m_workspaceRecordsState)
+        m_workspaceRecordsState->setText(QStringLiteral("已导出只读记录：%1 · CSV 公式字段已转义").arg(QDir::toNativeSeparators(path)));
+    return result;
+}
+
+void MainWindow::refreshWorkspace()
+{
+    if (!m_workspace || !m_workspaceProfiles || !m_workspaceRuns) return;
+    const auto& view = m_workspace->projection();
+    const QSignalBlocker profilesGuard(m_workspaceProfiles), modeGuard(m_workspaceMode), runsGuard(m_workspaceRuns);
+    m_workspaceMode->setCurrentIndex(m_workspaceMode->findData(view.mode));
+    m_workspaceMode->setEnabled(view.opened && !view.active && !view.dirty);
+    m_workspaceProfiles->clear();
+    m_workspaceProfiles->addItem(QStringLiteral("请选择方案 · 不自动启用"), QString());
+    QString profileText = QStringLiteral("尚未选择方案；保存审定方案不会改变当前选择。");
+    QString profileDetails;
+    QString reviewText = QStringLiteral("预览只读 / 审定另存 / 手动选择");
+    QString reviewDetails;
+    for (const auto& profile : view.profiles) {
+        m_workspaceProfiles->addItem(QStringLiteral("%1 · r%2%3").arg(profile.name).arg(profile.revision)
+            .arg(profile.builtin ? QStringLiteral(" · 内建样例") : QStringLiteral(" · 已保存")), profile.id);
+        const int index = m_workspaceProfiles->count() - 1;
+        m_workspaceProfiles->setItemData(index, QStringLiteral("%1\n来源：%2\nSHA-256：%3\n%4")
+            .arg(profile.id, profile.source, profile.sourceHash, profile.path), Qt::ToolTipRole);
+        if (profile.id == view.selectedProfileId) {
+            profileText = QStringLiteral("当前选择：%1 · 版本 %2 · %3\n来源：%4")
+                .arg(profile.name).arg(profile.revision).arg(shortWorkspaceId(profile.id), workspaceText(profile.source));
+            profileDetails = QStringLiteral("方案：%1\n标识：%2\n版本：%3\n来源：%4\nSHA-256：%5\n%6")
+                .arg(profile.name, profile.id).arg(profile.revision)
+                .arg(profile.source, profile.sourceHash.isEmpty() ? QStringLiteral("内建固定样例") : profile.sourceHash, profile.path);
+            reviewText = QStringLiteral("审定状态：%1 · %2").arg(workspaceText(profile.reviewState),
+                profile.activationRequired ? QStringLiteral("规则未启用，需另行启用") : QStringLiteral("合成回放可用"));
+            reviewDetails = QStringLiteral("%1\nactivation_required=%2").arg(profile.reviewState,
+                profile.activationRequired ? QStringLiteral("true") : QStringLiteral("false"));
+        }
+    }
+    m_workspaceProfiles->setCurrentIndex(qMax(0, m_workspaceProfiles->findData(view.selectedProfileId)));
+    m_workspaceProfiles->setEnabled(view.opened && !view.active && !view.dirty);
+    m_workspaceFixture->setEnabled(view.opened && !view.active && !view.dirty);
+    m_workspaceProfileMeta->setText(profileText);
+    m_workspaceProfileMeta->setToolTip(profileDetails);
+    m_workspaceReviewState->setText(reviewText);
+    m_workspaceReviewState->setToolTip(reviewDetails);
+    const QString error = !view.lastError.isEmpty() ? view.lastError : m_workspace->lastError();
+    m_workspaceError->setVisible(!error.isEmpty());
+    m_workspaceError->setText(QStringLiteral("操作未提交，保留上次已提交数据：%1").arg(error));
+    m_workspaceRuns->clear();
+    m_workspaceRuns->addItem(QStringLiteral("当前工作区"), QString());
+    bool recovered = false;
+    for (const auto& run : view.runs) {
+        m_workspaceRuns->addItem(QStringLiteral("%1 · r%2 · %3%4").arg(run.profileName).arg(run.profileRevision)
+            .arg(workspaceText(run.state), run.recovered && run.state != QStringLiteral("Recovered") ? QStringLiteral(" · 已恢复") : QString()), run.id);
+        m_workspaceRuns->setItemData(m_workspaceRuns->count() - 1,
+            QStringLiteral("%1\n状态：%2\n来源：%3").arg(run.id, run.state, run.source), Qt::ToolTipRole);
+        if (run.id == view.selectedRunId) recovered = run.recovered;
+    }
+    m_workspaceRuns->setCurrentIndex(qMax(0, m_workspaceRuns->findData(view.selectedRunId)));
+    m_workspaceRuns->setEnabled(view.opened && !view.active && !view.dirty);
+    const bool showRecovery = recovered || view.unknownCount > 0;
+    m_workspaceRecovery->setVisible(showRecovery);
+    m_workspaceRecovery->setText(QStringLiteral("%1结果未知：%2 · 仍占用预留：%3。未知结果既非成功也非失败；恢复后只读，不自动重发或继续。")
+        .arg(recovered ? QStringLiteral("已载入异常退出后的恢复记录。") : QString())
+        .arg(view.unknownCount).arg(view.reservationCount));
+    m_workspaceLedger->setText(QStringLiteral("已提交账本：成功 %1 · 失败 %2 · 结果未知 %3 · 预留 %4 · %5 条记录%6")
+        .arg(view.confirmedSuccess).arg(view.failedCount).arg(view.unknownCount).arg(view.reservationCount).arg(view.records.size())
+        .arg(view.historyReadOnly ? QStringLiteral(" · 历史只读") : QString()));
+    if (m_workspaceStatsCards.size() == 4) {
+        const QVector<int> counts{view.confirmedSuccess, view.failedCount, view.unknownCount, view.reservationCount};
+        for (int i = 0; i < counts.size(); ++i)
+            m_workspaceStatsCards[i]->setValue(QString::number(counts[i]), view.historyReadOnly ? QStringLiteral("历史快照 · 只读") : QStringLiteral("仅已提交数据"));
+        m_workspaceStatsSummary->setText(QStringLiteral("匹配 %1 · 收藏 %2 · 已发起 %3 · 不匹配 %4 · 待审 %5\n模式 %6 · 运行 %7 · 版本 %8；未知结果不计入成功或失败，观测价不计入成交。")
+            .arg(view.matchedCount).arg(view.collectedCount).arg(view.dispatchedCount).arg(view.noMatchCount).arg(view.needsReviewCount)
+            .arg(workspaceText(view.mode), shortWorkspaceId(view.selectedRunId)).arg(view.runProfileRevision));
+        m_workspaceStatsSummary->setToolTip(QStringLiteral("运行：%1\n模式：%2").arg(view.selectedRunId, view.mode));
+    }
+    m_workspaceClock->setText(QStringLiteral("模式 %1 · 来源 %2 · 时钟 %3 · 逻辑时间 %4 ms · 图像文件写入 %5")
+        .arg(workspaceText(view.mode), view.source.isEmpty() ? QStringLiteral("尚未运行") : workspaceText(view.source),
+             shortWorkspaceId(view.clockDomainId))
+        .arg(view.nowMonoMs).arg(view.imageFileWriteCount));
+    m_workspaceClock->setToolTip(QStringLiteral("模式：%1\n来源：%2\n时钟：%3\n运行：%4")
+        .arg(view.mode, view.source, view.clockDomainId, view.selectedRunId));
+    m_workspaceListings->setRowCount(view.listings.size());
+    auto shown = [](const QString& value) { return value.isEmpty() ? QStringLiteral("—") : value; };
+    for (int i = 0; i < view.listings.size(); ++i) {
+        const auto& row = view.listings[i];
+        put(m_workspaceListings, i, 0, QStringLiteral("%1 / %2").arg(row.productName, row.listingId))->setData(Qt::UserRole, row.listingId);
+        put(m_workspaceListings, i, 1, shown(row.observedPrice));
+        put(m_workspaceListings, i, 2, shown(row.confirmedPrice));
+        QString reason = QStringLiteral("%1 · %2").arg(workspaceText(row.status), workspaceText(row.reason));
+        if (row.stale && row.reason != QStringLiteral("OBSERVATION_STALE")) reason += QStringLiteral(" · 观测已过期");
+        if (!row.missingFields.isEmpty()) {
+            QStringList fields;
+            for (const auto& field : row.missingFields) fields.append(workspaceText(field));
+            reason += QStringLiteral(" · 缺失：") + fields.join(QStringLiteral("、"));
+        }
+        put(m_workspaceListings, i, 3, reason);
+        put(m_workspaceListings, i, 4, QStringLiteral("%1 · %2 ms · %3").arg(workspaceText(row.source)).arg(row.observedMonoMs).arg(shortWorkspaceId(row.clockDomainId)));
+        for (int col = 0; col < m_workspaceListings->columnCount(); ++col)
+            m_workspaceListings->item(i, col)->setToolTip(QStringLiteral("商品 %1\n卖单 %2\n观察 %3\n状态 %4\n原因 %5\n来源 %6 · 时钟 %7 · %8 ms\n缺失字段 %9")
+                .arg(row.productId, row.listingId, row.observationId, row.status, row.reason, row.source, row.clockDomainId)
+                .arg(row.observedMonoMs).arg(row.missingFields.join(QStringLiteral(", "))));
+    }
+    m_workspaceRecords->setRowCount(view.records.size());
+    for (int i = 0; i < view.records.size(); ++i) {
+        const auto& row = view.records[i];
+        put(m_workspaceRecords, i, 0, QStringLiteral("%1 · %2 ms").arg(row.seq).arg(row.atMonoMs));
+        put(m_workspaceRecords, i, 1, workspaceText(row.type))->setData(Qt::UserRole, row.type);
+        put(m_workspaceRecords, i, 2, QStringLiteral("%1 · %2").arg(shown(row.listingId), workspaceText(row.reason)));
+        put(m_workspaceRecords, i, 3, QStringLiteral("%1 / %2").arg(shown(row.observedPrice), shown(row.confirmedPrice)));
+        put(m_workspaceRecords, i, 4, QStringLiteral("%1 / %2").arg(workspaceText(row.source), shortWorkspaceId(row.clockDomainId)));
+        for (int col = 0; col < m_workspaceRecords->columnCount(); ++col)
+            m_workspaceRecords->item(i, col)->setToolTip(QStringLiteral("事件 %1\n运行 %2\n类型 %3\n原因 %4\n卖单 %5 / 观察 %6\n来源 %7\n时钟 %8 · %9 ms")
+                .arg(row.eventId, row.runId, row.type, row.reason, row.listingId, row.observationId, row.source, row.clockDomainId).arg(row.atMonoMs));
+    }
+    m_workspaceRecordsState->setText(QStringLiteral("%1 · %2 条已提交记录 · 运行 %3\n固定方案：%4 · 版本 %5 · 记录只读，清空演示日志不影响此账本。%6\n成功 %7 · 失败 %8 · 结果未知 %9 · 仍占用预留 %10%11")
+        .arg(view.historyReadOnly ? QStringLiteral("历史运行 / 只读") : QStringLiteral("当前运行"))
+        .arg(view.records.size()).arg(shortWorkspaceId(view.selectedRunId), shown(view.runProfileName)).arg(view.runProfileRevision)
+        .arg(error.isEmpty() ? QString() : QStringLiteral("\n操作失败：") + error)
+        .arg(view.confirmedSuccess).arg(view.failedCount).arg(view.unknownCount).arg(view.reservationCount)
+        .arg(recovered ? QStringLiteral(" · 已恢复，不自动继续或重发") : QString()));
+    m_workspaceRecordsState->setToolTip(QStringLiteral("运行：%1\n固定方案：%2\n版本：%3")
+        .arg(view.selectedRunId, view.runProfileId).arg(view.runProfileRevision));
+    m_workspaceExport->setEnabled(view.opened && !view.records.isEmpty());
+    if (m_replaySourceLabel) {
+        m_replaySourceLabel->setText(QStringLiteral("%1 · %2").arg(workspaceText(view.mode), workspaceText(view.source)));
+        m_replaySourceLabel->setToolTip(QStringLiteral("%1 · %2").arg(view.mode, view.source));
+        m_replayStateLabel->setText(workspaceText(view.runState));
+        m_replayStateLabel->setToolTip(view.runState);
+        m_replayStateLabel->setProperty("status", view.runState);
+        m_replayReasonLabel->setText(!error.isEmpty() ? QStringLiteral("操作失败：") + error
+            : QStringLiteral("已提交：成功 %1 / 结果未知 %2 / 预留 %3；未提交操作不计入账本。%4")
+                .arg(view.confirmedSuccess).arg(view.unknownCount).arg(view.reservationCount)
+                .arg(view.selectedProfileId.isEmpty() ? QStringLiteral("请先在运行页显式选择回放样例。") : QString()));
+        m_replayProgressLabel->setText(QStringLiteral("步骤 %1/%2 · %3 ms · 运行 %4 · 版本 %5%6")
+            .arg(view.fixtureStep).arg(view.fixtureStepCount).arg(view.nowMonoMs).arg(shortWorkspaceId(view.selectedRunId))
+            .arg(view.runProfileRevision).arg(view.historyReadOnly ? QStringLiteral(" · 历史只读") : QString()));
+        m_replayProgressLabel->setToolTip(QStringLiteral("运行：%1\n固定方案：%2\n时钟：%3")
+            .arg(view.selectedRunId, view.runProfileId, view.clockDomainId));
+        m_replayStartButton->setEnabled(view.canStart && view.mode == QStringLiteral("Replay"));
+        m_replayPauseButton->setEnabled(view.canPause);
+        m_replayResumeButton->setEnabled(view.canResume);
+        m_replayStopButton->setEnabled(view.canStop);
+        m_replayStepButton->setEnabled(view.canStep);
+        m_replayAdvanceButton->setEnabled(view.canStep);
+    }
+    const bool demo = view.mode == QStringLiteral("Demo");
+    m_startButton->setEnabled(demo && !view.active && !m_state->simulationRunning);
+    m_pauseButton->setEnabled(demo && m_state->simulationRunning);
+    m_taskStart->setEnabled(demo && !view.active && !m_state->simulationRunning);
+    if (!demo) {
+        m_statusBadge->setText(QStringLiteral("●  回放 · %1").arg(workspaceText(view.runState)));
+        m_statusBadge->setToolTip(QStringLiteral("合成回放 / 已提交账本 · 未连接游戏\n%1").arg(view.runState));
+    }
+}
+
+bool MainWindow::configurationDirty() const
+{
+    return m_savedConfiguration != QJsonDocument(encodeV1Config(m_state->skins, m_state->tasks, m_state->run)).toJson(QJsonDocument::Compact);
+}
+
+bool MainWindow::confirmWorkspaceTransition(const QString& action)
+{
+    if (!configurationDirty()) return true;
+    QMessageBox prompt(QMessageBox::Question, QStringLiteral("保留未保存的演示配置"),
+        QStringLiteral("本地演示配置有未保存改动。%1不会把它们应用到回放方案；继续后草稿仍然保留。")
+            .arg(action), QMessageBox::NoButton, this);
+    prompt.setObjectName(QStringLiteral("workspaceDirtyDialog"));
+    auto* back = prompt.addButton(QStringLiteral("返回编辑"), QMessageBox::RejectRole);
+    auto* proceed = prompt.addButton(QStringLiteral("保留草稿并继续"), QMessageBox::AcceptRole);
+    prompt.setDefaultButton(back);
+    prompt.exec();
+    return prompt.clickedButton() == proceed;
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    setProperty("skipAutomaticConfigSave", false);
+    bool discardConfiguration = false;
+    if (m_reviewDialog) {
+        m_reviewDialog->raise();
+        m_reviewDialog->activateWindow();
+        event->ignore();
+        return;
+    }
+    if (m_workspace && configurationDirty()) {
+        QMessageBox prompt(QMessageBox::Question, QStringLiteral("保存配置后退出？"),
+            QStringLiteral("本地演示配置有未保存改动。"), QMessageBox::NoButton, this);
+        prompt.setObjectName(QStringLiteral("workspaceCloseDirtyDialog"));
+        auto* save = prompt.addButton(QStringLiteral("保存并退出"), QMessageBox::AcceptRole);
+        auto* discard = prompt.addButton(QStringLiteral("放弃改动并退出"), QMessageBox::DestructiveRole);
+        auto* back = prompt.addButton(QStringLiteral("返回"), QMessageBox::RejectRole);
+        prompt.setDefaultButton(back);
+        prompt.exec();
+        if (prompt.clickedButton() == save) {
+            saveSettings();
+            if (configurationDirty()) { event->ignore(); return; }
+        } else if (prompt.clickedButton() == discard) {
+            discardConfiguration = true;
+        } else { event->ignore(); return; }
+    }
+    if (m_workspace && m_workspace->projection().active && !m_workspace->stop()) {
+        event->ignore();
+        refreshWorkspace();
+        return;
+    }
+    setProperty("skipAutomaticConfigSave", discardConfiguration);
+    QMainWindow::closeEvent(event);
+}
+
+void MainWindow::showProfileReview(const QJsonObject& preview, const QString& sourceName)
+{
+    if (!m_workspace) return;
+    if (m_reviewDialog) { m_reviewDialog->raise(); return; }
+    auto* dialog = new ReviewDialog(this);
+    m_reviewDialog = dialog;
+    dialog->setObjectName(QStringLiteral("profileReviewDialog"));
+    dialog->setWindowTitle(QStringLiteral("审定另存为 · 不启用规则"));
+    dialog->setModal(true);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setMinimumWidth(620);
+    auto* layout = new QVBoxLayout(dialog);
+    layout->setContentsMargins(24, 22, 24, 22);
+    layout->setSpacing(12);
+    layout->addWidget(label(QStringLiteral("审定另存为"), QStringLiteral("dialogTitle")));
+    auto* intro = label(QStringLiteral("来源：%1\n逐项核对导入预览后确认。原始预览不变；原子保存独立 ConfigV2，规则保持未启用。")
+        .arg(sourceName), QStringLiteral("profileReviewIntro"));
+    intro->setWordWrap(true);
+    layout->addWidget(intro);
+    auto* form = new QFormLayout;
+    auto* name = new QLineEdit;
+    name->setObjectName(QStringLiteral("profileReviewName"));
+    name->setPlaceholderText(QStringLiteral("例如：已核对的关注方案"));
+    auto* quantum = new QLineEdit(QStringLiteral("0.01"));
+    quantum->setObjectName(QStringLiteral("profileReviewQuantum"));
+    auto* unit = new QLineEdit(QStringLiteral("显示单位"));
+    unit->setObjectName(QStringLiteral("profileReviewUnit"));
+    form->addRow(QStringLiteral("方案名称"), name);
+    form->addRow(QStringLiteral("价格最小单位（十进制文本）"), quantum);
+    form->addRow(QStringLiteral("单位显示名"), unit);
+    layout->addLayout(form);
+    QVector<QCheckBox*> confirmations;
+    const QStringList ids{QStringLiteral("profileReviewProducts"), QStringLiteral("profileReviewPriceRange"),
+        QStringLiteral("profileReviewTaxonomy"), QStringLiteral("profileReviewUnknownColumns"), QStringLiteral("profileReviewQuantityUnbound")};
+    const QStringList texts{QStringLiteral("我已核对商品名称与对应关系"), QStringLiteral("我已核对价格范围、显示单位和最小单位"),
+        QStringLiteral("我已核对品级与成色分类"), QStringLiteral("保留无法解释的原始列，不自行推断其含义"),
+        QStringLiteral("数量保持未绑定，不把候选数量用于自动执行")};
+    for (int i = 0; i < ids.size(); ++i) {
+        auto* check = new QCheckBox(texts[i]);
+        check->setObjectName(ids[i]);
+        confirmations.append(check);
+        layout->addWidget(check);
+    }
+    auto* status = label(QStringLiteral("请填写名称、最小单位，并完成全部 5 项确认。"), QStringLiteral("profileReviewStatus"));
+    status->setWordWrap(true);
+    status->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    layout->addWidget(status);
+    auto* commands = new QHBoxLayout;
+    commands->addStretch();
+    auto* cancel = button(QStringLiteral("取消"), QStringLiteral("profileReviewCancelButton"));
+    auto* save = button(QStringLiteral("保存审定方案"), QStringLiteral("profileReviewSaveButton"), ButtonKind::Accent, Glyph::Save);
+    save->setEnabled(false);
+    commands->addWidget(cancel);
+    commands->addWidget(save);
+    layout->addLayout(commands);
+    const auto edited = [this, dialog, name, quantum, confirmations, save] {
+        dialog->dirty = true;
+        m_workspace->setReviewDirty(true);
+        bool complete = !name->text().trimmed().isEmpty() && !quantum->text().trimmed().isEmpty();
+        for (const auto* check : confirmations) complete = complete && check->isChecked();
+        save->setEnabled(complete);
+    };
+    connect(name, &QLineEdit::textChanged, dialog, edited);
+    connect(quantum, &QLineEdit::textChanged, dialog, edited);
+    connect(unit, &QLineEdit::textChanged, dialog, edited);
+    for (auto* check : confirmations) connect(check, &QCheckBox::toggled, dialog, edited);
+    connect(cancel, &QPushButton::clicked, dialog, &QDialog::reject);
+    connect(dialog, &QDialog::finished, this, [this](int) {
+        m_workspace->discardReviewDraft();
+        m_reviewDialog = nullptr;
+    });
+    connect(save, &QPushButton::clicked, dialog, [this, dialog, preview, name, quantum, unit, confirmations, status] {
+        relink::config::ReviewChoices choices;
+        choices.profileName = name->text().trimmed();
+        choices.quantum = quantum->text().trimmed();
+        choices.unitDisplayName = unit->text().trimmed();
+        choices.confirmProducts = confirmations[0]->isChecked();
+        choices.confirmPriceRange = confirmations[1]->isChecked();
+        choices.confirmTaxonomy = confirmations[2]->isChecked();
+        choices.preserveUnknownColumns = confirmations[3]->isChecked();
+        choices.keepQuantityUnbound = confirmations[4]->isChecked();
+        if (!m_workspace->saveReviewedPreview(preview, choices)) {
+            status->setText(QStringLiteral("保存未提交，草稿已保留：%1").arg(m_workspace->lastError()));
+            return;
+        }
+        dialog->dirty = false;
+        dialog->accept();
+    });
+    dialog->open();
+}
+
 void MainWindow::exportConfiguration()
 {
     const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出本地配置"), "relink-config.json", QStringLiteral("JSON 配置 (*.json)"));
@@ -2382,6 +3007,7 @@ void MainWindow::saveSettings()
     QDir().mkpath(QFileInfo(path).absolutePath());
     QString error;
     if (m_state->saveTo(path, &error)) {
+        m_savedConfiguration = QJsonDocument(encodeV1Config(m_state->skins, m_state->tasks, m_state->run)).toJson(QJsonDocument::Compact);
         m_settingsMessage->setText(QStringLiteral("设置与本地配置已保存"));
         m_state->configPath = path;
         m_state->addLog("INFO", QStringLiteral("已保存界面设置与本地配置"));

@@ -4,9 +4,9 @@
 
 ## 当前结论
 
-M1 已经完成 PR01–PR10，其中 PR08 完成 ProfileStore / ConfigV2 审定提交，PR10 完成 SQLite 结构化账本持久化；当前交付继续保持“观察、回放、解释优先”的边界：不启动、不加载、不连接 BBZPS，不执行真实窗口捕获、OCR、鼠标键盘输入、市场动作或购买。导入预览固定为 `committable=false`，账本事务由显式 `commit()` / `rollback()` 控制。
+M1 已完成 PR01–PR11，PR11 将方案审定保存、SQLite 已提交账本、回放控制、恢复与历史记录接入现有 Win11 界面；本轮 13/13 CTest、400 条工作区断言、58 条工作区 UI 断言、22 条发布存储自检及真实副本回退复验通过，详见下方 PR11 验证节。导入预览保持 `committable=false`，审定保存后规则保持禁用，账本事务由显式 `commit()` / `rollback()` 控制。当前数据来自 Demo/Replay 合成输入，不运行或加载 BBZPS，也没有真实捕获、OCR、鼠标键盘输入、市场动作或购买。
 
-PR10 本轮通过 12/12 CTest、316 条 SQLite 断言、22 条发布存储自检，以及真实发布副本的回退/恢复复验。它增加持久化仓库、版本迁移、事务与受控进程退出恢复，不自动把后端接到前台；PR11 的方案/账本/记录 UI 工作流与 PR12 完整里程碑仍未完成。界面保留现有 Win11 白灰配色，没有重做布局。
+PR11 正常前台使用 AppLocalDataLocation/business 工作区，`--workspace-dir` 可显式覆盖，`--workspace-read-only` 提供只读诊断。已保存方案仅作禁用规则的解释性评估，内置八步 fixture 才产生模拟账本。PR12 整套端到端与发布里程碑仍为下一阶段；Win11 白灰配色与原功能入口保持不变。PR10 的历史通过数保留在独立节，不作为本轮 PR11 结果。
 
 ## 已完成 PR
 
@@ -22,8 +22,23 @@ PR10 本轮通过 12/12 CTest、316 条 SQLite 断言、22 条发布存储自检
 | PR08 | 完成 | ProfileStore、ConfigV2、ReviewChoices 审定与 QSaveFile 原子提交 |
 | PR09 | 完成 | InMemoryEventStore、事件幂等、attempt/quota reservation、receipt、ledger、快照、恢复与显式事务回滚 |
 | PR10 | 完成 | SqliteEventStore、v1→v2 迁移、提交快照、回执门槛、进程恢复、一致备份与包内 QSQLITE 验证 |
+| PR11 | 完成 | WorkspaceController、审定保存、持久化合成回放、已提交投影、历史快照、恢复提示、CSV 与错误交互 |
 
-## PR10 本轮实施范围
+## PR11 本轮实施范围
+
+详细接口、数据路径、八步 fixture 与 UI 行为见 [持久化工作区实现记录](implementation/workspace_pr11.md)。
+
+- 增加 `WorkspaceController` 与 `WorkspaceProjection`，controller 在创建线程持有 SQLite；MainWindow 消费投影，不在 widgets 内执行 SQL。数据库仍为 schema v2。
+- 原始导入预览仍只读，独立审定窗口收集方案名、精度与必要确认后通过 ProfileStore/QSaveFile 保存 ConfigV2。保存不自动选择方案，选择不启用规则；enabled=false、activation_required=true 保持不变。
+- 方案列表展示 ID/revision/来源/审定状态。每次 Start 保存完整 `profile_snapshot`；历史运行使用当时方案 JSON/revision，不受后续方案文件更新影响。
+- Replay 控制接入开始、暂停、继续、单步、快速推进和停止；明确选择内置八步 fixture 后才有模拟派发/回执。暂停和停止保留 Unknown/预留，重开只读查看历史，不自动重发或继续。
+- 成功/失败/Unknown/预留来自已提交账本；Match/NoMatch/NeedsReview 和派发来自已提交事件。事务失败保留旧计数、记录与步骤，并显示结构化错误。
+- 同商品多个卖单按 listing/observation 身份区分；观察价与已确认模拟价分开，缺字段、stale、时钟和来源可见；单独的 ReceiptConfirmed 形状事件不构成确认。
+- 历史选择、记录页、统计与价格图接入工作区投影；CSV 包含 mode、profile ID/revision、来源、时钟与记录身份，并转义公式型字段。
+- 审定草稿、旧演示配置和已保存方案分离；脏配置/切模式/切方案/关闭窗口交互保留用户明确选择。错误保存不会把旧数据覆盖为半成品。
+- 普通启动与离屏测试使用不同数据路径；离屏默认 QTemporaryDir，显式 --workspace-dir 才使用指定测试工作区。业务 `imageFileWriteCount=0`，显式 UI 验收截图单独保存，不是捕获/OCR 落盘。
+
+## PR10 历史实施范围
 
 详细接口、恢复规则与历史 DDL 差异见 [SqliteEventStore 实现记录](implementation/sqlite_store_pr10.md)。
 
@@ -56,7 +71,7 @@ PR10 本轮通过 12/12 CTest、316 条 SQLite 断言、22 条发布存储自检
 
 ### PR08 历史验证
 
-以下为上一阶段已记录结果，不是 PR10 的新测试输出：
+以下为 PR08 已记录结果，不是本轮 PR11 的新测试输出：
 
 ```text
 domain_tests                 PASS
@@ -72,7 +87,42 @@ ui_offscreen                 PASS
 CTest                        10/10 PASS
 ```
 
-### PR10 本轮验证
+### PR11 本轮验证
+
+当前状态：**本轮实测通过**。最终命令为 `powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test -Package`，实际构建目录 `build_relocated`。`artifacts/m1_pr11_transaction/build_result.json` 保存命令、工作目录、stdout/stderr 和 exit=0；原始构建日志为 `logs/final_build.stdout` 与 `logs/final_build.stderr`。早期 `build_test_2.log` 与 49 条 UI 联调记录保留为历史，不作为最终通过数。
+
+| 检查 | 本轮结果 | 实际证据 |
+|---|---|---|
+| 最终完整构建与 CTest | 13/13 通过，exit=0 | build_result.json；logs/final_build.stdout |
+| 工作区服务与真实存储故障 | 400 条断言，failures=0，exit=0 | package_commands.json 的 WORKSPACE_TESTS；真实临时 DB、外部写锁与提交锁 |
+| 发布目录持久化 UI | 58 条断言，failures=0，exit=0 | package_commands.json 的 MODIFIED_UI；同时 UI_SELF_TEST=PASS |
+| 发布 QtSql/QSQLITE | 22 条存储自检，exit=0；PACKAGE=PASS | build_result.json 与 package_commands.json 的 MODIFIED |
+| 原程序基线与恢复副本 | BASELINE/ROLLBACK/RESTORED 均 exit=0；原版哈希一致 | package_commands.json；rollback_test；新数据库保留 |
+| 文档/契约/本轮基线 | 独立于应用测试记录 | 文档脚本与 m1_pr11_baseline.json；最终结果见 VERIFICATION.txt |
+
+工作区测试验证审定/source/quantum/稳定 ID、禁用方案、切换与快照、真实锁/COMMIT 失败、重开 Unknown、CSV 注入转义与保护 DB/方案文件不被导出覆盖。UI 自测实际操作控件，覆盖同商品多卖单、中文状态、观察价/确认价、审定保存、真实锁错误、历史重开、脏演示配置的切模式选择与关闭取消/丢弃，不只是静态检查标签。
+
+本轮关键原始输出：
+
+~~~text
+100% tests passed out of 13
+WORKSPACE_TESTS=PASS; assertions=400; failures=0; real_database=true; real_lock_failures=true; external_actions=0
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+ROLLBACK_RESTORED=PASS; new_databases_preserved=true
+PR11_PACKAGE_VERIFICATION=PASS
+~~~
+
+发布程序与旧版恢复程序使用清理后的 package-only PATH 离屏运行，不依赖 SDK；单独运行 build_relocated/workspace_tests.exe 时，另将 QT_PLUGIN_PATH 指到发布目录以解析 QSQLITE。精确命令、输入、完整输出和退出码保存在 package_commands.json 与 VERIFICATION.txt。`UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS` 表明业务图像文件计数为零；UI 验收快照是显式测试产物，不是业务捕获。
+
+最终发布 EXE 的 SHA-256 为 `fed34a7250247684d0daaa7507ff4df40ac23cfcfd36566b4bf3570fb19deb2d`。旧版基线与回退副本均为 `d19688ccbda8786246c6d8927fc49ac5484f7b8acc42d5e3256fd84250d1e3a6`，恢复后旧程序离屏自检通过。回退只操作独立 rollback_test 副本，固定发布目录保留新版。
+
+四项事务工件位于 `artifacts/m1_pr11_transaction/`：`MODIFIED_FILE.exe`、`DIFF_FILE`、`VERIFICATION.txt`、可执行 `ROLLBACK.sh`；回退恢复程序文件而保留新账本数据。PR11 单票验收完成，不等于 PR12 整套端到端里程碑或 M2 捕获/OCR 已完成。
+
+### PR10 历史验证
+
+本节保留 PR10 的历史记录；其中“本轮”指 PR10，不是 PR11。
 
 离屏人工复核发现并修复了历史主窗口乱码：330 处字符串、3 条注释恢复为正常中文，右上角状态 HTML 一并修正；字符串/注释之外的代码以及全部 ASCII 标识保持不变。新增 `UI_NAVIGATION_TEXT_UTF8`、`UI_ACTION_TEXT_UTF8`、`UI_NO_MOJIBAKE_LABELS` 三项运行时回归，均通过。Win11 白灰布局和功能入口不变；最终关注页、运行页截图已重新查看。
 
@@ -114,7 +164,8 @@ C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
 - `artifacts/business_rebuild_docs/m1_pr05_baseline.json`：PR05 回放/UI 基线，保留用于审计。
 - `artifacts/business_rebuild_docs/m1_pr06_pr09_baseline.json`：PR06/PR09 历史实现、测试与发布目录基线，保留用于审计。
 - `artifacts/business_rebuild_docs/m1_pr08_baseline.json`：PR08 历史实现基线，保留用于审计。
-- `artifacts/business_rebuild_docs/m1_pr10_baseline.json`：本轮 PR10 源码、测试、当前状态文档与发布目录基线；不覆盖上述历史文件。最终校验以本轮验证工件为准。
+- `artifacts/business_rebuild_docs/m1_pr10_baseline.json`：历史 PR10 源码、测试、当时状态文档与发布目录基线，保留不覆盖。
+- `artifacts/business_rebuild_docs/m1_pr11_baseline.json`：本轮 PR11 源码、测试、当前入口文档与发布目录基线；最终校验以本轮验证工件为准。
 
 每一轮基线都只记录实际变更范围，不覆盖历史快照；文档验证同时检查项目基线漂移是否被最新 M1 基线明确覆盖。
 
@@ -122,8 +173,7 @@ C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
 
 | PR | 状态 | 下一步 |
 |---|---|---|
-| PR10 | 完成 | 后端持久化与恢复已验证；不重复实施，不冒充已完成 PR11 |
-| PR11 | 计划中 | 将回放、账本、方案和记录接入 Win11 UI 投影 |
-| PR12 | 计划中 | 全量回归、离屏打包、解压目录复核与固定路径交付 |
+| PR11 | 完成 | 方案/回放/账本/记录已接 UI，13/13 CTest 与发布副本验收通过 |
+| PR12 | 下一阶段 | 旧配置与端到端回归、package-only PATH、依赖清单、数据隔离、异常关闭与固定路径交付 |
 
-下一阶段仍不得把预览候选直接提升为可执行配置；任何真实窗口捕获、OCR、输入、市场动作和购买都保持在后续独立审批边界之外。
+下一轮任务见 [NEXT_IMPLEMENTATION.md](NEXT_IMPLEMENTATION.md)。PR12 不将预览候选直接提升为可执行配置；真实捕获/OCR 属于后续 M2，旧延迟/限购语义与外部动作仍是独立阶段。

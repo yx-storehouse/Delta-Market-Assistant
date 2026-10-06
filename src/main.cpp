@@ -9,6 +9,9 @@
 #include <QComboBox>
 #include <QCommandLineParser>
 #include "ledger/storage_self_test.h"
+#include "application/workspace/workspace_controller.h"
+#include "application/workspace/workspace_ui_self_test.h"
+#include <QTemporaryDir>
 #include <QDateTime>
 #include <QDialog>
 #include <QDir>
@@ -299,6 +302,8 @@ int main(int argc, char** argv) {
     parser.addOption({"storage-self-test", "Verify the packaged SQLite driver, transactions, recovery and backup using temporary data."});
     parser.addOption({"snapshot-dir", "Render seven pages to PNG, offscreen, then exit.", "directory"});
     parser.addOption({"config", "Local demo configuration JSON path.", "path"});
+    parser.addOption({"workspace-dir", "Directory for reviewed profiles and the persistent replay ledger.", "directory"});
+    parser.addOption({"workspace-read-only", "Open an existing business workspace without changing it."});
     parser.addOption({"write-demo-config", "Write a fresh synthetic configuration and exit offscreen.", "path"});
     parser.addOption({"validate-config", "Validate a local demo configuration and exit offscreen.", "path"});
     parser.addOption({"font-report", "Print the resolved UI and icon fonts, then exit without opening a window."});
@@ -362,11 +367,31 @@ int main(int argc, char** argv) {
                           : QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/config.json";
     }
     config = prepareStartupConfig(state, config, !headless);
-    MainWindow window(&state);
+    // Headless runs get a fresh, temporary workspace unless the caller supplies
+    // an explicit test directory; never open the normal user's ledger in tests.
+    QTemporaryDir temporaryWorkspace;
+    QString workspacePath = parser.value("workspace-dir");
+    if (workspacePath.isEmpty()) {
+        if (headless) {
+            if (!temporaryWorkspace.isValid()) {
+                std::fprintf(stderr, "WORKSPACE_TEMP_DIRECTORY=FAIL\n");
+                return 1;
+            }
+            workspacePath = temporaryWorkspace.path();
+        } else {
+            workspacePath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation)
+                + QStringLiteral("/business");
+        }
+    }
+    relink::workspace::WorkspaceController workspace;
+    if (!workspace.open(workspacePath, parser.isSet("workspace-read-only")))
+        std::fprintf(stderr, "WORKSPACE_OPEN_ERROR: %s\n", workspace.lastError().toUtf8().constData());
+    MainWindow window(&state, nullptr, &workspace);
     window.show(); // Offscreen platform renders to memory only when headless=true.
     if (!headless) {
-        QObject::connect(&app, &QApplication::aboutToQuit, &state, [&state]() {
+        QObject::connect(&app, &QApplication::aboutToQuit, &state, [&state, &window]() {
             state.pauseSimulation();
+            if (window.property("skipAutomaticConfigSave").toBool()) return;
             QString error;
             if (!state.saveTo(state.configPath, &error))
                 std::fprintf(stderr, "CONFIG_SAVE_ERROR: %s\n", error.toUtf8().constData());
@@ -662,8 +687,13 @@ int main(int argc, char** argv) {
         auto* replayPause = window.findChild<QPushButton*>("replayPauseButton");
         auto* replayResume = window.findChild<QPushButton*>("replayResumeButton");
         auto* replayStop = window.findChild<QPushButton*>("replayStopButton");
+        auto* workspaceProfiles = window.findChild<QComboBox*>("workspaceProfileCombo");
+        if (workspaceProfiles)
+            workspaceProfiles->setCurrentIndex(workspaceProfiles->findData(relink::workspace::WorkspaceController::builtinProfileId()));
+        flush();
         check(replaySource && replayState && replayStart && replayPause && replayResume && replayStop
-                  && replaySource->text().contains(QStringLiteral("Replay"))
+                  && replaySource->text().contains(QStringLiteral("回放"))
+                  && replaySource->toolTip().contains(QStringLiteral("Replay"))
                   && replayState->property("status").toString() == QStringLiteral("Ready")
                   && replayStart->isEnabled() && !replayPause->isEnabled()
                   && !replayResume->isEnabled() && !replayStop->isEnabled(),
@@ -684,6 +714,7 @@ int main(int argc, char** argv) {
         check(replayState && replayState->property("status").toString() == QStringLiteral("Stopped")
                   && replayStop && !replayStop->isEnabled(), "REPLAY_UI_STOP");
         if (parser.isSet("self-test")) {
+            check(workspace.setMode(QStringLiteral("Demo")), "WORKSPACE_DEMO_MODE");
             window.setPage(1);
             flush();
             auto* search = window.findChild<QLineEdit*>("favoriteSearch");
@@ -958,6 +989,7 @@ int main(int argc, char** argv) {
             window.setPage(0);
             flush();
             window.grab().save(output + "/overview.png");
+            check(relink::workspace::runWorkspaceUiSelfTest(window, workspace, output + "/workspace"), "WORKSPACE_INTEGRATION");
         }
         window.resize(1180, 820);
         flush();

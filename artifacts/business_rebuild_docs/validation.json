@@ -7,7 +7,7 @@
   "evidence_groups": 12,
   "evidence_files_verified": 23,
   "json_files_parsed": 79,
-  "relative_markdown_links_checked": 112,
+  "relative_markdown_links_checked": 133,
   "html_sections": 11,
   "svg_diagrams": 2,
   "application_baseline_files": 102,
@@ -16,7 +16,7 @@
     {
       "path": "CMakeLists.txt",
       "expected": "45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c",
-      "actual": "1a398f551a89a8820dbd8216fedca5a79e69cc0584718d30f77f0b71c81affe2",
+      "actual": "3c5244dd3c0ebc777d581ec956699bf62b4d7e5fa6710cc18a69ba96510ceace",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -24,7 +24,7 @@
     {
       "path": "SESSION_START.md",
       "expected": "04e9bff567d18b7544d9d22ec65b8d0ce7beb8efa6f2b83709bf860ad70041a5",
-      "actual": "da3359b0f4d4a69ed76e049c1df98c72d104e28879bec826fee30093b0a274b2",
+      "actual": "71cc394e7ff44485e730de6fbb799bfde64a2f823ec0d98df73ad4afb410dc23",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -40,7 +40,7 @@
     {
       "path": "dist/RelinkStudio/README.md",
       "expected": "f4d64adc160f2293887a0e8da405896c2afe3a6c5225f46715d79e1e2a557171",
-      "actual": "e3f107625577b2bd29dd9201c269913a9ca45a3d26741a609f96bda74b5dbb9c",
+      "actual": "5cac77a6f3828f2d8e37d9f5d4c39ec1f0f5292aa03020ca9973dc9087d1b900",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -48,7 +48,7 @@
     {
       "path": "dist/RelinkStudio/RelinkStudio.exe",
       "expected": "b2d2e6b5ad2e1e28823bf62e79f839ae1d7379b06af02eb821867b145b91b15d",
-      "actual": "d19688ccbda8786246c6d8927fc49ac5484f7b8acc42d5e3256fd84250d1e3a6",
+      "actual": "fed34a7250247684d0daaa7507ff4df40ac23cfcfd36566b4bf3570fb19deb2d",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -56,7 +56,7 @@
     {
       "path": "dist/RelinkStudio/file_manifest.json",
       "expected": "a5f196bc39ba6a6c9132432b7b4bf0fc5cc2e411d91843d81c975d6c0a203750",
-      "actual": "246ed2bc65ad151d6f72d70f5216877dfd52676831dc21179e1bea602c675994",
+      "actual": "7e7a320abe6abd3087cdb4ab0476fda9ecefa08d674653836b676eed1a08b3ac",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -80,7 +80,7 @@
     {
       "path": "src/main.cpp",
       "expected": "cd210ca6382dbecafcd93a775cd3c3a68a34d2ac9496cfe6051df2c5b3653cd9",
-      "actual": "d1a8f291caf51d68e8779b048b80d9d335b5660a5254a87388e18196ea164e2c",
+      "actual": "da0510005c96cca05445de7e5af65c8ead5c2bc42a5556399ed74579c62c48fd",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -88,7 +88,7 @@
     {
       "path": "src/mainwindow.cpp",
       "expected": "26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625",
-      "actual": "5a4a936f9060d7abc06c9a004f795683d76386458121048a43fd8344c7a6b814",
+      "actual": "92295ccb31740360a48eb68edf1d83c388a5c108966ac7bb64be0ca541cc85bb",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -96,15 +96,15 @@
     {
       "path": "src/mainwindow.h",
       "expected": "be10da55c3471aea472c443a6a33bde35f768492d0bc19c7d80ca5dbf2dacb02",
-      "actual": "bd0ab50207603ce46ef2e7f4d3d32a10f989f2fa9a3f130b0f079d1c992c7e19",
+      "actual": "c646b2ff78b4be7f1ca736d22faaf9f2311bb7426ddb1902ef16ec787fdd2cdb",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
     }
   ],
-  "m1_baseline_id": "m1_pr10",
-  "m1_baseline_files": 314,
-  "m1_baseline_files_unchanged": 314,
+  "m1_baseline_id": "m1_pr11",
+  "m1_baseline_files": 331,
+  "m1_baseline_files_unchanged": 331,
   "m1_baseline_differences": [],
   "sample_execution": 0,
   "step_capture_contract": "PASS",

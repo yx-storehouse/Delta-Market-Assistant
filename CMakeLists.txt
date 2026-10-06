@@ -16,6 +16,7 @@ qt_add_executable(RelinkStudio WIN32
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
+  src/application/workspace/workspace_ui_self_test.cpp src/application/workspace/workspace_ui_self_test.h
   resources.qrc)
 target_include_directories(RelinkStudio PRIVATE src)
 target_link_libraries(RelinkStudio PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
@@ -91,6 +92,16 @@ target_include_directories(relink_sqlite PUBLIC src)
 target_link_libraries(relink_sqlite PUBLIC Qt6::Core Qt6::Sql)
 target_link_libraries(RelinkStudio PRIVATE relink_sqlite)
 
+add_library(relink_workspace STATIC
+  src/application/workspace/workspace_controller.cpp
+  src/application/workspace/workspace_controller.h)
+target_include_directories(relink_workspace PUBLIC src)
+target_link_libraries(relink_workspace PUBLIC relink_business relink_runtime relink_sqlite Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_workspace)
+
+add_executable(workspace_tests tests/application/workspace_tests.cpp)
+target_link_libraries(workspace_tests PRIVATE relink_workspace)
+
 add_executable(sqlite_ledger_tests tests/ledger/sqlite_ledger_tests.cpp)
 target_link_libraries(sqlite_ledger_tests PRIVATE relink_sqlite relink_ledger)
 
@@ -109,6 +120,8 @@ add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/busi
 add_test(NAME ui_projection_tests COMMAND ui_projection_tests)
 add_test(NAME ledger_tests COMMAND ledger_tests)
 add_test(NAME sqlite_ledger_tests COMMAND sqlite_ledger_tests)
+add_test(NAME workspace_tests COMMAND workspace_tests)
+set_tests_properties(workspace_tests PROPERTIES TIMEOUT 120)
 add_test(NAME storage_self_test COMMAND RelinkStudio --storage-self-test)
 set_tests_properties(sqlite_ledger_tests PROPERTIES TIMEOUT 120)
 set_tests_properties(storage_self_test PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1")

@@ -1,6 +1,6 @@
 # Delta Market Assistant · 业务重构开发文档
 
-> 文档版本：0.4 · 2026-10-06 · 状态：PR01–PR10 已完成；本轮 12/12 CTest、316 条 SQLite 断言、22 条发布存储自检与真实发布回退复验通过，PR11 常规 UI 接入待开发。
+> 文档版本：0.5 · 2026-10-06 · 状态：PR01–PR11 已完成；PR11 的方案审定、持久化回放、已提交账本和历史记录已接入 UI；本轮最终验收见 [09 · 实施进度](09_m1_progress.md)。PR12 完整端到端回归仍为下一阶段。
 >
 > 项目名为 Delta Market Assistant（三角洲市场助手），现有构建目标及程序文件仍名为 RelinkStudio。原始静态分析与设计规格保留；当前实现、实测结果和新基线见 [09 · 实施进度](09_m1_progress.md)，不再将整个项目描述为“尚未实现”。
 
@@ -12,7 +12,7 @@
 
 **原样本有 OpenCV 线索，但不是单靠 OpenCV。** 目录含 cv2；名为 gdi32.dll 的文件实际导出 TomatoOCR、ocrScreen、ocrWindow、ocrImageData。较准确的拆分是图像处理、OCR、页面语义与状态机。ppocrv5/MNN 字符串不足以证明实际选用模型或运行参数；完整分析见证据章节。本轮没有运行样本。[E01、E02、E10]
 
-**开发已从规格进入 M1 实现。** PR01–PR09 已有领域模型、纯规则、回放、只读导入预览、ProfileStore 和内存账本；PR10 增加 SQLite 持久化、事务恢复与发布驱动验证。PR11 仍需把已保存方案和已提交账本接到现有 UI；M2 真实捕获/OCR、M3 旧延迟/限购语义与 M4 外部动作尚未完成。历史 schema、fixture、backlog 和 GWT 矩阵继续作为冻结设计输入，不因 CTest 通过而批量改写。[09、implementation/sqlite_store_pr10]
+**开发已从规格进入 M1 实现。** PR01–PR09 已有领域模型、纯规则、回放、只读导入预览、ProfileStore 和内存账本；PR10 增加 SQLite 持久化、事务恢复与发布驱动验证。PR11 已将审定方案、SQLite 已提交账本、恢复状态和历史运行接到现有 UI；保存方案仍保持规则禁用，只有显式选择的内置八步 fixture 生成模拟派发/回执。PR12 整套交付回归、M2 真实捕获/OCR、M3 旧延迟/限购语义与 M4 外部动作尚未完成。历史 schema、fixture、backlog 和 GWT 矩阵继续作为冻结设计输入，不因 CTest 通过而批量改写。[09、implementation/workspace_pr11]
 
 ## 从这里阅读
 
@@ -20,7 +20,8 @@
 |---|---|
 | [09 · 实施进度与基线](09_m1_progress.md) | 当前已实现范围、本轮实际验证记录、基线与下一票 |
 | [PR10 · SQLite 事件仓库](implementation/sqlite_store_pr10.md) | 接口、迁移、事务、恢复、备份、部署和冻结 DDL 差异 |
-| [后续开发交接提示词](NEXT_IMPLEMENTATION.md) | 下一轮可直接复用的 PR11 开发任务 |
+| [PR11 · 持久化工作区与 UI](implementation/workspace_pr11.md) | 审定方案、回放控制、已提交投影、历史快照、CSV 与数据路径 |
+| [后续开发交接提示词](NEXT_IMPLEMENTATION.md) | 下一轮可直接复用的 PR12 端到端回归任务 |
 | [01 · 业务清单与追踪矩阵](01_business.md) | 44 项可见业务/重构能力的来源、模块与验收规格 |
 | [02 · 图像识别与系统架构](02_vision_architecture.md) | OpenCV/OCR 分工、Qt、worker、截图和 DPI |
 | [03 · 数据结构与配置迁移](03_data_config.md) | 13 列任务、运行参数、schema v1→v2 和未知字段保留 |
@@ -51,7 +52,8 @@ E 编号沿用既有静态分析并包含 E10、E11、E12；E12 记录按需采�
 
 - C++17 / Qt 6 Widgets 前端继续兼容 schema v1 演示配置；新业务层使用 Replay/Fake。PR08 审定方案为独立 ConfigV2 文件，不自动替换运行中的 AppState。E08 是历史基线，不是全部当前实现。[09、implementation/profile_store_pr08]
 - 界面保持 Win11 / 微软商店浅色白灰：#F3F3F3 背景、#F9F9F9 内容、白卡片、细灰边框、中性近黑 #1F1F1F 强调，不使用蓝色。运行/任务页、关注列表、右侧编辑与底部价格图不重做。[E11；AGENTS.md]
-- PR10 只增加后端结构化持久化；正常前台尚未接入 SQLite。PR11 再连接方案、账本、恢复结果与记录投影；QtSql 可用不等于 UI 工作流已经完成。[09]
+- PR11 正常前台由 WorkspaceController 持有 SQLite 连接，并只投影已提交事实；默认路径为 AppLocalDataLocation/business，可用 --workspace-dir 覆盖，--workspace-read-only 诊断已有数据。ProfileStore/QSaveFile 与旧 schema v1 演示配置仍分别管理。[09、implementation/workspace_pr11]
+- 审定保存、当前选择和运行快照分离；历史 run 冻结完整方案 JSON 和 revision。保存方案仍为 enabled=false、activation_required=true，仅做解释性评估；内置合成八步回放才生成模拟账本。PR12 将验证整套工作流，不把合成结果当作真实市场数据。[09、implementation/workspace_pr11]
 - 当前没有真实捕获、OCR、鼠标键盘输入、购买或交易。步骤触发和图像不落盘要求，与配置/必要账本落盘分别执行。[E12；ADR10]
 - 修改后构建、离屏验收并更新已解压程序 C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe；保留 DLL、platforms 和 sqldrivers。不自动打开可见窗口。[AGENTS.md]
 

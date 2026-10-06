@@ -743,6 +743,52 @@ StoreResult<int> SqliteEventStore::eventCount() const
     return int(count);
 }
 
+StoreResult<QVector<StoredRun>> SqliteEventStore::committedRuns() const
+{
+    if (auto e = d->ready()) return *e;
+    QSqlQuery query(d->reader);
+    if (!query.exec(QStringLiteral("SELECT run_id,session_id FROM runs WHERE run_id<>'' ORDER BY rowid DESC")))
+        return sqlError(query.lastError());
+    QVector<StoredRun> result;
+    while (query.next()) result.push_back({query.value(0).toString(), query.value(1).toString()});
+    if (query.lastError().isValid()) return sqlError(query.lastError());
+    return result;
+}
+
+StoreResult<QVector<EventDraft>> SqliteEventStore::eventsForRun(const QString& runId) const
+{
+    if (auto e = d->ready()) return *e;
+    QSqlQuery query(d->reader);
+    if (!execute(query, QStringLiteral("SELECT event_id,run_id,session_id,clock_domain_id,step_id,seq,at_mono_ms,cancel_epoch,viewport_generation,type,payload_json FROM events WHERE run_id=? ORDER BY seq,event_id"), {text(runId)}))
+        return sqlError(query.lastError());
+    QVector<EventDraft> result;
+    while (query.next()) {
+        EventDraft event;
+        event.eventId = query.value(0).toString(); event.runId = query.value(1).toString();
+        event.sessionId = query.value(2).toString(); event.clockDomainId = query.value(3).toString();
+        event.stepId = query.value(4).toString(); event.seq = query.value(5).toLongLong();
+        event.atMonoMs = query.value(6).toLongLong(); event.cancelEpoch = query.value(7).toLongLong();
+        event.viewportGeneration = query.value(8).toLongLong(); event.type = query.value(9).toString();
+        const auto document = QJsonDocument::fromJson(query.value(10).toString().toUtf8());
+        if (!document.isObject()) return err("EVENT_PAYLOAD_INVALID", QStringLiteral("Stored event payload is not an object"), event.eventId);
+        event.payload = document.object(); result.push_back(event);
+    }
+    if (query.lastError().isValid()) return sqlError(query.lastError());
+    return result;
+}
+
+StoreResult<QVector<RecoveryAuditRecord>> SqliteEventStore::recoveryAudit(const QString& runId) const
+{
+    if (auto e = d->ready()) return *e;
+    QSqlQuery query(d->reader);
+    if (!execute(query, QStringLiteral("SELECT r.attempt_id,r.previous_state,r.recovered_state,r.previous_proof,r.reason FROM recovery_audit r JOIN attempts a ON a.attempt_id=r.attempt_id WHERE a.run_id=? ORDER BY r.recovery_id"), {text(runId)}))
+        return sqlError(query.lastError());
+    QVector<RecoveryAuditRecord> result;
+    while (query.next()) result.push_back({query.value(0).toString(), query.value(1).toString(), query.value(2).toString(), query.value(3).toString(), query.value(4).toString()});
+    if (query.lastError().isValid()) return sqlError(query.lastError());
+    return result;
+}
+
 VoidResult SqliteEventStore::commit()
 {
     if (auto e = d->ready(true)) return *e;

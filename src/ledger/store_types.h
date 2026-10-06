@@ -125,6 +125,14 @@ struct RecoverySet {
     QVector<AttemptRecord> attempts;
 };
 
+struct StoredRun {
+    QString runId;
+    QString sessionId;
+};
+struct RecoveryAuditRecord {
+    QString attemptId, previousState, recoveredState, previousProof, reason;
+};
+
 class IEventStore {
 public:
     virtual ~IEventStore() = default;

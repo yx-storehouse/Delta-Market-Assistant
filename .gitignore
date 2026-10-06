@@ -26,6 +26,14 @@ artifacts/m1_pr10_transaction/rollback_test/
 artifacts/m1_pr10_transaction/snapshots/
 artifacts/m1_pr10_transaction/MODIFIED_FILE.exe
 artifacts/m1_pr10_transaction/*-config.json
+artifacts/m1_pr11_transaction/baseline/
+artifacts/m1_pr11_transaction/rollback_test/
+artifacts/m1_pr11_transaction/snapshots/
+artifacts/m1_pr11_transaction/snapshots_pkg*/
+artifacts/m1_pr11_transaction/logs/
+artifacts/m1_pr11_transaction/MODIFIED_FILE.exe
+artifacts/m1_pr11_transaction/*-config.json
+artifacts/m1_pr11_transaction/selftest-config*.json
 __pycache__/
 *.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/

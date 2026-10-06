@@ -9,18 +9,18 @@ code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;paddi
 @media(max-width:1050px){aside{position:relative;width:auto;border-right:0;border-bottom:1px solid #ddd;padding:18px 22px}nav{display:flex;flex-wrap:wrap}.sub,.aside-note{display:none}main{margin-left:0;padding:20px}section{padding:22px 18px}.hero{padding:23px}table{font-size:12px}th,td{padding:9px}}
 @media print{aside{display:none}main{margin:0;padding:0;max-width:none}section,.hero{border:0;padding:0;break-before:page}section:first-of-type{break-before:auto}a{color:#222}body{background:white}table{font-size:10px}pre{white-space:pre-wrap}.hero{break-before:auto}}
 </style></head><body>
-<aside><div class="brand">Delta Market Assistant</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav><a href="#doc-README">总览</a><a href="#doc-01_business">01 业务清单</a><a href="#doc-02_vision_architecture">02 图像识别 / 架构</a><a href="#doc-03_data_config">03 数据 / 参数</a><a href="#doc-04_state_machine">04 状态机</a><a href="#doc-05_delivery_tests">05 开发 / 验收</a><a href="#doc-06_evidence_references">06 证据 / 参考资料</a><a href="#doc-07_decisions">07 决策 / 待确认</a><a href="#doc-08_implementation_ready">08 开工标准 / 纵切片</a><a href="#doc-acceptance_cases">88 条验收规格</a><a href="#doc-NEXT_IMPLEMENTATION">下一轮开发交接</a></nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>PR01–PR10 已实现<br>下一阶段：PR11 UI 接入<br>Ctrl + F 搜索业务与参数</div></aside>
-<main><header class="hero"><div class="eyebrow">业务规则独立重构 · 保留现有界面</div><h1>业务契约与实现进度。</h1><p>PR10 已完成 SQLite 持久化、事务与恢复测试，常规 UI 接入进入 PR11。下方保留原始业务证据和冻结规格；实际代码与测试结果以实施进度文档为准。实时捕获与 OCR 仍属后续阶段。</p><div class="stats"><span><b>44</b>业务 / 工程条目</span><span><b>88</b>冻结验收规格</span><span><b>16</b>已核查官方资料</span><span><b>12</b>证据 / 需求记录组</span></div></header>
+<aside><div class="brand">Delta Market Assistant</div><div class="sub">业务重构 / DEVELOPMENT NOTES</div><nav><a href="#doc-README">总览</a><a href="#doc-01_business">01 业务清单</a><a href="#doc-02_vision_architecture">02 图像识别 / 架构</a><a href="#doc-03_data_config">03 数据 / 参数</a><a href="#doc-04_state_machine">04 状态机</a><a href="#doc-05_delivery_tests">05 开发 / 验收</a><a href="#doc-06_evidence_references">06 证据 / 参考资料</a><a href="#doc-07_decisions">07 决策 / 待确认</a><a href="#doc-08_implementation_ready">08 开工标准 / 纵切片</a><a href="#doc-acceptance_cases">88 条验收规格</a><a href="#doc-NEXT_IMPLEMENTATION">下一轮开发交接</a></nav><div class="aside-note">文档 v0.3 · 2026.10.06<br>PR01–PR11 已实现<br>下一阶段：PR12 回归交付<br>Ctrl + F 搜索业务与参数</div></aside>
+<main><header class="hero"><div class="eyebrow">业务规则独立重构 · 保留现有界面</div><h1>业务契约与实现进度。</h1><p>PR11 已把方案审定、持久化回放和历史账本接入界面，下一阶段为 PR12 端到端回归。下方保留原始业务证据和冻结规格；实际代码与测试结果以实施进度文档为准。实时捕获与 OCR 仍属后续阶段。</p><div class="stats"><span><b>44</b>业务 / 工程条目</span><span><b>88</b>冻结验收规格</span><span><b>16</b>已核查官方资料</span><span><b>12</b>证据 / 需求记录组</span></div></header>
 <section id="doc-README"><h1>Delta Market Assistant · 业务重构开发文档</h1>
 <blockquote>
-<p>文档版本：0.4 · 2026-10-06 · 状态：PR01–PR10 已完成；本轮 12/12 CTest、316 条 SQLite 断言、22 条发布存储自检与真实发布回退复验通过，PR11 常规 UI 接入待开发。</p>
+<p>文档版本：0.5 · 2026-10-06 · 状态：PR01–PR11 已完成；PR11 的方案审定、持久化回放、已提交账本和历史记录已接入 UI；本轮最终验收见 <a href="09_m1_progress.md">09 · 实施进度</a>。PR12 完整端到端回归仍为下一阶段。</p>
 <p>项目名为 Delta Market Assistant（三角洲市场助手），现有构建目标及程序文件仍名为 RelinkStudio。原始静态分析与设计规格保留；当前实现、实测结果和新基线见 <a href="09_m1_progress.md">09 · 实施进度</a>，不再将整个项目描述为“尚未实现”。</p>
 </blockquote>
 <h2>先看结论</h2>
 <p><strong>采集策略保持步骤触发、像素只走内存。</strong> 到需要识别的业务步骤才取新画面；空闲、暂停、长等待不持续采集或 OCR，正常、成功与报错默认都不落截图。图片仅在用户主动导出或显式开启有界调试时保存。配置和必要账本正常持久化，不逐帧写日志。当前还未接入真实捕获/OCR。[E12；ADR10]</p>
 <p><strong>保留 Win11 白灰界面，独立重写业务层。</strong> 不搬运原程序的 EXE、DLL 或授权组件；采用两阶段业务组织：先按条件找卖单并收藏，再在关注列表处理公示倒计时、确认与结果核验。这是依据静态证据建立的重构路线，不是复制原程序运行环境。[E03、E04]</p>
 <p><strong>原样本有 OpenCV 线索，但不是单靠 OpenCV。</strong> 目录含 cv2；名为 gdi32.dll 的文件实际导出 TomatoOCR、ocrScreen、ocrWindow、ocrImageData。较准确的拆分是图像处理、OCR、页面语义与状态机。ppocrv5/MNN 字符串不足以证明实际选用模型或运行参数；完整分析见证据章节。本轮没有运行样本。[E01、E02、E10]</p>
-<p><strong>开发已从规格进入 M1 实现。</strong> PR01–PR09 已有领域模型、纯规则、回放、只读导入预览、ProfileStore 和内存账本；PR10 增加 SQLite 持久化、事务恢复与发布驱动验证。PR11 仍需把已保存方案和已提交账本接到现有 UI；M2 真实捕获/OCR、M3 旧延迟/限购语义与 M4 外部动作尚未完成。历史 schema、fixture、backlog 和 GWT 矩阵继续作为冻结设计输入，不因 CTest 通过而批量改写。[09、implementation/sqlite_store_pr10]</p>
+<p><strong>开发已从规格进入 M1 实现。</strong> PR01–PR09 已有领域模型、纯规则、回放、只读导入预览、ProfileStore 和内存账本；PR10 增加 SQLite 持久化、事务恢复与发布驱动验证。PR11 已将审定方案、SQLite 已提交账本、恢复状态和历史运行接到现有 UI；保存方案仍保持规则禁用，只有显式选择的内置八步 fixture 生成模拟派发/回执。PR12 整套交付回归、M2 真实捕获/OCR、M3 旧延迟/限购语义与 M4 外部动作尚未完成。历史 schema、fixture、backlog 和 GWT 矩阵继续作为冻结设计输入，不因 CTest 通过而批量改写。[09、implementation/workspace_pr11]</p>
 <h2>从这里阅读</h2>
 <table>
 <thead>
@@ -39,8 +39,12 @@ code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;paddi
 <td>接口、迁移、事务、恢复、备份、部署和冻结 DDL 差异</td>
 </tr>
 <tr>
+<td><a href="implementation/workspace_pr11.md">PR11 · 持久化工作区与 UI</a></td>
+<td>审定方案、回放控制、已提交投影、历史快照、CSV 与数据路径</td>
+</tr>
+<tr>
 <td><a href="#doc-NEXT_IMPLEMENTATION">后续开发交接提示词</a></td>
-<td>下一轮可直接复用的 PR11 开发任务</td>
+<td>下一轮可直接复用的 PR12 端到端回归任务</td>
 </tr>
 <tr>
 <td><a href="#doc-01_business">01 · 业务清单与追踪矩阵</a></td>
@@ -132,7 +136,8 @@ code{font:12px/1.7 Consolas,"Microsoft YaHei",monospace;background:#f2f2f2;paddi
 <ul>
 <li>C++17 / Qt 6 Widgets 前端继续兼容 schema v1 演示配置；新业务层使用 Replay/Fake。PR08 审定方案为独立 ConfigV2 文件，不自动替换运行中的 AppState。E08 是历史基线，不是全部当前实现。[09、implementation/profile_store_pr08]</li>
 <li>界面保持 Win11 / 微软商店浅色白灰：#F3F3F3 背景、#F9F9F9 内容、白卡片、细灰边框、中性近黑 #1F1F1F 强调，不使用蓝色。运行/任务页、关注列表、右侧编辑与底部价格图不重做。[E11；AGENTS.md]</li>
-<li>PR10 只增加后端结构化持久化；正常前台尚未接入 SQLite。PR11 再连接方案、账本、恢复结果与记录投影；QtSql 可用不等于 UI 工作流已经完成。[09]</li>
+<li>PR11 正常前台由 WorkspaceController 持有 SQLite 连接，并只投影已提交事实；默认路径为 AppLocalDataLocation/business，可用 --workspace-dir 覆盖，--workspace-read-only 诊断已有数据。ProfileStore/QSaveFile 与旧 schema v1 演示配置仍分别管理。[09、implementation/workspace_pr11]</li>
+<li>审定保存、当前选择和运行快照分离；历史 run 冻结完整方案 JSON 和 revision。保存方案仍为 enabled=false、activation_required=true，仅做解释性评估；内置合成八步回放才生成模拟账本。PR12 将验证整套工作流，不把合成结果当作真实市场数据。[09、implementation/workspace_pr11]</li>
 <li>当前没有真实捕获、OCR、鼠标键盘输入、购买或交易。步骤触发和图像不落盘要求，与配置/必要账本落盘分别执行。[E12；ADR10]</li>
 <li>修改后构建、离屏验收并更新已解压程序 C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe；保留 DLL、platforms 和 sqldrivers。不自动打开可见窗口。[AGENTS.md]</li>
 </ul>
@@ -2644,59 +2649,65 @@ tests/runtime/             replay/lease/protocol contract tests
 <td>共享内存失败明确报错而不落盘；旧代次回包丢弃，仍被读取的缓冲区不提前复用。</td>
 </tr>
 </tbody>
-</table></section><section id="doc-NEXT_IMPLEMENTATION"><h1>下一轮开发交接：PR11 方案与账本 UI 投影</h1>
-<p>更新时间：2026-10-06（Asia/Shanghai）。PR01–PR10 已完成；本轮实测为 12/12 CTest、316 条 SQLite 断言和 22 条发布存储自检，真实发布回退与恢复程序的离屏复验均通过。实现与证据见 <a href="implementation/sqlite_store_pr10.md">SQLite 仓库</a> 和 <a href="09_m1_progress.md">实施进度</a>。下列提示词继续 PR11，不把后端完成当作常规 UI 已接入。</p>
+</table></section><section id="doc-NEXT_IMPLEMENTATION"><h1>下一轮开发交接：PR12 端到端回归与固定目录交付</h1>
+<p>更新时间：2026-10-06（Asia/Shanghai）。PR11 已把方案审定、持久化回放、已提交账本、恢复与历史记录接入 Win11 UI。实现及本轮实际验证见 <a href="implementation/workspace_pr11.md">PR11 工作区</a> 和 <a href="09_m1_progress.md">实施进度</a>。下一轮完成 PR12 整套回归与交付验收，不重复实施 PR01–PR11，不把合成回放说成真实市场输入。</p>
 <h2>可直接复用的开发提示词</h2>
 <pre><code class="language-text">工作目录：C:\Users\Administrator\Desktop\price。
-项目名称：Delta Market Assistant（三角洲市场助手）；当前构建目标和 EXE 文件名仍为 RelinkStudio。
+项目名称：Delta Market Assistant（三角洲市场助手）；构建目标和 EXE 文件名仍为 RelinkStudio。
 
 先读取 AGENTS.md、SESSION_START.md、docs/business_rebuild/README.md、
 09_m1_progress.md、implementation/README.md、implementation/profile_store_pr08.md、
-implementation/sqlite_store_pr10.md、implementation/integration/ui_integration.md，
-以及 implementation/readiness/backlog.md 中 PR11/PR12 的冻结验收要求。
-先检查 git status -sb、当前源码与最近验证日志，不重复实施 PR01–PR10。
+implementation/sqlite_store_pr10.md、implementation/workspace_pr11.md，
+以及 implementation/readiness/backlog.md 中 PR12 的冻结验收要求。
+先检查 git status -sb、当前源码、已发布程序与最新验证日志，保留用户现有未提交改动。
 
-前置检查：
-1. PR10 的 SQLite 测试、全量 CTest、发布 QSQLITE 和离屏自测必须有真实结果。
-   若当前源码与最近验收版本不同，先回归核对，不用历史 PASS 代替本轮测试。
-2. 读取实际 IEventStore、SqliteEventStore、ProfileStore 接口，保持冻结规格与实现差异可追踪。
-3. PR08 ConfigV2 仍由 QSaveFile 独立管理，不因 PR10 有 SQLite 而迁移配置格式。
+本轮目标：完成 PR12 端到端、兼容性、发布依赖、数据隔离和真实副本回退回归。
+1. 读取 tests/verify_delivery.py、build.ps1、CMakeLists.txt 与 PR11 自测入口。
+   参数化实际 buildDir、应用版本、可执行文件路径与断言数量；不要硬编码历史 PR10 数量。
+   每项必须对照本轮日志，不以旧 PASS 代替新源码测试。
+2. 全量构建与 CTest；逐项复验导入预览 → 必要审定 → 原子保存 → 显式选择 →
+   回放 → 已提交记录 → 关闭/重开 → 历史选择 → CSV 导出。
+   保存后仍 enabled=false、activation_required=true；已保存方案不创建 attempt/reservation。
+   显式选择内置八步 fixture 才生成模拟派发/回执，所有数据标明合成来源。
+3. 补齐并复验 schema v1 原配置兼容、审定 revision、完整运行快照冻结，
+   同商品多卖单、观察价/确认价、missing/stale/clock/source 可见和 CSV 公式转义。
+   收藏成功计数只来自真实存在的已提交收藏事实；fixture 没有该事实时保持零。
+4. 覆盖 dirty 审定取消/保留、旧演示配置保存/丢弃/取消、停止后切模式、
+   暂停禁切方案、关闭时停止失败保留窗口，以及保存/COMMIT 失败不显示成功。
+   真正运行控件与临时数据库，不只测字符串或用假失败返回替代关键事务故障。
+5. 覆盖默认 AppLocalDataLocation/business、--workspace-dir 与 --workspace-read-only，
+   确保离屏验收默认临时工作区，绝不污染真实用户配置/方案/账本。
+   复验第二写实例冲突、只读不写入、损坏/未来 schema 诊断和错误恢复。
+6. 真实重开与受控子进程退出后，Prepared 明确未发者取消，可能已发者 Unknown/保留预留；
+   不自动重发、不自动继续回放。历史 run 保持当时完整 profile JSON/revision。
+   不把受控进程退出称为物理断电试验。
+7. 打包后以 package-only PATH 和显式离屏平台运行原 UI、workspace UI 与 storage 自测；
+   核验 Qt6Sql.dll、sqldrivers/qsqlite.dll、platforms、qt.conf 和资源清单。
+   核验发布目录不包含原始样本、SDK、缓存、用户数据库或私钥。
+8. 发布前保存旧发布目录与哈希，独立副本执行回退并重新运行旧程序离屏自检；
+   保留新工作区数据库/方案，不在固定发布目录执行回退。
+   核验最终固定 EXE 和必要 DLL 均为本轮构建，四项事务工件可重开且记录完整。
+9. 对照 PR12 backlog 和现有验收规格逐项记录证据、缺口与结论；
+   不将 schema/fixture 文档校验或局部自测替代端到端通过。
+   冻结 baseline/schema/fixture/backlog 不覆盖；本轮建立独立 PR12 baseline。
 
-本轮目标：完成 PR11 方案、审定状态、回放、已提交账本和记录的 UI 投影。
-1. 保留现有 Win11 / 微软应用商店浅色白灰设计，不使用蓝色，不重做布局。
-   保留运行/任务页、顶部居中搜索、关注列表、右侧条件编辑和底部价格图。
-2. 在 controller/service 层连接存储；界面不直接执行 SQL 或持有数据库事务。
-   确定可写数据库路径、连接所属线程、生命周期和关闭时 rollback 行为。
-3. 方案列表展示 profile ID/revision、来源与审定状态；明确区分预览、已保存与当前选择。
-   committable=false 的 LegacyImportPreview 始终是只读输入；仅完整 ReviewChoices
-   才能进入 ProfileStore 审定保存。保存不会自动启用规则或发送外部动作。
-4. 成功数、Unknown、预留和记录从已提交快照产生；commit 失败保留旧快照并显示错误。
-   不把 recordDispatch、applyReceipt 或 commitLedger 的暂存成功显示为已入账。
-5. PR10 重开会取消明确未派发的 Prepared，并将可能已派发的未决事实转 Unknown；
-   UI 显示恢复结果和仍占用的预留，绝不自动重发动作或自动继续运行。
-6. 同一商品的不同卖单不互相覆盖；观测价与确认成交价明确分开。
-   缺字段、过期观察、来源、模式和时钟信息保持可见；Unknown 不是失败也不是成功。
-7. 完善停止/切换模式/脏配置交互、存储错误提示、只读恢复记录与 CSV 公式转义。
-   回放快速推进合并刷新；不写逐帧图像或 OCR 全文日志。
-8. 新增 projection/controller 与离屏 UI 回归，覆盖提交失败、重启恢复、切换方案、
-   只读预览、显示计数一致和导出转义。若新增 UI 行为未完成，不宣称 PR11 完成。
-
-执行边界：
-- 不运行、加载或打包 BBZPS 中的 EXE、DLL、脚本和插件。
-- Replay/Fake 保持独立；不接入真实窗口捕获、OCR、键鼠输入、购买或交易。
-- 后续采集仍遵守 ADR10/E12：步骤触发、像素只走内存、默认零截图文件写入。
-- 配置和必要账本正常落盘，与“图像不落盘”要求分开；不为减少 IO 跳过关键事务。
-- 优化入口保持待定义，不替用户补造产品语义。
-- 不覆盖历史 baseline、schema、fixture、backlog 的冻结结果。
-- 不自动打开前台窗口。
+继续保持：
+- Win11 / 微软应用商店浅色白灰，不使用蓝色，不重做现有布局与功能入口。
+- WorkspaceController 管理事务与投影，MainWindow 不直接 SQL；配置仍独立 QSaveFile。
+- 不运行、加载或打包 BBZPS；不接入真实捕获、OCR、键鼠输入、购买或交易。
+- 后续图像路径仍为步骤触发、像素只走内存、默认零截图文件写入；
+  配置和必要账本正常持久化，不为减少 IO 跳过关键事务。
+- 优化入口保持待定义；不自动打开前台窗口或占用用户前台。
 
 验收与交付：
-执行 build.ps1 -Test、build.ps1 -Package，并从发布目录离屏验证 QtSql/QSQLITE、
-UI_SELF_TEST、game_connected=false、system_input_sent=false 与图像零写入断言。
-保留 DLL、platforms、sqldrivers，更新已经解压的固定程序路径：
+执行 build.ps1 -Test、build.ps1 -Package，并实际从发布目录离屏测试。
+核验 UI_SELF_TEST、WORKSPACE_UI_SELF_TEST、STORAGE_SELF_TEST、game_connected=false、
+system_input_sent=false 和 imageFileWriteCount=0；记录本轮实际数量而非预设通过数量。
+更新已经解压的固定程序路径并保留 DLL、platforms 与 sqldrivers：
 C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe。
-提供实际命令、结果、退出码、源码/产物哈希、回退验证与未完成项。
-文档工具结果与应用 CTest 分开报告；不声称 PR12 或 M2/M3/M4 已完成。
+交付实际命令、输入、字面输出、退出码、源码/产物哈希、回退后行为和未完成项。
+文档校验与应用 CTest 分开报告，更新当前入口及下一轮提示词。
+只在全部 PR12 条目有对应证据后称 PR12 完成；M2/M3/M4 仍是独立阶段。
 </code></pre>
-<h2>PR12 留待完整回归</h2>
-<p>单次开发都会构建并更新固定发布目录，但这不等于 PR12 的完整里程碑已完成。PR12 仍需在 PR11 后核验端到端投影、旧配置兼容、包内依赖、原始样本排除、恢复/回退与整套验收记录。</p></section><footer>本文是开发规格，不是完成接入的声明。离线阅读无在线脚本和字体依赖；Markdown、JSON与图表源文件在同目录。</footer></main></body></html>
+<h2>PR12 完成后的选择</h2>
+<p>PR12 的交付回归完成后，再单独规划 M2 的步骤触发、内存捕获与识别适配器。M2 应保留 fake/replay、来源与时间信息、零默认图像文件写入和可取消生命周期；不能由已有模拟回放推断真实 OCR 已接通。旧延迟/限购的未决语义和“优化”入口仍按决策表处理。</p></section><footer>本文是开发规格，不是完成接入的声明。离线阅读无在线脚本和字体依赖；Markdown、JSON与图表源文件在同目录。</footer></main></body></html>

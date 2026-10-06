@@ -1,6 +1,6 @@
-# 存储契约：内存事件仓库与 PR10 QtSql 适配器
+# 存储契约：内存事件仓库、QtSql 适配器与 PR11 投影
 
-> 这份文档保留最初的**接口目标、事务边界和故障语义**。历史 E08/E11 记录的“未链接 QtSql”不再代表本轮源码：PR09 内存仓库与 PR10 `SqliteEventStore` 均已实现并验证，工程已链接 `Qt6::Sql`。实际 API、迁移、恢复、测试和发布结果看 [PR10 实现记录](../sqlite_store_pr10.md) 与 [当前进度](../../09_m1_progress.md)。文中旧称 M10 对应 PR10 存储票，不是另一个已完成的里程碑；常规 UI 的持久化接入仍在 PR11。
+> 这份文档保留最初的**接口目标、事务边界和故障语义**。历史 E08/E11 记录的“未链接 QtSql”不再代表本轮源码：PR09 内存仓库与 PR10 `SqliteEventStore` 均已实现并验证，工程已链接 `Qt6::Sql`。实际 API、迁移、恢复、测试和发布结果看 [PR10 实现记录](../sqlite_store_pr10.md) 与 [当前进度](../../09_m1_progress.md)。文中旧称 M10 对应 PR10 存储票，不是另一个已完成的里程碑。PR11 已由 WorkspaceController 接入常规 UI，详见 [PR11 工作区记录](../workspace_pr11.md)；下文历史目标接口仍保留原样。
 
 ## 当前实现与初始目标的映射
 
@@ -12,9 +12,10 @@
 | 内存工作状态快照 | SQLite 通过独立连接查询已提交状态 | 暂存成功不能提前刷新 UI；内存仓库的工作快照不等于持久化确认 |
 | 一般回滚目标 | SQLite 写失败整笔事务回滚并锁存 aborted | 调用方须显式 `rollback()` 后继续，不提交前半段操作 |
 | 未决恢复扫描 | 默认重开恢复并记录审计；只读打开不执行恢复写入 | 明确未派发者取消；可能已派发者 Unknown，不重发 |
-| UI 与配置集成 | PR08 QSaveFile 继续独立，正常 UI 暂未接 SQLite | PR11 再处理方案、记录和错误投影 |
+| UI 与配置集成 | PR11 WorkspaceController 管理 SQLite，PR08 QSaveFile 继续独立 | 默认 AppLocalDataLocation/business；界面只消费已提交投影 |
+| 已提交历史查询 | PR11 增加 committedRuns / eventsForRun / recoveryAudit | 不修改 schema v2；历史使用 Start.profile_snapshot 与当时 revision |
 
-本轮两种仓库都补强回执门槛：Unknown/ambiguous 不能直接 `commitLedger()` 为成功/失败；终态必须与已确认回执一致。以下章节保留设计目标；若伪代码与已实现类型不同，使用上表及 PR10 记录，不把规格示例直接当编译通过的代码。
+PR10 已对两种仓库补强回执门槛：Unknown/ambiguous 不能直接 `commitLedger()` 为成功/失败；终态必须与已确认回执一致。PR11 进一步要求确认价的 attempt_id/transaction_id 与已提交 Success 账本关联，单独的回执形状事件不构成确认。以下章节保留设计目标；若伪代码与已实现类型不同，使用上表及 PR10/PR11 记录，不把规格示例直接当编译通过的代码。
 
 ## 1. 分层决定
 

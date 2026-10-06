@@ -1,10 +1,10 @@
 # Delta Market Assistant · 三角洲市场助手
 
-## 当前开发进度：PR10 持久化后端
+## 当前开发进度：PR11 方案与账本界面
 
-项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR10 已实现领域规则、离线回放、只读导入预览、审阅配置保存、内存账本及 SQLite 持久化后端。SQLite 支持事务提交、幂等、版本迁移、未决恢复与一致性备份；常规界面仍使用演示/回放数据，PR11 将接入持久化方案和记录。
+项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR11 已接入领域规则、只读导入预览、审定方案保存、持久化合成回放、已提交账本与历史记录。运行页可选择审定方案或内置回放样例；工作台提供回放单步/快速推进，日志页查看并导出历史事实。已保存方案持续未启用，只有显式选择的内置合成样例产生模拟账本，不连接真实市场。
 
-开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/sqlite_store_pr10.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。本轮同时修复历史中文乱码，并增加可见文案离屏回归。
+开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/workspace_pr11.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。正常业务数据位于应用本地数据目录的 `business` 子目录；`--workspace-dir` 可指定独立目录，`--workspace-read-only` 用于只读查看。界面显示中文状态，完整原始 ID 和原因码保留在提示中。
 
 ## 当前版本：0.6 Windows 11 浅色 · 微软商店布局
 

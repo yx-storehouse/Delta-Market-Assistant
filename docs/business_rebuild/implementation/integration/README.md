@@ -1,36 +1,38 @@
 # 集成契约入口
 
-更新时间：2026-10-06（Asia/Shanghai）。本目录保留领域、运行时、存储和现有 UI 的设计契约；PR09 内存仓库与 PR10 SQLite 仓库均已完成并验证，PR11 常规 UI 接入仍待开发。实际实现和验证记录看 [PR10 记录](../sqlite_store_pr10.md) 与 [实施进度](../../09_m1_progress.md)。本目录的冻结 DDL/示例仍不是生产测试结果。
+更新时间：2026-10-06（Asia/Shanghai）。本目录保留领域、运行时、存储和 UI 的设计契约。PR09 内存仓库、PR10 SQLite 仓库及 PR11 持久化工作区 UI 已落地；本轮实测见 [实施进度](../../09_m1_progress.md)，当前行为详见 [PR11 工作区记录](../workspace_pr11.md)。冻结 DDL/示例仍不是生产测试结果。
 
 | 文件 | 责任 | 当前解释 |
 |---|---|---|
-| [ui_integration.md](ui_integration.md) | MainWindow/AppState 的 controller/projection、UI 命令与金额编辑 | 设计输入；PR05/PR07 已接入部分回放/预览，PR11 继续方案与账本 |
-| [storage_contract.md](storage_contract.md) | IEventStore、事务、幂等、未决预留与恢复 | 保留初始目标；PR10 差异在文首列明 |
-| [storage_schema.sql](storage_schema.sql) | 完整 SQLite 目标 DDL | 冻结规格，PR10 未直接执行该文件 |
+| [ui_integration.md](ui_integration.md) | MainWindow/AppState 的 controller/projection、UI 命令与金额编辑 | 冻结设计输入；PR11 的实际接口/工作流另见实现记录 |
+| [storage_contract.md](storage_contract.md) | IEventStore、事务、幂等、未决预留与恢复 | 保留初始目标；文首映射 PR10/PR11 实际接口 |
+| [storage_schema.sql](storage_schema.sql) | 完整 SQLite 目标 DDL | 冻结规格，源码未直接执行该文件 |
 | [storage_contract.sample.json](storage_contract.sample.json) | 结构化事务与幂等示例 | 规格示例，非实测结果 |
 
-## 接入顺序
+## 当前接入路径
 
 ~~~text
-domain Decision
-  → runtime Run / Attempt reducer
-  → IEventStore 暂存事实 / 回执 / 预留
+WorkspaceController 候选运行状态 / 纯规则解释
+  → IEventStore 暂存事件 / attempt / 回执 / 预留
   → 显式 commit 成功
-  → 已提交 LedgerSnapshot
-  → UI projection
+  → committedRuns / eventsForRun / snapshot / recoveryAudit
+  → WorkspaceProjection
+  → MainWindow 控件 / 记录表 / 统计 / 价格图
 ~~~
 
-- Match 不等于允许外部动作；当前 Replay/Fake 仍不产生真实输入或购买。
-- Pause/Stop 不抹除已发出的事实；迟到回执可以入账，但不恢复运行。
-- SQLite 的查询投影只读取已提交快照，不把当前事务里的暂存成功显示到 UI。
-- 图像帧、OCR 全文和逐帧日志不进入账本；正常业务不落截图。
-- ConfigV2 继续由 PR08 ProfileStore/QSaveFile 管理；PR10 不自动切换 AppState。
-- PR10 后端可用不等于 PR11 已接好前台，不能据此宣称方案列表、记录页或恢复提示已经完成。
+- Match 不等于允许外部动作；已保存方案仍为 enabled=false、activation_required=true，解释性评估不建立 attempt/reservation。
+- 内置八步 fixture 才创建模拟派发/回执；所有观察和结果均为合成数据，不产生真实输入或购买。
+- Pause/Stop 不抹除可能已发出的事实；Unknown 保留预留，重开不自动重发或恢复运行。
+- SQLite 的查询投影只读取已提交快照；提交失败保留旧计数/记录/步骤并显示错误。
+- 确认价必须关联已提交 Success 账本，观察价与模拟确认价分开显示；商品 ID 不充当卖单唯一键。
+- ConfigV2 继续由 PR08 ProfileStore/QSaveFile 管理；保存、当前选择和运行快照独立，历史不套用后续 revision。
+- 图像帧、OCR 全文和逐帧日志不进入账本；当前没有捕获/OCR，业务图像写入计数保持零。
 
-## 集成前检查
+## 工作区与集成检查
 
-1. 核对 src/ledger/store_types.h 与 sqlite_event_store.h 的实际类型和返回值，不照抄历史伪代码。
-2. 分别运行文档校验与 CTest；记录源码 revision、实际 buildDir、命令、退出码和产物哈希。
-3. 校验 Qt6::Sql 链接与发布目录 Qt6Sql.dll、sqldrivers/qsqlite.dll；SQL driver 与 platforms 是同级目录。
-4. 从发布目录实际加载 QSQLITE 并测试，不能用 SDK 中存在 DLL 代替发布验证。
-5. 实施 PR11 时再选择 app data 路径与 controller 生命周期；不得把测试临时数据库当用户数据库。
+1. 默认工作区为 QStandardPaths::AppLocalDataLocation/business，包含 workspace.sqlite 和 profiles/；旧 schema v1 演示配置独立保存。
+2. --workspace-dir 显式覆盖路径；--workspace-read-only 只读诊断已有工作区，不写方案、不迁移、不启动回放。
+3. WorkspaceController 在其创建线程持有连接，关闭回滚未提交工作；真实写锁/COMMIT 错误通过投影显示，不切换到空库假装成功。
+4. 离屏自测默认使用临时工作区，与正常用户数据隔离；指定测试目录时由调用方选择 --workspace-dir。
+5. 分别运行文档校验与 CTest；从发布目录实际加载 Qt6Sql.dll、sqldrivers/qsqlite.dll，不用 SDK 存在 DLL 代替发布验收。
+6. PR12 继续整套旧配置兼容、端到端、package-only PATH、异常关闭和发布回退测试；保留历史基线，不改写冻结矩阵的 planned_not_run。
