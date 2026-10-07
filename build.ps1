@@ -70,7 +70,7 @@ try {
         }
         $ReleaseDocs = Join-Path $Dest 'docs'
         New-Item -ItemType Directory -Path $ReleaseDocs -Force | Out-Null
-        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md')) {
+        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md','COLLECTION_TASK_IMPORT.md')) {
             $source = Join-Path (Join-Path $Root 'docs') $name
             if (Test-Path -LiteralPath $source) { Copy-Item -LiteralPath $source -Destination $ReleaseDocs -Force }
         }

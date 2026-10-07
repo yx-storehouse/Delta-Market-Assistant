@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "review": "Reviewed neutral Win11 real-data task list and import preview; user config has 50 tasks/21 enabled, zero limits shown as unlimited, source fields readable; synthetic self-test keeps one explicit unrelated task to test preservation.",
+  "images": [
+    {
+      "path": "production_ui/tasks.png",
+      "sha256": "b5e0d1f30d5a08c29054bb22b89e2a9c65942edbe9e1c72c8ec37311f5360c5c"
+    },
+    {
+      "path": "real_import_snapshots/import_preview.png",
+      "sha256": "f67c3b314c1643b5c3583b69709de6d85155dc6e9834adf0bb7c81d6b5365ed7"
+    },
+    {
+      "path": "real_import_snapshots/imported_tasks_compact.png",
+      "sha256": "b55db1bdaf8a7ef63107e9e073264955442e2d3f32d034dca5adec6dc51aa9a4"
+    }
+  ]
+}

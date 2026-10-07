@@ -1,0 +1,1 @@
+{"name": "Confirm current watchlist state with independent frames before resuming old checkpoint", "timeout_seconds": 20, "steps": [{"kind": "capture", "expected_page": "empty_watchlist", "ui_regions": true, "market_anchors": true}, {"kind": "capture", "expected_page": "empty_watchlist", "ui_regions": true, "market_anchors": true}]}

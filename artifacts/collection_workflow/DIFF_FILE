@@ -1,0 +1,2963 @@
+--- a/.gitignore
++++ b/.gitignore
+@@ -92,3 +92,10 @@
+ 
+ artifacts/catalog_ui_qa/
+ artifacts/real_skin_catalog/*.py
++
++# Collection workflow transaction: no user inputs, binaries, or temporary images
++artifacts/collection_workflow/*/
++artifacts/collection_workflow/*.exe
++artifacts/collection_workflow/*.png
++artifacts/collection_workflow/*.py
++artifacts/collection_workflow/*-config.json
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,6 +15,8 @@
+   src/application/startup_config.cpp src/application/startup_config.h
+   src/application/catalog_startup.cpp src/application/catalog_startup.h
+   src/diagnostics/catalog_self_test.cpp src/diagnostics/catalog_self_test.h
++  src/diagnostics/collection_import_self_test.cpp src/diagnostics/collection_import_self_test.h
++  src/diagnostics/collection_task_cli.cpp src/diagnostics/collection_task_cli.h
+   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
+   src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
+   src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
+@@ -43,6 +45,9 @@
+   src/ui/pages/workspace_records_panel.cpp src/ui/pages/workspace_records_panel.h
+   src/ui/dialogs/task_editor_dialog.cpp src/ui/dialogs/task_editor_dialog.h
+   src/ui/dialogs/skin_catalog_dialog.cpp src/ui/dialogs/skin_catalog_dialog.h
++  src/ui/dialogs/collection_import_dialog.cpp src/ui/dialogs/collection_import_dialog.h
++  src/application/collection_task_import.cpp src/application/collection_task_import.h
++  src/application/collection_task_commit.cpp src/application/collection_task_commit.h
+   src/application/catalog_configuration.cpp src/application/catalog_configuration.h)
+ target_include_directories(relink_ui PUBLIC src)
+ target_link_libraries(relink_ui PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets relink_catalog)
+@@ -72,6 +77,13 @@
+ target_sources(relink_business PRIVATE src/config/savedvalue_reader.cpp src/config/savedvalue_reader.h)
+ target_include_directories(relink_business PUBLIC src)
+ target_link_libraries(relink_business PUBLIC Qt6::Core)
++target_link_libraries(relink_ui PUBLIC relink_business)
++add_executable(collection_task_commit_tests tests/catalog/collection_task_commit_tests.cpp)
++target_link_libraries(collection_task_commit_tests PRIVATE relink_ui)
++add_executable(collection_task_import_tests tests/catalog/collection_task_import_tests.cpp)
++target_link_libraries(collection_task_import_tests PRIVATE relink_ui)
++add_executable(collection_import_dialog_tests tests/ui/collection_import_dialog_tests.cpp)
++target_link_libraries(collection_import_dialog_tests PRIVATE relink_ui)
+ 
+ add_executable(business_tests tests/business/business_tests.cpp)
+ target_include_directories(business_tests PRIVATE src)
+@@ -231,6 +243,12 @@
+ target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
+ 
+ enable_testing()
++add_test(NAME collection_task_commit_tests COMMAND collection_task_commit_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
++add_test(NAME collection_import_offscreen COMMAND RelinkStudio --collection-import-self-test --snapshot-dir "${CMAKE_BINARY_DIR}/import_snapshots")
++set_tests_properties(collection_import_offscreen PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
++add_test(NAME collection_task_import_tests COMMAND collection_task_import_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
++add_test(NAME collection_import_dialog_tests COMMAND collection_import_dialog_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
++set_tests_properties(collection_import_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
+ add_test(NAME skin_catalog_tests COMMAND skin_catalog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json" "${CMAKE_SOURCE_DIR}/docs/business_rebuild/skin_reference/skin_reference.json")
+ add_test(NAME skin_catalog_dialog_tests COMMAND skin_catalog_dialog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
+ set_tests_properties(skin_catalog_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,10 @@
+ # Delta Market Assistant · 三角洲市场助手
+ 
+-## 当前交付：真实皮肤目录与赛季追加（2026-10-07）
++## 最新功能：真实收藏任务导入（2026-10-07）
++
++“任务 → 导入收藏任务”现在可将 `.savedValue` 的逐行条件追加并持久化到真实皮肤目录；确认保存后才刷新列表。数量 0 表示不限，重复导入不覆盖编辑，原文件不改写。用户输入实际为 50 行 / 21 启用 / 13 个全部商品（其中启用 9 个）。导入不自动运行收藏或购买。使用方式见 [收藏任务导入](docs/COLLECTION_TASK_IMPORT.md)。36 组 CTest、实际文件逐行/弹窗/落盘与隔离回退证据见 `artifacts/collection_workflow/VERIFICATION.txt`。
++
++## 真实皮肤目录与赛季追加（2026-10-07）
+ 
+ 正常启动内置用户提供并核对的 **S1–S11 共 149 项皮肤**，不再装载旧默认演示商品、任务、价格和运行结果。保留原商品 ID、赛季、武器、皮肤系列、极品 / 优品标记和菜单颜色。正式游戏品质尚未核实，不按颜色自动推断。缩略图暂时留空；无市场观测时，报价、磨损和历史曲线保持空白。
+ 
+@@ -49,7 +53,7 @@
+ - 界面关闭时保存当前任务和本地关注配置。
+ - 右上角“导入”保留配置只读预览；追加目录使用目录弹窗中的独立导入入口，不覆盖现有配置。
+ - JSON 配置包含 `schema_version: 1`、`demo: false`、`skins`、`tasks` 和 `run_settings`；任务可带 `condition`（缺省“不限”）。旧文件缺少新字段时按默认值载入。
+-- 当前本地任务编辑的数量范围是 1–9999；原 `.savedValue` 的 0 不限值仍在其业务输入中保留，本轮不改该执行参数。
++- 当前本地任务编辑的数量范围是 0–9999；0 明示为不限，与原 `.savedValue` 一致。
+ - CSV 保留数据来源与导出时间；未知数值为空，不编造价格或采集时间。
+ 
+ ## 工程结构
+--- a/SESSION_START.md
++++ b/SESSION_START.md
+@@ -1,4 +1,14 @@
+ # Relink Studio — new session entry
++
++## 最新功能：收藏任务接入程序（2026-10-07）
++
++- 任务页新增导入真实 `.savedValue` 的入口，全局导入也识别该类型；严格按真实目录和原字典关联，逐行预览，确认后原子保存再发布到 AppState。数量 0 在编辑、列表、配置往返统一表示不限；稳定来源去重保留导入后的编辑，不覆盖原关注。
++- 本机正式 config.json 已通过新入口实际导入，重开校验为149皮肤/50任务/21启用；重复导入零新增且配置哈希不变。导入前原配置已备份，未启动任何任务。
++- 真实输入核实为 50 行 / 21 启用 / 13 全部商品 / 9 启用商品。总商品 13 包含停用10100、10702、10703、10704，之前猜测10仅为新增测试预期错误，已独立核对原始字节纠正。
++- 源码入口 `application/collection_task_import.*`、`collection_task_commit.*`、`ui/dialogs/collection_import_dialog.*`。GUI保存失败保留预览；CLI `--import-collection-tasks <file> --config <explicit file>` 为同一数据提交，输入失败不覆盖配置。测试全部隔离，真实来源不改。
++- 新 `--collection-import-self-test` 使用真实主窗导入入口及持久化链路；`--task-source` 可只读指定实际原文件。程序路径不变，详细说明 `docs/COLLECTION_TASK_IMPORT.md`；本轮事务 `artifacts/collection_workflow/VERIFICATION.txt`。
++- **当前游戏现场与旧断点不同：** 本轮最初观察为大厅；新批次沿大厅→曼德尔砖→典藏→我的关注，现页显示空关注。原25次已确认收藏是历史事实，不能当作当前在售列表；未清空/取消/添加关注，未购买。当前页不能使用旧P90 B第六张坐标。批次结束已回IDE。
++- 新 `tests/manual/collection_scroll.py` 只落实同帧布局/半行拒绝/滚动位移证明/对账契约和离线测试，C++动态边界采集与runner动作尚未接通。别把41项离线回归或原固定六卡几何当作已实测滚动支持。
+ 
+ ## 最新开发节点：真实皮肤目录接入（2026-10-07）
+ 
+--- a/build.ps1
++++ b/build.ps1
+@@ -70,7 +70,7 @@
+         }
+         $ReleaseDocs = Join-Path $Dest 'docs'
+         New-Item -ItemType Directory -Path $ReleaseDocs -Force | Out-Null
+-        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md')) {
++        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md','COLLECTION_TASK_IMPORT.md')) {
+             $source = Join-Path (Join-Path $Root 'docs') $name
+             if (Test-Path -LiteralPath $source) { Copy-Item -LiteralPath $source -Destination $ReleaseDocs -Force }
+         }
+--- a/docs/COLLECTION_TASK_IMPORT.md
++++ b/docs/COLLECTION_TASK_IMPORT.md
+@@ -0,0 +1,61 @@
++# 收藏任务导入与后续开发
++
++2026-10-07。程序现在可以把原 `.savedValue` 收藏任务直接追加到真实皮肤目录，不再只显示解析预览。
++
++## 在程序里使用
++
++1. 打开“任务”，点击“导入收藏任务”，选择 `.savedValue`。右上角“导入”也识别这个文件类型。
++2. 核对赛季、商品、菜单颜色/极品优品、成色、最低价、最高价、最大磨损、限量及启用状态。
++3. 点击“确认追加”。程序先备份原配置、原子保存，再把新任务显示到任务页。保存失败保留预览供重试。
++4. 导入不会自动启动收藏或购买，不覆盖既有关注及任务。相同文件改名后仍识别为重复；导入后手改的条件不会被重复导入覆盖。
++
++限量 **0 = 不限**。任务编辑器、关注页右侧数量框、任务列表与 JSON 保存统一支持这个含义，不把 0 改成 1。
++
++## 此次用户数据核对
++
++原始来源 `S11新赛季0925.savedValue` 为 8,926 字节，SHA-256：
++
++```text
++cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253
++```
++
++共有 **50 行、21 行启用、13 个全部商品、9 个启用商品**。总商品数包含停用行；不要把 9 个启用商品误写成整份文件的商品总数。之前新测试猜测总商品 10 已由独立解码纠正，程序实际统计一直是 13。
++
++保留原数值行顺序、启用状态、成色、价格、磨损、限量，以及原始七个字段。商品 ID 精确匹配已核对目录；禁用行也不能用未知 ID 混入。`疾风魅影` 与 `疾光魅影` 仍视为不同文字，不自动替换。来源中的购买/运行参数本轮仅作为解析元数据，不悄悄覆盖当前运行参数。
++
++## 保存、重复与回退
++
++- `Task.importSource` 保存原文件与字典 SHA-256、商品/成色 ID、行号和原始字段；可编辑条件与来源字段分离。
++- 稳定任务 ID 为 `savedvalue:<源文件SHA-256>:<原始行号>`，同一来源重复导入不再追加。
++- 原配置备份为 `config.json.before-task-import.bak`，重名时增编号。原 `.savedValue` 从不写入。
++- 无新增的重复导入不保存无关草稿，不标记未保存编辑为已保存。
++- 程序包回退不删除用户配置或来源文件；旧程序可能不认识数量 0 或来源字段。需要恢复旧配置时使用对应导入前备份，不将程序回退冒称为撤销游戏收藏。
++
++无需显示窗口的同一提交入口（必须明确配置路径）：
++
++```powershell
++& .\dist\RelinkStudio\RelinkStudio.exe --import-collection-tasks 'C:\Users\Administrator\Desktop\S11新赛季0925.savedValue' --config 'C:\Users\Administrator\AppData\Local\RelinkStudio\RelinkStudio\config.json'
++```
++
++CLI 先在内存中解析与校验；输入错误时不迁移或覆盖目标配置。此命令不启动游戏动作。
++
++## 模块及验证
++
++- `src/application/collection_task_import.*`：严格身份关联、顺序、去重和纯内存预览。
++- `src/application/collection_task_commit.*`：导入锁、原配置备份、原子写入和成功后的状态发布。
++- `src/ui/dialogs/collection_import_dialog.*`：预览与确认，不执行点击或购买。
++- `src/diagnostics/collection_import_self_test.*`：从正常目录启动，操作真实弹窗、测试写失败、追加、重开及重复导入；全部使用临时目录。
++- `tests/catalog/collection_task_*_tests.cpp`、`tests/ui/collection_import_dialog_tests.cpp`：包含实际原文件可选输入。
++
++```powershell
++powershell -NoProfile -File .\build.ps1 -Test -Package
++python -X utf8 -m unittest discover -s tests/manual -p 'test_collection*.py' -v
++```
++
++## 实机与滚动状态
++
++本轮恢复原启动预检：游戏实测已回到大厅；按“大厅 → 曼德尔砖 → 典藏 → 我的关注”导航后，当前画面显示空关注。此前 25 次成功收藏保留为历史事实，不等于现在仍有 25 个在售关注。没有清空、取消或新加关注，也没有购买。每个完整批次仅前置游戏一次，结束统一恢复 IDE。
++
++`tests/manual/collection_scroll.py` 新增同帧可见布局、半卡拒绝、坐标凭据失效、滚动条位移验证和 journal 对账契约。旧固定六卡包会明确报 `COLLECTION_LAYOUT_MISSING`，不能据此处理滚动后的坐标。新增测试覆盖的是离线字段契约，**还未接上 C++ 动态边界检测或宣称真实滚动收藏通过**。下一步需在新的当前页重新完成几何采集、选中卡片绑定及结果回读，而不是复用旧 P90 B 第六张的坐标。
++
++交付、源数据副本验证、真实命令、失败尝试与隔离回退均记录于 `artifacts/collection_workflow/VERIFICATION.txt`。
+--- a/src/application/collection_task_commit.cpp
++++ b/src/application/collection_task_commit.cpp
+@@ -0,0 +1,32 @@
++#include "application/collection_task_commit.h"
++#include <QDir>
++#include <QFile>
++#include <QFileInfo>
++#include <QLockFile>
++namespace relink::application {
++bool commitCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++    const catalog::Catalog& catalog, AppState& state, CollectionTaskImportPreview* report, QString* error) {
++    CollectionTaskImportPreview candidate;
++    if (!previewCollectionTaskImport(bytes, dictionary, catalog, state, &candidate, error)) return false;
++    if (!candidate.addedCount) { if (report) *report = candidate; return true; }
++    if (state.configPath.isEmpty()) { if (error) *error = QStringLiteral("配置保存路径为空。"); return false; }
++    const QString path=QFileInfo(state.configPath).absoluteFilePath();
++    if (!QDir().mkpath(QFileInfo(path).absolutePath())) { if (error) *error = QStringLiteral("配置目录创建失败。"); return false; }
++    QLockFile lock(path + QStringLiteral(".import.lock"));lock.setStaleLockTime(0);
++    if (!lock.tryLock(0)) { if (error) *error = QStringLiteral("另一个任务导入正在保存，请稍后重试。"); return false; }
++    AppState draft;draft.skins=state.skins;draft.tasks=candidate.mergedTasks;draft.run=state.run;
++    // A copy preserves the last on-disk configuration while QSaveFile commits
++    // the entire candidate. Failed persistence never publishes tasks to UI.
++    if (QFileInfo(path).isFile()) {
++        QString backup=path+QStringLiteral(".before-task-import.bak");
++        for(int n=1;QFileInfo::exists(backup);++n) backup=path+QStringLiteral(".before-task-import-%1.bak").arg(n);
++        if (!QFile::copy(path,backup)) { if(error) *error=QStringLiteral("原配置备份失败，未导入任务。");return false; }
++    }
++    if (!draft.saveTo(path,error)) return false;
++    state.tasks=candidate.mergedTasks;
++    state.addLog(QStringLiteral("INFO"),QStringLiteral("已追加 %1 条收藏任务；跳过 %2 条重复来源。").arg(candidate.addedCount).arg(candidate.duplicateCount));
++    if (report) *report=candidate;
++    state.notifyChanged();
++    return true;
++}
++}
+--- a/src/application/collection_task_commit.h
++++ b/src/application/collection_task_commit.h
+@@ -0,0 +1,7 @@
++#pragma once
++#include "application/collection_task_import.h"
++namespace relink::application {
++bool commitCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++    const catalog::Catalog& catalog, AppState& state, CollectionTaskImportPreview* report = nullptr,
++    QString* error = nullptr);
++}
+--- a/src/application/collection_task_import.cpp
++++ b/src/application/collection_task_import.cpp
+@@ -0,0 +1,168 @@
++#include "application/collection_task_import.h"
++#include "application/catalog_configuration.h"
++#include "config/savedvalue_reader.h"
++
++#include <QCryptographicHash>
++#include <QHash>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QRegularExpression>
++#include <QSet>
++#include <utility>
++
++namespace relink::application {
++namespace {
++bool fail(QString* error, const QString& text) {
++    if (error) *error = text;
++    return false;
++}
++QString compactName(QString value) {
++    // Whitespace is presentation-only. Never fuzzy-match or substitute words,
++    // notably 疾风魅影 and 疾光魅影, which remain different labels.
++    value.remove(QRegularExpression(QStringLiteral("\\s+")));
++    return value;
++}
++QString originKey(const TaskImportSource& source) {
++    return source.sourceSha256 + QLatin1Char(':') + QString::number(source.row);
++}
++bool sameSource(const TaskImportSource& a, const TaskImportSource& b) {
++    return a.format == b.format && a.sourceSha256 == b.sourceSha256
++        && a.dictionarySha256 == b.dictionarySha256 && a.row == b.row
++        && a.productId == b.productId && a.conditionId == b.conditionId && a.fields == b.fields;
++}
++bool validateConfiguration(const AppState& state, const QVector<Task>& tasks, QString* error) {
++    QVector<::Skin> checkedSkins;
++    QVector<Task> checkedTasks;
++    RunSettings checkedRun;
++    return decodeV1Config(QJsonDocument(encodeV1Config(state.skins, tasks, state.run))
++                              .toJson(QJsonDocument::Compact),
++                          checkedSkins, checkedTasks, checkedRun, error);
++}
++}
++
++QString collectionImportTaskId(const QString& sourceSha256, int sourceRow) {
++    return QStringLiteral("savedvalue:") + sourceSha256 + QLatin1Char(':') + QString::number(sourceRow);
++}
++
++bool previewCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++                                 const catalog::Catalog& catalog, const AppState& state,
++                                 CollectionTaskImportPreview* preview, QString* error) {
++    if (error) error->clear();
++    if (!preview) return fail(error, QStringLiteral("缺少任务导入预览接收对象"));
++    const auto decoded = config::savedValueCollectionSnapshot(bytes, dictionary);
++    if (!decoded.value(QStringLiteral("valid")).toBool())
++        return fail(error, QStringLiteral("任务文件解析失败：%1").arg(decoded.value(QStringLiteral("error")).toString()));
++    const auto rows = decoded.value(QStringLiteral("rows")).toArray();
++    if (rows.isEmpty()) return fail(error, QStringLiteral("任务文件中没有收藏任务"));
++    if (dictionary.value(QStringLiteral("collection_limit_zero_semantics")).toString()
++        != QStringLiteral("no_quantity_limit"))
++        return fail(error, QStringLiteral("来源字典未确认限量0表示不限，任务未导入"));
++    catalog::Catalog checkedCatalog;
++    if (!catalog::parseCatalog(catalog::serializeCatalog(catalog), &checkedCatalog, error)) return false;
++    if (!validateConfiguration(state, state.tasks, error)) return false;
++
++    CollectionTaskImportPreview result;
++    result.sourceSha256 = decoded.value(QStringLiteral("source_sha256")).toString();
++    result.dictionarySha256 = QString::fromLatin1(QCryptographicHash::hash(
++        QJsonDocument(dictionary).toJson(QJsonDocument::Compact), QCryptographicHash::Sha256).toHex());
++    result.inactiveSettingsMetadata = decoded.value(QStringLiteral("inactive_settings_metadata")).toObject();
++    result.mergedTasks = state.tasks;
++    QHash<QString, const Task*> existingIds, existingOrigins;
++    for (const auto& task : state.tasks) {
++        existingIds.insert(task.id, &task);
++        if (!task.importSource.format.isEmpty()) existingOrigins.insert(originKey(task.importSource), &task);
++    }
++    QHash<QString, const ::Skin*> projectedSkins;
++    for (const auto& skin : state.skins) {
++        if (skin.catalogProductId.isEmpty()) continue;
++        if (projectedSkins.contains(skin.catalogProductId))
++            return fail(error, QStringLiteral("当前配置存在重复商品 %1，任务未导入").arg(skin.catalogProductId));
++        projectedSkins.insert(skin.catalogProductId, &skin);
++    }
++    QSet<QString> enabledProducts, allProducts;
++    for (const auto& value : rows) {
++        const auto raw = value.toObject();
++        const int sourceRow = raw.value(QStringLiteral("row_index")).toInt(-1);
++        const QString productId = raw.value(QStringLiteral("source_product_id")).toString();
++        const QString context = QStringLiteral("原始第%1行（索引%2，商品%3）")
++            .arg(sourceRow + 1).arg(sourceRow).arg(productId);
++        if (!raw.value(QStringLiteral("dictionary_resolved")).toBool())
++            return fail(error, context + QStringLiteral("的商品或成色ID未知，整份任务未导入"));
++        const auto* skin = checkedCatalog.findSkin(productId);
++        if (!skin) return fail(error, context + QStringLiteral("未在真实皮肤目录中找到，整份任务未导入"));
++        if (compactName(skin->displayName) != compactName(raw.value(QStringLiteral("display_name")).toString())
++            || compactName(skin->seasonLabel) != compactName(raw.value(QStringLiteral("season_label")).toString())
++            || compactName(skin->displayName.section(QLatin1Char('|'), 1))
++                != compactName(raw.value(QStringLiteral("product_name")).toString()))
++            return fail(error, context + QStringLiteral("的商品名称或赛季与真实目录不一致，整份任务未导入"));
++        const auto* projected = projectedSkins.value(productId, nullptr);
++        if (!projected || projected->id != catalogSkinId(productId)
++            || projected->name != skin->displayName || projected->menuColor != skin->menuColor
++            || projected->variant != skin->variantLabel || projected->skinSeries != skin->skinSeries
++            || projected->series != skin->seasonId + QStringLiteral(" · ") + skin->seasonLabel)
++            return fail(error, context + QStringLiteral("的当前目录投影不一致，请先重新加载皮肤资料"));
++
++        CollectionTaskImportRow row;
++        row.productId = productId;
++        row.seasonId = skin->seasonId;
++        row.seasonLabel = skin->seasonLabel;
++        row.displayName = skin->displayName;
++        row.menuColor = skin->menuColor;
++        row.variantLabel = skin->variantLabel;
++        auto& task = row.task;
++        task.id = collectionImportTaskId(result.sourceSha256, sourceRow);
++        task.skinId = projected->id;
++        task.condition = raw.value(QStringLiteral("condition_label")).toString();
++        task.name = skin->displayName + QStringLiteral(" · ") + task.condition;
++        task.minPrice = raw.value(QStringLiteral("price_min")).toString().toDouble();
++        task.maxPrice = raw.value(QStringLiteral("price_max")).toString().toDouble();
++        task.maxWear = raw.value(QStringLiteral("max_wear")).toString().toDouble();
++        const double quantity = raw.value(QStringLiteral("limit_raw")).toDouble();
++        if (quantity > 9999) return fail(error, context + QStringLiteral("的限量超过9999，整份任务未导入"));
++        task.quantity = static_cast<int>(quantity);
++        task.enabled = raw.value(QStringLiteral("enabled")).toBool();
++        task.status = task.enabled ? QStringLiteral("待启动") : QStringLiteral("未启用");
++        task.importSource = {QStringLiteral("savedValue"), result.sourceSha256, result.dictionarySha256,
++                             productId, raw.value(QStringLiteral("source_condition_id")).toString(),
++                             sourceRow, raw.value(QStringLiteral("source_fields")).toObject()};
++        const Task* existing = existingOrigins.value(originKey(task.importSource), nullptr);
++        const Task* sameId = existingIds.value(task.id, nullptr);
++        if (sameId && sameId != existing)
++            return fail(error, context + QStringLiteral("的稳定任务ID已被其它任务占用，整份任务未导入"));
++        if (existing) {
++            if (!sameSource(existing->importSource, task.importSource))
++                return fail(error, context + QStringLiteral("的历史导入来源与本次不一致，整份任务未导入"));
++            row.alreadyImported = true;
++            ++result.duplicateCount;
++            // Preserve every current editable value; the preview still shows
++            // the original input so a skipped row never appears overwritten.
++        } else {
++            result.mergedTasks.append(task);
++            ++result.addedCount;
++        }
++        allProducts.insert(productId);
++        if (task.enabled) { ++result.enabledCount; enabledProducts.insert(productId); }
++        result.rows.append(std::move(row));
++    }
++    result.rowCount = result.rows.size();
++    result.distinctProducts = enabledProducts.size();
++    result.totalDistinctProducts = allProducts.size();
++    if (!validateConfiguration(state, result.mergedTasks, error)) return false;
++    *preview = std::move(result);
++    return true;
++}
++
++bool applyCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++                               const catalog::Catalog& catalog, AppState& state,
++                               CollectionTaskImportPreview* report, QString* error) {
++    CollectionTaskImportPreview prepared;
++    if (!previewCollectionTaskImport(bytes, dictionary, catalog, state, &prepared, error)) return false;
++    if (prepared.addedCount > 0) {
++        state.tasks = prepared.mergedTasks;
++        state.notifyChanged();
++    }
++    if (report) *report = std::move(prepared);
++    return true;
++}
++
++} // namespace relink::application
+--- a/src/application/collection_task_import.h
++++ b/src/application/collection_task_import.h
+@@ -0,0 +1,45 @@
++#pragma once
++
++#include "catalog/skin_catalog.h"
++#include "domain.h"
++
++namespace relink::application {
++
++struct CollectionTaskImportRow {
++    Task task;
++    QString productId, seasonId, seasonLabel, displayName, menuColor, variantLabel;
++    bool alreadyImported = false;
++};
++
++struct CollectionTaskImportPreview {
++    QString sourceSha256, dictionarySha256;
++    QVector<CollectionTaskImportRow> rows;
++    QVector<Task> mergedTasks;
++    int rowCount = 0, enabledCount = 0, distinctProducts = 0; // Enabled products only.
++    int totalDistinctProducts = 0; // Includes disabled original placeholder rows.
++    int addedCount = 0, duplicateCount = 0;
++    // Purchase/runtime settings are retained only for inspection, never applied.
++    QJsonObject inactiveSettingsMetadata;
++};
++
++// Source identity is content-addressed; filenames and paths do not affect dedup.
++QString collectionImportTaskId(const QString& sourceSha256, int sourceRow);
++
++// Pure data-only preparation. Rejects an entire input if even a disabled row
++// lacks an exact dictionary/catalog identity. No writes or state notifications.
++// On error the supplied preview and AppState remain exactly unchanged.
++bool previewCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++                                 const catalog::Catalog& catalog, const AppState& state,
++                                 CollectionTaskImportPreview* preview,
++                                 QString* error = nullptr);
++
++// Revalidates against the current state and appends atomically in memory.
++// Existing tasks, follows, observations and run settings remain untouched.
++// A caller requiring disk durability should save preview.mergedTasks first and
++// only then publish them to the state; this helper itself performs no disk I/O.
++bool applyCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dictionary,
++                               const catalog::Catalog& catalog, AppState& state,
++                               CollectionTaskImportPreview* report = nullptr,
++                               QString* error = nullptr);
++
++} // namespace relink::application
+--- a/src/diagnostics/collection_import_self_test.cpp
++++ b/src/diagnostics/collection_import_self_test.cpp
+@@ -0,0 +1,92 @@
++#include "diagnostics/collection_import_self_test.h"
++#include "application/catalog_startup.h"
++#include "application/collection_task_import.h"
++#include "catalog/skin_catalog.h"
++#include "domain.h"
++#include "mainwindow.h"
++#include "ui/dialogs/collection_import_dialog.h"
++#include <QApplication>
++#include <QDir>
++#include <QEvent>
++#include <QFile>
++#include <QFileInfo>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QLabel>
++#include <QPushButton>
++#include <QTableWidget>
++#include <QTemporaryDir>
++#include <cstdio>
++namespace {
++QByteArray read(const QString& path) {QFile f(path);return f.open(QIODevice::ReadOnly)?f.readAll():QByteArray();}
++QByteArray head(int kind, quint64 n) {int e=0;while(e<3&&n>=(quint64(1)<<(8*(1<<e))))++e;QByteArray b(1,char(kind|(e<<6)));for(int i=0;i<(1<<e);++i)b.append(char((n>>(i*8))&255));return b;}
++QByteArray encode(const QJsonValue& v) {
++    if(v.isBool())return QByteArray(1,char(v.toBool()));if(v.isDouble())return head(4,v.toInteger());
++    if(v.isString()){auto b=v.toString().toUtf8();return head(7,b.size())+b;}
++    if(v.isArray()){auto b=head(3,v.toArray().size());for(auto item:v.toArray())b+=encode(item);return b;}
++    auto o=v.toObject();auto b=head(2,o.size());for(auto it=o.begin();it!=o.end();++it)b+=encode(it.key())+encode(it.value());return b;
++}
++QByteArray fixture() {
++    QJsonArray pairs;
++    for(int row=0;row<2;++row) {
++        QJsonObject fields{{QStringLiteral("启用"),row==0},{QStringLiteral("枪名设置栏"),10602},
++            {QStringLiteral("成色设置栏"),row},{QStringLiteral("最低价格设置栏"),10},
++            {QStringLiteral("最高价格设置栏"),row==0?600:400},{QStringLiteral("磨损度设置栏"),5},{QStringLiteral("限量设置栏"),row==0?0:3}};
++        for(auto it=fields.begin();it!=fields.end();++it)pairs.append(QJsonArray{it.key()+"_"+QString::number(row),it.value()});
++    }
++    return encode(QJsonObject{{QStringLiteral("自动收藏-任务配置"),pairs}});
++}
++}
++namespace relink::diagnostics {
++int runCollectionImportSelfTest(QApplication& app,const QString& requested,const QString& source) {
++    QTemporaryDir temp; const auto output=requested.isEmpty()?temp.filePath("shots"):requested;QDir().mkpath(output);
++    bool success=true;QJsonArray checks;
++    auto check=[&](bool ok,const char* name){success &= ok;checks.append(QJsonObject{{"check",name},{"passed",ok}});std::printf("COLLECTION_IMPORT_%s=%s\n",name,ok?"PASS":"FAIL");};
++    auto flush=[&]{for(int i=0;i<3;++i){app.processEvents();QCoreApplication::sendPostedEvents(nullptr,QEvent::DeferredDelete);}};
++    const auto bytes=source.isEmpty()?fixture():read(source);check(!bytes.isEmpty(),"SOURCE_READ");
++    const auto dictionary=QJsonDocument::fromJson(read(":/data/relink_0925_catalog.json")).object();
++    catalog::CatalogStore store;AppState state;QString error;
++    const auto path=temp.filePath("config.json");
++    check(application::prepareCatalogStartup(state,store,path,true,read(":/catalog/skins.json"),&error),"REAL_STARTUP");
++    if(state.skins.size()!=149)return 1;
++    state.skins.first().followed=true;
++    Task original;original.id="keep-user-task";original.skinId=state.skins.first().id;original.name=QStringLiteral("保留既有任务");original.maxPrice=123;state.tasks.append(original);state.saveTo(path,&error);
++    const auto oldDisk=read(path);
++    application::CollectionTaskImportPreview expected;
++    check(application::previewCollectionTaskImport(bytes,dictionary,store.catalog(),state,&expected,&error),"SOURCE_RESOLVED");
++    if(expected.rows.isEmpty())return 1;
++    if(expected.sourceSha256=="cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253")
++        check(expected.rowCount==50&&expected.enabledCount==21&&expected.distinctProducts==9&&expected.totalDistinctProducts==13,"USER_50_21_9_ACTIVE_13_TOTAL");
++    MainWindow window(&state,nullptr,nullptr,&store);window.show();window.setPage(2);flush();
++    auto* entry=window.findChild<QPushButton*>("taskImportCollectionButton");check(entry&&entry->isVisible(),"TASK_PAGE_ENTRY");
++    if(entry)entry->click();flush();auto* dialog=window.findChild<ui::CollectionImportDialog*>("collectionImportDialog");
++    check(dialog&&dialog->isVisible(),"REAL_ENTRY_OPENS_DIALOG");if(!dialog)return 1;
++    check(dialog->loadSavedValue(bytes,source.isEmpty()?QStringLiteral("临时测试.savedValue"):QFileInfo(source).fileName(),&error),"REAL_DIALOG_PREVIEW");flush();
++    check(state.tasks.size()==1&&read(path)==oldDisk,"PREVIEW_NO_MUTATION");
++    check(dialog->grab().save(output+"/import_preview.png"),"PREVIEW_SCREENSHOT");
++    const auto beforeTasks=state.tasks.size();
++    QDir().mkpath(temp.filePath("directory-as-file"));state.configPath=temp.filePath("directory-as-file");
++    dialog->findChild<QPushButton*>("collectionImportCommitButton")->click();flush();
++    check(dialog->isVisible()&&state.tasks.size()==beforeTasks&&read(path)==oldDisk,"SAVE_FAILURE_PRESERVES_STATE_AND_DIALOG");
++    check(!dialog->findChild<QLabel*>("collectionImportMessage")->text().isEmpty(),"SAVE_ERROR_VISIBLE");
++    state.configPath=path;dialog->findChild<QPushButton*>("collectionImportCommitButton")->click();flush();
++    check(!window.findChild<ui::CollectionImportDialog*>("collectionImportDialog"),"CLOSE_ONLY_AFTER_PERSISTENCE");
++    check(state.tasks.size()==1+expected.rowCount&&state.tasks.first().id==original.id&&state.skins.first().followed,"APPEND_KEEPS_TASK_AND_FOLLOW");
++    check(read(path+".before-task-import.bak")==oldDisk,"EXACT_PREIMPORT_BACKUP");
++    AppState reopened;check(reopened.loadFrom(path,&error)&&reopened.tasks.size()==state.tasks.size(),"RELOAD_PERSISTED_TASKS");
++    bool sourceRows=true;for(int i=0;i<expected.rows.size();++i){const auto& actual=reopened.tasks[i+1];const auto& wanted=expected.rows[i].task;sourceRows &= actual.importSource.row==wanted.importSource.row&&actual.quantity==wanted.quantity&&actual.condition==wanted.condition&&actual.minPrice==wanted.minPrice&&actual.maxPrice==wanted.maxPrice&&actual.maxWear==wanted.maxWear&&actual.enabled==wanted.enabled&&actual.importSource.fields==wanted.importSource.fields;}
++    check(sourceRows,"EACH_SOURCE_ROW_AND_PARAMETERS_PERSISTED");
++    check(state.tasks[1].quantity==0,"UNLIMITED_ZERO_PRESERVED");
++    check(!state.simulationRunning&&state.simulatedScans==0,"IMPORT_DOES_NOT_START_BUSINESS");
++    window.setPage(2);flush();check(window.grab().save(output+"/imported_tasks.png"),"TASKS_SCREENSHOT");
++    window.resize(1180,820);flush();check(window.grab().save(output+"/imported_tasks_compact.png"),"COMPACT_SCREENSHOT");
++    state.tasks[1].maxPrice=777;state.notifyChanged();
++    window.previewCollectionTasks(bytes,QStringLiteral("同一文件改名.savedValue"));flush();dialog=window.findChild<ui::CollectionImportDialog*>("collectionImportDialog");
++    check(dialog&&dialog->preview().addedCount==0&&dialog->preview().duplicateCount==expected.rowCount,"RENAMED_FILE_DEDUPLICATES");
++    check(dialog&&!dialog->findChild<QPushButton*>("collectionImportCommitButton")->isEnabled()&&state.tasks[1].maxPrice==777,"DUPLICATE_PRESERVES_USER_EDITS");
++    if(dialog)dialog->reject();flush();
++    check(source.isEmpty()||read(source)==bytes,"SOURCE_FILE_UNCHANGED");
++    QFile report(output+"/import_report.json");report.open(QIODevice::WriteOnly);report.write(QJsonDocument(QJsonObject{{"passed",success},{"source_sha256",expected.sourceSha256},{"rows",expected.rowCount},{"enabled",expected.enabledCount},{"checks",checks},{"game_input_sent",false},{"offscreen",true}}).toJson());report.close();
++    std::printf("COLLECTION_IMPORT_SELF_TEST=%s; assertions=%lld; rows=%d; enabled=%d; offscreen=true; game_input_sent=false\n",success?"PASS":"FAIL",static_cast<long long>(checks.size()),expected.rowCount,expected.enabledCount);std::fflush(stdout);window.hide();return success?0:1;
++}
++}
+--- a/src/diagnostics/collection_import_self_test.h
++++ b/src/diagnostics/collection_import_self_test.h
+@@ -0,0 +1,4 @@
++#pragma once
++#include <QString>
++class QApplication;
++namespace relink::diagnostics { int runCollectionImportSelfTest(QApplication&, const QString& output, const QString& source); }
+--- a/src/diagnostics/collection_task_cli.cpp
++++ b/src/diagnostics/collection_task_cli.cpp
+@@ -0,0 +1,35 @@
++#include "diagnostics/collection_task_cli.h"
++#include "application/collection_task_commit.h"
++#include "application/catalog_configuration.h"
++#include "catalog/skin_catalog.h"
++#include "domain.h"
++#include <QCommandLineParser>
++#include <QCoreApplication>
++#include <QFile>
++#include <QFileInfo>
++#include <QJsonDocument>
++#include <cstdio>
++namespace relink::diagnostics {
++int runCollectionTaskImportCli(int argc,char** argv) {
++    QCoreApplication app(argc,argv);QCommandLineParser parser;parser.addHelpOption();
++    parser.addOption({"import-collection-tasks","Append .savedValue into an explicit config, data only.","path"});
++    parser.addOption({"config","Explicit destination JSON config, required.","path"});parser.process(app);
++    if(parser.value("config").isEmpty()||parser.value("import-collection-tasks").isEmpty()) {std::fprintf(stderr,"E_IMPORT_REQUIRES_EXPLICIT_CONFIG\n");return 2;}
++    QString error;application::CollectionTaskImportPreview report;AppState state;catalog::CatalogStore store;
++    const QString path=QFileInfo(parser.value("config")).absoluteFilePath();
++    QFile input(parser.value("import-collection-tasks")),builtin(":/catalog/skins.json"),dictionary(":/data/relink_0925_catalog.json");
++    bool ok=input.open(QIODevice::ReadOnly)&&input.size()<=8*1024*1024&&builtin.open(QIODevice::ReadOnly)&&dictionary.open(QIODevice::ReadOnly);
++    if(!ok)error=QStringLiteral("任务或目录文件读取失败，文件上限 8 MiB。");
++    if(ok)ok=store.load(builtin.readAll(),QFileInfo(path).absolutePath()+"/catalog_extensions.json",&error);
++    if(ok&&QFileInfo::exists(path))ok=state.loadFrom(path,&error);
++    state.configPath=path;
++    // Prepare in memory, unlike normal startup. Invalid imports must not even
++    // migrate or rewrite the existing config; commit() owns the sole save.
++    if(ok)ok=application::applyCatalogConfiguration(state,store.catalog(),nullptr,&error);
++    if(ok)ok=application::commitCollectionTaskImport(input.read(8*1024*1024+1),QJsonDocument::fromJson(dictionary.readAll()).object(),store.catalog(),state,&report,&error);
++    std::printf("COLLECTION_IMPORT=%s; rows=%d; enabled=%d; added=%d; duplicates=%d; game_input_sent=false\n",ok?"PASS":"FAIL",report.rowCount,report.enabledCount,report.addedCount,report.duplicateCount);
++    if(!ok) std::fprintf(stderr,"%s\n",error.toUtf8().constData());
++    std::fflush(stdout);
++    return ok?0:1;
++}
++}
+--- a/src/diagnostics/collection_task_cli.h
++++ b/src/diagnostics/collection_task_cli.h
+@@ -0,0 +1,2 @@
++#pragma once
++namespace relink::diagnostics { int runCollectionTaskImportCli(int argc, char** argv); }
+--- a/src/domain.cpp
++++ b/src/domain.cpp
+@@ -72,11 +72,63 @@
+ 
+ QJsonObject taskJson(const Task& task) {
+     // Execution status is deliberately not persisted: a saved setting is not an order.
+-    return {{QStringLiteral("id"), task.id}, {QStringLiteral("name"), task.name},
++    QJsonObject object{{QStringLiteral("id"), task.id}, {QStringLiteral("name"), task.name},
+             {QStringLiteral("skinId"), task.skinId}, {QStringLiteral("minPrice"), task.minPrice},
+             {QStringLiteral("maxPrice"), task.maxPrice}, {QStringLiteral("maxWear"), task.maxWear},
+             {QStringLiteral("quantity"), task.quantity}, {QStringLiteral("enabled"), task.enabled},
+             {QStringLiteral("condition"), task.condition}};
++    const auto& source = task.importSource;
++    if (!source.format.isEmpty() || !source.sourceSha256.isEmpty() || !source.dictionarySha256.isEmpty()
++        || !source.productId.isEmpty() || !source.conditionId.isEmpty() || source.row != -1
++        || !source.fields.isEmpty()) {
++        object.insert(QStringLiteral("importSource"), QJsonObject{
++            {QStringLiteral("format"), source.format}, {QStringLiteral("sourceSha256"), source.sourceSha256},
++            {QStringLiteral("dictionarySha256"), source.dictionarySha256}, {QStringLiteral("row"), source.row},
++            {QStringLiteral("productId"), source.productId}, {QStringLiteral("conditionId"), source.conditionId},
++            {QStringLiteral("fields"), source.fields}});
++    }
++    return object;
++}
++
++bool parseTaskImportSource(const QJsonObject& task, TaskImportSource& source,
++                           QString* error, const QString& context) {
++    const auto entry = task.value(QStringLiteral("importSource"));
++    if (entry.isUndefined()) return true;
++    if (!entry.isObject()) return fail(error, context + QStringLiteral("：导入来源必须是对象"));
++    const auto object = entry.toObject();
++    if (!stringField(object, "format", source.format, error, context)
++        || !stringField(object, "sourceSha256", source.sourceSha256, error, context)
++        || !stringField(object, "dictionarySha256", source.dictionarySha256, error, context)
++        || !stringField(object, "productId", source.productId, error, context)
++        || !stringField(object, "conditionId", source.conditionId, error, context)) return false;
++    static const QRegularExpression hash(QStringLiteral("^[0-9a-f]{64}$"));
++    static const QRegularExpression integerId(QStringLiteral("^(0|[1-9][0-9]{0,15})$"));
++    const auto row = object.value(QStringLiteral("row"));
++    if (source.format != QStringLiteral("savedValue")
++        || !hash.match(source.sourceSha256).hasMatch() || !hash.match(source.dictionarySha256).hasMatch()
++        || !integerId.match(source.productId).hasMatch() || !integerId.match(source.conditionId).hasMatch()
++        || !row.isDouble() || row.toDouble() < 0 || row.toDouble() > 499
++        || std::floor(row.toDouble()) != row.toDouble() || !object.value(QStringLiteral("fields")).isObject())
++        return fail(error, context + QStringLiteral("：导入来源标识、哈希或行号无效"));
++    source.row = row.toInt();
++    source.fields = object.value(QStringLiteral("fields")).toObject();
++    const QStringList fields{QStringLiteral("成色设置栏"), QStringLiteral("最低价格设置栏"),
++        QStringLiteral("最高价格设置栏"), QStringLiteral("枪名设置栏"),
++        QStringLiteral("磨损度设置栏"), QStringLiteral("限量设置栏")};
++    if (source.fields.size() != 7 || !source.fields.value(QStringLiteral("启用")).isBool())
++        return fail(error, context + QStringLiteral("：导入来源原始字段不完整"));
++    for (const auto& field : fields) {
++        const auto value = source.fields.value(field);
++        if (!value.isDouble() || !std::isfinite(value.toDouble()) || value.toDouble() < 0
++            || value.toDouble() > 9007199254740991.0 || std::floor(value.toDouble()) != value.toDouble())
++            return fail(error, context + QStringLiteral("：导入来源原始字段无效"));
++    }
++    if (source.productId != QString::number(source.fields.value(QStringLiteral("枪名设置栏")).toInteger())
++        || source.conditionId != QString::number(source.fields.value(QStringLiteral("成色设置栏")).toInteger())
++        || source.fields.value(QStringLiteral("最低价格设置栏")).toDouble()
++               > source.fields.value(QStringLiteral("最高价格设置栏")).toDouble())
++        return fail(error, context + QStringLiteral("：导入来源与原始字段不一致"));
++    return true;
+ }
+ 
+ QJsonObject runJson(const RunSettings& run) {
+@@ -196,7 +248,7 @@
+     if (skinArray.size() > kMaxItems || taskArray.size() > kMaxItems)
+         return fail(error, QStringLiteral("配置条目超过10000条上限"));
+ 
+-    QSet<QString> skinIds, taskIds;
++    QSet<QString> skinIds, taskIds, importedRows;
+     for (int i = 0; i < skinArray.size(); ++i) {
+         const QString context = QStringLiteral("皮肤[%1]").arg(i + 1);
+         if (!skinArray.at(i).isObject()) return fail(error, context + QStringLiteral("必须为对象"));
+@@ -273,8 +325,8 @@
+             return fail(error, context + QStringLiteral("：任务价格不得超过999999999，且最多保留2位小数"));
+         if (task.maxWear > 100.0 || !hasDecimalPrecision(task.maxWear, 1000000.0))
+             return fail(error, context + QStringLiteral("：最大磨损不得超过100，且最多保留6位小数"));
+-        if (quantity < 1 || quantity > 9999 || std::floor(quantity) != quantity)
+-            return fail(error, context + QStringLiteral("：限制数量必须是1至9999的整数"));
++        if (quantity < 0 || quantity > 9999 || std::floor(quantity) != quantity)
++            return fail(error, context + QStringLiteral("：限制数量必须是0至9999的整数（0为不限）"));
+         task.quantity = static_cast<int>(quantity);
+         if (!object.value(QStringLiteral("enabled")).isBool())
+             return fail(error, context + QStringLiteral("：enabled 必须为布尔值"));
+@@ -289,6 +341,14 @@
+         }
+         if (!skinIds.contains(task.skinId)) return fail(error, context + QStringLiteral("：引用了未知皮肤ID"));
+         if (taskIds.contains(task.id)) return fail(error, context + QStringLiteral("：任务ID重复"));
++        if (!parseTaskImportSource(object, task.importSource, error, context)) return false;
++        if (!task.importSource.format.isEmpty()) {
++            const QString origin = task.importSource.sourceSha256 + QLatin1Char(':')
++                + QString::number(task.importSource.row);
++            if (importedRows.contains(origin))
++                return fail(error, context + QStringLiteral("：同一来源行重复，请为复制任务清除来源标识"));
++            importedRows.insert(origin);
++        }
+         taskIds.insert(task.id);
+         task.status = task.enabled ? QStringLiteral("待启动") : QStringLiteral("未启用");
+         parsedTasks.append(task);
+@@ -493,7 +553,7 @@
+     bool hasPending = false;
+     for (auto& task : tasks) {
+         if (!task.enabled) { task.status = QStringLiteral("未启用"); continue; }
+-        if (m_simulatedByTask.value(task.id) >= task.quantity) {
++        if (task.quantity > 0 && m_simulatedByTask.value(task.id) >= task.quantity) {
+             task.status = QStringLiteral("演示已完成");
+             continue;
+         }
+@@ -501,7 +561,7 @@
+         if (simulatedScans < std::numeric_limits<int>::max()) ++simulatedScans;
+         const Skin* skin = nullptr;
+         for (const auto& entry : skins) if (entry.id == task.skinId) { skin = &entry; break; }
+-        if (!skin || task.quantity < 1 || !std::isfinite(task.minPrice)
++        if (!skin || task.quantity < 0 || !std::isfinite(task.minPrice)
+             || !std::isfinite(task.maxPrice) || !std::isfinite(task.maxWear)
+             || task.minPrice < 0 || task.maxWear < 0 || task.minPrice > task.maxPrice) {
+             task.status = QStringLiteral("演示配置无效");
+@@ -519,9 +579,11 @@
+         if (simulatedMatches < std::numeric_limits<int>::max()) ++simulatedMatches;
+         if (simulatedSuccess < std::numeric_limits<int>::max()) ++simulatedSuccess;
+         const int done = ++m_simulatedByTask[task.id];
+-        task.status = done >= task.quantity ? QStringLiteral("演示已完成") : QStringLiteral("演示进行中");
++        task.status = task.quantity > 0 && done >= task.quantity
++            ? QStringLiteral("演示已完成") : QStringLiteral("演示进行中");
+         addLog(QStringLiteral("DEMO"), QStringLiteral("%1：模拟匹配价格 %2，模拟完成 %3/%4；无实际订单。")
+-                   .arg(task.name, QString::number(skin->price, 'f', 2)).arg(done).arg(task.quantity));
++                   .arg(task.name, QString::number(skin->price, 'f', 2)).arg(done)
++                   .arg(task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity)));
+     }
+     if (!hasPending) {
+         simulationRunning = false;
+--- a/src/domain.h
++++ b/src/domain.h
+@@ -20,10 +20,19 @@
+     QString dataSource = QStringLiteral("catalog");
+ };
+ 
++// Immutable import provenance, independent from editable task conditions.
++// Empty format means this task was created manually. Original values stay here
++// even when a user subsequently edits the task in the collection editor.
++struct TaskImportSource {
++    QString format, sourceSha256, dictionarySha256, productId, conditionId;
++    int row = -1;
++    QJsonObject fields;
++};
++
+ struct Task {
+     QString id, name, skinId;
+     double minPrice = 0, maxPrice = 1000, maxWear = 10;
+-    int quantity = 1;
++    int quantity = 1; // 0 = unlimited, matching the original collection task.
+     bool enabled = true;
+     QString status = QStringLiteral("待启动");
+     // Condition filter from the original task row; "不限" keeps older files unfiltered.
+@@ -31,6 +40,7 @@
+     // Decode-only provenance distinguishes a missing legacy condition field
+     // from the user's explicit 不限 choice. New tasks are always explicit.
+     bool conditionExplicit = true;
++    TaskImportSource importSource;
+ };
+ 
+ // Parameters mirrored from the original assistant's main screen. They are
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -5,6 +5,8 @@
+ #include "application/catalog_startup.h"
+ #include "catalog/skin_catalog.h"
+ #include "diagnostics/catalog_self_test.h"
++#include "diagnostics/collection_import_self_test.h"
++#include "diagnostics/collection_task_cli.h"
+ #include <QMessageBox>
+ #include "application/workspace/workspace_controller.h"
+ #include "diagnostics/ui_self_test_runner.h"
+@@ -27,15 +29,17 @@
+ #include <cstdio>
+ 
+ int main(int argc, char** argv) {
+-    bool startupCheck = false, liveCheck = false, savedValueCheck = false;
++    bool startupCheck = false, liveCheck = false, savedValueCheck = false, importTasks = false;
+     for (int i = 1; i < argc; ++i) {
++        importTasks |= QByteArray(argv[i]) == "--import-collection-tasks" || QByteArray(argv[i]).startsWith("--import-collection-tasks=");
+         startupCheck |= QByteArray(argv[i]) == "--startup-observer-self-test";
+         liveCheck |= QByteArray(argv[i]) == "--live-capture-check";
+         savedValueCheck |= QByteArray(argv[i]) == "--savedvalue-preview" || QByteArray(argv[i]).startsWith("--savedvalue-preview=");
+     }
+-    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)>1) {
++    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)+int(importTasks)>1) {
+         std::fprintf(stderr, "E_DIAGNOSTIC_MODE_CONFLICT\n"); return 2;
+     }
++    if (importTasks) return relink::diagnostics::runCollectionTaskImportCli(argc,argv);
+     if (savedValueCheck) return relink::diagnostics::runSavedValuePreview(argc,argv);
+     if (startupCheck) {
+         QCoreApplication app(argc, argv);
+@@ -48,8 +52,9 @@
+     bool headless = false;
+     for (int i = 1; i < argc; ++i) {
+         const QByteArray a(argv[i]);
+-        headless |= a == "--catalog-self-test" || a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
++        headless |= a == "--collection-import-self-test" || a == "--catalog-self-test" || a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
+             || a == "--export-app-icon" || a == "--storage-self-test";
++        headless |= a == "--import-collection-tasks" || a.startsWith("--import-collection-tasks=");
+         headless |= a.startsWith("--snapshot-dir=") || a.startsWith("--write-demo-config=") || a.startsWith("--validate-config=");
+     }
+     if (headless) {
+@@ -82,6 +87,9 @@
+     QCommandLineParser parser;
+     parser.setApplicationDescription("Relink Studio offline frontend. No input automation. Explicit --live-capture-check provides read-only diagnostics.");
+     parser.addHelpOption(); parser.addVersionOption();
++    parser.addOption({"import-collection-tasks", "Append a .savedValue task file into an explicit --config, without showing UI or starting game actions.", "path"});
++    parser.addOption({"collection-import-self-test", "Verify real collection task import and persistence offscreen."});
++    parser.addOption({"task-source", "Optional read-only .savedValue input for collection import self-test.", "path"});
+     parser.addOption({"catalog-self-test", "Verify real catalogue startup and maintenance offscreen using temporary data."});
+     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
+     parser.addOption({"startup-observer-self-test", "Check original startup page/precheck routes using embedded historical OCR fixtures; no game capture."});
+@@ -148,6 +156,9 @@
+         std::printf("DEMO_CONFIG=%s\n", ok ? "PASS" : "FAIL");
+         return ok ? 0 : 1;
+     }
++    if (parser.isSet("collection-import-self-test"))
++        return relink::diagnostics::runCollectionImportSelfTest(app,parser.value("snapshot-dir"),parser.value("task-source"));
++    if (parser.isSet("task-source")) { std::fprintf(stderr,"E_TASK_SOURCE_REQUIRES_IMPORT_TEST\n"); return 2; }
+     if (parser.isSet("catalog-self-test"))
+         return relink::diagnostics::runCatalogSelfTest(app, parser.value("snapshot-dir"));
+     const bool fixtureMode = parser.isSet("self-test");
+--- a/src/mainwindow.cpp
++++ b/src/mainwindow.cpp
+@@ -3,6 +3,8 @@
+ #include "catalog/skin_catalog.h"
+ #include "application/catalog_configuration.h"
+ #include "ui/dialogs/skin_catalog_dialog.h"
++#include "ui/dialogs/collection_import_dialog.h"
++#include "application/collection_task_commit.h"
+ #include "config/v1_adapter.h"
+ #include "application/runtime/replay_controller.h"
+ #include "application/runtime/ui_projection.h"
+@@ -587,7 +589,8 @@
+     m_inspectorWear->setDecimals(6);
+     m_inspectorQuantity = new FluentSpinBox;
+     m_inspectorQuantity->setObjectName(QStringLiteral("inspectorQuantity"));
+-    m_inspectorQuantity->setRange(1, 9999);
++    m_inspectorQuantity->setRange(0, 9999);
++    m_inspectorQuantity->setSpecialValueText(QStringLiteral("不限"));
+     for (QWidget* field : {static_cast<QWidget*>(m_inspectorPrice), static_cast<QWidget*>(m_inspectorCondition),
+                            static_cast<QWidget*>(m_inspectorWear), static_cast<QWidget*>(m_inspectorQuantity)})
+         field->setMinimumWidth(64);
+@@ -649,6 +652,7 @@
+ QWidget* MainWindow::buildTasks()
+ {
+     m_taskPage = new TaskPage(m_state);
++    connect(m_taskPage, &TaskPage::importCollectionRequested, this, &MainWindow::importCollectionTasks);
+     return m_taskPage;
+ }
+ 
+@@ -1061,7 +1065,7 @@
+     for (int i = 0; i < m_overviewTasks->rowCount(); ++i) {
+         const auto& task = m_state->tasks[i];
+         put(m_overviewTasks, i, 0, task.name);
+-        put(m_overviewTasks, i, 1, QString::number(task.quantity));
++        put(m_overviewTasks, i, 1, task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity));
+         putStatus(m_overviewTasks, i, 2, task.status, taskTone(task));
+     }
+     const int count = qMin(3, int(m_state->logs.size()));
+@@ -1369,14 +1373,18 @@
+ void MainWindow::importConfiguration()
+ {
+     const QString path = QFileDialog::getOpenFileName(this, QStringLiteral("导入只读预览"), QString(),
+-                                                      QStringLiteral("配置或 13 列文本 (*.json *.txt *.ini);;所有文件 (*.*)"));
++                                                      QStringLiteral("配置与收藏任务 (*.savedValue *.json *.txt *.ini);;所有文件 (*.*)"));
+     if (path.isEmpty()) return;
+     QFile file(path);
+     if (!file.open(QIODevice::ReadOnly)) {
+         QMessageBox::warning(this, QStringLiteral("读取失败"), file.errorString());
+         return;
+     }
+-    previewImportBytes(file.readAll(), QFileInfo(path).fileName());
++    if (file.size() > 8*1024*1024) { QMessageBox::warning(this, QStringLiteral("导入失败"), QStringLiteral("文件超过 8 MiB。")); return; }
++    const auto bytes=file.readAll();
++    if (m_catalog && QFileInfo(path).suffix().compare("savedValue",Qt::CaseInsensitive)==0)
++        previewCollectionTasks(bytes,QFileInfo(path).fileName());
++    else previewImportBytes(bytes, QFileInfo(path).fileName());
+ }
+ 
+ void MainWindow::previewImportBytes(const QByteArray& bytes, const QString& sourceName)
+@@ -1993,3 +2001,32 @@
+     });
+     dialog->open();
+ }
++
++void MainWindow::importCollectionTasks()
++{
++    if (!m_catalog) return;
++    previewCollectionTasks({}, {});
++}
++
++void MainWindow::previewCollectionTasks(const QByteArray& bytes, const QString& sourceName)
++{
++    if (!m_catalog) return;
++    QFile file(QStringLiteral(":/data/relink_0925_catalog.json"));
++    if (!file.open(QIODevice::ReadOnly)) return;
++    const auto dictionary=QJsonDocument::fromJson(file.readAll()).object();
++    auto* dialog=new CollectionImportDialog(dictionary,&m_catalog->catalog(),m_state,this);
++    dialog->setAttribute(Qt::WA_DeleteOnClose);
++    dialog->setModal(true);
++    if (!bytes.isEmpty()) dialog->loadSavedValue(bytes,sourceName);
++    connect(dialog,&CollectionImportDialog::commitRequested,this,[this,dialog,dictionary] {
++        QString error;
++        relink::application::CollectionTaskImportPreview report;
++        if (!relink::application::commitCollectionTaskImport(dialog->sourceBytes(),dictionary,m_catalog->catalog(),*m_state,&report,&error)) {
++            dialog->showCommitError(error); return;
++        }
++        if (report.addedCount > 0) m_savedConfiguration=QJsonDocument(encodeV1Config(m_state->skins,m_state->tasks,m_state->run)).toJson(QJsonDocument::Compact);
++        setPage(2);
++        dialog->accept();
++    });
++    dialog->open();
++}
+--- a/src/mainwindow.h
++++ b/src/mainwindow.h
+@@ -47,6 +47,8 @@
+     // the same read-only dialog as the file import path without touching disk.
+     void previewImportDemo();
+     void manageSkinCatalog();
++    void importCollectionTasks();
++    void previewCollectionTasks(const QByteArray& bytes, const QString& sourceName);
+ 
+ protected:
+     void resizeEvent(QResizeEvent* event) override;
+--- a/src/ui/dialogs/collection_import_dialog.cpp
++++ b/src/ui/dialogs/collection_import_dialog.cpp
+@@ -0,0 +1,225 @@
++#include "collection_import_dialog.h"
++#include "fluenttheme.h"
++#include "ui/presentation/ui_helpers.h"
++
++#include <QFile>
++#include <QFileDialog>
++#include <QFileInfo>
++#include <QFrame>
++#include <QHeaderView>
++#include <QHBoxLayout>
++#include <QLabel>
++#include <QPushButton>
++#include <QTableWidget>
++#include <QVBoxLayout>
++#include <utility>
++
++namespace relink::ui {
++namespace {
++QString colorText(const QString& color) {
++    if (color == QStringLiteral("red")) return QStringLiteral("红色");
++    if (color == QStringLiteral("orange")) return QStringLiteral("橙色");
++    if (color == QStringLiteral("purple")) return QStringLiteral("紫色");
++    if (color == QStringLiteral("blue")) return QStringLiteral("蓝色");
++    return QStringLiteral("未记录");
++}
++QString number(double value) { return QString::number(value, 'g', 15); }
++}
++
++CollectionImportDialog::CollectionImportDialog(const QJsonObject& dictionary,
++        const catalog::Catalog* catalog, const AppState* state, QWidget* parent)
++    : QDialog(parent), m_dictionary(dictionary), m_catalog(catalog), m_state(state)
++{
++    setObjectName(QStringLiteral("collectionImportDialog"));
++    setWindowTitle(QStringLiteral("导入收藏任务"));
++    resize(1120, 700);
++    setMinimumSize(850, 540);
++    auto* outer = new QVBoxLayout(this);
++    outer->setContentsMargins(0, 0, 0, 0);
++    outer->setSpacing(0);
++    auto* content = new QFrame;
++    content->setObjectName(QStringLiteral("dialogContent"));
++    auto* body = new QVBoxLayout(content);
++    body->setContentsMargins(24, 22, 24, 20);
++    body->setSpacing(12);
++    auto* heading = new QHBoxLayout;
++    heading->addWidget(label(QStringLiteral("导入收藏任务"), QStringLiteral("dialogTitle")));
++    heading->addStretch();
++    m_choose = button(QStringLiteral("选择文件"), QStringLiteral("collectionImportChooseButton"),
++                      ButtonKind::Standard, Glyph::Folder);
++    heading->addWidget(m_choose);
++    body->addLayout(heading);
++    auto* caption = label(QStringLiteral("读取 .savedValue 中的收藏条件，确认后追加到任务列表。原有任务、关注与运行设置保持不变。"),
++                          QStringLiteral("cardCaption"));
++    caption->setWordWrap(true);
++    body->addWidget(caption);
++    m_file = label(QStringLiteral("尚未选择文件"), QStringLiteral("collectionImportFile"));
++    m_file->setTextFormat(Qt::PlainText);
++    m_file->setTextInteractionFlags(Qt::TextSelectableByMouse);
++    m_file->setWordWrap(true);
++    body->addWidget(m_file);
++    m_hash = label(QString(), QStringLiteral("collectionImportHash"));
++    m_hash->setTextFormat(Qt::PlainText);
++    m_hash->setTextInteractionFlags(Qt::TextSelectableByMouse);
++    m_hash->setStyleSheet(QStringLiteral("color: #5E5E5E; font-size: 11px;"));
++    m_hash->setWordWrap(true);
++    body->addWidget(m_hash);
++    m_counts = label(QStringLiteral("选择文件后预览全部任务"), QStringLiteral("collectionImportCounts"));
++    m_counts->setTextFormat(Qt::PlainText);
++    m_counts->setWordWrap(true);
++    body->addWidget(m_counts);
++    m_table = table({QStringLiteral("行"), QStringLiteral("赛季"), QStringLiteral("商品"),
++                     QStringLiteral("颜色 / 标记"), QStringLiteral("成色"), QStringLiteral("最低价格"),
++                     QStringLiteral("最高价格"), QStringLiteral("最大磨损"), QStringLiteral("限量"),
++                     QStringLiteral("启用"), QStringLiteral("处理")},
++                    QStringLiteral("collectionImportTable"), RowStyle::Lines);
++    m_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
++    auto* header = m_table->horizontalHeader();
++    header->setStretchLastSection(false);
++    header->setSectionResizeMode(QHeaderView::Interactive);
++    const int widths[] = {46, 60, 220, 114, 72, 94, 94, 88, 58, 58, 74};
++    for (int i = 0; i < 11; ++i) m_table->setColumnWidth(i, widths[i]);
++    header->setSectionResizeMode(2, QHeaderView::Stretch);
++    m_table->verticalHeader()->setDefaultSectionSize(40);
++    body->addWidget(m_table, 1);
++    auto* note = label(QStringLiteral("限量 0 表示不限；停用行保持停用；相同文件再次导入会跳过已导入行。"),
++                       QStringLiteral("cardCaption"));
++    note->setWordWrap(true);
++    body->addWidget(note);
++    m_message = label(QString(), QStringLiteral("collectionImportMessage"));
++    m_message->setTextFormat(Qt::PlainText);
++    m_message->setWordWrap(true);
++    body->addWidget(m_message);
++    outer->addWidget(content, 1);
++    auto* commands = new QFrame;
++    commands->setObjectName(QStringLiteral("dialogCommands"));
++    auto* row = new QHBoxLayout(commands);
++    row->setContentsMargins(24, 18, 24, 18);
++    row->setSpacing(8);
++    row->addStretch();
++    m_commit = button(QStringLiteral("确认追加"), QStringLiteral("collectionImportCommitButton"), ButtonKind::Accent);
++    m_commit->setMinimumWidth(160);
++    m_commit->setEnabled(false);
++    m_commit->setDefault(true);
++    auto* cancel = button(QStringLiteral("取消"), QStringLiteral("collectionImportCancelButton"));
++    cancel->setMinimumWidth(100);
++    row->addWidget(m_commit);
++    row->addWidget(cancel);
++    outer->addWidget(commands);
++    connect(m_choose, &QPushButton::clicked, this, &CollectionImportDialog::selectFile);
++    connect(m_commit, &QPushButton::clicked, this, &CollectionImportDialog::requestCommit);
++    connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
++}
++
++void CollectionImportDialog::showMessage(const QString& text, bool error) {
++    m_message->setText(text);
++    m_message->setStyleSheet(error ? QStringLiteral("color: #C42B1C;") : QStringLiteral("color: #5E5E5E;"));
++}
++
++void CollectionImportDialog::clearPreview(const QString& error) {
++    m_preview = {};
++    m_bytes.clear();
++    m_sourceName.clear();
++    m_table->setRowCount(0);
++    m_file->setText(QStringLiteral("文件未通过校验"));
++    m_hash->clear();
++    m_counts->setText(QStringLiteral("未追加任务，现有数据保持不变"));
++    m_commit->setEnabled(false);
++    m_commit->setText(QStringLiteral("确认追加"));
++    showMessage(error, true);
++}
++
++bool CollectionImportDialog::loadSavedValue(const QByteArray& bytes, const QString& sourceName, QString* error) {
++    if (m_committing) {
++        if (error) *error = QStringLiteral("正在保存当前导入，请等待保存完成。");
++        return false;
++    }
++    application::CollectionTaskImportPreview next;
++    QString failure;
++    const bool valid = m_catalog && m_state && application::previewCollectionTaskImport(
++        bytes, m_dictionary, *m_catalog, *m_state, &next, &failure);
++    if (!valid) {
++        if (failure.isEmpty()) failure = QStringLiteral("皮肤目录尚未就绪。");
++        clearPreview(failure);
++        if (error) *error = failure;
++        return false;
++    }
++    m_bytes = bytes;
++    m_sourceName = sourceName;
++    m_preview = std::move(next);
++    renderPreview();
++    if (error) error->clear();
++    return true;
++}
++
++bool CollectionImportDialog::loadSavedValueFile(const QString& path, QString* error) {
++    QFile file(path);
++    QString failure;
++    if (!file.open(QIODevice::ReadOnly)) failure = QStringLiteral("读取文件失败：%1").arg(file.errorString());
++    else if (file.size() <= 0 || file.size() > 8 * 1024 * 1024)
++        failure = QStringLiteral("请选择非空且不超过 8 MiB 的 .savedValue 文件。");
++    if (!failure.isEmpty()) {
++        if (!m_committing) clearPreview(failure);
++        if (error) *error = failure;
++        return false;
++    }
++    return loadSavedValue(file.read(8 * 1024 * 1024 + 1), QFileInfo(path).fileName(), error);
++}
++
++void CollectionImportDialog::selectFile() {
++    const QString path = QFileDialog::getOpenFileName(this, QStringLiteral("选择收藏任务文件"), QString(),
++                                                     QStringLiteral("收藏任务 (*.savedValue);;所有文件 (*)"));
++    if (!path.isEmpty()) loadSavedValueFile(path);
++}
++
++void CollectionImportDialog::renderPreview() {
++    m_file->setText(m_sourceName);
++    m_hash->setText(QStringLiteral("SHA-256  %1").arg(m_preview.sourceSha256));
++    m_counts->setText(QStringLiteral("%1 行任务  ·  %2 行启用  ·  %3 个商品（启用 %4 个）  ·  追加 %5 行  ·  跳过 %6 行")
++                     .arg(m_preview.rowCount).arg(m_preview.enabledCount).arg(m_preview.totalDistinctProducts)
++                     .arg(m_preview.distinctProducts).arg(m_preview.addedCount).arg(m_preview.duplicateCount));
++    m_table->setRowCount(m_preview.rows.size());
++    for (int row = 0; row < m_preview.rows.size(); ++row) {
++        const auto& item = m_preview.rows[row];
++        const auto& task = item.task;
++        put(m_table, row, 0, QString::number(task.importSource.row + 1));
++        put(m_table, row, 1, item.seasonId)->setToolTip(item.seasonId + QStringLiteral(" · ") + item.seasonLabel);
++        auto* product = put(m_table, row, 2, item.displayName);
++        product->setToolTip(item.displayName + QStringLiteral("\n商品 ID：") + item.productId);
++        product->setData(Qt::UserRole, item.productId);
++        put(m_table, row, 3, colorText(item.menuColor) + (item.variantLabel.isEmpty() ? QString() : QStringLiteral(" / ") + item.variantLabel));
++        put(m_table, row, 4, task.condition);
++        put(m_table, row, 5, number(task.minPrice));
++        put(m_table, row, 6, number(task.maxPrice));
++        put(m_table, row, 7, number(task.maxWear));
++        put(m_table, row, 8, task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity));
++        put(m_table, row, 9, task.enabled ? QStringLiteral("启用") : QStringLiteral("停用"));
++        put(m_table, row, 10, item.alreadyImported ? QStringLiteral("已导入") : QStringLiteral("待追加"));
++    }
++    m_commit->setEnabled(m_preview.addedCount > 0 && !m_committing);
++    m_commit->setText(m_preview.addedCount > 0
++        ? QStringLiteral("确认追加 %1 行").arg(m_preview.addedCount) : QStringLiteral("无需追加"));
++    showMessage(m_preview.addedCount == 0
++        ? QStringLiteral("这些任务已导入，没有新增行；既有任务的后续修改不会被覆盖。")
++        : QStringLiteral("请核对条件；确认后保存到本地，不自动开始任务。"));
++}
++
++void CollectionImportDialog::requestCommit() {
++    if (m_committing || m_bytes.isEmpty()) return;
++    const QByteArray bytes = m_bytes;
++    const QString name = m_sourceName;
++    if (!loadSavedValue(bytes, name) || m_preview.addedCount <= 0) return;
++    m_committing = true;
++    m_commit->setEnabled(false);
++    m_choose->setEnabled(false);
++    showMessage(QStringLiteral("正在保存收藏任务…"));
++    emit commitRequested();
++}
++
++void CollectionImportDialog::showCommitError(const QString& error) {
++    m_committing = false;
++    m_choose->setEnabled(true);
++    m_commit->setEnabled(!m_bytes.isEmpty() && m_preview.addedCount > 0);
++    showMessage(error, true);
++}
++} // namespace relink::ui
+--- a/src/ui/dialogs/collection_import_dialog.h
++++ b/src/ui/dialogs/collection_import_dialog.h
+@@ -0,0 +1,54 @@
++#pragma once
++
++#include "application/collection_task_import.h"
++#include <QDialog>
++
++class QLabel;
++class QPushButton;
++class QTableWidget;
++
++namespace relink::ui {
++// A read-only import preview. The owner persists preview().mergedTasks before
++// accepting the dialog; this widget never mutates AppState or starts a runner.
++class CollectionImportDialog final : public QDialog {
++    Q_OBJECT
++public:
++    explicit CollectionImportDialog(const QJsonObject& dictionary,
++                                    const catalog::Catalog* catalog,
++                                    const AppState* state, QWidget* parent = nullptr);
++    bool loadSavedValue(const QByteArray& bytes, const QString& sourceName,
++                        QString* error = nullptr);
++    bool loadSavedValueFile(const QString& path, QString* error = nullptr);
++    const application::CollectionTaskImportPreview& preview() const { return m_preview; }
++    const QByteArray& sourceBytes() const { return m_bytes; }
++    QString sourceName() const { return m_sourceName; }
++    void showCommitError(const QString& error);
++
++signals:
++    // The owner calls accept() after a durable commit or showCommitError() on
++    // failure. No success state is shown merely because the button was pressed.
++    void commitRequested();
++
++private:
++    void selectFile();
++    void requestCommit();
++    void renderPreview();
++    void showMessage(const QString& text, bool error = false);
++    void clearPreview(const QString& error);
++
++    QJsonObject m_dictionary;
++    const catalog::Catalog* m_catalog = nullptr;
++    const AppState* m_state = nullptr;
++    application::CollectionTaskImportPreview m_preview;
++    QByteArray m_bytes;
++    QString m_sourceName;
++    QLabel* m_file = nullptr;
++    QLabel* m_hash = nullptr;
++    QLabel* m_counts = nullptr;
++    QLabel* m_message = nullptr;
++    QTableWidget* m_table = nullptr;
++    QPushButton* m_choose = nullptr;
++    QPushButton* m_commit = nullptr;
++    bool m_committing = false;
++};
++} // namespace relink::ui
+--- a/src/ui/dialogs/task_editor_dialog.cpp
++++ b/src/ui/dialogs/task_editor_dialog.cpp
+@@ -76,7 +76,9 @@
+     wear->setValue(editing ? existing.maxWear : 5);
+     auto* quantity = new FluentSpinBox;
+     quantity->setObjectName(QStringLiteral("taskQuantity"));
+-    quantity->setRange(1, 9999);
++    quantity->setRange(0, 9999);
++    quantity->setSpecialValueText(QStringLiteral("不限"));
++    quantity->setToolTip(QStringLiteral("0 表示不限数量；导入任务的限量按原值保留。"));
+     quantity->setValue(editing ? existing.quantity : 1);
+     auto* enabled = new ToggleSwitch;
+     enabled->setObjectName(QStringLiteral("taskEnabledCheck"));
+@@ -135,6 +137,9 @@
+             validation->setText(QStringLiteral("请填写大于 0 的最高价格。")); max->setFocus(); return;
+         }
+         if (min->value() > max->value()) { validation->setText(QStringLiteral("最低价格需要小于或等于最高价格。")); return; }
++        // Keep import provenance and non-editable source parameters when editing.
++        // The dialog owns only a draft; the page still decides when to commit.
++        m_task = existing;
+         m_task.id = editing ? existing.id : QUuid::createUuid().toString(QUuid::WithoutBraces);
+         m_task.name = name->text().trimmed();
+         m_task.skinId = skin->currentData().toString();
+@@ -143,6 +148,7 @@
+         m_task.maxWear = wear->value();
+         m_task.quantity = quantity->value();
+         m_task.condition = condition->currentText();
++        m_task.conditionExplicit = true;
+         m_task.enabled = enabled->isChecked();
+         m_task.status = m_task.enabled ? QStringLiteral("待启动")
+             : (testFixture ? QStringLiteral("演示已暂停") : QStringLiteral("已停用"));
+--- a/src/ui/pages/task_page.cpp
++++ b/src/ui/pages/task_page.cpp
+@@ -28,6 +28,7 @@
+     auto* commands = new QHBoxLayout;
+     commands->setSpacing(4);
+     auto* add = button(QStringLiteral("新增任务"), QStringLiteral("taskNewButton"), ButtonKind::Accent, Glyph::Add);
++    auto* import = button(QStringLiteral("导入收藏任务"), QStringLiteral("taskImportCollectionButton"), ButtonKind::Standard, Glyph::Import);
+     auto* edit = button(QStringLiteral("编辑"), QStringLiteral("taskEditButton"), ButtonKind::Subtle, Glyph::Edit);
+     auto* remove = button(QStringLiteral("删除"), QStringLiteral("taskDeleteButton"), ButtonKind::Subtle, Glyph::Delete);
+     auto* enable = button(QStringLiteral("启用选中"), QStringLiteral("enableSelectedTasksButton"), ButtonKind::Subtle, Glyph::CheckMark);
+@@ -37,6 +38,8 @@
+     m_taskStart->setVisible(testFixture);
+     m_taskStart->setEnabled(testFixture);
+     commands->addWidget(add);
++    commands->addSpacing(8);
++    commands->addWidget(import);
+     commands->addSpacing(8);
+     commands->addWidget(edit);
+     commands->addWidget(remove);
+@@ -70,6 +73,7 @@
+     note->setWordWrap(true);
+     layout->addWidget(note);
+     connect(add, &QPushButton::clicked, this, [this] { editTask(); });
++    connect(import, &QPushButton::clicked, this, &TaskPage::importCollectionRequested);
+     connect(edit, &QPushButton::clicked, this, [this] { if (!selectedTaskId().isEmpty()) editTask(selectedTaskId()); });
+     connect(m_tasksTable, &QTableWidget::itemDoubleClicked, this, [this](QTableWidgetItem*) {
+         if (!selectedTaskId().isEmpty()) editTask(selectedTaskId());
+@@ -105,7 +109,7 @@
+         put(m_tasksTable, row, 2, task.condition, FluentTheme::secondary);
+         put(m_tasksTable, row, 3, QStringLiteral("%1 — %2").arg(amount(task.minPrice), amount(task.maxPrice)));
+         put(m_tasksTable, row, 4, QString::number(task.maxWear, 'f', 3), FluentTheme::secondary);
+-        put(m_tasksTable, row, 5, QString::number(task.quantity));
++        put(m_tasksTable, row, 5, task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity));
+         auto* toggle = new ToggleSwitch;
+         toggle->setObjectName("taskEnabled_" + task.id);
+         toggle->setChecked(task.enabled);
+--- a/src/ui/pages/task_page.h
++++ b/src/ui/pages/task_page.h
+@@ -8,7 +8,7 @@
+ class QTableWidget;
+ 
+ namespace relink::ui {
+-// Legacy Demo task editor boundary. This page owns its widgets and mutations;
++// Task editor boundary. This page owns its widgets and mutations;
+ // it neither knows MainWindow nor accesses the persistent workspace controller.
+ class TaskPage final : public QWidget {
+     Q_OBJECT
+@@ -18,6 +18,8 @@
+     void setSimulationAvailable(bool available);
+     void setCompact(bool compact);
+     void editTask(const QString& id = QString(), const QString& skinId = QString());
++signals:
++    void importCollectionRequested();
+ private:
+     QString selectedTaskId() const;
+     void deleteSelectedTasks();
+--- a/tests/catalog/collection_task_commit_tests.cpp
++++ b/tests/catalog/collection_task_commit_tests.cpp
+@@ -0,0 +1,196 @@
++#include "application/collection_task_commit.h"
++#include "application/catalog_configuration.h"
++
++#include <QCoreApplication>
++#include <QCryptographicHash>
++#include <QDir>
++#include <QFile>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QLockFile>
++#include <QTemporaryDir>
++#include <iostream>
++
++using namespace relink::application;
++namespace {
++QByteArray read(const QString& path) {
++    QFile file(path);
++    return file.open(QIODevice::ReadOnly) ? file.readAll() : QByteArray();
++}
++bool write(const QString& path, const QByteArray& bytes) {
++    QFile file(path);
++    return file.open(QIODevice::WriteOnly) && file.write(bytes) == bytes.size();
++}
++QByteArray snapshot(const AppState& state) {
++    return QJsonDocument(encodeV1Config(state.skins, state.tasks, state.run)).toJson();
++}
++QByteArray prefix(int kind, quint64 n) {
++    int exponent = 0;
++    while (exponent < 3 && n >= (quint64(1) << (8 * (1 << exponent)))) ++exponent;
++    QByteArray out(1, char(kind | (exponent << 6)));
++    for (int i = 0; i < (1 << exponent); ++i) out.append(char((n >> (8 * i)) & 255));
++    return out;
++}
++QByteArray encode(const QJsonValue& value) {
++    if (value.isBool()) return QByteArray(1, char(value.toBool()));
++    if (value.isDouble()) return prefix(4, quint64(value.toInteger()));
++    if (value.isString()) { const auto b = value.toString().toUtf8(); return prefix(7, b.size()) + b; }
++    if (value.isArray()) {
++        const auto a = value.toArray(); auto out = prefix(3, a.size());
++        for (const auto& item : a) out += encode(item);
++        return out;
++    }
++    const auto object = value.toObject(); auto out = prefix(2, object.size());
++    for (auto it = object.begin(); it != object.end(); ++it) out += encode(it.key()) + encode(it.value());
++    return out;
++}
++QByteArray fixture(int maximum = 600) {
++    const QJsonObject fields{{QStringLiteral("启用"), true}, {QStringLiteral("成色设置栏"), 0},
++        {QStringLiteral("最低价格设置栏"), 10}, {QStringLiteral("最高价格设置栏"), maximum},
++        {QStringLiteral("枪名设置栏"), 10602}, {QStringLiteral("磨损度设置栏"), 5},
++        {QStringLiteral("限量设置栏"), 0}};
++    QJsonArray pairs;
++    for (auto it = fields.begin(); it != fields.end(); ++it)
++        pairs.append(QJsonArray{it.key() + QStringLiteral("_0"), it.value()});
++    return encode(QJsonObject{{QStringLiteral("自动收藏-任务配置"), pairs}});
++}
++}
++
++int main(int argc, char** argv) {
++    QCoreApplication app(argc, argv);
++    int assertions = 0, failures = 0;
++    const auto check = [&](bool ok, const char* label) {
++        ++assertions; failures += !ok;
++        std::cout << (ok ? "PASS " : "FAIL ") << label << '\n';
++    };
++    const auto dictionary = QJsonDocument::fromJson(read(argc > 1 ? QString::fromLocal8Bit(argv[1])
++        : QStringLiteral("docs/business_rebuild/implementation/domain/relink_0925_catalog.json"))).object();
++    relink::catalog::Catalog catalog;
++    QString error;
++    check(relink::catalog::parseCatalog(read(argc > 2 ? QString::fromLocal8Bit(argv[2])
++        : QStringLiteral("src/assets/catalog/skins.json")), &catalog, &error), "catalog_loaded");
++    QTemporaryDir temporary;
++    check(temporary.isValid(), "isolated_temporary_directory");
++    if (!temporary.isValid()) return 1;
++    AppState state;
++    check(applyCatalogConfiguration(state, catalog, nullptr, &error), "real_state_projected");
++    state.tasks.append({"existing", QStringLiteral("原有收藏任务"), catalogSkinId("10603"),
++        19, 432, 4, 3, false, QStringLiteral("用户暂停"), QStringLiteral("成色B")});
++    state.skins[0].followed = true;
++    state.run.purchaseDelayMs = 1999;
++    state.configPath = temporary.filePath(QStringLiteral("config.json"));
++    const auto original = snapshot(state) + QByteArray("\n \t\n");
++    check(write(state.configPath, original), "original_config_with_exact_whitespace_written");
++    const QString existingBackup = state.configPath + QStringLiteral(".before-task-import.bak");
++    check(write(existingBackup, "older backup sentinel"), "existing_backup_sentinel_created");
++    int notificationsCount = 0;
++    QObject::connect(&state, &AppState::changed, [&] { ++notificationsCount; });
++    CollectionTaskImportPreview report;
++    const QByteArray source = fixture();
++    check(commitCollectionTaskImport(source, dictionary, catalog, state, &report, &error), "commit_succeeds");
++    check(report.addedCount == 1 && report.duplicateCount == 0 && state.tasks.size() == 2
++          && notificationsCount == 1 && state.logs.size() == 1, "publishes_once_after_success");
++    check(read(existingBackup) == "older backup sentinel"
++          && read(state.configPath + QStringLiteral(".before-task-import-1.bak")) == original,
++          "backup_is_exact_original_and_does_not_overwrite_existing_backup");
++    check(read(state.configPath) == snapshot(state), "disk_matches_committed_configuration");
++    check(state.tasks[0].status == QStringLiteral("用户暂停") && state.tasks[0].minPrice == 19
++          && state.tasks[0].maxPrice == 432 && state.skins[0].followed
++          && state.run.purchaseDelayMs == 1999 && state.tasks[1].quantity == 0,
++          "existing_values_and_unlimited_source_survive_commit");
++    AppState reopened;
++    check(reopened.loadFrom(state.configPath, &error) && snapshot(reopened) == snapshot(state),
++          "committed_file_reopens_with_all_import_metadata");
++    check(!QFile::exists(state.configPath + QStringLiteral(".import.lock")), "lock_released_after_success");
++
++    // A duplicate is a true no-op, not a request to save unrelated edits.
++    const auto noOpDisk = read(state.configPath) + QByteArray("\n \n");
++    check(write(state.configPath, noOpDisk), "duplicate_test_disk_sentinel_written");
++    state.tasks[1].name = QStringLiteral("导入后的本地编辑");
++    state.tasks[1].maxPrice = 555;
++    const auto noOpState = snapshot(state);
++    const int noOpLogs = state.logs.size();
++    const QStringList noOpFiles = QDir(temporary.path()).entryList(QDir::Files | QDir::Hidden);
++    check(commitCollectionTaskImport(source, dictionary, catalog, state, &report, &error)
++          && report.addedCount == 0 && report.duplicateCount == 1, "duplicate_commit_reports_noop");
++    check(read(state.configPath) == noOpDisk && snapshot(state) == noOpState
++          && notificationsCount == 1 && state.logs.size() == noOpLogs
++          && QDir(temporary.path()).entryList(QDir::Files | QDir::Hidden) == noOpFiles,
++          "duplicate_does_not_write_backup_emit_or_save_unrelated_edits");
++
++    const auto reject = [&](const QByteArray& input, const char* label) {
++        const auto memory = snapshot(state);
++        const auto disk = read(state.configPath);
++        const auto path = state.configPath;
++        const int logs = state.logs.size(), notifications = notificationsCount;
++        CollectionTaskImportPreview untouched; untouched.rowCount = 321;
++        check(!commitCollectionTaskImport(input, dictionary, catalog, state, &untouched, &error)
++              && !error.isEmpty() && snapshot(state) == memory && read(state.configPath) == disk
++              && state.configPath == path && logs == state.logs.size() && notificationsCount == notifications
++              && untouched.rowCount == 321, label);
++    };
++    reject(source.left(source.size() - 1), "invalid_input_changes_neither_disk_nor_memory");
++    {
++        QLockFile other(state.configPath + QStringLiteral(".import.lock"));
++        other.setStaleLockTime(0);
++        check(other.tryLock(0), "other_import_holds_lock");
++        const auto files = QDir(temporary.path()).entryList(QDir::Files | QDir::Hidden);
++        reject(fixture(601), "lock_conflict_leaves_disk_memory_logs_and_report_unchanged");
++        check(QDir(temporary.path()).entryList(QDir::Files | QDir::Hidden) == files,
++              "lock_conflict_creates_no_backup");
++    }
++    const QString originalPath = state.configPath;
++    state.configPath.clear();
++    reject(fixture(601), "empty_destination_does_not_publish");
++    state.configPath = temporary.filePath(QStringLiteral("directory-destination"));
++    check(QDir().mkpath(state.configPath)
++          && write(QDir(state.configPath).filePath(QStringLiteral("sentinel")), "directory content"),
++          "create_unwritable_as_file_destination");
++    reject(fixture(601), "atomic_save_failure_never_publishes_memory");
++    check(read(QDir(state.configPath).filePath(QStringLiteral("sentinel"))) == "directory content"
++          && !QFile::exists(state.configPath + QStringLiteral(".import.lock")),
++          "failed_save_preserves_existing_directory_and_releases_lock");
++    const QString blockingParent = temporary.filePath(QStringLiteral("parent-is-a-file"));
++    check(write(blockingParent, "parent sentinel"), "parent_file_blocks_directory_creation");
++    state.configPath = blockingParent + QStringLiteral("/config.json");
++    reject(fixture(601), "parent_creation_failure_does_not_publish");
++    check(read(blockingParent) == "parent sentinel", "parent_file_preserved");
++    state.configPath = originalPath;
++    const auto beforeSecond = read(state.configPath);
++    check(commitCollectionTaskImport(fixture(601), dictionary, catalog, state, &report, &error)
++          && report.addedCount == 1 && state.tasks.size() == 3 && state.tasks[1].maxPrice == 555,
++          "subsequent_distinct_source_appends_and_keeps_edited_import");
++    check(read(state.configPath + QStringLiteral(".before-task-import-2.bak")) == beforeSecond
++          && read(state.configPath) == snapshot(state), "second_backup_captures_exact_previous_disk");
++
++    AppState fresh;
++    check(applyCatalogConfiguration(fresh, catalog, nullptr, &error), "fresh_catalog_projected");
++    fresh.configPath = temporary.filePath(QStringLiteral("new-parent/new-config.json"));
++    check(commitCollectionTaskImport(source, dictionary, catalog, fresh, &report, &error)
++          && read(fresh.configPath) == snapshot(fresh) && fresh.tasks.size() == 1,
++          "new_destination_created_and_saved");
++
++    if (argc > 3) {
++        const QString sourcePath = QString::fromLocal8Bit(argv[3]);
++        const auto realSource = read(sourcePath);
++        const auto sourceHash = QCryptographicHash::hash(realSource, QCryptographicHash::Sha256);
++        AppState actual;
++        check(applyCatalogConfiguration(actual, catalog, nullptr, &error), "actual_catalog_projected");
++        actual.configPath = temporary.filePath(QStringLiteral("actual-config.json"));
++        check(commitCollectionTaskImport(realSource, dictionary, catalog, actual, &report, &error)
++              && report.rowCount == 50 && report.enabledCount == 21
++              && report.distinctProducts == 9 && report.totalDistinctProducts == 13
++              && actual.tasks.size() == 50, "actual_50_rows_21_enabled_9_active_13_total_committed");
++        AppState loaded;
++        check(loaded.loadFrom(actual.configPath, &error)
++              && commitCollectionTaskImport(realSource, dictionary, catalog, loaded, &report, &error)
++              && report.duplicateCount == 50 && report.addedCount == 0
++              && snapshot(loaded) == read(actual.configPath), "actual_reopened_commit_deduplicates_without_write");
++        check(QCryptographicHash::hash(read(sourcePath), QCryptographicHash::Sha256) == sourceHash,
++              "actual_source_sha256_unchanged");
++    }
++    std::cout << "COLLECTION_TASK_COMMIT_TESTS=" << (failures ? "FAIL" : "PASS")
++              << "; assertions=" << assertions << "; failures=" << failures
++              << "; game_input_sent=false\n";
++    return failures ? 1 : 0;
++}
+--- a/tests/catalog/collection_task_import_tests.cpp
++++ b/tests/catalog/collection_task_import_tests.cpp
+@@ -0,0 +1,234 @@
++#include "application/collection_task_import.h"
++#include "application/catalog_configuration.h"
++#include "config/savedvalue_reader.h"
++
++#include <QCoreApplication>
++#include <QCryptographicHash>
++#include <QFile>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QSet>
++#include <QTemporaryDir>
++#include <iostream>
++
++using namespace relink::application;
++namespace {
++QByteArray read(const QString& path) {
++    QFile file(path);
++    return file.open(QIODevice::ReadOnly) ? file.readAll() : QByteArray();
++}
++QByteArray stateBytes(const AppState& state) {
++    return QJsonDocument(encodeV1Config(state.skins, state.tasks, state.run)).toJson();
++}
++QByteArray prefix(int kind, quint64 n) {
++    int exponent = 0;
++    while (exponent < 3 && n >= (quint64(1) << (8 * (1 << exponent)))) ++exponent;
++    QByteArray out(1, char(kind | (exponent << 6)));
++    for (int i = 0; i < (1 << exponent); ++i) out.append(char((n >> (8 * i)) & 255));
++    return out;
++}
++QByteArray encode(const QJsonValue& value) {
++    if (value.isBool()) return QByteArray(1, char(value.toBool()));
++    if (value.isDouble()) return prefix(4, quint64(value.toInteger()));
++    if (value.isString()) { const auto b = value.toString().toUtf8(); return prefix(7, b.size()) + b; }
++    if (value.isArray()) {
++        const auto a = value.toArray(); auto out = prefix(3, a.size());
++        for (const auto& item : a) out += encode(item);
++        return out;
++    }
++    const auto object = value.toObject(); auto out = prefix(2, object.size());
++    for (auto it = object.begin(); it != object.end(); ++it) out += encode(it.key()) + encode(it.value());
++    return out;
++}
++QJsonArray row(int index, int product, int condition = 0, bool enabled = true,
++               int minPrice = 10, int maxPrice = 600, int wear = 5, int quantity = 0) {
++    const QJsonObject fields{{QStringLiteral("启用"), enabled}, {QStringLiteral("成色设置栏"), condition},
++        {QStringLiteral("最低价格设置栏"), minPrice}, {QStringLiteral("最高价格设置栏"), maxPrice},
++        {QStringLiteral("枪名设置栏"), product}, {QStringLiteral("磨损度设置栏"), wear},
++        {QStringLiteral("限量设置栏"), quantity}};
++    QJsonArray result;
++    for (auto it = fields.begin(); it != fields.end(); ++it)
++        result.append(QJsonArray{it.key() + QLatin1Char('_') + QString::number(index), it.value()});
++    return result;
++}
++QByteArray input(const QVector<QJsonArray>& rows) {
++    QJsonArray pairs;
++    for (const auto& row : rows) for (const auto& pair : row) pairs.append(pair);
++    return encode(QJsonObject{{QStringLiteral("自动收藏-任务配置"), pairs},
++        {QStringLiteral("购买延迟"), QJsonArray{QJsonArray{QStringLiteral("购买延迟"), 838}}}});
++}
++}
++
++int main(int argc, char** argv) {
++    QCoreApplication app(argc, argv);
++    int assertions = 0, failures = 0;
++    const auto check = [&](bool ok, const char* label) {
++        ++assertions; failures += !ok;
++        std::cout << (ok ? "PASS " : "FAIL ") << label << '\n';
++    };
++    const auto dictionary = QJsonDocument::fromJson(read(argc > 1 ? QString::fromLocal8Bit(argv[1])
++        : QStringLiteral("docs/business_rebuild/implementation/domain/relink_0925_catalog.json"))).object();
++    relink::catalog::Catalog catalog;
++    QString error;
++    check(relink::catalog::parseCatalog(read(argc > 2 ? QString::fromLocal8Bit(argv[2])
++        : QStringLiteral("src/assets/catalog/skins.json")), &catalog, &error), "catalog_loaded");
++    AppState state;
++    check(applyCatalogConfiguration(state, catalog, nullptr, &error), "real_catalog_projected");
++    state.skins[0].followed = true;
++    state.tasks.append({"user-task", QStringLiteral("保留我的条件"), catalogSkinId("10602"),
++        23, 321, 4, 7, false, QStringLiteral("用户暂停"), QStringLiteral("成色B")});
++    state.run.purchaseDelayMs = 1473;
++    const auto original = stateBytes(state);
++    const auto bytes = input({row(10, 11102, 3, false, 17, 432, 9, 3),
++                              row(2, 10602), row(3, 10603, 4, true, 20, 580, 4)});
++    CollectionTaskImportPreview preview;
++    int changed = 0;
++    QObject::connect(&state, &AppState::changed, [&] { ++changed; });
++    check(previewCollectionTaskImport(bytes, dictionary, catalog, state, &preview, &error), "preview_accepts_resolved_data");
++    check(stateBytes(state) == original && changed == 0, "preview_and_cancel_leave_state_unchanged");
++    check(preview.rowCount == 3 && preview.enabledCount == 2 && preview.distinctProducts == 2
++          && preview.totalDistinctProducts == 3 && preview.addedCount == 3 && preview.duplicateCount == 0,
++          "preview_counts_enabled_and_total_products_separately");
++    check(preview.rows[0].task.importSource.row == 2 && preview.rows[1].task.importSource.row == 3
++          && preview.rows[2].task.importSource.row == 10, "preserves_numeric_source_row_order");
++    check(preview.rows[2].task.minPrice == 17 && preview.rows[2].task.maxPrice == 432
++          && preview.rows[2].task.maxWear == 9 && preview.rows[2].task.quantity == 3
++          && !preview.rows[2].task.enabled && preview.rows[2].task.condition == QStringLiteral("成色C"),
++          "disabled_row_keeps_all_original_parameters");
++    check(preview.rows[0].task.quantity == 0 && preview.rows[1].task.condition == QStringLiteral("仅磨损"),
++          "zero_limit_and_wear_only_condition_preserved");
++    check(preview.rows[0].menuColor == "purple" && preview.rows[0].variantLabel.isEmpty()
++          && state.skins[0].rarity == QStringLiteral("待核对"), "menu_color_is_not_guessed_quality_or_condition");
++    check(preview.rows[2].seasonLabel == QStringLiteral("疾风魅影"), "s11_source_spelling_not_renamed");
++    check(preview.inactiveSettingsMetadata.contains(QStringLiteral("购买延迟"))
++          && state.run.purchaseDelayMs == 1473, "purchase_settings_metadata_only");
++    check(applyCollectionTaskImport(bytes, dictionary, catalog, state, &preview, &error), "apply_appends_atomically");
++    check(changed == 1 && state.tasks.size() == 4 && state.tasks[0].status == QStringLiteral("用户暂停")
++          && state.skins[0].followed && state.run.purchaseDelayMs == 1473,
++          "existing_tasks_follows_runtime_status_and_settings_preserved");
++    check(state.tasks[1].id == collectionImportTaskId(preview.sourceSha256, 2)
++          && state.tasks[1].importSource.sourceSha256 == QString::fromLatin1(
++              QCryptographicHash::hash(bytes, QCryptographicHash::Sha256).toHex()), "stable_content_and_row_identity");
++    state.tasks[1].maxPrice = 555;
++    state.tasks[1].enabled = false;
++    state.tasks[1].name = QStringLiteral("我编辑过的任务");
++    const auto edited = stateBytes(state);
++    check(applyCollectionTaskImport(bytes, dictionary, catalog, state, &preview, &error)
++          && preview.addedCount == 0 && preview.duplicateCount == 3 && changed == 1
++          && stateBytes(state) == edited, "repeat_import_deduplicates_and_preserves_user_edits");
++    QTemporaryDir temporary;
++    const auto savePath = temporary.filePath(QStringLiteral("config.json"));
++    AppState reloaded;
++    check(state.saveTo(savePath, &error) && reloaded.loadFrom(savePath, &error)
++          && stateBytes(reloaded) == edited, "source_provenance_and_zero_limit_roundtrip");
++    check(applyCollectionTaskImport(bytes, dictionary, catalog, reloaded, &preview, &error)
++          && preview.addedCount == 0 && preview.duplicateCount == 3 && reloaded.tasks.size() == 4,
++          "reopened_configuration_keeps_dedup_identity");
++    const auto reject = [&](const QByteArray& data, const QJsonObject& dict,
++                            const relink::catalog::Catalog& cat, const char* label) {
++        CollectionTaskImportPreview sentinel;
++        sentinel.sourceSha256 = "sentinel"; sentinel.rowCount = 777;
++        const auto before = stateBytes(state);
++        check(!previewCollectionTaskImport(data, dict, cat, state, &sentinel, &error)
++              && !error.isEmpty() && sentinel.sourceSha256 == "sentinel" && sentinel.rowCount == 777
++              && stateBytes(state) == before && changed == 1, label);
++    };
++    reject(input({row(0, 10602), row(1, 99999)}), dictionary, catalog, "unknown_product_rejects_entire_batch");
++    reject(input({row(0, 10602), row(1, 99999, 0, false)}), dictionary, catalog,
++           "disabled_unknown_product_rejects_entire_batch");
++    {
++        const auto before = stateBytes(state);
++        CollectionTaskImportPreview report;
++        report.rowCount = 123;
++        check(!applyCollectionTaskImport(input({row(0, 10602), row(1, 99999)}), dictionary,
++                                        catalog, state, &report, &error)
++              && stateBytes(state) == before && changed == 1 && report.rowCount == 123,
++              "apply_rejects_entire_batch_without_notification_or_report_mutation");
++    }
++    reject(input({row(0, 10602, 99)}), dictionary, catalog, "unknown_condition_rejects_batch");
++    reject(input({row(0, 10602, 0, true, 10, 600, 101)}), dictionary, catalog, "wear_over_limit_not_clamped");
++    reject(input({row(0, 10602, 0, true, 10, 600, 5, 10000)}), dictionary, catalog, "quantity_over_limit_not_clamped");
++    reject(input({row(0, 10602, 0, true, 10, 1000000000)}), dictionary, catalog, "price_over_limit_not_clamped");
++    reject(input({row(0, 10602, 0, true, 700, 600)}), dictionary, catalog, "inverted_price_range_rejected");
++    reject(bytes.left(bytes.size() - 1), dictionary, catalog, "truncated_source_atomic_rejection");
++    reject(input({}), dictionary, catalog, "empty_collection_rejected");
++    auto changedDictionary = dictionary;
++    auto products = changedDictionary.value(QStringLiteral("products")).toObject();
++    auto s11 = products.value("11102").toObject(); s11["season_label"] = QStringLiteral("疾光魅影");
++    products["11102"] = s11; changedDictionary["products"] = products;
++    reject(bytes, changedDictionary, catalog, "distinct_s11_spelling_rejected_not_fuzzy_matched");
++    changedDictionary = dictionary;
++    products = changedDictionary.value("products").toObject();
++    auto aug = products.value("10602").toObject(); aug["name"] = "P90";
++    products["10602"] = aug; changedDictionary["products"] = products;
++    reject(bytes, changedDictionary, catalog, "dictionary_name_and_display_conflict_rejected");
++    changedDictionary = dictionary; changedDictionary.remove("collection_limit_zero_semantics");
++    reject(bytes, changedDictionary, catalog, "unknown_zero_limit_semantics_rejected");
++    auto missingCatalog = catalog;
++    for (qsizetype i = 0; i < missingCatalog.skins.size(); ++i)
++        if (missingCatalog.skins[i].productId == "10603") { missingCatalog.skins.removeAt(i); break; }
++    reject(bytes, dictionary, missingCatalog, "dictionary_only_id_without_catalog_rejected");
++    const auto oldOrigin = state.tasks[1].importSource;
++    state.tasks[1].importSource.dictionarySha256 = QString(64, QLatin1Char('a'));
++    reject(bytes, dictionary, catalog, "conflicting_existing_provenance_rejected");
++    state.tasks[1].importSource = oldOrigin;
++    auto oldTask = state.tasks[1];
++    state.tasks[1].importSource = {};
++    reject(bytes, dictionary, catalog, "stable_id_collision_not_overwritten");
++    state.tasks[1] = oldTask;
++    auto duplicate = oldTask; duplicate.id = "duplicate-origin";
++    state.tasks.append(duplicate);
++    check(!state.saveTo(savePath, &error), "duplicate_import_origin_rejected_by_config_codec");
++    state.tasks.removeLast();
++    const auto invalidOrigins = QVector<TaskImportSource>{
++        {"savedValue", "bad-hash", oldOrigin.dictionarySha256, oldOrigin.productId, oldOrigin.conditionId, oldOrigin.row, oldOrigin.fields},
++        {"savedValue", oldOrigin.sourceSha256, oldOrigin.dictionarySha256, "10603", oldOrigin.conditionId, oldOrigin.row, oldOrigin.fields},
++        {"savedValue", oldOrigin.sourceSha256, oldOrigin.dictionarySha256, oldOrigin.productId, oldOrigin.conditionId, 500, oldOrigin.fields},
++        {"savedValue", oldOrigin.sourceSha256, oldOrigin.dictionarySha256, oldOrigin.productId, oldOrigin.conditionId, oldOrigin.row, {}}};
++    for (const auto& invalid : invalidOrigins) {
++        state.tasks[1].importSource = invalid;
++        check(!state.saveTo(savePath, &error), "malformed_provenance_rejected_before_disk_write");
++    }
++    state.tasks[1] = oldTask;
++    const auto disabled = input({row(0, 10100, 0, false)});
++    check(previewCollectionTaskImport(disabled, dictionary, catalog, state, &preview, &error)
++          && preview.enabledCount == 0 && preview.addedCount == 1 && preview.rows[0].variantLabel == QStringLiteral("极品"),
++          "all_disabled_template_imported_without_activation");
++
++    if (argc > 3) {
++        const QString sourcePath = QString::fromLocal8Bit(argv[3]);
++        const auto actualBytes = read(sourcePath);
++        AppState actual;
++        check(applyCatalogConfiguration(actual, catalog, nullptr, &error), "actual_catalog_ready");
++        check(previewCollectionTaskImport(actualBytes, dictionary, catalog, actual, &preview, &error), "actual_file_preview");
++        check(preview.rowCount == 50 && preview.enabledCount == 21 && preview.distinctProducts == 9
++              && preview.totalDistinctProducts == 13 && preview.addedCount == 50, "actual_50_rows_21_enabled_9_active_13_total_products");
++        const auto decoded = relink::config::savedValueCollectionSnapshot(actualBytes, dictionary);
++        const auto originalRows = decoded.value("rows").toArray();
++        bool exact = preview.rows.size() == originalRows.size();
++        for (int i = 0; exact && i < originalRows.size(); ++i) {
++            const auto source = originalRows[i].toObject(); const auto& task = preview.rows[i].task;
++            exact &= task.importSource.row == source.value("row_index").toInt()
++                && task.importSource.fields == source.value("source_fields").toObject()
++                && task.enabled == source.value("enabled").toBool()
++                && task.condition == source.value("condition_label").toString()
++                && task.minPrice == source.value("price_min").toString().toDouble()
++                && task.maxPrice == source.value("price_max").toString().toDouble()
++                && task.maxWear == source.value("max_wear").toString().toDouble()
++                && task.quantity == source.value("limit_raw").toInt();
++        }
++        check(exact, "actual_every_row_preserves_all_source_parameters");
++        check(applyCollectionTaskImport(actualBytes, dictionary, catalog, actual, &preview, &error)
++              && actual.tasks.size() == 50 && actual.saveTo(savePath, &error), "actual_all_rows_saved");
++        AppState actualReopened;
++        check(actualReopened.loadFrom(savePath, &error)
++              && applyCollectionTaskImport(actualBytes, dictionary, catalog, actualReopened, &preview, &error)
++              && actualReopened.tasks.size() == 50 && preview.duplicateCount == 50 && preview.addedCount == 0,
++              "actual_reopened_import_idempotent");
++        check(read(sourcePath) == actualBytes, "actual_source_file_unchanged");
++    }
++    std::cout << "COLLECTION_TASK_IMPORT_TESTS=" << (failures ? "FAIL" : "PASS")
++              << "; assertions=" << assertions << "; failures=" << failures
++              << "; game_input_sent=false\n";
++    return failures ? 1 : 0;
++}
+--- a/tests/domain_tests.cpp
++++ b/tests/domain_tests.cpp
+@@ -78,7 +78,7 @@
+     };
+     rejection("reject_range_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("minPrice"), 999999); });
+     rejection("reject_unknown_skin_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("skinId"), QStringLiteral("missing")); });
+-    rejection("reject_quantity_zero_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 0); });
++    rejection("reject_quantity_negative_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), -1); });
+     rejection("reject_quantity_fraction_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 1.5); });
+     rejection("reject_quantity_overflow_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 9999999999.0); });
+     rejection("reject_quantity_ui_limit_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 10000); });
+@@ -115,6 +115,14 @@
+     check(!imported.saveTo(snapshot, &error), "reject_nonfinite_save");
+     check(imported.loadFrom(baseline, &error), "restore_valid_fixture");
+ 
++    QJsonObject unlimited = source;
++    changeTask(unlimited, QStringLiteral("quantity"), 0);
++    AppState unlimitedState;
++    check(write(candidate, QJsonDocument(unlimited).toJson())
++          && unlimitedState.loadFrom(candidate, &error)
++          && unlimitedState.tasks.first().quantity == 0
++          && unlimitedState.saveTo(snapshot, &error), "quantity_zero_unlimited_roundtrip");
++
+     QJsonObject boundary = source;
+     changeTask(boundary, QStringLiteral("name"), QString(60, QChar(0x4EFB)));
+     changeTask(boundary, QStringLiteral("minPrice"), 0.29);
+@@ -172,6 +180,19 @@
+     for (int i = 0; i < 10; ++i) imported.simulateTick();
+     check(imported.simulatedSuccess == 9, "simulation_respects_task_quantities");
+     imported.pauseSimulation();
++
++    AppState unlimitedFixture;
++    unlimitedFixture.loadTestFixture();
++    for (auto& task : unlimitedFixture.tasks) task.enabled = false;
++    unlimitedFixture.tasks[0].enabled = true;
++    unlimitedFixture.tasks[0].quantity = 0;
++    unlimitedFixture.startSimulation();
++    for (int i = 0; i < 3; ++i) unlimitedFixture.simulateTick();
++    check(unlimitedFixture.simulationRunning && unlimitedFixture.simulatedSuccess == 3
++          && unlimitedFixture.tasks[0].status == QStringLiteral("演示进行中")
++          && unlimitedFixture.logs.first().message.contains(QStringLiteral("不限")),
++          "explicit_fixture_zero_limit_remains_unlimited");
++    unlimitedFixture.pauseSimulation();
+ 
+     imported.loadTestFixture();
+     for (auto& task : imported.tasks) task.enabled = false;
+--- a/tests/manual/collection_scroll.py
++++ b/tests/manual/collection_scroll.py
+@@ -0,0 +1,418 @@
++"""Read-only collection geometry contracts. This module performs no OS input.
++
++The old six-card packet has no dynamic-layout evidence and is intentionally not
++upgraded here. A capture producer must emit ``collection_layout`` from the same
++in-memory frame as ``collection_observation``. No coordinates, missing edges,
++scrollbar positions or item identities are inferred from the previous frame.
++
++Schema ``collection-layout-v1``::
++
++    {same_frame: true, frame_id: str, frame_sha256: str,
++     schema: "collection-layout-v1", detector: "visible_edges", complete: true,
++     viewport: [width, height], listing_viewport: [x, y, width, height],
++     cards: [{id: str, bounds: [x, y, width, height],
++              edges: {top: bool, bottom: bool, left: bool, right: bool},
++              fields_bounds: [x, y, width, height] | null, selected: bool}],
++     scrollbar: {track_bounds: [x, y, width, height],
++                 thumb_bounds: [x, y, width, height]} | null}
++
++``bounds`` is an observed visible rectangle, not an extrapolation beyond the
++viewport. ``complete`` means the detector enumerated this *visible viewport*;
++it does not mean the entire page, task or listing tail has been scanned. A
++clipped card may have a visible rectangle but must have an unobserved edge set
++to false. A card is selectable only with all four observed edges and a fully
++visible fields strip. Card ids are frame-local; leases expire on every capture.
++
++Scrollbar motion proves a bounded scroll changed position. Missing or unmoved
++scrollbars do not establish progress or end-of-list. Selection/scroll plans
++always end with a fresh observation and never include a favorite/purchase.
++"""
++
++from copy import deepcopy
++from decimal import Decimal
++import hashlib
++import json
++from math import isfinite
++import re
++
++from collection_journal import candidate_key
++from collection_labels import exact_label_target
++
++
++SCHEMA = 'collection-layout-v1'
++MAX_CARDS = 32
++CONFIRMED = frozenset(('confirmed', 'confirmed_reconciliation'))
++PENDING = frozenset(('prepared', 'dispatched', 'input_uncertain'))
++_SIDES = frozenset(('top', 'bottom', 'left', 'right'))
++
++
++def _fail(code):
++    raise ValueError(code)
++
++
++def _number(value):
++    return type(value) in (int, float) and isfinite(value)
++
++
++def _rect(value, code='COLLECTION_LAYOUT_RECT'):
++    if not isinstance(value, (list, tuple)) or len(value) != 4:
++        _fail(code)
++    if any(type(v) is not int for v in value):
++        _fail(code)
++    x, y, width, height = value
++    if x < 0 or y < 0 or width <= 0 or height <= 0:
++        _fail(code)
++    return list(value)
++
++
++def _contains(outer, inner):
++    x, y, w, h = outer
++    a, b, c, d = inner
++    return x <= a and y <= b and a + c <= x + w and b + d <= y + h
++
++
++def _overlaps(a, b):
++    return (max(a[0], b[0]) < min(a[0] + a[2], b[0] + b[2])
++            and max(a[1], b[1]) < min(a[1] + a[3], b[1] + b[3]))
++
++
++def _sha256(value):
++    return (isinstance(value, str) and len(value) == 64
++            and all(ch in '0123456789abcdef' for ch in value))
++
++
++def _digest(value):
++    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
++                                    ensure_ascii=False).encode('utf-8')).hexdigest()
++
++
++def _frame(packet):
++    if not isinstance(packet, dict):
++        _fail('COLLECTION_FRAME_BINDING')
++    page = packet.get('startup_page', {})
++    if page.get('page') != 'skin_listings' or page.get('overlay') != 'none':
++        _fail('COLLECTION_PAGE')
++    projection = packet.get('collection_observation', {})
++    frames = packet.get('frames')
++    if not isinstance(frames, list) or not frames or not isinstance(frames[-1], dict):
++        _fail('COLLECTION_FRAME_BINDING')
++    frame = frames[-1]
++    digest, frame_id = projection.get('frame_sha256'), projection.get('frame_id')
++    if (projection.get('same_frame') is not True or not _sha256(digest)
++            or frame.get('sha256') != digest or not isinstance(frame_id, str) or not frame_id):
++        _fail('COLLECTION_FRAME_BINDING')
++    dimensions = [frame.get('width'), frame.get('height')]
++    if any(type(v) is not int or not 1 <= v <= 16384 for v in dimensions):
++        _fail('COLLECTION_LAYOUT_VIEWPORT')
++    return dict(frame_id=frame_id, frame_sha256=digest, viewport=dimensions)
++
++
++def _scrollbar(value, viewport):
++    if value is None:
++        return None
++    if not isinstance(value, dict):
++        _fail('COLLECTION_SCROLLBAR_GEOMETRY')
++    track = _rect(value.get('track_bounds'), 'COLLECTION_SCROLLBAR_GEOMETRY')
++    thumb = _rect(value.get('thumb_bounds'), 'COLLECTION_SCROLLBAR_GEOMETRY')
++    if (not _contains([0, 0, *viewport], track) or not _contains(track, thumb)
++            or track[3] <= track[2] or thumb[2] > track[2] or thumb[3] >= track[3]):
++        _fail('COLLECTION_SCROLLBAR_GEOMETRY')
++    return dict(track_bounds=track, thumb_bounds=thumb)
++
++
++def observe_layout(packet):
++    """Validate same-frame detector output and return an immutable-by-copy lease.
++
++    This accepts no legacy index-to-coordinate fallback. The returned partial
++    ids are informational only; ``bind_card`` refuses to produce their points.
++    """
++    frame = _frame(packet)
++    layout = packet.get('collection_layout')
++    if not isinstance(layout, dict):
++        _fail('COLLECTION_LAYOUT_MISSING')
++    if (layout.get('schema') != SCHEMA or layout.get('detector') != 'visible_edges'
++            or layout.get('complete') is not True):
++        _fail('COLLECTION_LAYOUT_UNPROVEN')
++    if (layout.get('same_frame') is not True
++            or any(layout.get(k) != frame[k] for k in ('frame_id', 'frame_sha256'))):
++        _fail('COLLECTION_LAYOUT_FRAME_BINDING')
++    if layout.get('viewport') != frame['viewport']:
++        _fail('COLLECTION_LAYOUT_VIEWPORT')
++    viewport = _rect(layout.get('listing_viewport'))
++    if not _contains([0, 0, *frame['viewport']], viewport):
++        _fail('COLLECTION_LAYOUT_VIEWPORT')
++    cards = layout.get('cards')
++    if not isinstance(cards, list) or len(cards) > MAX_CARDS:
++        _fail('COLLECTION_LAYOUT_CARD_COUNT')
++    normalized, ids = [], set()
++    for card in cards:
++        if not isinstance(card, dict):
++            _fail('COLLECTION_LAYOUT_CARD')
++        card_id = card.get('id')
++        if not isinstance(card_id, str) or not card_id or len(card_id) > 128 or card_id in ids:
++            _fail('COLLECTION_LAYOUT_CARD_ID')
++        ids.add(card_id)
++        bounds = _rect(card.get('bounds'))
++        if not _contains(viewport, bounds):
++            _fail('COLLECTION_LAYOUT_CLIPPING')
++        if any(_overlaps(bounds, prior['bounds']) for prior in normalized):
++            _fail('COLLECTION_LAYOUT_OVERLAP')
++        edges = card.get('edges')
++        if (not isinstance(edges, dict) or set(edges) != _SIDES
++                or any(type(v) is not bool for v in edges.values())):
++            _fail('COLLECTION_LAYOUT_EDGES')
++        fields = card.get('fields_bounds')
++        if fields is not None:
++            fields = _rect(fields)
++            if not _contains(bounds, fields):
++                _fail('COLLECTION_LAYOUT_FIELDS')
++        if type(card.get('selected')) is not bool:
++            _fail('COLLECTION_LAYOUT_SELECTION')
++        # Require an observed card body above the fields, with room for a
++        # center point that is inset from borders and outside the price strip.
++        complete = all(edges.values()) and fields is not None
++        body = None
++        if complete:
++            body = [bounds[0] + 4, bounds[1] + 4, bounds[2] - 8,
++                    fields[1] - bounds[1] - 8]
++            if body[2] <= 0 or body[3] <= 0:
++                _fail('COLLECTION_LAYOUT_BODY')
++        normalized.append(dict(id=card_id, bounds=bounds, fields_bounds=fields,
++                               edges=dict(edges), selected=card['selected'],
++                               selectable=complete, body_bounds=body))
++    if sum(card['selected'] for card in normalized) > 1:
++        _fail('COLLECTION_LAYOUT_SELECTION_AMBIGUOUS')
++    normalized.sort(key=lambda card: (card['bounds'][1], card['bounds'][0]))
++    result = dict(schema=SCHEMA, **frame, listing_viewport=viewport, cards=normalized,
++                  scrollbar=_scrollbar(layout.get('scrollbar'), frame['viewport']),
++                  partial_card_ids=[c['id'] for c in normalized if not c['selectable']],
++                  page_exhausted=False, purchase_phase_enabled=False)
++    result['layout_id'] = _digest(result)
++    return result
++
++
++def _scope(packet, rule):
++    if (not isinstance(rule, dict) or rule.get('enabled') is not True
++            or rule.get('dictionary_resolved') is not True
++            or type(rule.get('row_index')) is not int or rule['row_index'] < 0
++            or not isinstance(rule.get('product_name'), str) or not rule['product_name']
++            or rule.get('condition_label') not in ('成色S', '成色A', '成色B', '成色C', '仅磨损')):
++        _fail('COLLECTION_RULE_NOT_RESOLVED')
++    if exact_label_target(packet, 'product_title', rule['product_name']) is None:
++        _fail('COLLECTION_PRODUCT_MISMATCH')
++    return {k: rule[k] for k in ('row_index', 'product_name', 'condition_label')}
++
++
++def bind_card(packet, rule, card_id):
++    """Bind a read-only card selection to observed geometry, never to an index."""
++    layout = observe_layout(packet)
++    scope = _scope(packet, rule)
++    cards = [card for card in layout['cards'] if card['id'] == card_id]
++    if len(cards) != 1:
++        _fail('COLLECTION_LAYOUT_CARD_MISSING')
++    card = cards[0]
++    if not card['selectable']:
++        _fail('COLLECTION_PARTIAL_CARD_REQUIRES_SCROLL')
++    x, y, width, height = card['body_bounds']
++    return dict(schema='collection-card-lease-v1', layout_id=layout['layout_id'],
++                frame_id=layout['frame_id'], frame_sha256=layout['frame_sha256'],
++                scope=scope, card=deepcopy(card), point=[x + width // 2, y + height // 2],
++                viewport=layout['viewport'], purchase_phase_enabled=False)
++
++
++def validate_card_lease(packet, rule, lease):
++    """An old frame's card point must not survive any selection/scroll/capture."""
++    if not isinstance(lease, dict) or lease.get('schema') != 'collection-card-lease-v1':
++        _fail('COLLECTION_CARD_LEASE')
++    current = bind_card(packet, rule, lease.get('card', {}).get('id'))
++    if current != lease:
++        _fail('COLLECTION_CARD_LEASE_EXPIRED')
++    return deepcopy(current)
++
++
++def selection_plan(packet, rule, card_id):
++    """A finite plan for an injected executor; not accepted by the old runner.
++
++    ``select_visible_card`` requires ``validate_card_lease`` immediately before
++    input. The capture producer must then enumerate again, and the executor
++    calls ``rebind_selected`` before parsing any candidate/price/wear. There is
++    deliberately no favorite toggle in this plan.
++    """
++    lease = bind_card(packet, rule, card_id)
++    return dict(schema='collection-geometry-plan-v1', timeout_seconds=15, steps=[
++        dict(kind='select_visible_card', lease=lease, expected_before='skin_listings'),
++        dict(kind='capture', expected_page='skin_listings', collection_observation=True,
++             collection_layout=True, selected_geometry_required=True)],
++        purchase_phase_enabled=False)
++
++
++def rebind_selected(packet, rule, previous_lease):
++    """Confirm selection in a *new* frame and bind the newly observed geometry.
++
++    The selection capture must show exactly the target rectangle; frame-local
++    ids may change. Item equality is NOT asserted here. The existing selected
++    title/condition/price/wear matcher and durable journal remain mandatory.
++    """
++    layout = observe_layout(packet)
++    scope = _scope(packet, rule)
++    if (not isinstance(previous_lease, dict)
++            or previous_lease.get('schema') != 'collection-card-lease-v1'
++            or previous_lease.get('scope') != scope):
++        _fail('COLLECTION_CARD_LEASE')
++    if (layout['frame_id'] == previous_lease.get('frame_id')
++            or layout['frame_sha256'] == previous_lease.get('frame_sha256')):
++        _fail('COLLECTION_REOBSERVATION_REQUIRED')
++    selected = [card for card in layout['cards'] if card['selected']]
++    prior = previous_lease.get('card', {})
++    if (len(selected) != 1 or selected[0]['bounds'] != prior.get('bounds')
++            or selected[0]['fields_bounds'] != prior.get('fields_bounds')):
++        _fail('COLLECTION_SELECTION_GEOMETRY_CHANGED')
++    lease = bind_card(packet, rule, selected[0]['id'])
++    # Keep evidence separate: a regular lease must remain byte-for-byte
++    # comparable by validate_card_lease, without extra confirmation fields.
++    return dict(lease=lease,
++                selected_observed=True, previous_frame_id=previous_lease['frame_id'],
++                item_identity_proven=False, collection_allowed=False)
++
++
++def _identity(candidate, error):
++    if (not isinstance(candidate, dict)
++            or not isinstance(candidate.get('product'), str) or not candidate['product']
++            or candidate.get('condition') not in ('成色S', '成色A', '成色B', '成色C')
++            or not isinstance(candidate.get('wear'), str)
++            or not re.fullmatch(r'[0-9]+\.[0-9]{1,9}', candidate['wear'])):
++        _fail(error)
++    # Same observed wear with a trailing zero is not a new listing. Keep the
++    # original persistent journal key intact but compare decimal identities.
++    return candidate['product'], candidate['condition'], Decimal(candidate['wear'])
++
++
++def _journal_records(records):
++    if not isinstance(records, (list, tuple)):
++        _fail('COLLECTION_JOURNAL_RECORDS')
++    seen, identities, normalized = set(), set(), []
++    for record in records:
++        if not isinstance(record, dict) or record.get('status') not in CONFIRMED | PENDING:
++            _fail('COLLECTION_JOURNAL_STATUS')
++        candidate = record.get('candidate', {})
++        identity = _identity(candidate, 'COLLECTION_JOURNAL_IDENTITY')
++        key = candidate_key(candidate)
++        if record.get('key') != key or key in seen or identity in identities:
++            _fail('COLLECTION_JOURNAL_IDENTITY')
++        seen.add(key)
++        identities.add(identity)
++        normalized.append(record)
++    return normalized
++
++
++def collection_disposition(candidate, selected_card, records):
++    """No-repeat decision after independent selected candidate association.
++
++    This is *not* an input authorization. Unknown identity/color or any pending
++    attempt stops. Same product/condition/wear colliding with a prior confirmed
++    key is preserved even if position or price changed. A confirmed key shown
++    white needs reconciliation, not another toggle.
++    """
++    records = _journal_records(records)
++    if any(record['status'] in PENDING for record in records):
++        _fail('COLLECTION_PENDING_RECONCILIATION')
++    identity = _identity(candidate, 'COLLECTION_CANDIDATE_IDENTITY')
++    if not isinstance(selected_card, dict) or selected_card.get('selected') is not True:
++        _fail('COLLECTION_SELECTED_CARD_UNPROVEN')
++    warm = selected_card.get('favorite_warm_fraction')
++    bright = selected_card.get('favorite_bright_fraction')
++    if any(not _number(value) or not 0 <= value <= 1 for value in (warm, bright)):
++        _fail('COLLECTION_FAVORITE_COLOR_UNPROVEN')
++    gold = warm >= .05 and bright <= .02
++    white = warm == 0 and bright >= .04
++    key = candidate_key(candidate)
++    prior = [record for record in records
++             if _identity(record['candidate'], 'COLLECTION_JOURNAL_IDENTITY') == identity]
++    if prior:
++        if not gold:
++            _fail('COLLECTION_CONFIRMED_STATE_CONFLICT')
++        return dict(disposition='preserve_confirmed', key=prior[0]['key'], allow_toggle=False)
++    if gold:
++        return dict(disposition='preserve_existing', key=key, allow_toggle=False)
++    if not white:
++        _fail('COLLECTION_FAVORITE_COLOR_UNPROVEN')
++    return dict(disposition='unseen_white_requires_candidate_and_journal', key=key,
++                allow_toggle=False)
++
++
++def scroll_plan(packet, rule, records, *, delta=-120):
++    """Plan one bounded read-only wheel step followed by mandatory observation.
++
++    This does not decide that visible cards were fully scanned. The caller must
++    persist its actual per-item coverage separately. No page-complete flag is
++    produced, even when a scrollbar currently appears at its bottom.
++    """
++    layout = observe_layout(packet)
++    scope = _scope(packet, rule)
++    if type(delta) is not int or delta not in (-120, 120):
++        _fail('COLLECTION_SCROLL_BOUND')
++    records = _journal_records(records)
++    if any(record['status'] in PENDING for record in records):
++        _fail('COLLECTION_PENDING_RECONCILIATION')
++    if layout['scrollbar'] is None:
++        _fail('COLLECTION_SCROLL_PROGRESS_UNPROVEN')
++    viewport = layout['listing_viewport']
++    point = [viewport[0] + viewport[2] // 2, viewport[1] + viewport[3] // 2]
++    token = dict(schema='collection-scroll-lease-v1', scope=scope,
++                 layout_id=layout['layout_id'], frame_id=layout['frame_id'],
++                 frame_sha256=layout['frame_sha256'], viewport=layout['viewport'],
++                 listing_viewport=layout['listing_viewport'],
++                 scrollbar=layout['scrollbar'], delta=delta, point=point)
++    return dict(schema='collection-geometry-plan-v1', timeout_seconds=15, steps=[
++        dict(kind='scroll_visible_list', lease=token, expected_before='skin_listings'),
++        dict(kind='capture', expected_page='skin_listings', collection_observation=True,
++             collection_layout=True)], page_exhausted=False, purchase_phase_enabled=False)
++
++
++def validate_scroll_lease(packet, rule, records, lease):
++    if not isinstance(lease, dict) or lease.get('schema') != 'collection-scroll-lease-v1':
++        _fail('COLLECTION_SCROLL_LEASE')
++    current = scroll_plan(packet, rule, records, delta=lease.get('delta'))['steps'][0]['lease']
++    if current != lease:
++        _fail('COLLECTION_SCROLL_LEASE_EXPIRED')
++    return deepcopy(current)
++
++
++def rebind_after_scroll(packet, rule, scroll_lease):
++    """Prove wheel progress and expose only the new frame's selection targets.
++
++    Changed image hash alone is insufficient. Track geometry must stay fixed,
++    thumb length must stay stable, and its observed movement must agree with
++    wheel direction. An unchanged bottom thumb is NOT an exhaustion receipt.
++    """
++    layout = observe_layout(packet)
++    scope = _scope(packet, rule)
++    if (not isinstance(scroll_lease, dict)
++            or scroll_lease.get('schema') != 'collection-scroll-lease-v1'
++            or scroll_lease.get('scope') != scope
++            or scroll_lease.get('delta') not in (-120, 120)):
++        _fail('COLLECTION_SCROLL_LEASE')
++    if (layout['frame_id'] == scroll_lease.get('frame_id')
++            or layout['frame_sha256'] == scroll_lease.get('frame_sha256')):
++        _fail('COLLECTION_REOBSERVATION_REQUIRED')
++    if (layout['viewport'] != scroll_lease.get('viewport')
++            or layout['listing_viewport'] != scroll_lease.get('listing_viewport')):
++        _fail('COLLECTION_SCROLL_VIEWPORT_CHANGED')
++    before, after = scroll_lease.get('scrollbar'), layout['scrollbar']
++    if not isinstance(before, dict) or after is None:
++        _fail('COLLECTION_SCROLL_PROGRESS_UNPROVEN')
++    old = _scrollbar(before, layout['viewport'])
++    if old['track_bounds'] != after['track_bounds']:
++        _fail('COLLECTION_SCROLL_TRACK_CHANGED')
++    old_thumb, new_thumb = old['thumb_bounds'], after['thumb_bounds']
++    if old_thumb[0] != new_thumb[0] or old_thumb[2:] != new_thumb[2:]:
++        _fail('COLLECTION_SCROLL_CONTENT_CHANGED')
++    shift = new_thumb[1] - old_thumb[1]
++    if abs(shift) < 2:
++        _fail('COLLECTION_SCROLL_PROGRESS_UNPROVEN')
++    if (shift > 0) != (scroll_lease['delta'] < 0):
++        _fail('COLLECTION_SCROLL_DIRECTION_CONFLICT')
++    return dict(layout=layout, scrollbar_shift_pixels=shift,
++                selectable_card_ids=[card['id'] for card in layout['cards'] if card['selectable']],
++                partial_card_ids=layout['partial_card_ids'], requires_selected_reobservation=True,
++                page_exhausted=False, collection_allowed=False, purchase_phase_enabled=False)
+--- a/tests/manual/test_collection_scroll.py
++++ b/tests/manual/test_collection_scroll.py
+@@ -0,0 +1,422 @@
++"""Offline geometry-contract tests, NOT evidence of live scroll calibration.
++
++The first fixture's rectangles reproduce the historical six-card coordinate
++observations; later scroll rectangles/scrollbar readings are synthetic contract
++cases. No frame images, game processes or OS input are read/written here.
++"""
++
++import copy
++import json
++from pathlib import Path
++import unittest
++
++from collection_journal import candidate_key
++from collection_scroll import (
++    bind_card, collection_disposition, observe_layout, rebind_after_scroll,
++    rebind_selected, scroll_plan, selection_plan, validate_card_lease,
++    validate_scroll_lease,
++)
++
++
++ROOT = Path(__file__).resolve().parents[2]
++
++
++def rule():
++    return dict(enabled=True, dictionary_resolved=True, product_name='P90冲锋枪-天命',
++                condition_label='成色B', row_index=6)
++
++
++def candidate():
++    # Exact selected fields recorded by live_series_s6_v5/live_5.json.
++    return dict(product='P90冲锋枪-天命', condition='成色B', wear='2.198642', price='230')
++
++
++def record(status='confirmed', item=None):
++    item = item or candidate()
++    return dict(key=candidate_key(item), status=status, candidate=item)
++
++
++def card(card_id, x, y, *, height=266, partial=False, selected=False):
++    return dict(id=card_id, bounds=[x, y, 865, height],
++                edges=dict(top=True, bottom=not partial, left=True, right=True),
++                fields_bounds=None if partial else [x, y + 222, 865, 44], selected=selected)
++
++
++def packet(digest='1', frame_id='fixture:before'):
++    # The observed 877 px column pitch/275 px row pitch are fixture data, not
++    # formulas used by the production planner. The viewport's bottom and all
++    # scrollbar measurements are intentionally synthetic test cases.
++    cards = [card(f'c{row * 2 + col}', 120 + col * 877, 303 + row * 275)
++             for row in range(3) for col in range(2)]
++    cards += [card('partial-l', 120, 1128, height=122, partial=True),
++              card('partial-r', 997, 1128, height=122, partial=True)]
++    return dict(startup_page=dict(page='skin_listings', overlay='none'),
++                frames=[dict(width=2560, height=1440, sha256=digest * 64)],
++                collection_observation=dict(same_frame=True, frame_id=frame_id,
++                    frame_sha256=digest * 64, regions=[dict(kind='product_title', ok=True,
++                        truncated=False, words=[dict(text='P90冲锋枪-天命', x=1972, y=244,
++                                                    width=210, height=30)])]),
++                collection_layout=dict(schema='collection-layout-v1', detector='visible_edges',
++                    complete=True, same_frame=True, frame_id=frame_id, frame_sha256=digest * 64,
++                    viewport=[2560, 1440], listing_viewport=[120, 303, 1742, 947], cards=cards,
++                    scrollbar=dict(track_bounds=[1870, 303, 8, 947],
++                                   thumb_bounds=[1870, 303, 8, 200])))
++
++
++def next_frame(value, digest='2', frame_id='fixture:after'):
++    result = copy.deepcopy(value)
++    result['frames'][-1]['sha256'] = digest * 64
++    for key in ('collection_layout', 'collection_observation'):
++        result[key]['frame_id'] = frame_id
++        result[key]['frame_sha256'] = digest * 64
++    return result
++
++
++def scrolled(value):
++    result = next_frame(value)
++    layout = result['collection_layout']
++    # Deliberately non-grid translation proves the consumer uses new observed
++    # rectangles, not old row-major indices or multiples of a fixed row size.
++    layout['cards'] = [card('new-l', 120, 361), card('new-r', 997, 361),
++                       card('new-bottom-l', 120, 636), card('new-bottom-r', 997, 636)]
++    layout['scrollbar']['thumb_bounds'][1] += 40
++    return result
++
++
++class LayoutTests(unittest.TestCase):
++    def test_full_and_partial_cards_are_distinct(self):
++        layout = observe_layout(packet())
++        self.assertEqual(len([c for c in layout['cards'] if c['selectable']]), 6)
++        self.assertEqual(layout['partial_card_ids'], ['partial-l', 'partial-r'])
++        self.assertFalse(layout['page_exhausted'])
++
++    def test_empty_visible_list_is_not_page_exhaustion(self):
++        value = packet()
++        value['collection_layout']['cards'] = []
++        self.assertFalse(observe_layout(value)['page_exhausted'])
++
++    def test_legacy_fixed_six_card_packet_cannot_be_upgraded(self):
++        value = packet()
++        del value['collection_layout']
++        value['collection_selected_card'] = dict(index=5, selected=True)
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_MISSING'):
++            observe_layout(value)
++
++    def test_stale_projection_and_layout_rejected(self):
++        for section in ('collection_observation', 'collection_layout'):
++            value = packet()
++            value[section]['frame_sha256'] = 'f' * 64
++            with self.subTest(section=section), self.assertRaises(ValueError):
++                observe_layout(value)
++        value = packet()
++        value['collection_layout']['frame_id'] = 'other'
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_FRAME_BINDING'):
++            observe_layout(value)
++
++    def test_unknown_or_incomplete_detector_rejected(self):
++        for key, new_value in [('schema', 'legacy'), ('detector', 'fixed_index'),
++                               ('complete', False), ('complete', 1), ('same_frame', False)]:
++            value = packet()
++            value['collection_layout'][key] = new_value
++            with self.subTest(key=key), self.assertRaises(ValueError):
++                observe_layout(value)
++
++    def test_wrong_page_or_overlay_rejected(self):
++        for key, new_value in [('page', 'watchlist_listings'), ('overlay', 'listing_filter')]:
++            value = packet()
++            value['startup_page'][key] = new_value
++            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'COLLECTION_PAGE'):
++                observe_layout(value)
++
++    def test_outside_viewport_or_field_rect_rejected(self):
++        for target, bounds in [('bounds', [0, 0, 865, 266]),
++                               ('fields_bounds', [120, 1300, 865, 44]),
++                               ('bounds', [120, 303, 0, 266]),
++                               ('bounds', [120, 303, 865.0, 266]),
++                               ('bounds', [True, 303, 865, 266])]:
++            value = packet()
++            value['collection_layout']['cards'][0][target] = bounds
++            with self.subTest(target=target, bounds=bounds), self.assertRaises(ValueError):
++                observe_layout(value)
++
++    def test_duplicate_ids_and_overlap_rejected(self):
++        for key in ('id', 'bounds'):
++            value = packet()
++            value['collection_layout']['cards'][1][key] = value['collection_layout']['cards'][0][key]
++            with self.subTest(key=key), self.assertRaises(ValueError):
++                observe_layout(value)
++
++    def test_edges_and_selection_are_observed_booleans(self):
++        for mutate in (lambda c: c['edges'].update(bottom='true'),
++                       lambda c: c['edges'].pop('top'),
++                       lambda c: c.update(selected=1)):
++            value = packet()
++            mutate(value['collection_layout']['cards'][0])
++            with self.assertRaises(ValueError):
++                observe_layout(value)
++        value = packet()
++        for item in value['collection_layout']['cards'][:2]:
++            item['selected'] = True
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_SELECTION_AMBIGUOUS'):
++            observe_layout(value)
++
++    def test_missing_field_strip_is_not_selectable(self):
++        value = packet()
++        value['collection_layout']['cards'][0]['fields_bounds'] = None
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_PARTIAL_CARD_REQUIRES_SCROLL'):
++            bind_card(value, rule(), 'c0')
++
++    def test_geometry_and_budget_boundaries(self):
++        value = packet()
++        value['collection_layout']['cards'] *= 5
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_CARD_COUNT'):
++            observe_layout(value)
++        for size in (0, 20000, True):
++            value = packet()
++            value['frames'][0]['width'] = size
++            with self.assertRaises(ValueError):
++                observe_layout(value)
++
++    def test_input_not_mutated_and_return_copy(self):
++        value = packet()
++        before = copy.deepcopy(value)
++        layout = observe_layout(value)
++        layout['cards'][0]['bounds'][0] = 999
++        self.assertEqual(value, before)
++
++
++class SelectionTests(unittest.TestCase):
++    def test_point_comes_from_current_observed_body(self):
++        value = scrolled(packet())
++        lease = bind_card(value, rule(), 'new-l')
++        self.assertEqual(lease['point'], [552, 472])
++        self.assertNotEqual(lease['point'], [500, 420])
++        self.assertEqual(validate_card_lease(value, rule(), lease), lease)
++
++    def test_half_card_has_no_selection_point(self):
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_PARTIAL_CARD_REQUIRES_SCROLL'):
++            bind_card(packet(), rule(), 'partial-l')
++
++    def test_wrong_title_and_disabled_rule_stop(self):
++        for key, new_value in [('product_name', 'AUG突击步枪-天命'), ('enabled', False),
++                               ('row_index', True), ('condition_label', '未知')]:
++            new_rule = rule()
++            new_rule[key] = new_value
++            with self.subTest(key=key), self.assertRaises(ValueError):
++                bind_card(packet(), new_rule, 'c0')
++
++    def test_card_lease_expires_on_new_capture_even_without_motion(self):
++        value = packet()
++        lease = bind_card(value, rule(), 'c0')
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_CARD_LEASE_EXPIRED'):
++            validate_card_lease(next_frame(value), rule(), lease)
++
++    def test_point_tampering_rejected(self):
++        value = packet()
++        lease = bind_card(value, rule(), 'c0')
++        lease['point'] = [2339, 320]
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_CARD_LEASE_EXPIRED'):
++            validate_card_lease(value, rule(), lease)
++
++    def test_selection_requires_new_frame_and_observed_selected_geometry(self):
++        before = packet()
++        lease = bind_card(before, rule(), 'c0')
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_REOBSERVATION_REQUIRED'):
++            rebind_selected(before, rule(), lease)
++        after = next_frame(before)
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SELECTION_GEOMETRY_CHANGED'):
++            rebind_selected(after, rule(), lease)
++        after['collection_layout']['cards'][0].update(selected=True, id='new-frame-id')
++        result = rebind_selected(after, rule(), lease)
++        self.assertTrue(result['selected_observed'])
++        self.assertFalse(result['collection_allowed'])
++        self.assertFalse(result['item_identity_proven'])
++        self.assertEqual(result['lease']['card']['id'], 'new-frame-id')
++        validate_card_lease(after, rule(), result['lease'])
++
++    def test_unexpected_scroll_between_select_and_readback_stops(self):
++        before = packet()
++        lease = bind_card(before, rule(), 'c0')
++        after = scrolled(before)
++        after['collection_layout']['cards'][0]['selected'] = True
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SELECTION_GEOMETRY_CHANGED'):
++            rebind_selected(after, rule(), lease)
++
++    def test_plan_contains_only_selection_and_readback(self):
++        plan = selection_plan(packet(), rule(), 'c0')
++        self.assertEqual([s['kind'] for s in plan['steps']], ['select_visible_card', 'capture'])
++        self.assertTrue(plan['steps'][-1]['collection_layout'])
++        self.assertFalse(plan['purchase_phase_enabled'])
++
++
++class ScrollTests(unittest.TestCase):
++    def token(self, value=None):
++        return scroll_plan(value or packet(), rule(), [])['steps'][0]['lease']
++
++    def test_scroll_requires_same_frame_scrollbar_evidence(self):
++        value = packet()
++        del value['collection_layout']['scrollbar']
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_PROGRESS_UNPROVEN'):
++            scroll_plan(value, rule(), [])
++
++    def test_one_notch_only_and_no_mutation_in_plan(self):
++        for delta in (-360, -240, 0, 240, True, -120.0):
++            with self.subTest(delta=delta), self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_BOUND'):
++                scroll_plan(packet(), rule(), [], delta=delta)
++        plan = scroll_plan(packet(), rule(), [])
++        self.assertEqual([s['kind'] for s in plan['steps']], ['scroll_visible_list', 'capture'])
++        self.assertFalse(plan['page_exhausted'])
++
++    def test_scroll_lease_expires_or_rejects_modified_point(self):
++        value = packet()
++        token = self.token(value)
++        self.assertEqual(validate_scroll_lease(value, rule(), [], token), token)
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_LEASE_EXPIRED'):
++            validate_scroll_lease(next_frame(value), rule(), [], token)
++        token['point'] = [2339, 320]
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_LEASE_EXPIRED'):
++            validate_scroll_lease(value, rule(), [], token)
++
++    def test_hash_change_alone_does_not_prove_scroll(self):
++        before = packet()
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_PROGRESS_UNPROVEN'):
++            rebind_after_scroll(next_frame(before), rule(), self.token(before))
++
++    def test_scroll_result_rebinds_current_geometry_not_old_indices(self):
++        before = packet()
++        after = scrolled(before)
++        result = rebind_after_scroll(after, rule(), self.token(before))
++        self.assertEqual(result['scrollbar_shift_pixels'], 40)
++        self.assertEqual(result['selectable_card_ids'], ['new-l', 'new-r', 'new-bottom-l', 'new-bottom-r'])
++        self.assertTrue(result['requires_selected_reobservation'])
++        self.assertFalse(result['page_exhausted'])
++        self.assertFalse(result['collection_allowed'])
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_CARD_MISSING'):
++            bind_card(after, rule(), 'c0')
++
++    def test_scroll_same_image_or_same_frame_is_rejected(self):
++        before = packet()
++        for section in ('frame_id', 'frame_sha256'):
++            after = scrolled(before)
++            for key in ('collection_observation', 'collection_layout'):
++                after[key][section] = before[key][section]
++            if section == 'frame_sha256':
++                after['frames'][-1]['sha256'] = before['frames'][-1]['sha256']
++            with self.subTest(section=section), self.assertRaisesRegex(ValueError, 'COLLECTION_REOBSERVATION_REQUIRED'):
++                rebind_after_scroll(after, rule(), self.token(before))
++
++    def test_wrong_scroll_direction_rejected(self):
++        before = packet()
++        before['collection_layout']['scrollbar']['thumb_bounds'][1] = 400
++        after = scrolled(before)
++        after['collection_layout']['scrollbar']['thumb_bounds'][1] = 360
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_DIRECTION_CONFLICT'):
++            rebind_after_scroll(after, rule(), self.token(before))
++
++    def test_reflow_or_scrollbar_resize_rejected(self):
++        before = packet()
++        for key in ('track', 'thumb', 'viewport'):
++            after = scrolled(before)
++            if key == 'track':
++                after['collection_layout']['scrollbar']['track_bounds'][3] -= 10
++            elif key == 'thumb':
++                after['collection_layout']['scrollbar']['thumb_bounds'][3] += 10
++            else:
++                after['collection_layout']['listing_viewport'][3] -= 10
++            with self.subTest(key=key), self.assertRaises(ValueError):
++                rebind_after_scroll(after, rule(), self.token(before))
++
++    def test_bottom_is_not_completion(self):
++        before = packet()
++        before['collection_layout']['scrollbar']['thumb_bounds'][1] = 1050
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_SCROLL_PROGRESS_UNPROVEN'):
++            rebind_after_scroll(next_frame(before), rule(), self.token(before))
++
++    def test_up_scroll_can_be_proven_without_reusing_coordinates(self):
++        before = packet()
++        before['collection_layout']['scrollbar']['thumb_bounds'][1] = 400
++        token = scroll_plan(before, rule(), [], delta=120)['steps'][0]['lease']
++        after = scrolled(before)
++        after['collection_layout']['scrollbar']['thumb_bounds'][1] = 350
++        self.assertEqual(rebind_after_scroll(after, rule(), token)['scrollbar_shift_pixels'], -50)
++
++
++class NoRepeatTests(unittest.TestCase):
++    white = dict(selected=True, favorite_warm_fraction=0, favorite_bright_fraction=.1)
++    gold = dict(selected=True, favorite_warm_fraction=.12, favorite_bright_fraction=0)
++
++    def test_confirmed_identity_preserved_after_price_change(self):
++        item = candidate()
++        item['price'] = '199'
++        result = collection_disposition(item, self.gold, [record()])
++        self.assertEqual(result['disposition'], 'preserve_confirmed')
++        self.assertFalse(result['allow_toggle'])
++
++    def test_existing_unknown_gold_is_preserved(self):
++        self.assertEqual(collection_disposition(candidate(), self.gold, [])['disposition'], 'preserve_existing')
++
++    def test_trailing_wear_zero_is_not_a_new_identity(self):
++        item = dict(candidate(), wear='2.1986420')
++        result = collection_disposition(item, self.gold, [record()])
++        self.assertEqual(result['disposition'], 'preserve_confirmed')
++        self.assertEqual(result['key'], record()['key'])
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_CONFIRMED_STATE_CONFLICT'):
++            collection_disposition(item, self.white, [record()])
++
++    def test_non_observed_numeric_wear_is_not_an_identity(self):
++        for wear in ('NaN', 'Infinity', '2e0', '-0.2', '2198642', '2.1986420000'):
++            with self.subTest(wear=wear), self.assertRaisesRegex(ValueError, 'COLLECTION_CANDIDATE_IDENTITY'):
++                collection_disposition(dict(candidate(), wear=wear), self.white, [])
++
++    def test_normalized_duplicate_journal_identities_stop(self):
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_JOURNAL_IDENTITY'):
++            collection_disposition(candidate(), self.gold,
++                                   [record(), record(item=dict(candidate(), wear='2.1986420'))])
++
++    def test_confirmed_identity_shown_white_requires_reconciliation(self):
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_CONFIRMED_STATE_CONFLICT'):
++            collection_disposition(candidate(), self.white, [record()])
++
++    def test_pending_attempt_blocks_all_scroll_and_dispositions(self):
++        for status in ('prepared', 'dispatched', 'input_uncertain'):
++            with self.subTest(status=status), self.assertRaisesRegex(ValueError, 'COLLECTION_PENDING_RECONCILIATION'):
++                scroll_plan(packet(), rule(), [record(status)])
++            with self.subTest(status=status), self.assertRaisesRegex(ValueError, 'COLLECTION_PENDING_RECONCILIATION'):
++                collection_disposition(candidate(), self.gold, [record(status)])
++
++    def test_unknown_color_or_selection_does_not_become_white(self):
++        for selected in ({}, dict(self.white, selected=False),
++                         dict(self.white, favorite_warm_fraction=float('nan')),
++                         dict(self.white, favorite_bright_fraction=True),
++                         dict(self.white, favorite_warm_fraction=.02)):
++            with self.subTest(selected=selected), self.assertRaises(ValueError):
++                collection_disposition(candidate(), selected, [])
++
++    def test_unseen_white_still_needs_candidate_and_durable_prepare(self):
++        result = collection_disposition(candidate(), self.white, [])
++        self.assertEqual(result['disposition'], 'unseen_white_requires_candidate_and_journal')
++        self.assertFalse(result['allow_toggle'])
++
++    def test_corrupt_journal_identity_or_status_rejected(self):
++        for bad in (dict(record(), key='f' * 64), dict(record(), status='failed'),
++                    dict(record(), candidate={}), dict(record(), candidate=None)):
++            with self.subTest(bad=bad), self.assertRaises(ValueError):
++                collection_disposition(candidate(), self.gold, [bad])
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_JOURNAL_IDENTITY'):
++            collection_disposition(candidate(), self.gold, [record(), record()])
++
++
++class HistoricalEvidenceBoundaryTests(unittest.TestCase):
++    def test_historical_packet_does_not_claim_dynamic_layout(self):
++        path = ROOT / 'artifacts/m2_savedvalue_collection/live_series_s6_v5/live_5.json'
++        if not path.exists():
++            self.skipTest('Optional local historical field packet is absent; synthetic contract tests still run.')
++        value = json.loads(path.read_text(encoding='utf-8'))
++        captured = [step['result'] for step in value['steps'] if 'result' in step][-1]
++        self.assertEqual(captured['collection_selected_card']['index'], 5)
++        with self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_MISSING'):
++            observe_layout(captured)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- a/tests/release/verify_collection_workflow_package.py
++++ b/tests/release/verify_collection_workflow_package.py
+@@ -0,0 +1,93 @@
++"""Collection workflow: real input, durable GUI/CLI import, isolated rollback."""
++from __future__ import annotations
++import argparse,difflib,json,os,shutil,subprocess,sys
++from pathlib import Path
++import verify_pr12a_package as h
++import verify_m2_capture_package as old
++ROOT=Path(__file__).resolve().parents[2];TX=ROOT/'artifacts/collection_workflow';RELEASE=ROOT/'dist/RelinkStudio';BASELINE=TX/'baseline/release';BUILD=ROOT/'build_relocated'
++h.TX,h.BASELINE=TX,BASELINE;old.TX,old.BASELINE=TX,BASELINE
++SOURCE=ROOT/'artifacts/m2_savedvalue_collection/input/source.savedValue'
++DICTIONARY=ROOT/'docs/business_rebuild/implementation/domain/relink_0925_catalog.json';CATALOG=ROOT/'src/assets/catalog/skins.json'
++
++def expect(label,args,inputs,status):
++    r=subprocess.run(args,cwd=ROOT,env=h.environment(RELEASE),capture_output=True,text=True,encoding='utf-8',errors='replace',creationflags=subprocess.CREATE_NO_WINDOW,timeout=60)
++    record=dict(label=label,command=subprocess.list2cmdline(args),input=inputs,stdout=r.stdout,stderr=r.stderr,exit_status=r.returncode,expected_exit_status=status)
++    path=TX/'commands.json';records=json.loads(path.read_text(encoding='utf-8'));records.append(record);path.write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
++    print(label+'_EXIT='+str(r.returncode));assert r.returncode==status,record
++
++def build():h.build()
++
++def verify():
++    original=json.loads((TX/'baseline_release_hashes.json').read_text(encoding='utf-8'))
++    assert all(h.sha(BASELINE/name)==digest for name,digest in original.items())
++    manifest=json.loads((RELEASE/'file_manifest.json').read_text(encoding='utf-8'))
++    for name,item in manifest['files'].items():
++        file=(RELEASE/name).resolve();assert file.is_relative_to(RELEASE) and h.sha(file)==item['sha256'] and file.stat().st_size==item['bytes'],name
++    for name in ('platforms/qwindows.dll','platforms/qoffscreen.dll','sqldrivers/qsqlite.dll','Qt6Sql.dll','docs/COLLECTION_TASK_IMPORT.md'):assert (RELEASE/name).is_file()
++    shutil.copy2(RELEASE/'RelinkStudio.exe',TX/'MODIFIED_FILE.exe')
++    assert h.sha(TX/'MODIFIED_FILE.exe')==h.sha(BUILD/'RelinkStudio.exe')!=h.sha(BASELINE/'RelinkStudio.exe')
++    h.ui('MODIFIED',RELEASE,TX/'fixture_snapshots')
++    h.run('MODIFIED_CATALOG',[str(RELEASE/'RelinkStudio.exe'),'--catalog-self-test','--snapshot-dir',str(TX/'catalog_snapshots')],'Existing catalogue regression; isolated data.','CATALOG_SELF_TEST=PASS')
++    sourceHash=h.sha(SOURCE);assert sourceHash=='cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253'
++    h.run('MODIFIED_IMPORT_UI',[str(RELEASE/'RelinkStudio.exe'),'--collection-import-self-test','--task-source',str(SOURCE),'--snapshot-dir',str(TX/'real_import_snapshots')],
++          'Read actual frozen 8926-byte source; real MainWindow dialog, failure/retry/atomic save/reload/dedup; all config outputs temporary.','COLLECTION_IMPORT_SELF_TEST=PASS')
++    env=h.environment(RELEASE);env['QT_PLUGIN_PATH']=str(RELEASE)
++    for target in ('collection_task_import_tests','collection_task_commit_tests','collection_import_dialog_tests'):
++        h.run(target.upper(),[str(BUILD/(target+'.exe')),str(DICTIONARY),str(CATALOG),str(SOURCE)],'Actual source read-only; packaged dependencies; isolated stores.',env=env)
++    h.run('COLLECTION_OFFLINE_TESTS',[sys.executable,'-X','utf8','-m','unittest','discover','-s','tests/manual','-p','test_collection*.py','-v'],
++          'Pure offline candidate/journal/scroll same-frame and stale-coordinate regressions; no OS input.',env=os.environ.copy())
++    cli=TX/'cli_tests';cli.mkdir(exist_ok=True);config=cli/'config.json'
++    production=Path(os.environ['LOCALAPPDATA'])/'RelinkStudio/RelinkStudio/config.json'
++    originalHash=h.sha(production);shutil.copy2(production,config)
++    h.run('MODIFIED_CLI_IMPORT',[str(RELEASE/'RelinkStudio.exe'),'--import-collection-tasks',str(SOURCE),'--config',str(config)],
++          'Actual source into a COPY of production config; no production file writes.','COLLECTION_IMPORT=PASS')
++    data=json.loads(config.read_text(encoding='utf-8'));imported=[t for t in data['tasks'] if t.get('importSource',{}).get('sourceSha256')==sourceHash]
++    assert len(data['skins'])>=149 and len(imported)==50 and sum(t['enabled'] for t in imported)==21
++    afterHash=h.sha(config)
++    h.run('MODIFIED_CLI_DUPLICATE',[str(RELEASE/'RelinkStudio.exe'),'--import-collection-tasks',str(SOURCE),'--config',str(config)],'Same file, same target; 50 duplicates, no writes.','added=0; duplicates=50')
++    assert h.sha(config)==afterHash
++    bad=cli/'bad.savedValue';bad.write_bytes(b'not a configuration')
++    expect('INVALID_SOURCE_PRESERVES_CONFIG',[str(RELEASE/'RelinkStudio.exe'),'--import-collection-tasks',str(bad),'--config',str(config)],'Malformed task input; existing config hash must remain unchanged.',1)
++    assert h.sha(config)==afterHash
++    expect('EXPLICIT_CONFIG_REQUIRED',[str(RELEASE/'RelinkStudio.exe'),'--import-collection-tasks',str(SOURCE)],'No implicit production destination allowed.',2)
++    assert h.sha(production)==originalHash and h.sha(SOURCE)==sourceHash
++    h.run('MODIFIED_STORAGE',[str(RELEASE/'RelinkStudio.exe'),'--storage-self-test'],'Packaged SQLite dependency and transaction checks.','STORAGE_SELF_TEST=PASS')
++    additions={p.relative_to(RELEASE).as_posix():h.sha(p) for p in RELEASE.rglob('*') if p.is_file() and p.relative_to(RELEASE).as_posix() not in original}
++    (TX/'added_release_files.json').write_text(json.dumps(additions,indent=2),encoding='utf-8');old.prepare_rollback()
++    rollback=TX/'rollback_test';shutil.copytree(RELEASE,rollback,dirs_exist_ok=True)
++    sentinel=rollback/'user_tasks_and_catalog.json';sentinel.write_bytes(config.read_bytes());sentinelHash=h.sha(sentinel)
++    bash=Path(r'C:\Program Files\Git\bin\bash.exe');script=TX.relative_to(ROOT).as_posix()+'/ROLLBACK.sh'
++    h.run('ROLLBACK',[str(bash),'-c',f'chmod +x "{script}" && "./{script}" "$1"','rollback',str(rollback)],'Separate updated release copy; restore baseline program; retain task/catalog sentinel.','ROLLBACK_RESTORED=PASS',runtime=bash.parent)
++    assert all(h.sha(rollback/name)==digest for name,digest in original.items()) and h.sha(sentinel)==sentinelHash
++    assert all(not (rollback/name).exists() for name in additions)
++    h.ui('RESTORED',rollback,TX/'restored_snapshots')
++    h.run('RESTORED_CATALOG',[str(rollback/'RelinkStudio.exe'),'--catalog-self-test','--snapshot-dir',str(TX/'restored_catalog_snapshots')],'Restored previous catalogue version; isolated original supported state.','CATALOG_SELF_TEST=PASS',runtime=rollback)
++    assert h.sha(RELEASE/'RelinkStudio.exe')==h.sha(TX/'MODIFIED_FILE.exe')
++    print('COLLECTION_WORKFLOW_PACKAGE=PASS; original_hash_restored=true; task_data_retained=true; source_unchanged=true; delivery_modified=true')
++
++def finalize():
++    records=json.loads((TX/'commands.json').read_text(encoding='utf-8'));latest={r['label']:r for r in records}
++    for name in ('BASELINE','BASELINE_STORAGE','BASELINE_CATALOG','MODIFIED_BUILD','MODIFIED','MODIFIED_IMPORT_UI','MODIFIED_CLI_IMPORT','MODIFIED_CLI_DUPLICATE','MODIFIED_STORAGE','ROLLBACK','RESTORED','RESTORED_CATALOG'):
++        assert latest[name]['exit_status']==0,name
++    revision=(TX/'baseline/source_revision.txt').read_text().strip();names=set(subprocess.check_output(['git','diff','--name-only',revision],cwd=ROOT,text=True).splitlines());names.update(subprocess.check_output(['git','ls-files','--others','--exclude-standard'],cwd=ROOT,text=True).splitlines());patch=[]
++    for name in sorted(names):
++        if not (name.startswith(('src/','tests/','docs/')) or name in {'.gitignore','CMakeLists.txt','build.ps1','resources.qrc','SESSION_START.md','README.md'}):continue
++        before=subprocess.run(['git','show',f'{revision}:{name}'],cwd=ROOT,capture_output=True);a=before.stdout.decode('utf-8-sig').splitlines(True) if before.returncode==0 else [];b=(ROOT/name).read_text(encoding='utf-8-sig').splitlines(True);patch.extend(difflib.unified_diff(a,b,fromfile='a/'+name,tofile='b/'+name))
++    (TX/'DIFF_FILE').write_text(''.join(patch),encoding='utf-8')
++    lines=['Delta Market Assistant — Collection workflow','Date: 2026-10-07 (Asia/Shanghai)','Changed branch: main','Baseline source: '+revision,
++        'Changed fields: Task.quantity=0 unlimited, Task.importSource, data-only savedValue preview/dedup, durable append/backup, task GUI entry, explicit-config CLI, offline scroll geometry leases.',
++        'Actual source: 50 rows / 21 enabled / 13 total products / 9 enabled products, SHA256 '+h.sha(SOURCE),
++        'Live precheck used the baseline binary; final independent empty-watchlist confirmation used the final package. No favorites or purchases changed; IDE restored at each batch end. Exact binary hashes are in each persisted live result.',
++        'Dynamic scroll contract tests are offline only; no C++ dynamic edge detector or collection executor is claimed complete.',
++        'Restored behavior/status: original catalogue/UI/workspace self-tests pass with exit 0 on isolated restored copy. Task/config sentinel preserved.',
++        'Rollback changes only program files; it does not remove user tasks or undo historical game favorites. Previous version may not load new quantity=0 configurations; pre-import backups preserve original supported config.',
++        'DELIVERY: '+str(RELEASE/'RelinkStudio.exe')]
++    for name in ('MODIFIED_FILE.exe','DIFF_FILE','VERIFICATION.txt','ROLLBACK.sh'):lines.append(name+': '+str(TX/name))
++    for key,path in [('BASELINE_SHA256',BASELINE/'RelinkStudio.exe'),('MODIFIED_SHA256',TX/'MODIFIED_FILE.exe'),('RESTORED_SHA256',TX/'rollback_test/RelinkStudio.exe')]:lines.append(key+': '+h.sha(path))
++    for r in records:lines+=['',r['label'],'COMMAND: '+r['command'],'INPUT: '+r['input'],('RESULT_FILE:' if r.get('result_file_not_stdout') else 'STDOUT:'),r['stdout'].rstrip(),'STDERR:',r['stderr'].rstrip() or '(empty)','EXIT_STATUS: '+str(r['exit_status'])]
++    (TX/'VERIFICATION.txt').write_text('\n'.join(lines)+'\n',encoding='utf-8')
++    for name in ('MODIFIED_FILE.exe','DIFF_FILE','VERIFICATION.txt','ROLLBACK.sh'):assert (TX/name).read_bytes();print('REOPEN=PASS; path='+str(TX/name))
++    assert h.sha(RELEASE/'RelinkStudio.exe')==h.sha(TX/'MODIFIED_FILE.exe');print('COLLECTION_WORKFLOW_TRANSACTION=PASS')
++
++if __name__=='__main__':
++    p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['build','verify','finalize']);args=p.parse_args();globals()[args.phase]()
+--- a/tests/ui/collection_import_dialog_tests.cpp
++++ b/tests/ui/collection_import_dialog_tests.cpp
+@@ -0,0 +1,249 @@
++// Offscreen preview/confirmation tests. All .savedValue inputs are parsed as
++// data, and every persistence path is an isolated temporary directory.
++#include "application/catalog_configuration.h"
++#include "application/collection_task_import.h"
++#include "catalog/skin_catalog.h"
++#include "domain.h"
++#include "fluenttheme.h"
++#include "ui/dialogs/collection_import_dialog.h"
++#include "ui/dialogs/task_editor_dialog.h"
++#include "ui/pages/task_page.h"
++#include <QApplication>
++#include <QDir>
++#include <QDoubleSpinBox>
++#include <QFile>
++#include <QFileInfo>
++#include <QFontDatabase>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QLabel>
++#include <QLineEdit>
++#include <QPushButton>
++#include <QSpinBox>
++#include <QTableWidget>
++#include <QTemporaryDir>
++#include <cstdio>
++#include <cstdlib>
++
++namespace {
++int assertions = 0, failures = 0;
++void check(bool passed, const char* name) {
++    ++assertions;
++    if (!passed) { ++failures; std::fprintf(stderr, "FAIL: %s\n", name); }
++}
++template<class T> T* child(QObject& parent, const char* name) {
++    auto* value = parent.findChild<T*>(QString::fromLatin1(name));
++    if (!value) { std::fprintf(stderr, "MISSING: %s\n", name); std::exit(2); }
++    return value;
++}
++QByteArray read(const QString& path) {
++    QFile file(path);
++    return file.open(QIODevice::ReadOnly) ? file.readAll() : QByteArray();
++}
++QByteArray config(const AppState& state) {
++    return QJsonDocument(encodeV1Config(state.skins, state.tasks, state.run)).toJson(QJsonDocument::Compact);
++}
++QByteArray header(int kind, quint64 size) {
++    int exponent = 0;
++    while (exponent < 3 && size >= (quint64(1) << (8 * (1 << exponent)))) ++exponent;
++    QByteArray out(1, char(kind | (exponent << 6)));
++    for (int i = 0; i < (1 << exponent); ++i) out.append(char((size >> (8 * i)) & 255));
++    return out;
++}
++QByteArray encode(const QJsonValue& value) {
++    if (value.isBool()) return QByteArray(1, char(value.toBool()));
++    if (value.isDouble()) return header(4, quint64(value.toInteger()));
++    if (value.isString()) { const auto b = value.toString().toUtf8(); return header(7, b.size()) + b; }
++    if (value.isArray()) {
++        auto out = header(3, value.toArray().size());
++        for (const auto& item : value.toArray()) out += encode(item);
++        return out;
++    }
++    const auto object = value.toObject();
++    auto out = header(2, object.size());
++    for (auto it = object.begin(); it != object.end(); ++it) out += encode(it.key()) + encode(it.value());
++    return out;
++}
++QJsonArray row(int sourceRow, int product, int condition, bool enabled, int quantity) {
++    QJsonArray out;
++    const QJsonObject fields{{QStringLiteral("启用"), enabled}, {QStringLiteral("成色设置栏"), condition},
++        {QStringLiteral("最低价格设置栏"), 10}, {QStringLiteral("最高价格设置栏"), 600},
++        {QStringLiteral("枪名设置栏"), product}, {QStringLiteral("磨损度设置栏"), 5},
++        {QStringLiteral("限量设置栏"), quantity}};
++    for (auto it = fields.begin(); it != fields.end(); ++it)
++        out.append(QJsonArray{it.key() + QStringLiteral("_") + QString::number(sourceRow), it.value()});
++    return out;
++}
++QByteArray sample() {
++    QJsonArray rows = row(0, 10602, 0, true, 0);
++    for (const auto& item : row(3, 10100, 1, false, 9)) rows.append(item);
++    return encode(QJsonObject{{QStringLiteral("自动收藏-任务配置"), rows}});
++}
++}
++
++int main(int argc, char** argv) {
++    qputenv("QT_QPA_PLATFORM", "offscreen");
++    QApplication app(argc, argv);
++#ifdef Q_OS_WIN
++    const auto fonts = qEnvironmentVariable("WINDIR", "C:/Windows") + QStringLiteral("/Fonts/");
++    for (const auto& name : {QStringLiteral("msyh.ttc"), QStringLiteral("msyhbd.ttc"),
++         QStringLiteral("segoeui.ttf"), QStringLiteral("seguisb.ttf"), QStringLiteral("SegoeIcons.ttf"),
++         QStringLiteral("segmdl2.ttf")}) QFontDatabase::addApplicationFont(fonts + name);
++#endif
++    app.setStyle(QStringLiteral("Fusion"));
++    app.setPalette(FluentTheme::palette());
++    app.setFont(FluentTheme::font(13));
++    const QString sourceDirectory = QFileInfo(QString::fromUtf8(__FILE__)).absolutePath();
++    app.setStyleSheet(QString::fromUtf8(read(QDir(sourceDirectory).filePath(QStringLiteral("../../src/theme.qss")))));
++    using namespace relink::application;
++    using namespace relink::ui;
++    const QJsonObject dictionary = QJsonDocument::fromJson(argc > 1 ? read(QString::fromLocal8Bit(argv[1])) : QByteArray()).object();
++    relink::catalog::Catalog catalog;
++    QString error;
++    check(!dictionary.isEmpty(), "reference dictionary loads");
++    check(relink::catalog::parseCatalog(argc > 2 ? read(QString::fromLocal8Bit(argv[2])) : QByteArray(), &catalog, &error), "verified skin catalog loads");
++    if (dictionary.isEmpty() || catalog.skins.isEmpty()) return 2;
++    AppState state;
++    check(applyCatalogConfiguration(state, catalog, nullptr, &error), "real catalog projection");
++    state.skins[0].followed = true;
++    Task existing;
++    existing.id = QStringLiteral("manual-existing"); existing.name = QStringLiteral("保留原任务");
++    existing.skinId = state.skins[0].id; existing.quantity = 2;
++    state.tasks.append(existing);
++    const QByteArray before = config(state);
++    int modelChanges = 0;
++    QObject::connect(&state, &AppState::changed, &app, [&] { ++modelChanges; });
++    const QByteArray bytes = sample();
++    CollectionImportDialog dialog(dictionary, &catalog, &state);
++    auto* table = child<QTableWidget>(dialog, "collectionImportTable");
++    auto* commit = child<QPushButton>(dialog, "collectionImportCommitButton");
++    check(!dialog.isVisible() && table->rowCount() == 0 && !commit->isEnabled(), "constructor stays hidden and empty");
++    check(dialog.loadSavedValue(bytes, QStringLiteral("<tasks>.savedValue"), &error), "valid source preview loads");
++    check(dialog.preview().rowCount == 2 && dialog.preview().enabledCount == 1
++          && dialog.preview().distinctProducts == 1 && dialog.preview().totalDistinctProducts == 2,
++          "enabled disabled and product counts preserved");
++    check(dialog.preview().addedCount == 2 && dialog.preview().duplicateCount == 0 && table->rowCount() == 2,
++          "all source rows previewed including disabled");
++    check(config(state) == before && modelChanges == 0, "preview leaves model and original follows unchanged");
++    auto* fileName = child<QLabel>(dialog, "collectionImportFile");
++    check(fileName->text() == QStringLiteral("<tasks>.savedValue") && fileName->textFormat() == Qt::PlainText,
++          "source filename rendered as plain text");
++    check(child<QLabel>(dialog, "collectionImportHash")->text().contains(dialog.preview().sourceSha256)
++          && dialog.preview().sourceSha256.size() == 64, "full source hash visible");
++    check(table->item(0, 0)->text() == "1" && table->item(1, 0)->text() == "4", "original source row numbers retained");
++    check(table->item(0, 1)->text() == "S6" && table->item(0, 2)->data(Qt::UserRole).toString() == "10602",
++          "season and stable product identity visible");
++    check(table->item(1, 3)->text().contains(QStringLiteral("极品")) && table->item(1, 3)->text().contains(QStringLiteral("红色")),
++          "menu color and variant remain separate from condition");
++    check(table->item(0, 4)->text() == QStringLiteral("成色S") && table->item(1, 4)->text() == QStringLiteral("成色A"),
++          "condition IDs resolve without quality inference");
++    check(table->item(0, 5)->text() == "10" && table->item(0, 6)->text() == "600" && table->item(0, 7)->text() == "5",
++          "raw numeric conditions rendered without invented values");
++    check(table->item(0, 8)->text() == QStringLiteral("不限") && table->item(1, 8)->text() == "9"
++          && table->item(1, 9)->text() == QStringLiteral("停用"), "zero unlimited and disabled rows remain intact");
++    check(table->editTriggers() == QAbstractItemView::NoEditTriggers, "preview table is read only");
++    dialog.reject();
++    check(config(state) == before && modelChanges == 0, "cancelled import changes nothing");
++
++    CollectionImportDialog confirm(dictionary, &catalog, &state);
++    check(confirm.loadSavedValue(bytes, QStringLiteral("tasks.savedValue"), &error), "confirmation source loads");
++    int commits = 0;
++    QObject::connect(&confirm, &CollectionImportDialog::commitRequested, &app, [&] { ++commits; });
++    auto* confirmButton = child<QPushButton>(confirm, "collectionImportCommitButton");
++    confirmButton->click();
++    check(commits == 1 && confirm.result() != QDialog::Accepted && config(state) == before && modelChanges == 0,
++          "confirmation requests durable commit without premature success or mutation");
++    check(!confirmButton->isEnabled() && !child<QPushButton>(confirm, "collectionImportChooseButton")->isEnabled(),
++          "commit in flight prevents double submission or replacing source");
++    confirmButton->click();
++    check(commits == 1, "in flight second click ignored");
++    confirm.showCommitError(QStringLiteral("测试保存失败"));
++    check(confirmButton->isEnabled() && confirm.sourceBytes() == bytes
++          && child<QLabel>(confirm, "collectionImportMessage")->text() == QStringLiteral("测试保存失败"),
++          "save failure retains preview and permits retry");
++    QObject::connect(&confirm, &CollectionImportDialog::commitRequested, &app, [&] { confirm.accept(); });
++    confirmButton->click();
++    check(commits == 2 && confirm.result() == QDialog::Accepted && config(state) == before,
++          "only owning commit callback closes accepted dialog");
++
++    auto prepared = confirm.preview();
++    const Task imported = prepared.rows[0].task;
++    TaskEditorDialog editor(&state, &imported);
++    auto* quantity = child<QSpinBox>(editor, "taskQuantity");
++    check(quantity->minimum() == 0 && quantity->value() == 0 && quantity->text() == QStringLiteral("不限"),
++          "task editor supports imported unlimited quantity");
++    child<QLineEdit>(editor, "taskName")->setText(QStringLiteral("编辑导入任务"));
++    child<QDoubleSpinBox>(editor, "taskMaxPrice")->setValue(567);
++    child<QPushButton>(editor, "taskSaveButton")->click();
++    check(editor.result() == QDialog::Accepted && editor.task().quantity == 0 && editor.task().maxPrice == 567,
++          "editing preserves unlimited quantity and changed threshold");
++    check(editor.task().importSource.sourceSha256 == imported.importSource.sourceSha256
++          && editor.task().importSource.dictionarySha256 == imported.importSource.dictionarySha256
++          && editor.task().importSource.fields == imported.importSource.fields
++          && editor.task().importSource.row == imported.importSource.row,
++          "task editing retains immutable source parameters and provenance");
++    check(config(state) == before && modelChanges == 0, "task dialog draft does not mutate source model");
++
++    CollectionImportDialog stale(dictionary, &catalog, &state);
++    check(stale.loadSavedValue(bytes, QStringLiteral("tasks.savedValue"), &error), "stale preview starts ready");
++    int staleCommits = 0;
++    QObject::connect(&stale, &CollectionImportDialog::commitRequested, &app, [&] { ++staleCommits; });
++    state.tasks = prepared.mergedTasks;
++    state.tasks[1].maxPrice = 567;
++    child<QPushButton>(stale, "collectionImportCommitButton")->click();
++    check(staleCommits == 0 && stale.preview().addedCount == 0 && stale.preview().duplicateCount == 2,
++          "confirmation revalidates and prevents duplicate append after state changes");
++    check(!child<QPushButton>(stale, "collectionImportCommitButton")->isEnabled()
++          && child<QLabel>(stale, "collectionImportMessage")->text().contains(QStringLiteral("没有新增")),
++          "repeat import clearly reports no new rows");
++    check(state.tasks[1].maxPrice == 567 && state.skins[0].followed, "reimport keeps edited task and original follow");
++    TaskPage page(&state);
++    page.refresh();
++    check(child<QTableWidget>(page, "taskTable")->item(1, 5)->text() == QStringLiteral("不限"),
++          "task list displays unlimited quantity consistently");
++    int importIntents = 0;
++    QObject::connect(&page, &TaskPage::importCollectionRequested, &app, [&] { ++importIntents; });
++    child<QPushButton>(page, "taskImportCollectionButton")->click();
++    check(importIntents == 1 && !state.simulationRunning, "task page import is an intent not a runner action");
++
++    const QByteArray beforeFailure = config(state);
++    check(!stale.loadSavedValue(QByteArray("broken"), QStringLiteral("bad.savedValue"), &error), "invalid source rejected");
++    check(stale.sourceBytes().isEmpty() && stale.preview().rows.isEmpty()
++          && child<QTableWidget>(stale, "collectionImportTable")->rowCount() == 0
++          && !child<QPushButton>(stale, "collectionImportCommitButton")->isEnabled(),
++          "invalid replacement clears stale preview and confirm state");
++    check(config(state) == beforeFailure && modelChanges == 0, "all failure paths leave model unchanged");
++    check(!stale.loadSavedValueFile(QStringLiteral("not-existing.savedValue"), &error) && !error.isEmpty(),
++          "missing file returns visible diagnostic");
++    CollectionImportDialog noModel(dictionary, nullptr, nullptr);
++    check(!noModel.loadSavedValue(bytes, QStringLiteral("tasks.savedValue"), &error), "missing catalog fails without dereference");
++    QTemporaryDir directory;
++    check(directory.isValid(), "isolated test directory");
++    const auto sourcePath = directory.filePath(QStringLiteral("任务.savedValue"));
++    { QFile file(sourcePath); check(file.open(QIODevice::WriteOnly) && file.write(bytes) == bytes.size(), "write isolated source"); }
++    check(dialog.loadSavedValueFile(sourcePath, &error) && dialog.sourceName() == QStringLiteral("任务.savedValue"),
++          "file picker backend accepts Unicode path and preserves basename");
++    check(read(sourcePath) == bytes, "source input bytes never modified");
++
++    if (argc > 3) {
++        AppState actualState;
++        check(applyCatalogConfiguration(actualState, catalog, nullptr, &error), "actual source catalog projection");
++        CollectionImportDialog actual(dictionary, &catalog, &actualState);
++        check(actual.loadSavedValueFile(QString::fromLocal8Bit(argv[3]), &error), "user supplied data previews offscreen");
++        check(actual.preview().rowCount == 50 && actual.preview().enabledCount == 21
++              && actual.preview().distinctProducts == 9 && actual.preview().totalDistinctProducts == 13
++              && actual.preview().addedCount == 50,
++              "user data exact 50 rows 21 enabled 9 active 13 total products");
++        check(actualState.tasks.isEmpty(), "real source preview does not auto import or run");
++        if (argc > 4) {
++            const QString snapshot = QString::fromLocal8Bit(argv[4]);
++            QDir().mkpath(QFileInfo(snapshot).absolutePath());
++            actual.show(); app.processEvents();
++            check(actual.grab().save(snapshot), "actual import offscreen screenshot");
++            actual.hide();
++        }
++    }
++    std::printf("COLLECTION_IMPORT_DIALOG_TESTS=%s; assertions=%d; failures=%d; offscreen=true; game_connected=false\n",
++                failures == 0 ? "PASS" : "FAIL", assertions, failures);
++    return failures == 0 ? 0 : 1;
++}

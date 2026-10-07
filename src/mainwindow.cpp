@@ -3,6 +3,8 @@
 #include "catalog/skin_catalog.h"
 #include "application/catalog_configuration.h"
 #include "ui/dialogs/skin_catalog_dialog.h"
+#include "ui/dialogs/collection_import_dialog.h"
+#include "application/collection_task_commit.h"
 #include "config/v1_adapter.h"
 #include "application/runtime/replay_controller.h"
 #include "application/runtime/ui_projection.h"
@@ -587,7 +589,8 @@ QWidget* MainWindow::buildFavorites()
     m_inspectorWear->setDecimals(6);
     m_inspectorQuantity = new FluentSpinBox;
     m_inspectorQuantity->setObjectName(QStringLiteral("inspectorQuantity"));
-    m_inspectorQuantity->setRange(1, 9999);
+    m_inspectorQuantity->setRange(0, 9999);
+    m_inspectorQuantity->setSpecialValueText(QStringLiteral("不限"));
     for (QWidget* field : {static_cast<QWidget*>(m_inspectorPrice), static_cast<QWidget*>(m_inspectorCondition),
                            static_cast<QWidget*>(m_inspectorWear), static_cast<QWidget*>(m_inspectorQuantity)})
         field->setMinimumWidth(64);
@@ -649,6 +652,7 @@ QWidget* MainWindow::buildFavorites()
 QWidget* MainWindow::buildTasks()
 {
     m_taskPage = new TaskPage(m_state);
+    connect(m_taskPage, &TaskPage::importCollectionRequested, this, &MainWindow::importCollectionTasks);
     return m_taskPage;
 }
 
@@ -1061,7 +1065,7 @@ void MainWindow::refreshOverview()
     for (int i = 0; i < m_overviewTasks->rowCount(); ++i) {
         const auto& task = m_state->tasks[i];
         put(m_overviewTasks, i, 0, task.name);
-        put(m_overviewTasks, i, 1, QString::number(task.quantity));
+        put(m_overviewTasks, i, 1, task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity));
         putStatus(m_overviewTasks, i, 2, task.status, taskTone(task));
     }
     const int count = qMin(3, int(m_state->logs.size()));
@@ -1369,14 +1373,18 @@ void MainWindow::showHelp()
 void MainWindow::importConfiguration()
 {
     const QString path = QFileDialog::getOpenFileName(this, QStringLiteral("导入只读预览"), QString(),
-                                                      QStringLiteral("配置或 13 列文本 (*.json *.txt *.ini);;所有文件 (*.*)"));
+                                                      QStringLiteral("配置与收藏任务 (*.savedValue *.json *.txt *.ini);;所有文件 (*.*)"));
     if (path.isEmpty()) return;
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this, QStringLiteral("读取失败"), file.errorString());
         return;
     }
-    previewImportBytes(file.readAll(), QFileInfo(path).fileName());
+    if (file.size() > 8*1024*1024) { QMessageBox::warning(this, QStringLiteral("导入失败"), QStringLiteral("文件超过 8 MiB。")); return; }
+    const auto bytes=file.readAll();
+    if (m_catalog && QFileInfo(path).suffix().compare("savedValue",Qt::CaseInsensitive)==0)
+        previewCollectionTasks(bytes,QFileInfo(path).fileName());
+    else previewImportBytes(bytes, QFileInfo(path).fileName());
 }
 
 void MainWindow::previewImportBytes(const QByteArray& bytes, const QString& sourceName)
@@ -1990,6 +1998,35 @@ void MainWindow::manageSkinCatalog()
             return;
         }
         m_state->notifyChanged();
+    });
+    dialog->open();
+}
+
+void MainWindow::importCollectionTasks()
+{
+    if (!m_catalog) return;
+    previewCollectionTasks({}, {});
+}
+
+void MainWindow::previewCollectionTasks(const QByteArray& bytes, const QString& sourceName)
+{
+    if (!m_catalog) return;
+    QFile file(QStringLiteral(":/data/relink_0925_catalog.json"));
+    if (!file.open(QIODevice::ReadOnly)) return;
+    const auto dictionary=QJsonDocument::fromJson(file.readAll()).object();
+    auto* dialog=new CollectionImportDialog(dictionary,&m_catalog->catalog(),m_state,this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setModal(true);
+    if (!bytes.isEmpty()) dialog->loadSavedValue(bytes,sourceName);
+    connect(dialog,&CollectionImportDialog::commitRequested,this,[this,dialog,dictionary] {
+        QString error;
+        relink::application::CollectionTaskImportPreview report;
+        if (!relink::application::commitCollectionTaskImport(dialog->sourceBytes(),dictionary,m_catalog->catalog(),*m_state,&report,&error)) {
+            dialog->showCommitError(error); return;
+        }
+        if (report.addedCount > 0) m_savedConfiguration=QJsonDocument(encodeV1Config(m_state->skins,m_state->tasks,m_state->run)).toJson(QJsonDocument::Compact);
+        setPage(2);
+        dialog->accept();
     });
     dialog->open();
 }

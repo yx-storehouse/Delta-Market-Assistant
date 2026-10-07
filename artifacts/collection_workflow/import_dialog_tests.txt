@@ -1,0 +1,2 @@
+COLLECTION_IMPORT_DIALOG_TESTS=PASS; assertions=48; failures=0; offscreen=true; game_connected=false
+EXIT_STATUS=0

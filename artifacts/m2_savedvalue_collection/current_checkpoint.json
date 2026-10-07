@@ -3,14 +3,22 @@
   "task_file_fully_completed": false,
   "confirmed_collections": 25,
   "current_source_row": 6,
-  "current_card_index": 5,
+  "current_card_index": null,
   "current_product_id": "10603",
   "current_condition": "B",
-  "current_page": "skin_listings",
-  "blocker": "COLLECTION_UNSCANNED_SCROLL_REGION",
-  "next_required": "Calibrate scroll and partial-row geometry; continue row 6 without toggling already confirmed stars.",
+  "current_page": "empty_watchlist",
+  "blocker": "COLLECTION_DYNAMIC_GEOMETRY_NOT_CALIBRATED",
+  "next_required": "Follow original empty-watchlist startup route; re-observe current listings, bind dynamic geometry and journal identities before any resumed collection. Do not reuse the old card position.",
   "ide_restored": true,
   "last_series": "live_series_s6_v5/summary.json",
-  "latest_live_record": "live_series_s6_v5/live_5.json",
-  "purchase_phase_started": false
+  "latest_live_record": "../collection_workflow/watchlist_current_confirm.json",
+  "purchase_phase_started": false,
+  "cursor_valid": false,
+  "previous_cursor": {
+    "source_row": 6,
+    "product_id": "10603",
+    "condition": "B",
+    "card_index": 5
+  },
+  "live_confirmed_at": "2026-10-07T21:20:13.693309+08:00"
 }

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\collection_task_import_tests.exe",
+    "C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\implementation\\domain\\relink_0925_catalog.json",
+    "C:\\Users\\Administrator\\Desktop\\price\\src\\assets\\catalog\\skins.json",
+    "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m2_savedvalue_collection\\input\\source.savedValue"
+  ],
+  "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+  "path_prepend": [
+    "C:\\Users\\Administrator\\Desktop\\price\\.tools\\Qt\\Tools\\mingw1310_64\\bin",
+    "C:\\Users\\Administrator\\Desktop\\price\\.tools\\Qt\\6.8.3\\mingw_64\\bin"
+  ],
+  "stdout": "PASS catalog_loaded\nPASS real_catalog_projected\nPASS preview_accepts_resolved_data\nPASS preview_and_cancel_leave_state_unchanged\nPASS preview_counts_enabled_and_total_products_separately\nPASS preserves_numeric_source_row_order\nPASS disabled_row_keeps_all_original_parameters\nPASS zero_limit_and_wear_only_condition_preserved\nPASS menu_color_is_not_guessed_quality_or_condition\nPASS s11_source_spelling_not_renamed\nPASS purchase_settings_metadata_only\nPASS apply_appends_atomically\nPASS existing_tasks_follows_runtime_status_and_settings_preserved\nPASS stable_content_and_row_identity\nPASS repeat_import_deduplicates_and_preserves_user_edits\nPASS source_provenance_and_zero_limit_roundtrip\nPASS reopened_configuration_keeps_dedup_identity\nPASS unknown_product_rejects_entire_batch\nPASS disabled_unknown_product_rejects_entire_batch\nPASS apply_rejects_entire_batch_without_notification_or_report_mutation\nPASS unknown_condition_rejects_batch\nPASS wear_over_limit_not_clamped\nPASS quantity_over_limit_not_clamped\nPASS price_over_limit_not_clamped\nPASS inverted_price_range_rejected\nPASS truncated_source_atomic_rejection\nPASS empty_collection_rejected\nPASS distinct_s11_spelling_rejected_not_fuzzy_matched\nPASS dictionary_name_and_display_conflict_rejected\nPASS unknown_zero_limit_semantics_rejected\nPASS dictionary_only_id_without_catalog_rejected\nPASS conflicting_existing_provenance_rejected\nPASS stable_id_collision_not_overwritten\nPASS duplicate_import_origin_rejected_by_config_codec\nPASS malformed_provenance_rejected_before_disk_write\nPASS malformed_provenance_rejected_before_disk_write\nPASS malformed_provenance_rejected_before_disk_write\nPASS malformed_provenance_rejected_before_disk_write\nPASS all_disabled_template_imported_without_activation\nPASS actual_catalog_ready\nPASS actual_file_preview\nPASS actual_50_rows_21_enabled_9_active_13_total_products\nPASS actual_every_row_preserves_all_source_parameters\nPASS actual_all_rows_saved\nPASS actual_reopened_import_idempotent\nPASS actual_source_file_unchanged\nCOLLECTION_TASK_IMPORT_TESTS=PASS; assertions=46; failures=0; game_input_sent=false\n",
+  "stderr": "",
+  "exit_status": 0
+}

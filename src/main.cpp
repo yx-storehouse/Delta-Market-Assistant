@@ -5,6 +5,8 @@
 #include "application/catalog_startup.h"
 #include "catalog/skin_catalog.h"
 #include "diagnostics/catalog_self_test.h"
+#include "diagnostics/collection_import_self_test.h"
+#include "diagnostics/collection_task_cli.h"
 #include <QMessageBox>
 #include "application/workspace/workspace_controller.h"
 #include "diagnostics/ui_self_test_runner.h"
@@ -27,15 +29,17 @@
 #include <cstdio>
 
 int main(int argc, char** argv) {
-    bool startupCheck = false, liveCheck = false, savedValueCheck = false;
+    bool startupCheck = false, liveCheck = false, savedValueCheck = false, importTasks = false;
     for (int i = 1; i < argc; ++i) {
+        importTasks |= QByteArray(argv[i]) == "--import-collection-tasks" || QByteArray(argv[i]).startsWith("--import-collection-tasks=");
         startupCheck |= QByteArray(argv[i]) == "--startup-observer-self-test";
         liveCheck |= QByteArray(argv[i]) == "--live-capture-check";
         savedValueCheck |= QByteArray(argv[i]) == "--savedvalue-preview" || QByteArray(argv[i]).startsWith("--savedvalue-preview=");
     }
-    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)>1) {
+    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)+int(importTasks)>1) {
         std::fprintf(stderr, "E_DIAGNOSTIC_MODE_CONFLICT\n"); return 2;
     }
+    if (importTasks) return relink::diagnostics::runCollectionTaskImportCli(argc,argv);
     if (savedValueCheck) return relink::diagnostics::runSavedValuePreview(argc,argv);
     if (startupCheck) {
         QCoreApplication app(argc, argv);
@@ -48,8 +52,9 @@ int main(int argc, char** argv) {
     bool headless = false;
     for (int i = 1; i < argc; ++i) {
         const QByteArray a(argv[i]);
-        headless |= a == "--catalog-self-test" || a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
+        headless |= a == "--collection-import-self-test" || a == "--catalog-self-test" || a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
             || a == "--export-app-icon" || a == "--storage-self-test";
+        headless |= a == "--import-collection-tasks" || a.startsWith("--import-collection-tasks=");
         headless |= a.startsWith("--snapshot-dir=") || a.startsWith("--write-demo-config=") || a.startsWith("--validate-config=");
     }
     if (headless) {
@@ -82,6 +87,9 @@ int main(int argc, char** argv) {
     QCommandLineParser parser;
     parser.setApplicationDescription("Relink Studio offline frontend. No input automation. Explicit --live-capture-check provides read-only diagnostics.");
     parser.addHelpOption(); parser.addVersionOption();
+    parser.addOption({"import-collection-tasks", "Append a .savedValue task file into an explicit --config, without showing UI or starting game actions.", "path"});
+    parser.addOption({"collection-import-self-test", "Verify real collection task import and persistence offscreen."});
+    parser.addOption({"task-source", "Optional read-only .savedValue input for collection import self-test.", "path"});
     parser.addOption({"catalog-self-test", "Verify real catalogue startup and maintenance offscreen using temporary data."});
     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
     parser.addOption({"startup-observer-self-test", "Check original startup page/precheck routes using embedded historical OCR fixtures; no game capture."});
@@ -148,6 +156,9 @@ int main(int argc, char** argv) {
         std::printf("DEMO_CONFIG=%s\n", ok ? "PASS" : "FAIL");
         return ok ? 0 : 1;
     }
+    if (parser.isSet("collection-import-self-test"))
+        return relink::diagnostics::runCollectionImportSelfTest(app,parser.value("snapshot-dir"),parser.value("task-source"));
+    if (parser.isSet("task-source")) { std::fprintf(stderr,"E_TASK_SOURCE_REQUIRES_IMPORT_TEST\n"); return 2; }
     if (parser.isSet("catalog-self-test"))
         return relink::diagnostics::runCatalogSelfTest(app, parser.value("snapshot-dir"));
     const bool fixtureMode = parser.isSet("self-test");

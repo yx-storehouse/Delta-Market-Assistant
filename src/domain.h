@@ -20,10 +20,19 @@ struct Skin {
     QString dataSource = QStringLiteral("catalog");
 };
 
+// Immutable import provenance, independent from editable task conditions.
+// Empty format means this task was created manually. Original values stay here
+// even when a user subsequently edits the task in the collection editor.
+struct TaskImportSource {
+    QString format, sourceSha256, dictionarySha256, productId, conditionId;
+    int row = -1;
+    QJsonObject fields;
+};
+
 struct Task {
     QString id, name, skinId;
     double minPrice = 0, maxPrice = 1000, maxWear = 10;
-    int quantity = 1;
+    int quantity = 1; // 0 = unlimited, matching the original collection task.
     bool enabled = true;
     QString status = QStringLiteral("待启动");
     // Condition filter from the original task row; "不限" keeps older files unfiltered.
@@ -31,6 +40,7 @@ struct Task {
     // Decode-only provenance distinguishes a missing legacy condition field
     // from the user's explicit 不限 choice. New tasks are always explicit.
     bool conditionExplicit = true;
+    TaskImportSource importSource;
 };
 
 // Parameters mirrored from the original assistant's main screen. They are

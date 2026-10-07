@@ -1,0 +1,14 @@
+{
+  "config_path": "C:\\Users\\Administrator\\AppData\\Local\\RelinkStudio\\RelinkStudio\\config.json",
+  "source_sha256": "cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253",
+  "before_config_sha256": "0c7560566e424d9688c140699252787734a16d1b2ebcd3c6c9171f7c3bfc6937",
+  "after_config_sha256": "7c317fc1850e2ca85eeba394f73f9c231499f7a781dad570f95f0e4287b8f5b9",
+  "skins": 149,
+  "tasks": 50,
+  "source_tasks": 50,
+  "enabled_source_tasks": 21,
+  "source_unchanged": true,
+  "duplicate_write_count": 0,
+  "game_input_sent": false,
+  "prior_config_copy": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_workflow\\production_before\\config.json"
+}

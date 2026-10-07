@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\collection_task_commit_tests.exe",
+    "C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\implementation\\domain\\relink_0925_catalog.json",
+    "C:\\Users\\Administrator\\Desktop\\price\\src\\assets\\catalog\\skins.json",
+    "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m2_savedvalue_collection\\input\\source.savedValue"
+  ],
+  "cwd": "C:\\Users\\Administrator\\Desktop\\price",
+  "path_prepend": [
+    "C:\\Users\\Administrator\\Desktop\\price\\.tools\\Qt\\Tools\\mingw1310_64\\bin",
+    "C:\\Users\\Administrator\\Desktop\\price\\.tools\\Qt\\6.8.3\\mingw_64\\bin"
+  ],
+  "stdout": "PASS catalog_loaded\nPASS isolated_temporary_directory\nPASS real_state_projected\nPASS original_config_with_exact_whitespace_written\nPASS existing_backup_sentinel_created\nPASS commit_succeeds\nPASS publishes_once_after_success\nPASS backup_is_exact_original_and_does_not_overwrite_existing_backup\nPASS disk_matches_committed_configuration\nPASS existing_values_and_unlimited_source_survive_commit\nPASS committed_file_reopens_with_all_import_metadata\nPASS lock_released_after_success\nPASS duplicate_test_disk_sentinel_written\nPASS duplicate_commit_reports_noop\nPASS duplicate_does_not_write_backup_emit_or_save_unrelated_edits\nPASS invalid_input_changes_neither_disk_nor_memory\nPASS other_import_holds_lock\nPASS lock_conflict_leaves_disk_memory_logs_and_report_unchanged\nPASS lock_conflict_creates_no_backup\nPASS empty_destination_does_not_publish\nPASS create_unwritable_as_file_destination\nPASS atomic_save_failure_never_publishes_memory\nPASS failed_save_preserves_existing_directory_and_releases_lock\nPASS parent_file_blocks_directory_creation\nPASS parent_creation_failure_does_not_publish\nPASS parent_file_preserved\nPASS subsequent_distinct_source_appends_and_keeps_edited_import\nPASS second_backup_captures_exact_previous_disk\nPASS fresh_catalog_projected\nPASS new_destination_created_and_saved\nPASS actual_catalog_projected\nPASS actual_50_rows_21_enabled_9_active_13_total_committed\nPASS actual_reopened_commit_deduplicates_without_write\nPASS actual_source_sha256_unchanged\nCOLLECTION_TASK_COMMIT_TESTS=PASS; assertions=34; failures=0; game_input_sent=false\n",
+  "stderr": "",
+  "exit_status": 0
+}

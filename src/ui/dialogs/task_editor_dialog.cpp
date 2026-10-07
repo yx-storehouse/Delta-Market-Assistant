@@ -76,7 +76,9 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     wear->setValue(editing ? existing.maxWear : 5);
     auto* quantity = new FluentSpinBox;
     quantity->setObjectName(QStringLiteral("taskQuantity"));
-    quantity->setRange(1, 9999);
+    quantity->setRange(0, 9999);
+    quantity->setSpecialValueText(QStringLiteral("不限"));
+    quantity->setToolTip(QStringLiteral("0 表示不限数量；导入任务的限量按原值保留。"));
     quantity->setValue(editing ? existing.quantity : 1);
     auto* enabled = new ToggleSwitch;
     enabled->setObjectName(QStringLiteral("taskEnabledCheck"));
@@ -135,6 +137,9 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
             validation->setText(QStringLiteral("请填写大于 0 的最高价格。")); max->setFocus(); return;
         }
         if (min->value() > max->value()) { validation->setText(QStringLiteral("最低价格需要小于或等于最高价格。")); return; }
+        // Keep import provenance and non-editable source parameters when editing.
+        // The dialog owns only a draft; the page still decides when to commit.
+        m_task = existing;
         m_task.id = editing ? existing.id : QUuid::createUuid().toString(QUuid::WithoutBraces);
         m_task.name = name->text().trimmed();
         m_task.skinId = skin->currentData().toString();
@@ -143,6 +148,7 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
         m_task.maxWear = wear->value();
         m_task.quantity = quantity->value();
         m_task.condition = condition->currentText();
+        m_task.conditionExplicit = true;
         m_task.enabled = enabled->isChecked();
         m_task.status = m_task.enabled ? QStringLiteral("待启动")
             : (testFixture ? QStringLiteral("演示已暂停") : QStringLiteral("已停用"));

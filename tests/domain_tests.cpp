@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     };
     rejection("reject_range_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("minPrice"), 999999); });
     rejection("reject_unknown_skin_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("skinId"), QStringLiteral("missing")); });
-    rejection("reject_quantity_zero_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 0); });
+    rejection("reject_quantity_negative_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), -1); });
     rejection("reject_quantity_fraction_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 1.5); });
     rejection("reject_quantity_overflow_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 9999999999.0); });
     rejection("reject_quantity_ui_limit_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("quantity"), 10000); });
@@ -114,6 +114,14 @@ int main(int argc, char** argv) {
     imported.skins[0].price = std::numeric_limits<double>::infinity();
     check(!imported.saveTo(snapshot, &error), "reject_nonfinite_save");
     check(imported.loadFrom(baseline, &error), "restore_valid_fixture");
+
+    QJsonObject unlimited = source;
+    changeTask(unlimited, QStringLiteral("quantity"), 0);
+    AppState unlimitedState;
+    check(write(candidate, QJsonDocument(unlimited).toJson())
+          && unlimitedState.loadFrom(candidate, &error)
+          && unlimitedState.tasks.first().quantity == 0
+          && unlimitedState.saveTo(snapshot, &error), "quantity_zero_unlimited_roundtrip");
 
     QJsonObject boundary = source;
     changeTask(boundary, QStringLiteral("name"), QString(60, QChar(0x4EFB)));
@@ -172,6 +180,19 @@ int main(int argc, char** argv) {
     for (int i = 0; i < 10; ++i) imported.simulateTick();
     check(imported.simulatedSuccess == 9, "simulation_respects_task_quantities");
     imported.pauseSimulation();
+
+    AppState unlimitedFixture;
+    unlimitedFixture.loadTestFixture();
+    for (auto& task : unlimitedFixture.tasks) task.enabled = false;
+    unlimitedFixture.tasks[0].enabled = true;
+    unlimitedFixture.tasks[0].quantity = 0;
+    unlimitedFixture.startSimulation();
+    for (int i = 0; i < 3; ++i) unlimitedFixture.simulateTick();
+    check(unlimitedFixture.simulationRunning && unlimitedFixture.simulatedSuccess == 3
+          && unlimitedFixture.tasks[0].status == QStringLiteral("演示进行中")
+          && unlimitedFixture.logs.first().message.contains(QStringLiteral("不限")),
+          "explicit_fixture_zero_limit_remains_unlimited");
+    unlimitedFixture.pauseSimulation();
 
     imported.loadTestFixture();
     for (auto& task : imported.tasks) task.enabled = false;

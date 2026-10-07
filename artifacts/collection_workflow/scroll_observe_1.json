@@ -1,0 +1,334 @@
+{
+  "passed": false,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": false,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "skin_listings",
+        "--collection-observation"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:946e0148-27f7-4f33-bf75-1500b5891521",
+          "frame_sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+          "image_file_writes": 0,
+          "page": "lobby",
+          "regions": [],
+          "same_frame": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "skin_listings",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 218,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 252,
+            "pixel_min": 0,
+            "sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+            "source": "dxgi",
+            "source_age_ms": 35,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 751,
+          "frame_sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 110
+        },
+        "ocr_passed": true,
+        "page_error": "E_DIAGNOSTIC_PAGE_MISMATCH",
+        "page_match_passed": false,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": false,
+            "listing.default_sort": false,
+            "listing.filter_all": false,
+            "listing.filter_confirm": false,
+            "listing.filter_price": false,
+            "listing.page_number": false,
+            "listing.sale": false,
+            "listing.similar": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "lobby.start",
+            "lobby.warehouse_nav",
+            "lobby.prepare"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "lobby"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "lobby",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 110,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 1,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": false,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "skin_listings",
+            "--collection-observation"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:946e0148-27f7-4f33-bf75-1500b5891521",
+              "frame_sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+              "image_file_writes": 0,
+              "page": "lobby",
+              "regions": [],
+              "same_frame": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "skin_listings",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 218,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 252,
+                "pixel_min": 0,
+                "sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+                "source": "dxgi",
+                "source_age_ms": 35,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 751,
+              "frame_sha256": "25507fcda2835ed6d06189740451be1ac7454ded26d995874d516df3702128eb",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 110
+            },
+            "ocr_passed": true,
+            "page_error": "E_DIAGNOSTIC_PAGE_MISMATCH",
+            "page_match_passed": false,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": false,
+                "listing.default_sort": false,
+                "listing.filter_all": false,
+                "listing.filter_confirm": false,
+                "listing.filter_price": false,
+                "listing.page_number": false,
+                "listing.sale": false,
+                "listing.similar": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "lobby.start",
+                "lobby.warehouse_nav",
+                "lobby.prepare"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "lobby"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "lobby",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 110,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 1
+        }
+      ],
+      "attempt_count": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": "BATCH_STEP_FAILED",
+  "ide_restored": true,
+  "timestamp": "2026-10-07T21:04:47.507909+08:00",
+  "binary_sha256": "0a5960d0ffcf4575fd8aa19d5846745967dad5b575a93fbe8cccf249a89cc4a8",
+  "plan": {
+    "name": "Current collection viewport and one scroll observation",
+    "timeout_seconds": 30,
+    "steps": [
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "preview": false,
+        "expected_page": "skin_listings"
+      },
+      {
+        "kind": "scroll",
+        "point": [
+          950,
+          900
+        ],
+        "delta": -240,
+        "viewport": [
+          2560,
+          1440
+        ],
+        "expected_before": "skin_listings"
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "preview": true,
+        "expected_page": "skin_listings"
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "ocr_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "runner_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "tests/manual/run_foreground_batch.py",
+    "--plan",
+    "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_workflow\\scroll_observe_plan.json",
+    "--record",
+    "artifacts/collection_workflow/scroll_observe_1.json"
+  ],
+  "exit_status": 1,
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1086185875
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1086185890
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1086187875
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 0,
+  "image_file_writes": 0
+}

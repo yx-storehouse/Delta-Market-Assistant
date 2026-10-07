@@ -28,6 +28,7 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     auto* commands = new QHBoxLayout;
     commands->setSpacing(4);
     auto* add = button(QStringLiteral("新增任务"), QStringLiteral("taskNewButton"), ButtonKind::Accent, Glyph::Add);
+    auto* import = button(QStringLiteral("导入收藏任务"), QStringLiteral("taskImportCollectionButton"), ButtonKind::Standard, Glyph::Import);
     auto* edit = button(QStringLiteral("编辑"), QStringLiteral("taskEditButton"), ButtonKind::Subtle, Glyph::Edit);
     auto* remove = button(QStringLiteral("删除"), QStringLiteral("taskDeleteButton"), ButtonKind::Subtle, Glyph::Delete);
     auto* enable = button(QStringLiteral("启用选中"), QStringLiteral("enableSelectedTasksButton"), ButtonKind::Subtle, Glyph::CheckMark);
@@ -37,6 +38,8 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     m_taskStart->setVisible(testFixture);
     m_taskStart->setEnabled(testFixture);
     commands->addWidget(add);
+    commands->addSpacing(8);
+    commands->addWidget(import);
     commands->addSpacing(8);
     commands->addWidget(edit);
     commands->addWidget(remove);
@@ -70,6 +73,7 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     note->setWordWrap(true);
     layout->addWidget(note);
     connect(add, &QPushButton::clicked, this, [this] { editTask(); });
+    connect(import, &QPushButton::clicked, this, &TaskPage::importCollectionRequested);
     connect(edit, &QPushButton::clicked, this, [this] { if (!selectedTaskId().isEmpty()) editTask(selectedTaskId()); });
     connect(m_tasksTable, &QTableWidget::itemDoubleClicked, this, [this](QTableWidgetItem*) {
         if (!selectedTaskId().isEmpty()) editTask(selectedTaskId());
@@ -105,7 +109,7 @@ void TaskPage::refresh()
         put(m_tasksTable, row, 2, task.condition, FluentTheme::secondary);
         put(m_tasksTable, row, 3, QStringLiteral("%1 — %2").arg(amount(task.minPrice), amount(task.maxPrice)));
         put(m_tasksTable, row, 4, QString::number(task.maxWear, 'f', 3), FluentTheme::secondary);
-        put(m_tasksTable, row, 5, QString::number(task.quantity));
+        put(m_tasksTable, row, 5, task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity));
         auto* toggle = new ToggleSwitch;
         toggle->setObjectName("taskEnabled_" + task.id);
         toggle->setChecked(task.enabled);

@@ -72,11 +72,63 @@ QJsonObject skinJson(const Skin& skin) {
 
 QJsonObject taskJson(const Task& task) {
     // Execution status is deliberately not persisted: a saved setting is not an order.
-    return {{QStringLiteral("id"), task.id}, {QStringLiteral("name"), task.name},
+    QJsonObject object{{QStringLiteral("id"), task.id}, {QStringLiteral("name"), task.name},
             {QStringLiteral("skinId"), task.skinId}, {QStringLiteral("minPrice"), task.minPrice},
             {QStringLiteral("maxPrice"), task.maxPrice}, {QStringLiteral("maxWear"), task.maxWear},
             {QStringLiteral("quantity"), task.quantity}, {QStringLiteral("enabled"), task.enabled},
             {QStringLiteral("condition"), task.condition}};
+    const auto& source = task.importSource;
+    if (!source.format.isEmpty() || !source.sourceSha256.isEmpty() || !source.dictionarySha256.isEmpty()
+        || !source.productId.isEmpty() || !source.conditionId.isEmpty() || source.row != -1
+        || !source.fields.isEmpty()) {
+        object.insert(QStringLiteral("importSource"), QJsonObject{
+            {QStringLiteral("format"), source.format}, {QStringLiteral("sourceSha256"), source.sourceSha256},
+            {QStringLiteral("dictionarySha256"), source.dictionarySha256}, {QStringLiteral("row"), source.row},
+            {QStringLiteral("productId"), source.productId}, {QStringLiteral("conditionId"), source.conditionId},
+            {QStringLiteral("fields"), source.fields}});
+    }
+    return object;
+}
+
+bool parseTaskImportSource(const QJsonObject& task, TaskImportSource& source,
+                           QString* error, const QString& context) {
+    const auto entry = task.value(QStringLiteral("importSource"));
+    if (entry.isUndefined()) return true;
+    if (!entry.isObject()) return fail(error, context + QStringLiteral("：导入来源必须是对象"));
+    const auto object = entry.toObject();
+    if (!stringField(object, "format", source.format, error, context)
+        || !stringField(object, "sourceSha256", source.sourceSha256, error, context)
+        || !stringField(object, "dictionarySha256", source.dictionarySha256, error, context)
+        || !stringField(object, "productId", source.productId, error, context)
+        || !stringField(object, "conditionId", source.conditionId, error, context)) return false;
+    static const QRegularExpression hash(QStringLiteral("^[0-9a-f]{64}$"));
+    static const QRegularExpression integerId(QStringLiteral("^(0|[1-9][0-9]{0,15})$"));
+    const auto row = object.value(QStringLiteral("row"));
+    if (source.format != QStringLiteral("savedValue")
+        || !hash.match(source.sourceSha256).hasMatch() || !hash.match(source.dictionarySha256).hasMatch()
+        || !integerId.match(source.productId).hasMatch() || !integerId.match(source.conditionId).hasMatch()
+        || !row.isDouble() || row.toDouble() < 0 || row.toDouble() > 499
+        || std::floor(row.toDouble()) != row.toDouble() || !object.value(QStringLiteral("fields")).isObject())
+        return fail(error, context + QStringLiteral("：导入来源标识、哈希或行号无效"));
+    source.row = row.toInt();
+    source.fields = object.value(QStringLiteral("fields")).toObject();
+    const QStringList fields{QStringLiteral("成色设置栏"), QStringLiteral("最低价格设置栏"),
+        QStringLiteral("最高价格设置栏"), QStringLiteral("枪名设置栏"),
+        QStringLiteral("磨损度设置栏"), QStringLiteral("限量设置栏")};
+    if (source.fields.size() != 7 || !source.fields.value(QStringLiteral("启用")).isBool())
+        return fail(error, context + QStringLiteral("：导入来源原始字段不完整"));
+    for (const auto& field : fields) {
+        const auto value = source.fields.value(field);
+        if (!value.isDouble() || !std::isfinite(value.toDouble()) || value.toDouble() < 0
+            || value.toDouble() > 9007199254740991.0 || std::floor(value.toDouble()) != value.toDouble())
+            return fail(error, context + QStringLiteral("：导入来源原始字段无效"));
+    }
+    if (source.productId != QString::number(source.fields.value(QStringLiteral("枪名设置栏")).toInteger())
+        || source.conditionId != QString::number(source.fields.value(QStringLiteral("成色设置栏")).toInteger())
+        || source.fields.value(QStringLiteral("最低价格设置栏")).toDouble()
+               > source.fields.value(QStringLiteral("最高价格设置栏")).toDouble())
+        return fail(error, context + QStringLiteral("：导入来源与原始字段不一致"));
+    return true;
 }
 
 QJsonObject runJson(const RunSettings& run) {
@@ -196,7 +248,7 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
     if (skinArray.size() > kMaxItems || taskArray.size() > kMaxItems)
         return fail(error, QStringLiteral("配置条目超过10000条上限"));
 
-    QSet<QString> skinIds, taskIds;
+    QSet<QString> skinIds, taskIds, importedRows;
     for (int i = 0; i < skinArray.size(); ++i) {
         const QString context = QStringLiteral("皮肤[%1]").arg(i + 1);
         if (!skinArray.at(i).isObject()) return fail(error, context + QStringLiteral("必须为对象"));
@@ -273,8 +325,8 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
             return fail(error, context + QStringLiteral("：任务价格不得超过999999999，且最多保留2位小数"));
         if (task.maxWear > 100.0 || !hasDecimalPrecision(task.maxWear, 1000000.0))
             return fail(error, context + QStringLiteral("：最大磨损不得超过100，且最多保留6位小数"));
-        if (quantity < 1 || quantity > 9999 || std::floor(quantity) != quantity)
-            return fail(error, context + QStringLiteral("：限制数量必须是1至9999的整数"));
+        if (quantity < 0 || quantity > 9999 || std::floor(quantity) != quantity)
+            return fail(error, context + QStringLiteral("：限制数量必须是0至9999的整数（0为不限）"));
         task.quantity = static_cast<int>(quantity);
         if (!object.value(QStringLiteral("enabled")).isBool())
             return fail(error, context + QStringLiteral("：enabled 必须为布尔值"));
@@ -289,6 +341,14 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
         }
         if (!skinIds.contains(task.skinId)) return fail(error, context + QStringLiteral("：引用了未知皮肤ID"));
         if (taskIds.contains(task.id)) return fail(error, context + QStringLiteral("：任务ID重复"));
+        if (!parseTaskImportSource(object, task.importSource, error, context)) return false;
+        if (!task.importSource.format.isEmpty()) {
+            const QString origin = task.importSource.sourceSha256 + QLatin1Char(':')
+                + QString::number(task.importSource.row);
+            if (importedRows.contains(origin))
+                return fail(error, context + QStringLiteral("：同一来源行重复，请为复制任务清除来源标识"));
+            importedRows.insert(origin);
+        }
         taskIds.insert(task.id);
         task.status = task.enabled ? QStringLiteral("待启动") : QStringLiteral("未启用");
         parsedTasks.append(task);
@@ -493,7 +553,7 @@ void AppState::simulateTick() {
     bool hasPending = false;
     for (auto& task : tasks) {
         if (!task.enabled) { task.status = QStringLiteral("未启用"); continue; }
-        if (m_simulatedByTask.value(task.id) >= task.quantity) {
+        if (task.quantity > 0 && m_simulatedByTask.value(task.id) >= task.quantity) {
             task.status = QStringLiteral("演示已完成");
             continue;
         }
@@ -501,7 +561,7 @@ void AppState::simulateTick() {
         if (simulatedScans < std::numeric_limits<int>::max()) ++simulatedScans;
         const Skin* skin = nullptr;
         for (const auto& entry : skins) if (entry.id == task.skinId) { skin = &entry; break; }
-        if (!skin || task.quantity < 1 || !std::isfinite(task.minPrice)
+        if (!skin || task.quantity < 0 || !std::isfinite(task.minPrice)
             || !std::isfinite(task.maxPrice) || !std::isfinite(task.maxWear)
             || task.minPrice < 0 || task.maxWear < 0 || task.minPrice > task.maxPrice) {
             task.status = QStringLiteral("演示配置无效");
@@ -519,9 +579,11 @@ void AppState::simulateTick() {
         if (simulatedMatches < std::numeric_limits<int>::max()) ++simulatedMatches;
         if (simulatedSuccess < std::numeric_limits<int>::max()) ++simulatedSuccess;
         const int done = ++m_simulatedByTask[task.id];
-        task.status = done >= task.quantity ? QStringLiteral("演示已完成") : QStringLiteral("演示进行中");
+        task.status = task.quantity > 0 && done >= task.quantity
+            ? QStringLiteral("演示已完成") : QStringLiteral("演示进行中");
         addLog(QStringLiteral("DEMO"), QStringLiteral("%1：模拟匹配价格 %2，模拟完成 %3/%4；无实际订单。")
-                   .arg(task.name, QString::number(skin->price, 'f', 2)).arg(done).arg(task.quantity));
+                   .arg(task.name, QString::number(skin->price, 'f', 2)).arg(done)
+                   .arg(task.quantity == 0 ? QStringLiteral("不限") : QString::number(task.quantity)));
     }
     if (!hasPending) {
         simulationRunning = false;

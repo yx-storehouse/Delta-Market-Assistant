@@ -1,0 +1,37 @@
+{
+  "review_date": "2026-10-07",
+  "files": [
+    "src/application/collection_task_commit.cpp",
+    "src/mainwindow.cpp"
+  ],
+  "findings": [
+    {
+      "severity": "correctness",
+      "location": "MainWindow::previewCollectionTasks commitRequested callback",
+      "issue": "Zero-added duplicate commit returns true without saving. Unconditional m_savedConfiguration update could mark unrelated unsaved edits as saved.",
+      "recommendation": "Only update m_savedConfiguration when report.addedCount > 0.",
+      "disposition": "Fixed by root; verified MainWindow now updates saved fingerprint only when report.addedCount > 0."
+    }
+  ],
+  "positive_checks": [
+    "Fresh preview validates every source row against current catalog and current AppState.",
+    "Persistence uses a candidate AppState; tasks are published only after QSaveFile commit succeeds.",
+    "Existing on-disk configuration is copied to a non-overwriting backup before new persistence.",
+    "Lock acquisition failure does not alter tasks or backup.",
+    "Successful commit preserves existing tasks, follows, observed values and run settings.",
+    "Import dialog is modal and revalidates source bytes before issuing commitRequested."
+  ],
+  "actual_source_correction": {
+    "row_count": 50,
+    "enabled_count": 21,
+    "active_product_count": 9,
+    "total_product_count": 13,
+    "disabled_only_product_ids": [
+      "10100",
+      "10702",
+      "10703",
+      "10704"
+    ],
+    "earlier_assumption_total_10": "incorrect; corrected by independent source snapshot enumeration and real importer"
+  }
+}

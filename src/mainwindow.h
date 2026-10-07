@@ -47,6 +47,8 @@ public slots:
     // the same read-only dialog as the file import path without touching disk.
     void previewImportDemo();
     void manageSkinCatalog();
+    void importCollectionTasks();
+    void previewCollectionTasks(const QByteArray& bytes, const QString& sourceName);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

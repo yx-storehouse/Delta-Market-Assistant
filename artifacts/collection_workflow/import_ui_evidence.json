@@ -1,0 +1,14 @@
+{
+    "command":  "\"C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\collection_import_dialog_tests.exe\" \"C:\\Users\\Administrator\\Desktop\\price\\docs\\business_rebuild\\implementation\\domain\\relink_0925_catalog.json\" \"C:\\Users\\Administrator\\Desktop\\price\\src\\assets\\catalog\\skins.json\" \"C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m2_savedvalue_collection\\input\\source.savedValue\" \"C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_workflow\\import_dialog_real.png\"",
+    "input":  "Frozen data-only .savedValue, 8926 bytes, sha256 cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253; dictionary/catalog JSON; unchanged application state except isolated test drafts.",
+    "environment":  {
+                        "QT_QPA_PLATFORM":  "offscreen",
+                        "QT_SCALE_FACTOR":  "1"
+                    },
+    "stdout":  "COLLECTION_IMPORT_DIALOG_TESTS=PASS; assertions=48; failures=0; offscreen=true; game_connected=false",
+    "stderr":  "",
+    "exit_status":  0,
+    "screenshot":  "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_workflow\\import_dialog_real.png",
+    "visual_qa":  "Opened screenshot after command: all columns, labels, source hash, rows, bottom buttons visible; neutral white/gray palette. 50 rows, 21 enabled, 13 total products including 9 enabled products.",
+    "corrected_expectation":  "Initial newly added test guessed 10 total products; independent bounded Python decode and identical source hashes established 13. The application returned 13 correctly; only the new assertion was corrected."
+}

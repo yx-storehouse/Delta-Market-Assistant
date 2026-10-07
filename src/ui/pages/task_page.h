@@ -8,7 +8,7 @@ class QPushButton;
 class QTableWidget;
 
 namespace relink::ui {
-// Legacy Demo task editor boundary. This page owns its widgets and mutations;
+// Task editor boundary. This page owns its widgets and mutations;
 // it neither knows MainWindow nor accesses the persistent workspace controller.
 class TaskPage final : public QWidget {
     Q_OBJECT
@@ -18,6 +18,8 @@ public:
     void setSimulationAvailable(bool available);
     void setCompact(bool compact);
     void editTask(const QString& id = QString(), const QString& skinId = QString());
+signals:
+    void importCollectionRequested();
 private:
     QString selectedTaskId() const;
     void deleteSelectedTasks();

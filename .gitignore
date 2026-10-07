@@ -92,3 +92,10 @@ artifacts/real_skin_catalog/add_catalog_self_test.py
 
 artifacts/catalog_ui_qa/
 artifacts/real_skin_catalog/*.py
+
+# Collection workflow transaction: no user inputs, binaries, or temporary images
+artifacts/collection_workflow/*/
+artifacts/collection_workflow/*.exe
+artifacts/collection_workflow/*.png
+artifacts/collection_workflow/*.py
+artifacts/collection_workflow/*-config.json

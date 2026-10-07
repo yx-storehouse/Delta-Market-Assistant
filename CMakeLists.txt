@@ -15,6 +15,8 @@ qt_add_executable(RelinkStudio WIN32
   src/application/startup_config.cpp src/application/startup_config.h
   src/application/catalog_startup.cpp src/application/catalog_startup.h
   src/diagnostics/catalog_self_test.cpp src/diagnostics/catalog_self_test.h
+  src/diagnostics/collection_import_self_test.cpp src/diagnostics/collection_import_self_test.h
+  src/diagnostics/collection_task_cli.cpp src/diagnostics/collection_task_cli.h
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
   src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
   src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
@@ -43,6 +45,9 @@ add_library(relink_ui STATIC
   src/ui/pages/workspace_records_panel.cpp src/ui/pages/workspace_records_panel.h
   src/ui/dialogs/task_editor_dialog.cpp src/ui/dialogs/task_editor_dialog.h
   src/ui/dialogs/skin_catalog_dialog.cpp src/ui/dialogs/skin_catalog_dialog.h
+  src/ui/dialogs/collection_import_dialog.cpp src/ui/dialogs/collection_import_dialog.h
+  src/application/collection_task_import.cpp src/application/collection_task_import.h
+  src/application/collection_task_commit.cpp src/application/collection_task_commit.h
   src/application/catalog_configuration.cpp src/application/catalog_configuration.h)
 target_include_directories(relink_ui PUBLIC src)
 target_link_libraries(relink_ui PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets relink_catalog)
@@ -72,6 +77,13 @@ add_library(relink_business STATIC
 target_sources(relink_business PRIVATE src/config/savedvalue_reader.cpp src/config/savedvalue_reader.h)
 target_include_directories(relink_business PUBLIC src)
 target_link_libraries(relink_business PUBLIC Qt6::Core)
+target_link_libraries(relink_ui PUBLIC relink_business)
+add_executable(collection_task_commit_tests tests/catalog/collection_task_commit_tests.cpp)
+target_link_libraries(collection_task_commit_tests PRIVATE relink_ui)
+add_executable(collection_task_import_tests tests/catalog/collection_task_import_tests.cpp)
+target_link_libraries(collection_task_import_tests PRIVATE relink_ui)
+add_executable(collection_import_dialog_tests tests/ui/collection_import_dialog_tests.cpp)
+target_link_libraries(collection_import_dialog_tests PRIVATE relink_ui)
 
 add_executable(business_tests tests/business/business_tests.cpp)
 target_include_directories(business_tests PRIVATE src)
@@ -231,6 +243,12 @@ target_include_directories(ledger_tests PRIVATE src)
 target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
 
 enable_testing()
+add_test(NAME collection_task_commit_tests COMMAND collection_task_commit_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
+add_test(NAME collection_import_offscreen COMMAND RelinkStudio --collection-import-self-test --snapshot-dir "${CMAKE_BINARY_DIR}/import_snapshots")
+set_tests_properties(collection_import_offscreen PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
+add_test(NAME collection_task_import_tests COMMAND collection_task_import_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
+add_test(NAME collection_import_dialog_tests COMMAND collection_import_dialog_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json" "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
+set_tests_properties(collection_import_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
 add_test(NAME skin_catalog_tests COMMAND skin_catalog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json" "${CMAKE_SOURCE_DIR}/docs/business_rebuild/skin_reference/skin_reference.json")
 add_test(NAME skin_catalog_dialog_tests COMMAND skin_catalog_dialog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
 set_tests_properties(skin_catalog_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
