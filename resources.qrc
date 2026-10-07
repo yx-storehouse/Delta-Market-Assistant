@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file alias="data/relink_0925_catalog.json">docs/business_rebuild/implementation/domain/relink_0925_catalog.json</file>
     <file alias="fixtures/startup_pages.json">docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json</file>
     <file alias="fixtures/lobby_live_20261007.json">docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json</file>
     <file alias="fixtures/market_live_20261007.json">docs/business_rebuild/implementation/runtime/fixtures/market_live_20261007.json</file>

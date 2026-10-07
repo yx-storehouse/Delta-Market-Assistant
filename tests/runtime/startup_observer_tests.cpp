@@ -113,6 +113,30 @@ int main(int argc, char** argv) {
     }
     laterPage["words"] = words;
     check(classifySkinPage(laterPage).page == SkinPage::SkinListings, "page_number_not_hardcoded_to_first_two_pages");
+    auto covered=fixtures["p3_list_filter_open"];QJsonArray visible;
+    for(const auto& v:covered["words"].toArray()){
+        const auto t=v.toObject()["text"].toString();
+        if(!t.contains(QStringLiteral("第")) && !t.contains(QStringLiteral("相似皮肤")))visible.append(v);
+    }
+    covered["words"]=visible;
+    check(classifySkinPage(covered).page==SkinPage::SkinListings && classifySkinPage(covered).overlay==PageOverlay::ListingFilter,
+        "filter_panel_proves_covered_layout_with_sale_sort_condition_context");
+    for(const auto& required:QStringList{QStringLiteral("在售"),QStringLiteral("默认排序"),QStringLiteral("价格区间"),QStringLiteral("所有成色"),QStringLiteral("确定")}){
+        auto missing=covered;QJsonArray list;
+        for(const auto& v:visible)if(v.toObject()["text"].toString()!=required)list.append(v);
+        missing["words"]=list;check(classifySkinPage(missing).page==SkinPage::Unknown,"filter_panel_missing_independent_anchor_rejected_"+required);
+    }
+    auto toastPage=home;QJsonArray toastWords=home["words"].toArray();
+    const QString receipt=QStringLiteral("成功添加至我的关注");
+    const double tw=home["width"].toDouble(),th=home["height"].toDouble();
+    for(int i=0;i<receipt.size();++i)toastWords.append(token(receipt.mid(i,1),tw*.42+i*18,th*.15,16,20));
+    toastPage["words"]=toastWords;
+    check(classifySkinPage(toastPage).anchorChecks["collection.added"].toBool(),"nine_split_receipt_tokens_in_toast");
+    auto gapWords=toastWords;auto gap=gapWords.last().toObject();gap["x"]=gap["x"].toDouble()+80;gapWords[gapWords.size()-1]=gap;
+    toastPage["words"]=gapWords;
+    check(!classifySkinPage(toastPage).anchorChecks["collection.added"].toBool(),"receipt_gap_rejected");
+    toastWords=home["words"].toArray();toastWords.append(token(receipt,tw*.42,th*.60,180,20));toastPage["words"]=toastWords;
+    check(!classifySkinPage(toastPage).anchorChecks["collection.added"].toBool(),"receipt_outside_toast_rejected");
     const std::function<void(QJsonObject&)> malformed[] = {
         [](auto& p){p["width"]=0;}, [](auto& p){p["width"]=8193;}, [](auto& p){p["width"]=1920.5;},
         [](auto& p){p["height"]="1080";}, [](auto& p){p.remove("coverage");}, [](auto& p){p["coverage"]="roi";},

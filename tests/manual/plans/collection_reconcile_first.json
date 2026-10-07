@@ -1,0 +1,5 @@
+{
+ "name":"Reobserve the previously added item without toggling its star",
+ "timeout_seconds":15,
+ "steps":[{"kind":"capture","expected_page":"skin_listings","collection_observation":true,"card_index":0,"preview":true}]
+}

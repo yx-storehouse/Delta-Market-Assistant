@@ -63,6 +63,14 @@ public:
         for (const auto& token : m_joined) if (token.text.contains(text) && inBand(token.bounds, band)) return true;
         return localSequence(text,band);
     }
+    bool receipt(const QString& text) const {
+        // Collection toasts may be nine individual Chinese OCR tokens. Keep
+        // the longer bound local to the central toast, not every page anchor.
+        const QRectF toast(.35, .12, .30, .08);
+        for (const auto& token : m_tokens)
+            if (token.text == text && inBand(token.bounds, toast)) return true;
+        return localSequence(text, toast, 16);
+    }
     int countExact(const QString& text, const QRectF& band) const {
         int count = 0;
         // Joined windows do not count as extra independent supporting anchors.
@@ -73,17 +81,19 @@ public:
         static const QRegularExpression expression(QStringLiteral("^第[1-9][0-9]{0,4}页$"));
         for (const auto& token : m_tokens)
             if (inBand(token.bounds, band) && expression.match(token.text).hasMatch()) return true;
+        for (const auto& token : m_joined)
+            if (inBand(token.bounds, band) && expression.match(token.text).hasMatch()) return true;
         return false;
     }
 private:
-    bool localSequence(const QString& label,const QRectF& band) const {
+    bool localSequence(const QString& label,const QRectF& band,int maxTokens=8) const {
         // Whole-screen row grouping can be disrupted by unrelated scene text.
         // Match a bounded exact label locally, with physical-pixel adjacency;
         // no arbitrary character substitution or whole-screen concatenation.
         int comparisons=8192;
         std::function<bool(int,int,int)> extend=[&](int last,int used,int depth){
             if(used==label.size())return true;
-            if(depth>=8)return false;
+            if(depth>=maxTokens)return false;
             const auto& previous=m_tokens[last];
             for(int j=0;j<m_tokens.size();++j){
                 if(--comparisons<0)return false;
@@ -197,17 +207,28 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         if (has(u"返回", bottom)) evidence.append("navigation.back");
         candidate(SkinPage::EmptyWatchlist, evidence);
     }
+    // The open listing-filter panel covers "similar skins" and dims the
+    // footer. Its three independent right-panel anchors can prove that layout
+    // instead; sale/sort/condition context is still mandatory.
+    const bool listingFilterPanel=exact(u"价格区间",right) && exact(u"所有成色",right) && exact(u"确定",right);
     const bool listings = sale && (exact(u"默认排序", top) || has(u"按稀有度", top) || has(u"按价格", top) || has(u"按成色", top))
-        && has(u"成色", body) && (a.pageNumber(bottom) || has(u"相似皮肤", body));
+        && has(u"成色", body) && (a.pageNumber(bottom) || has(u"相似皮肤", body) || listingFilterPanel);
     if (listings) {
         const bool watched = has(u"我的关注:", bottom);
         candidate(watched ? SkinPage::WatchlistListings : SkinPage::SkinListings,
             watched ? QStringList{"list.sale", "list.sort", "list.condition", "list.layout", "watch.count"}
                     : QStringList{"list.sale", "list.sort", "list.condition", "list.layout"});
-        if (exact(u"价格区间", right) && exact(u"所有成色", right) && exact(u"确定", right))
+        if (listingFilterPanel)
             result.overlay = PageOverlay::ListingFilter;
     }
-    result.anchorChecks={{"catalog.skin_tab",exact(u"典藏外观",top)},{"catalog.circulation",has(u"流通量",body)},
+    result.anchorChecks={{"listing.sale",sale},{"listing.default_sort",exact(u"默认排序",top)},
+        {"listing.condition",has(u"成色",body)},{"listing.page_number",a.pageNumber(bottom)},
+        {"listing.similar",has(u"相似皮肤",body)},
+        {"listing.filter_price",exact(u"价格区间",right)},{"listing.filter_all",exact(u"所有成色",right)},
+        {"listing.filter_confirm",exact(u"确定",right)},
+        {"collection.added",a.receipt(QStringLiteral("成功添加至我的关注"))},
+        {"collection.full",has(u"关注数量已达上限",body) || has(u"已达关注上限",body)},
+        {"catalog.skin_tab",exact(u"典藏外观",top)},{"catalog.circulation",has(u"流通量",body)},
         {"catalog.watch",exact(u"我的关注",top)},{"catalog.rows",a.countExact(QStringLiteral("典藏"),leftBody)>=2},
         {"mandel.tab",exact(u"曼德尔砖",top)},{"mandel.current",exact(u"当季产出",body)},{"mandel.past",exact(u"往季产出",body)}};
     if (exact(u"典藏外观", top) && has(u"流通量", body)

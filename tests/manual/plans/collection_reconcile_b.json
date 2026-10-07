@@ -1,0 +1,1 @@
+{"name": "Reobserve B second row gold star; no favorite input", "timeout_seconds": 15, "steps": [{"kind": "capture", "expected_page": "skin_listings", "collection_observation": true, "card_index": 2, "preview": true}]}

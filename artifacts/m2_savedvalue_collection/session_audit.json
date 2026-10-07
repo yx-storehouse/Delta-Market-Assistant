@@ -1,0 +1,311 @@
+{
+  "source_sha256": "cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253",
+  "confirmed_collections": 25,
+  "statuses": {
+    "confirmed": 22,
+    "confirmed_reconciliation": 3
+  },
+  "collections_by_source_row": {
+    "0": 3,
+    "1": 2,
+    "2": 3,
+    "3": 2,
+    "4": 4,
+    "5": 5,
+    "6": 6
+  },
+  "pending_attempts": 0,
+  "task_file_fully_completed": false,
+  "records": [
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_a_remaining.json",
+      "sha256": "2ac3b1b819862bdeafa26b0e3e609343cd9aab383a036586a8e3dd8c55dfa639",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_a_start.json",
+      "sha256": "3a1c69dc4e3d8cad8f9f65fd41a48316dc70a96cd8201e00133e4352c087f884",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_b_remaining.json",
+      "sha256": "ff233b3ee1409cd5fd439a024fb77c50b43b025f977cbaff8b9d8b7633c6a3ec",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_PRICE_ASSOCIATION"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_b_start.json",
+      "sha256": "ad89f6dbbe593b52b6c2a27a38fcc7d5e289056f522222f34a88e78a83b686b7",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_c_remaining.json",
+      "sha256": "9ee4eecb9a394fd6a359df51d355cc7f999ca92820f3c0ecd04e49ddac80265c",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_c_start.json",
+      "sha256": "3344f63a2c898ba6d2fdb383ec7aa55d4882e0549b1b40bda32b651b58cb0b56",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_listings.json",
+      "sha256": "ac1f198b68fef069a070b8eedf718a41d4e851316359d9e1637791a2106f6620",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_s_remaining.json",
+      "sha256": "50752a405ca434c347bd1d70b5ae183ee304e50d02f4916f4e2dbd201fd45107",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_aug_s_remaining_v2.json",
+      "sha256": "7cd7380006ece7642872f62ad95fdadf440f2d18313cddb77e4f961ffd6f4c61",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_condition_s.json",
+      "sha256": "5becbf8958850ffe820e448f43e54c2e360444d85992d752f648ccb111e31136",
+      "passed": false,
+      "exit_status": 1,
+      "error": ""
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_condition_s_v2.json",
+      "sha256": "58f06779dc85086ae682931e2773801a95b9e851a6f9936a88878561b6c56f1a",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_current_page.json",
+      "sha256": "e9879063adb862a47fec17dfbf9b42078fa8cfa7805a8c28feea32ffefe0b31c",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_first_add.json",
+      "sha256": "f345329b4c39ecba0f0537f821f9216c0cf5b23adb2fbbe0d8af5a682a31a4ce",
+      "passed": false,
+      "exit_status": 1,
+      "error": "BATCH_STEP_FAILED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_first_product.json",
+      "sha256": "c4f13844d6febb40fc08e69f3b2827d464495411bbcd8d8b4ba494cd8e5a23d8",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_first_product_v2.json",
+      "sha256": "857f6e37afb40efecf1ccf77eed42454d74e0f310c0a3d6403122abc10abca23",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_LABEL_NOT_UNIQUE_OR_MISSING"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_home_season_menu.json",
+      "sha256": "4b2ff59b3ccf84a6d788bac855aac14a548db35813fd0e9cce38894245c18cf9",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_initial_season_menu.json",
+      "sha256": "c5ffceacc96b08ec412dbf2f146aaf301d31e6cb4ff91ecd21f2c50336049f1f",
+      "passed": false,
+      "exit_status": 1,
+      "error": "BATCH_STEP_FAILED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_initial_season_menu_v2.json",
+      "sha256": "962a9b7e008ca966d5081f8821f29375e3639a4da6f595c16d9a1163a35f7e34",
+      "passed": false,
+      "exit_status": 1,
+      "error": "BATCH_STEP_FAILED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_listing_filter.json",
+      "sha256": "c001eb23b1579fbb8304aab33543db6dc6870a622793bab4ad08f2037f8929c5",
+      "passed": false,
+      "exit_status": 1,
+      "error": "BATCH_STEP_FAILED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_listing_filter_v2.json",
+      "sha256": "79ffaf871368059039934b673e066536a0a37ed10a7b1f988be4aee0753cc67a",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_remaining.json",
+      "sha256": "d3e229962c5a8876ba9ddac3229a531272f31265657507453fca069242cb78e8",
+      "passed": false,
+      "exit_status": 1,
+      "error": "Command '['C:\\\\Users\\\\Administrator\\\\Desktop\\\\price\\\\dist\\\\RelinkStudio\\\\RelinkStudio.exe', '--live-capture-check', '--focus-policy', 'caller-owned', '--return-pid', '271768', '--target-pid', '291124', '--target-hwnd', '35525384', '--return-hwnd', '31592856', '--frames', '1', '--ocr', '--expected-page', 'skin_listings', '--preview-stdout', '--collection-observation', '--collection-card-index', '4']' timed out after 2.905999999959022 seconds"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_resume.json",
+      "sha256": "8364b047cd89502cfdfe9f52fd4d2a042b0548447a100881bca1fc8270d73152",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_resume_v2.json",
+      "sha256": "4dad658bb298ce270f32e7973b97746a7451cec895527fa41884a75de25bce29",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_resume_v3.json",
+      "sha256": "7f297e72841c60659b5fa475896cae165717dbf2a149cdefaa3462c0794a6581",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_start.json",
+      "sha256": "eba272ab7606aefccdaada146d6b2b6a54ca21f786fe6a4cc395bcaa5cff8576",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_TITLE_NOT_CONFIRMED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_p90_s_visual_navigation.json",
+      "sha256": "a218a42fcc1531ccc0d6c88489a81836c49be00221b171cbcc0fa3471d9052f6",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_reconcile_b.json",
+      "sha256": "1523d3388298ad70a00b381fefb42da2b41305d78e2ce4abb2e367167793defe",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_reconcile_first.json",
+      "sha256": "c3ac53c14409db6f1f2ad841bdc37a9a689e419017b55aa1d8e94dd2fd1cf275",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_reconcile_p90_a.json",
+      "sha256": "62c7b36546f29f47d4bc5cfbc5b5d9cbf627d6976f81b742a987581d557e45c7",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6\\live_1.json",
+      "sha256": "48776bd2c7b7d843260eb9d5dfae286083e5e4f05ae9e1ecff255dbe8b46adad",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6\\live_2.json",
+      "sha256": "1cb38b03d2b0b680f9d3621b92fdabe7ba054711124f6bf61f45ae8253f55c70",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6\\live_3.json",
+      "sha256": "c0b6117e7e27a942337a0659183d9a4ca33a5cc603b7e8ff871758e4be31820b",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_WEAR_ASSOCIATION"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v2\\live_1.json",
+      "sha256": "d15347ac125ebcbc0bc65ce534563bcb14c8f679fa2a2a04d0be48378a22c6cb",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_WEAR_ASSOCIATION"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v3\\live_1.json",
+      "sha256": "ab04fa6bfe3a51112f4759175734583f100ea9840fcd97da02e96b413db4a93f",
+      "passed": false,
+      "exit_status": 1,
+      "error": "BATCH_STEP_FAILED"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v4\\live_1.json",
+      "sha256": "1597df07346164afd2d2531fba1e0667bf0284f336422db62a4b7fac9764f238",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v4\\live_2.json",
+      "sha256": "b9d6f5dae5fc2880ccdd290d6860efa87ecd4222112a9bceb2ad8b8414d047b8",
+      "passed": false,
+      "exit_status": 1,
+      "error": "COLLECTION_CARD_CONDITION"
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v5\\live_1.json",
+      "sha256": "a6f06e2429fbcb039f6d6cf94cd2812e92bba31ed1b724f13622ca82cd33a3f8",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v5\\live_2.json",
+      "sha256": "9fa2081281fee5536d1f685453621849279572388775421d682cbd0f204ee8e2",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v5\\live_3.json",
+      "sha256": "4cef5c49275ecc241d780d8b4ed3b207bfeca62dc6f65a8e62ad247eed105693",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v5\\live_4.json",
+      "sha256": "1ad24b9207d82c69be2294c429509feb91167c474300bad95da32e7c1e11a932",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    },
+    {
+      "path": "artifacts\\m2_savedvalue_collection\\live_series_s6_v5\\live_5.json",
+      "sha256": "17a4a278c4def1295661f62f3a503f0afbbe291ed6d373d7d60863833d80af90",
+      "passed": true,
+      "exit_status": 0,
+      "error": null
+    }
+  ],
+  "no_game_image_files_written": true,
+  "game_mutations_rolled_back": false,
+  "release_rollback_is_separate_from_game_state": true
+}

@@ -18,6 +18,8 @@ TX = ROOT / 'artifacts/m2_lobby_calibration'
 u = c.WinDLL('user32', use_last_error=True)
 k = c.WinDLL('kernel32', use_last_error=True)
 u.GetForegroundWindow.restype = w.HWND
+u.IsIconic.argtypes = [w.HWND]
+u.ShowWindowAsync.argtypes = [w.HWND,c.c_int]
 u.GetWindowThreadProcessId.argtypes = [w.HWND, c.POINTER(w.DWORD)]
 u.GetWindowThreadProcessId.restype = w.DWORD
 u.SetForegroundWindow.argtypes = [w.HWND]
@@ -53,6 +55,8 @@ def activate(hwnd, pid):
     actual = w.DWORD()
     destination = u.GetWindowThreadProcessId(hwnd, c.byref(actual))
     assert actual.value == pid and destination
+    if u.IsIconic(hwnd):
+        u.ShowWindowAsync(hwnd,9)
     message = w.MSG(); u.PeekMessageW(c.byref(message), None, 0x400, 0x400, 0)
     current = k.GetCurrentThreadId()
     foreground = u.GetWindowThreadProcessId(u.GetForegroundWindow(), None)

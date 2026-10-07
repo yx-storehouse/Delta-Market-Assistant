@@ -1,0 +1,13 @@
+{
+ "name":"Select S condition for first active savedValue rule and read the selected listing",
+ "timeout_seconds":30,
+ "steps":[
+  {"kind":"capture","collection_observation":true},
+  {"kind":"click","expected_before":"skin_listings","skip_if_overlay":"listing_filter","point":[300,263],"viewport":[2560,1440]},
+  {"kind":"capture","collection_observation":true},
+  {"kind":"click","expected_before":"skin_listings","expected_overlay":"listing_filter","point":[2187,464],"viewport":[2560,1440]},
+  {"kind":"capture","collection_observation":true},
+  {"kind":"click","expected_before":"skin_listings","expected_overlay":"listing_filter","point":[2340,1355],"viewport":[2560,1440]},
+  {"kind":"capture","expected_page":"skin_listings","collection_observation":true,"preview":true}
+ ]
+}

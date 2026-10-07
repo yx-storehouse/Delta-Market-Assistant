@@ -7,6 +7,7 @@
 #include "ledger/storage_self_test.h"
 #include "diagnostics/live_capture_check.h"
 #include "diagnostics/startup_observer_self_test.h"
+#include "diagnostics/savedvalue_preview.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -22,14 +23,16 @@
 #include <cstdio>
 
 int main(int argc, char** argv) {
-    bool startupCheck = false, liveCheck = false;
+    bool startupCheck = false, liveCheck = false, savedValueCheck = false;
     for (int i = 1; i < argc; ++i) {
         startupCheck |= QByteArray(argv[i]) == "--startup-observer-self-test";
         liveCheck |= QByteArray(argv[i]) == "--live-capture-check";
+        savedValueCheck |= QByteArray(argv[i]) == "--savedvalue-preview" || QByteArray(argv[i]).startsWith("--savedvalue-preview=");
     }
-    if (startupCheck && liveCheck) {
+    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)>1) {
         std::fprintf(stderr, "E_DIAGNOSTIC_MODE_CONFLICT\n"); return 2;
     }
+    if (savedValueCheck) return relink::diagnostics::runSavedValuePreview(argc,argv);
     if (startupCheck) {
         QCoreApplication app(argc, argv);
         return relink::diagnostics::runStartupObserverSelfTest(QStringLiteral(":/fixtures/startup_pages.json"));

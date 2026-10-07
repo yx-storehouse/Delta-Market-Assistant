@@ -1,0 +1,9 @@
+{
+ "name":"Read first target's sale page and inspect its condition filter",
+ "timeout_seconds":25,
+ "steps":[
+  {"kind":"capture","expected_page":"skin_listings","collection_observation":true},
+  {"kind":"click","expected_before":"skin_listings","point":[300,263],"viewport":[2560,1440],"require_label":{"region":"product_title","label":"AUG突击步枪-天命"}},
+  {"kind":"capture","collection_observation":true,"preview":true}
+ ]
+}

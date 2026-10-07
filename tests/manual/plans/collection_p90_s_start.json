@@ -1,0 +1,138 @@
+{
+  "name": "Collection open: source row 4",
+  "timeout_seconds": 30,
+  "steps": [
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_page": "skin_home",
+      "ui_regions": true
+    },
+    {
+      "kind": "click_label",
+      "expected_before": "skin_home",
+      "region": "catalog_names",
+      "label": "P90冲锋枪-天命",
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_page": "skin_home",
+      "ui_regions": true
+    },
+    {
+      "kind": "click",
+      "expected_before": "skin_home",
+      "point": [
+        2240,
+        1180
+      ],
+      "require_label": {
+        "region": "product_title",
+        "label": "P90冲锋枪-天命"
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_page": "skin_listings"
+    },
+    {
+      "kind": "click",
+      "expected_before": "skin_listings",
+      "point": [
+        300,
+        263
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "require_label": {
+        "region": "product_title",
+        "label": "P90冲锋枪-天命"
+      }
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true
+    },
+    {
+      "kind": "click",
+      "expected_before": "skin_listings",
+      "point": [
+        2187,
+        464
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "expected_overlay": "listing_filter",
+      "skip_if_condition_state": [
+        "S",
+        "checked"
+      ]
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_condition_filter": {
+        "all": "unchecked",
+        "S": "checked",
+        "A": "unchecked",
+        "B": "unchecked",
+        "C": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "skin_listings",
+      "point": [
+        2340,
+        1355
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "expected_overlay": "listing_filter"
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_page": "skin_listings",
+      "card_index": 0,
+      "preview": true
+    },
+    {
+      "kind": "collect_selected",
+      "expected_before": "skin_listings",
+      "snapshot": "artifacts/m2_savedvalue_collection/input/task_snapshot.json",
+      "row_index": 4,
+      "viewport": [
+        2560,
+        1440
+      ],
+      "skip_ineligible": true,
+      "skip_favorited": true
+    },
+    {
+      "kind": "capture",
+      "collection_observation": true,
+      "expected_page": "skin_listings",
+      "card_index": 0,
+      "expect_collection_added": true,
+      "receipt_if_pending": true,
+      "preview": true
+    }
+  ]
+}

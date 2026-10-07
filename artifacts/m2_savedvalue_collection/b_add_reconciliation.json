@@ -1,0 +1,30 @@
+{
+  "status": "confirmed_reconciliation",
+  "candidate": {
+    "eligible": true,
+    "product": "AUG突击步枪-天命",
+    "condition": "成色B",
+    "price": "230",
+    "wear": "1.997014",
+    "row_index": 2,
+    "source_frame_id": "dxgi:64fcb044-1ea0-4ab8-8a5a-b19440399c2f",
+    "source_frame_sha256": "cefcfe351ad2e4f79b63c7cc03cd0de9626709d501aea0c47d41979aa5df6efc",
+    "purchase_phase_enabled": false
+  },
+  "observation": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m2_savedvalue_collection\\live_reconcile_b.json",
+  "gold_indicator": {
+    "border_means": [
+      174.0958333333334,
+      131.73055555555553,
+      198.69166666666672,
+      175.57666666666648
+    ],
+    "favorite_bright_fraction": 0,
+    "favorite_warm_fraction": 0.13398692810457516,
+    "index": 2,
+    "selected": true
+  },
+  "original_failed_batch_unchanged": true,
+  "input_actions": 0,
+  "journal_key": "99e19880284f404608b1e09ef7fff139524a1146be5faef08183cba27baba33d"
+}

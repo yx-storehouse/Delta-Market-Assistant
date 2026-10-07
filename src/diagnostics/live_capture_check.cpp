@@ -52,6 +52,8 @@ int runLiveCaptureCheck(int argc, char** argv) {
     parser.addOption({"ocr-market-anchors", "With --ocr: emit bounded allowlisted market labels, not full OCR or images."});
     parser.addOption({"ocr-ui-regions", "With --ocr: reread three UI-label regions at 2x from the same memory frame; no extra capture."});
     parser.addOption({"catalog-filter-state", "With --ocr: read season and checkbox states from the same frame; no input or image files."});
+    parser.addOption({"collection-observation", "With --ocr: bounded catalogue names/title/season labels from this frame only."});
+    parser.addOption({"collection-card-index", "With collection observation: visible card 0..5, row-major.","index","0"});
     parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
     parser.process(app);
     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
@@ -59,6 +61,8 @@ int runLiveCaptureCheck(int argc, char** argv) {
     const quintptr returnHwnd = positive(parser.value("return-hwnd"), std::numeric_limits<quintptr>::max());
     const quint32 returnPid = positive(parser.value("return-pid"), std::numeric_limits<quint32>::max());
     const int frameCount = int(positive(parser.value("frames"), 5));
+    bool cardIndexOk=false;const int cardIndex=parser.value("collection-card-index").toInt(&cardIndexOk);
+    const int cardDx=(cardIndex%2)*877,cardDy=(cardIndex/2)*275;
     QJsonObject result{{"diagnostic", "live_capture"}, {"capture_passed", false}, {"frames", QJsonArray{}},
         {"recognition_performed", false}, {"image_file_writes", 0}, {"game_input_sent", false},
         {"ide_foreground_restored", false}, {"game_in_background", false}};
@@ -76,8 +80,9 @@ int runLiveCaptureCheck(int argc, char** argv) {
         result["error"] = "E_DIAGNOSTIC_EXPECTED_PAGE"; return emitResult(result, 2);
     }
     if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
-    if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
-        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions") || parser.isSet("catalog-filter-state")) && !parser.isSet("ocr"))) {
+    if (!cardIndexOk || cardIndex<0 || cardIndex>5 || (parser.isSet("collection-card-index") && !parser.isSet("collection-observation"))
+        || !frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
+        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions") || parser.isSet("catalog-filter-state") || parser.isSet("collection-observation")) && !parser.isSet("ocr"))) {
         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
     }
     QString error;
@@ -158,6 +163,30 @@ int runLiveCaptureCheck(int argc, char** argv) {
     if (error.isEmpty() && parser.isSet("ocr")) {
         WindowsOcrRecognizer recognizer(QCoreApplication::applicationDirPath() + QStringLiteral("/vision/windows_ocr_worker.ps1"));
         auto recognized = recognizer.recognizeFrame(ocrFrame);
+        if(recognized.ok && parser.isSet("collection-observation") && ocrFrame.width==2560 && ocrFrame.height==1440){
+            auto initial=recognized.observation;initial["coverage"]="full_client";
+            const auto checks=classifySkinPage(initial).anchorChecks;
+            if(checks["listing.sale"].toBool() || (checks["listing.condition"].toBool() && checks["listing.similar"].toBool())){
+                QJsonArray metadata;
+                QList<QRect> labelRegions;
+                if(!checks["listing.sale"].toBool())labelRegions.append(QRect(170,64,300,96));
+                if(!checks["listing.default_sort"].toBool())labelRegions.append(QRect(500,232,1250,67));
+                if(!checks["listing.page_number"].toBool() && !checks["listing.similar"].toBool())labelRegions.append(QRect(895,1226,190,66));
+                for(const auto& region:labelRegions){
+                    const auto refined=recognizer.recognizeRegion(ocrFrame,region,2,true);
+                    metadata.append(QJsonObject{{"ok",refined.ok},{"error",refined.error}});
+                    if(!refined.ok)continue;
+                    QJsonArray merged;
+                    for(const auto& v:recognized.observation["words"].toArray()){
+                        const auto w=v.toObject();const QPointF center(w["x"].toDouble()+w["width"].toDouble()/2,w["y"].toDouble()+w["height"].toDouble()/2);
+                        if(!QRectF(region).contains(center))merged.append(v);
+                    }
+                    for(const auto& w:refined.observation["words"].toArray())merged.append(w);
+                    recognized.observation["words"]=merged;
+                }
+                result["collection_page_refinements"]=metadata;
+            }
+        }
         if(recognized.ok && parser.isSet("ocr-ui-regions")) {
             QJsonArray refinements;
             const QRect regions[]={QRect(int(ocrFrame.width*.055),int(ocrFrame.height*.035),int(ocrFrame.width*.23),int(ocrFrame.height*.085)),
@@ -198,6 +227,80 @@ int runLiveCaptureCheck(int argc, char** argv) {
             pageObservation["coverage"] = "full_client";
             const auto classified = classifySkinPage(pageObservation);
             result["startup_page"] = classified.toJson();
+            if(parser.isSet("collection-observation")){
+                QJsonArray regions;
+                QList<QPair<QString,QRect>> requested;
+                if(ocrFrame.width==2560 && ocrFrame.height==1440 && ocrFrame.dpiX==144 && ocrFrame.dpiY==144){
+                    if(classified.page==SkinPage::CatalogFilter)requested.append({"season_options",QRect(746,474,370,420)});
+                    if(classified.page==SkinPage::SkinHome){
+                        requested.append({"catalog_names",QRect(110,320,468,1014)});
+                        requested.append({"product_title",QRect(625,235,1375,72)});
+                        requested.append({"product_title_latin",QRect(675,238,350,64)});
+                    }
+                    if(classified.page==SkinPage::SkinListings || classified.page==SkinPage::WatchlistListings){
+                        if(classified.overlay==PageOverlay::ListingFilter)
+                            requested.append({"condition_filter",QRect(1830,100,675,560)});
+                        else {
+                            requested.append({"listing_controls",QRect(110,230,1760,70)});
+                            requested.append({"product_title",QRect(1915,238,530,54)});
+                            requested.append({"selected_detail",QRect(1920,640,505,66)});
+                            requested.append({"selected_detail_precise",QRect(2206,650,164,52)});
+                            requested.append({"first_card_fields",QRect(120+cardDx,525+cardDy,865,45)});
+                        }
+                    }
+                }
+                for(const auto& request:requested){
+                    const bool latinTitle=request.first=="product_title_latin";
+                    const bool preciseDetail=request.first=="selected_detail_precise";
+                    WindowsOcrRecognizer latinRecognizer(QCoreApplication::applicationDirPath()+QStringLiteral("/vision/windows_ocr_worker.ps1"),QStringLiteral("en-US"));
+                    const auto reply=(latinTitle || preciseDetail)?latinRecognizer.recognizeRegion(ocrFrame,request.second,preciseDetail?3:2,true)
+                        :recognizer.recognizeRegion(ocrFrame,request.second,2,true);
+                    auto words=reply.observation["words"].toArray();
+                    bool splitFields=false,splitOk=true;
+                    if(request.first=="first_card_fields" && reply.ok && words.isEmpty()){
+                        // Widely separated labels on a bright lower-row card
+                        // may yield no line in the whole strip. Reread the two
+                        // physical fields separately from the very same frame.
+                        splitFields=true;
+                        for(const auto& region:QList<QRect>{QRect(120+cardDx,525+cardDy,100,45),QRect(850+cardDx,525+cardDy,135,45)}){
+                            const auto field=recognizer.recognizeRegion(ocrFrame,region,2,true);
+                            splitOk=splitOk && field.ok;
+                            for(const auto& word:field.observation["words"].toArray())words.append(word);
+                        }
+                    }
+                    const bool truncated=words.size()>256;
+                    while(words.size()>256)words.removeLast();
+                    regions.append(QJsonObject{{"kind",request.first},{"ok",reply.ok && splitOk},{"error",reply.error},{"truncated",truncated},{"words",words},{"split_fields_refinement",splitFields}});
+                }
+                result["collection_observation"]=QJsonObject{{"page",toString(classified.page)},{"regions",regions},
+                    {"frame_id",ocrFrame.frameId},{"frame_sha256",QString::fromLatin1(QCryptographicHash::hash(ocrFrame.pixels,QCryptographicHash::Sha256).toHex())},
+                    {"coverage","field_projection"},{"same_frame",true},{"image_file_writes",0}};
+                if(classified.page==SkinPage::SkinListings && classified.overlay==PageOverlay::None
+                    && ocrFrame.width==2560 && ocrFrame.height==1440 && ocrFrame.strideBytes==2560*4){
+                    const auto mean=[&](const QRect& box){double sum=0;
+                        for(int y=box.top();y<=box.bottom();++y)for(int x=box.left();x<=box.right();++x){
+                            const auto* p=reinterpret_cast<const unsigned char*>(ocrFrame.pixels.constData()+qint64(y)*ocrFrame.strideBytes+x*4);
+                            sum+=(int(p[0])+int(p[1])+int(p[2]))/3.0;
+                        }return sum/(box.width()*box.height());};
+                    QJsonArray borders;
+                    for(const auto& box:QList<QRect>{QRect(400+cardDx,303+cardDy,400,3),QRect(120+cardDx,350+cardDy,3,160),QRect(982+cardDx,350+cardDy,3,160),QRect(400+cardDx,566+cardDy,400,3)})borders.append(mean(box));
+                    bool selected=true;for(const auto& v:borders)selected=selected && v.toDouble()>90;
+                    int warm=0,bright=0,total=0;
+                    for(int y=303;y<337;++y)for(int x=2320;x<2356;++x){const auto* p=reinterpret_cast<const unsigned char*>(ocrFrame.pixels.constData()+qint64(y)*ocrFrame.strideBytes+x*4);
+                        ++total;warm+=int(p[2])>110 && int(p[2])-int(p[1])>15 && int(p[1])-int(p[0])>15;bright+=p[0]>140 && p[1]>140 && p[2]>140;}
+                    result["collection_selected_card"]=QJsonObject{{"index",cardIndex},{"selected",selected},{"border_means",borders},
+                        {"favorite_warm_fraction",double(warm)/total},{"favorite_bright_fraction",double(bright)/total}};
+                }
+                if(classified.overlay==PageOverlay::ListingFilter && ocrFrame.width==2560 && ocrFrame.height==1440){
+                    QJsonObject states;
+                    const QStringList names{"all","S","A","B","C"};
+                    const QPoint starts[]={{1843,446},{2169,446},{1843,521},{2169,521},{1843,595}};
+                    for(int i=0;i<names.size();++i){const auto measured=measureFilterCheckbox(ocrFrame,QRect(starts[i],QSize(36,36)),names[i]);
+                        states[names[i]]=QJsonObject{{"state",toString(measured.state)},{"measurement",measured.measurement}};
+                    }
+                    result["collection_condition_filter"]=states;
+                }
+            }
             if (parser.isSet("catalog-filter-state")) {
                 if (classified.page == SkinPage::CatalogFilter && classified.overlay == PageOverlay::None
                     && ocrFrame.width == 2560 && ocrFrame.height == 1440 && ocrFrame.dpiX == 144 && ocrFrame.dpiY == 144) {

@@ -1,5 +1,7 @@
 # 下一轮开发交接：M2 真实画面采集与识别边界
 
+> **当前入口（取代下方旧节点）：** `implementation/runtime/savedvalue_collection_m2.md`。用户任务文件已经解析为 50 行/21 条启用规则，本轮实际确认新增 25 单关注。当前 P90 天命成色 B 第 1 页的前六张完整卡片均已收藏，下一张位于底部半行；`live_series_s6_v5` 因 `COLLECTION_UNSCANNED_SCROLL_REGION` 停下。下一步补滚动后卡片与详情的同帧关联，从原始源行 6 接续，保留所有已收藏条目，不从头重复添加。详细状态以 `artifacts/m2_savedvalue_collection/current_checkpoint.json`、`session_audit.json`、`journal/` 为准。IDE 已恢复前台；用户只接受真实阻塞的简短说明，不要输出例行产物/测试汇报。
+
 > **当前入口：** `implementation/runtime/catalog_filter_state_m2.md`。S10–S14状态读取及原顺序差异计划已实现；六框选中/未选与品阶多选实测，当前仍停筛选页且临时选项已恢复，IDE在前台。27组CTest通过。用户要求不输出例行进度/总结，只在真实阻塞时短问。本机仅有五条禁用演示任务；按真实任务继续 S15/S17 前需指定目标皮肤、赛季与成色，不把演示值或历史配置当作当前执行目标。页观察1秒时效与真实异步接入仍是后续边界，不能宣称完整运行接通。
 
 > **最新入口：** `implementation/runtime/market_page_calibration_m2.md`。曼德尔、典藏、空关注和总筛选已经实测；游戏当前在总筛选页。保持整段前台批次，自行导航，不让用户逐页代点。下一步读取S10–S14的赛季值、拥有/未拥有及品阶勾选状态，再做商品字段关联。不要重做坐标/局部OCR，不把人工测试脚本冒充完整自动执行器；多ROI延迟可能超出原StartupObserver 1秒门槛，接异步运行时前需单独明确页类时效契约。

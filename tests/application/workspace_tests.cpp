@@ -652,7 +652,9 @@ void testUncommittedReceiptProjection(const QString& root)
     check(confirmedListings == 1,QStringLiteral("legitimate_committed_receipt_price_retained"));
     const QString csv = QDir(root).filePath(QStringLiteral("receipt-records.csv"));
     if (!good(c.exportRecordsCsv(csv), c, QStringLiteral("receipt_projection_csv"))) return;
-    check(!bytes(csv).contains("9999") && bytes(csv).contains("\"148\""),
+    // UUIDs may legitimately contain the digit sequence 9999. Match a whole
+    // quoted CSV cell, not a substring of unrelated event/run identifiers.
+    check(!bytes(csv).contains(",\"9999\",") && bytes(csv).contains("\"148\""),
           QStringLiteral("csv_exposes_only_ledger_confirmed_price"));
 }
 

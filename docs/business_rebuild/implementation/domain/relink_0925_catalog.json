@@ -1,0 +1,1065 @@
+{
+  "schema": "relink-savedvalue-dictionary-v1",
+  "source_kind": "existing_dump_public_dropdown_data",
+  "source_filename": "Relink枪皮助手0925(内部版).DMP",
+  "source_size": 1317852196,
+  "source_span_offset": 17243652,
+  "source_span_bytes": 30894,
+  "source_span_sha256": "6b9a859568f078cd4088bc94dc60fb4ce5f9ccfbc18f3f63c693a967799085ba",
+  "specimen_executed": false,
+  "grade_inferred_from_color": false,
+  "products": {
+    "10100": {
+      "display_name": "S1|M4A1 突击步枪 - 极品",
+      "name": "M4A1 突击步枪 - 极品",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10101": {
+      "display_name": "S1|M4A1 突击步枪 - 优品",
+      "name": "M4A1 突击步枪 - 优品",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10102": {
+      "display_name": "S1|Ash-12 战斗步枪 - 飓风行动",
+      "name": "Ash-12 战斗步枪 - 飓风行动",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10103": {
+      "display_name": "S1|SMG-45 冲锋枪 - 飓风行动",
+      "name": "SMG-45 冲锋枪 - 飓风行动",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10104": {
+      "display_name": "S1|M870 霰弹枪 - 飓风行动",
+      "name": "M870 霰弹枪 - 飓风行动",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10105": {
+      "display_name": "S1|M4A1 突击步枪 - 银灰金属",
+      "name": "M4A1 突击步枪 - 银灰金属",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10106": {
+      "display_name": "S1|AK-12 突击步枪 - 阿萨拉卫队",
+      "name": "AK-12 突击步枪 - 阿萨拉卫队",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10107": {
+      "display_name": "S1|AKM 突击步枪 - 阿萨拉卫队",
+      "name": "AKM 突击步枪 - 阿萨拉卫队",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10108": {
+      "display_name": "S1|Vector 冲锋枪 - 银灰金属",
+      "name": "Vector 冲锋枪 - 银灰金属",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10109": {
+      "display_name": "S1|M870 霰弹枪 - 阿萨拉卫队",
+      "name": "M870 霰弹枪 - 阿萨拉卫队",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10110": {
+      "display_name": "S1|M1014 霰弹枪 - 银灰金属",
+      "name": "M1014 霰弹枪 - 银灰金属",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10111": {
+      "display_name": "S1|M700 狙击步枪 - 阿萨拉卫队",
+      "name": "M700 狙击步枪 - 阿萨拉卫队",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10112": {
+      "display_name": "S1|G18 - 银灰金属",
+      "name": "G18 - 银灰金属",
+      "season_label": "棱镜攻势",
+      "source_span_offset": 17249766,
+      "source_group": "S1: 棱镜攻势"
+    },
+    "10200": {
+      "display_name": "S2|Vector 冲锋枪 - 美杜莎 - 极品",
+      "name": "Vector 冲锋枪 - 美杜莎 - 极品",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10201": {
+      "display_name": "S2|Vector 冲锋枪 - 美杜莎 - 优品",
+      "name": "Vector 冲锋枪 - 美杜莎 - 优品",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10202": {
+      "display_name": "S2|K416 突击步枪 - 暗鸦",
+      "name": "K416 突击步枪 - 暗鸦",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10203": {
+      "display_name": "S2|P90 冲锋枪 - 暗鸦",
+      "name": "P90 冲锋枪 - 暗鸦",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10204": {
+      "display_name": "S2|M1014 霰弹枪 - 暗鸦",
+      "name": "M1014 霰弹枪 - 暗鸦",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10205": {
+      "display_name": "S2|AK-12 突击步枪 - 青纹",
+      "name": "AK-12 突击步枪 - 青纹",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10206": {
+      "display_name": "S2|AKM 突击步枪 - 青纹",
+      "name": "AKM 突击步枪 - 青纹",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10207": {
+      "display_name": "S2|AUG 突击步枪 - 花岗岩",
+      "name": "AUG 突击步枪 - 花岗岩",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10208": {
+      "display_name": "S2|QBZ95-1 突击步枪 - 花岗岩",
+      "name": "QBZ95-1 突击步枪 - 花岗岩",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10209": {
+      "display_name": "S2|Vector 冲锋枪 - 花岗岩",
+      "name": "Vector 冲锋枪 - 花岗岩",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10210": {
+      "display_name": "S2|M1014 霰弹枪 - 青纹",
+      "name": "M1014 霰弹枪 - 青纹",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10211": {
+      "display_name": "S2|M249 轻机枪 - 青纹",
+      "name": "M249 轻机枪 - 青纹",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10212": {
+      "display_name": "S2|M14 射手步枪 - 花岗岩",
+      "name": "M14 射手步枪 - 花岗岩",
+      "season_label": "美杜莎",
+      "source_span_offset": 17251818,
+      "source_group": "S2: 美杜莎"
+    },
+    "10300": {
+      "display_name": "S3|SCAR-H 战斗步枪 - 电玩高手 - 极品",
+      "name": "SCAR-H 战斗步枪 - 电玩高手 - 极品",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10301": {
+      "display_name": "S3|SCAR-H 战斗步枪 - 电玩高手 - 优品",
+      "name": "SCAR-H 战斗步枪 - 电玩高手 - 优品",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10302": {
+      "display_name": "S3|K416 突击步枪 - 潜袭者",
+      "name": "K416 突击步枪 - 潜袭者",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10303": {
+      "display_name": "S3|Vector 冲锋枪 - 潜袭者",
+      "name": "Vector 冲锋枪 - 潜袭者",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10304": {
+      "display_name": "S3|M1014 霰弹枪 - 潜袭者",
+      "name": "M1014 霰弹枪 - 潜袭者",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10305": {
+      "display_name": "S3|AS Val 突击步枪 - 星之彩",
+      "name": "AS Val 突击步枪 - 星之彩",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10306": {
+      "display_name": "S3|PTR-32 突击步枪 - 黑潮",
+      "name": "PTR-32 突击步枪 - 黑潮",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10307": {
+      "display_name": "S3|K416 突击步枪 - 星之彩",
+      "name": "K416 突击步枪 - 星之彩",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10308": {
+      "display_name": "S3|MP5 冲锋枪 - 星之彩",
+      "name": "MP5 冲锋枪 - 星之彩",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10309": {
+      "display_name": "S3|P90 冲锋枪 - 星之彩",
+      "name": "P90 冲锋枪 - 星之彩",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10310": {
+      "display_name": "S3 | 野牛冲锋枪 - 黑潮",
+      "name": "野牛冲锋枪 - 黑潮",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10311": {
+      "display_name": "S3|MP7 冲锋枪 - 黑潮",
+      "name": "MP7 冲锋枪 - 黑潮",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10312": {
+      "display_name": "S3|PKM 通用机枪 - 黑潮",
+      "name": "PKM 通用机枪 - 黑潮",
+      "season_label": "电玩高手",
+      "source_span_offset": 17253858,
+      "source_group": "S3: 电玩高手"
+    },
+    "10400": {
+      "display_name": "S4|QBZ95-1 突击步枪 - 王牌之剑 - 极品",
+      "name": "QBZ95-1 突击步枪 - 王牌之剑 - 极品",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10401": {
+      "display_name": "S4|QBZ95-1 突击步枪 - 王牌之剑 - 优品",
+      "name": "QBZ95-1 突击步枪 - 王牌之剑 - 优品",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10402": {
+      "display_name": "S4|K416 突击步枪 - 命运 - 极品",
+      "name": "K416 突击步枪 - 命运 - 极品",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10403": {
+      "display_name": "S4|K416 突击步枪 - 命运 - 优品",
+      "name": "K416 突击步枪 - 命运 - 优品",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10404": {
+      "display_name": "S4|AK-12 突击步枪 - 原型机",
+      "name": "AK-12 突击步枪 - 原型机",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10405": {
+      "display_name": "S4|MP7 冲锋枪 - 原型机",
+      "name": "MP7 冲锋枪 - 原型机",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10406": {
+      "display_name": "S4|PSG-1 射手步枪 - 原型机",
+      "name": "PSG-1 射手步枪 - 原型机",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10407": {
+      "display_name": "S4|M7 战斗步枪 - 天际线",
+      "name": "M7 战斗步枪 - 天际线",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10408": {
+      "display_name": "S4|SG552 突击步枪 - 天际线",
+      "name": "SG552 突击步枪 - 天际线",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10409": {
+      "display_name": "S4|AK-12 突击步枪 - 极地勘察队",
+      "name": "AK-12 突击步枪 - 极地勘察队",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10410": {
+      "display_name": "S4|PKM 通用机枪 - 极地勘察队",
+      "name": "PKM 通用机枪 - 极地勘察队",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10411": {
+      "display_name": "S4|M14 射手步枪 - 天际线",
+      "name": "M14 射手步枪 - 天际线",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10412": {
+      "display_name": "S4|PSG-1 射手步枪 - 极地勘察队",
+      "name": "PSG-1 射手步枪 - 极地勘察队",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10413": {
+      "display_name": "S4|M700 狙击步枪 - 极地勘察队",
+      "name": "M700 狙击步枪 - 极地勘察队",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10414": {
+      "display_name": "S4 | 沙漠之鹰 - 天际线",
+      "name": "沙漠之鹰 - 天际线",
+      "season_label": "命运王牌",
+      "source_span_offset": 17255908,
+      "source_group": "S4: 命运王牌"
+    },
+    "10500": {
+      "display_name": "S5|AUG 突击步枪 - 气象感应 - 极品",
+      "name": "AUG 突击步枪 - 气象感应 - 极品",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10501": {
+      "display_name": "S5|AUG 突击步枪 - 气象感应 - 优品",
+      "name": "AUG 突击步枪 - 气象感应 - 优品",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10502": {
+      "display_name": "S5 | 腾龙突击步枪 - 气象感应 - 极品",
+      "name": "腾龙突击步枪 - 气象感应 - 极品",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10503": {
+      "display_name": "S5 | 腾龙突击步枪 - 气象感应 - 优品",
+      "name": "腾龙突击步枪 - 气象感应 - 优品",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10504": {
+      "display_name": "S5|K437 突击步枪 - 私人定制",
+      "name": "K437 突击步枪 - 私人定制",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10505": {
+      "display_name": "S5 | 勇士冲锋枪 - 私人定制",
+      "name": "勇士冲锋枪 - 私人定制",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10506": {
+      "display_name": "S5|AWM 狙击步枪 - 私人定制",
+      "name": "AWM 狙击步枪 - 私人定制",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10507": {
+      "display_name": "S5|QBZ95-1 突击步枪 - 海岸线",
+      "name": "QBZ95-1 突击步枪 - 海岸线",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10508": {
+      "display_name": "S5|QBZ95-1 突击步枪 - 精湛工艺",
+      "name": "QBZ95-1 突击步枪 - 精湛工艺",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10509": {
+      "display_name": "S5|S12K 霰弹枪 - 海岸线",
+      "name": "S12K 霰弹枪 - 海岸线",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10510": {
+      "display_name": "S5|PKM 通用机枪 - 精湛工艺",
+      "name": "PKM 通用机枪 - 精湛工艺",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10511": {
+      "display_name": "S5|Mini-14 射手步枪 - 精湛工艺",
+      "name": "Mini-14 射手步枪 - 精湛工艺",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10512": {
+      "display_name": "S5|SKS 射手步枪 - 精湛工艺",
+      "name": "SKS 射手步枪 - 精湛工艺",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10513": {
+      "display_name": "S5|SV-98 狙击步枪 - 海岸线",
+      "name": "SV-98 狙击步枪 - 海岸线",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10514": {
+      "display_name": "S5|R93 狙击步枪 - 精湛工艺",
+      "name": "R93 狙击步枪 - 精湛工艺",
+      "season_label": "气象感应",
+      "source_span_offset": 17258298,
+      "source_group": "S5: 气象感应"
+    },
+    "10600": {
+      "display_name": "S6|M7 战斗步枪 - 棱镜攻势 S2 - 极品",
+      "name": "M7 战斗步枪 - 棱镜攻势 S2 - 极品",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10601": {
+      "display_name": "S6|M7 战斗步枪 - 棱镜攻势 S2 - 优品",
+      "name": "M7 战斗步枪 - 棱镜攻势 S2 - 优品",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10602": {
+      "display_name": "S6|AUG 突击步枪 - 天命",
+      "name": "AUG 突击步枪 - 天命",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10603": {
+      "display_name": "S6|P90 冲锋枪 - 天命",
+      "name": "P90 冲锋枪 - 天命",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10604": {
+      "display_name": "S6|SR-25 射手步枪 - 天命",
+      "name": "SR-25 射手步枪 - 天命",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10605": {
+      "display_name": "S6|PTR-32 突击步枪 - 花岗岩",
+      "name": "PTR-32 突击步枪 - 花岗岩",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10606": {
+      "display_name": "S6|AS Val 突击步枪 - 地平线",
+      "name": "AS Val 突击步枪 - 地平线",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10607": {
+      "display_name": "S6|QCQ171 冲锋枪 - 地平线",
+      "name": "QCQ171 冲锋枪 - 地平线",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10608": {
+      "display_name": "S6|SR-3M 紧凑突击步枪 - 花岗岩",
+      "name": "SR-3M 紧凑突击步枪 - 花岗岩",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10609": {
+      "display_name": "S6|M870 霰弹枪 - 地平线",
+      "name": "M870 霰弹枪 - 地平线",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10610": {
+      "display_name": "S6|M1014 霰弹枪 - 花岗岩",
+      "name": "M1014 霰弹枪 - 花岗岩",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10611": {
+      "display_name": "S6|SV-98 狙击步枪 - 花岗岩",
+      "name": "SV-98 狙击步枪 - 花岗岩",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10612": {
+      "display_name": "S6|R93 狙击步枪 - 地平线",
+      "name": "R93 狙击步枪 - 地平线",
+      "season_label": "棱镜攻势 S2",
+      "source_span_offset": 17260690,
+      "source_group": "S6: 棱镜攻势 S2"
+    },
+    "10700": {
+      "display_name": "S7|AS Val 突击步枪 - 悬赏令 - 极品",
+      "name": "AS Val 突击步枪 - 悬赏令 - 极品",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10701": {
+      "display_name": "S7|AS Val 突击步枪 - 悬赏令 - 优品",
+      "name": "AS Val 突击步枪 - 悬赏令 - 优品",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10702": {
+      "display_name": "S7|KC17 突击步枪 - 碎冰行动",
+      "name": "KC17 突击步枪 - 碎冰行动",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10703": {
+      "display_name": "S7|Ash-12 战斗步枪 - 碎冰行动",
+      "name": "Ash-12 战斗步枪 - 碎冰行动",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10704": {
+      "display_name": "S7|PTR-32 突击步枪 - 碎冰行动",
+      "name": "PTR-32 突击步枪 - 碎冰行动",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10705": {
+      "display_name": "S7|AUG 突击步枪 - 旧梦",
+      "name": "AUG 突击步枪 - 旧梦",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10706": {
+      "display_name": "S7|K437 突击步枪 - 巨兽",
+      "name": "K437 突击步枪 - 巨兽",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10707": {
+      "display_name": "S7|SG552 突击步枪 - 巨兽",
+      "name": "SG552 突击步枪 - 巨兽",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10708": {
+      "display_name": "S7|SCAR-H 战斗步枪 - 旧梦",
+      "name": "SCAR-H 战斗步枪 - 旧梦",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10709": {
+      "display_name": "S7|SR-3M 紧凑突击步枪 - 巨兽",
+      "name": "SR-3M 紧凑突击步枪 - 巨兽",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10710": {
+      "display_name": "S7|UZI 冲锋枪 - 旧梦",
+      "name": "UZI 冲锋枪 - 旧梦",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10711": {
+      "display_name": "S7|M14 射手步枪 - 巨兽",
+      "name": "M14 射手步枪 - 巨兽",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10712": {
+      "display_name": "S7|M700 狙击步枪 - 旧梦",
+      "name": "M700 狙击步枪 - 旧梦",
+      "season_label": "悬赏令",
+      "source_span_offset": 17262762,
+      "source_group": "S7: 悬赏令"
+    },
+    "10800": {
+      "display_name": "S8|MP7 冲锋枪 - 电玩高手 S2 - 极品",
+      "name": "MP7 冲锋枪 - 电玩高手 S2 - 极品",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10801": {
+      "display_name": "S8|MP7 冲锋枪 - 电玩高手 S2 - 优品",
+      "name": "MP7 冲锋枪 - 电玩高手 S2 - 优品",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10802": {
+      "display_name": "S8|M250 通用机枪 - 电玩高手 S2 - 极品",
+      "name": "M250 通用机枪 - 电玩高手 S2 - 极品",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10803": {
+      "display_name": "S8|M250 通用机枪 - 电玩高手 S2 - 优品",
+      "name": "M250 通用机枪 - 电玩高手 S2 - 优品",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10804": {
+      "display_name": "S8 | 腾龙突击步枪 - 檀劫铳影",
+      "name": "腾龙突击步枪 - 檀劫铳影",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10805": {
+      "display_name": "S8 | 勇士冲锋枪 - 檀劫铳影",
+      "name": "勇士冲锋枪 - 檀劫铳影",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10806": {
+      "display_name": "S8|SVD 狙击步枪 - 檀劫铳影",
+      "name": "SVD 狙击步枪 - 檀劫铳影",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10807": {
+      "display_name": "S8|AS Val 突击步枪 - 休闲时光",
+      "name": "AS Val 突击步枪 - 休闲时光",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10808": {
+      "display_name": "S8|SCAR-H 战斗步枪 - 休闲时光",
+      "name": "SCAR-H 战斗步枪 - 休闲时光",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10809": {
+      "display_name": "S8|AUG 突击步枪 - 千里骏骨",
+      "name": "AUG 突击步枪 - 千里骏骨",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10810": {
+      "display_name": "S8|M4A1 突击步枪 - 千里骏骨",
+      "name": "M4A1 突击步枪 - 千里骏骨",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10811": {
+      "display_name": "S8|AKS-74U 突击步枪 - 休闲时光",
+      "name": "AKS-74U 突击步枪 - 休闲时光",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10812": {
+      "display_name": "S8 | 野牛冲锋枪 - 千里骏骨",
+      "name": "野牛冲锋枪 - 千里骏骨",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10813": {
+      "display_name": "S8|QJB201 轻机枪 - 千里骏骨",
+      "name": "QJB201 轻机枪 - 千里骏骨",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10814": {
+      "display_name": "S8|PSG-1 射手步枪 - 休闲时光",
+      "name": "PSG-1 射手步枪 - 休闲时光",
+      "season_label": "电玩高手 S2",
+      "source_span_offset": 17264824,
+      "source_group": "S8: 电玩高手 S2"
+    },
+    "10900": {
+      "display_name": "S9|KC17 突击步枪 - 造物纪元 - 极品",
+      "name": "KC17 突击步枪 - 造物纪元 - 极品",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10901": {
+      "display_name": "S9|KC17 突击步枪 - 造物纪元 - 优品",
+      "name": "KC17 突击步枪 - 造物纪元 - 优品",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10902": {
+      "display_name": "S9|KC17 突击步枪 - 益趣游戏",
+      "name": "KC17 突击步枪 - 益趣游戏",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10903": {
+      "display_name": "S9|G3 战斗步枪 - 益趣游戏",
+      "name": "G3 战斗步枪 - 益趣游戏",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10904": {
+      "display_name": "S9|725 双管霰弹枪 - 益趣游戏",
+      "name": "725 双管霰弹枪 - 益趣游戏",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10905": {
+      "display_name": "S9|G3 战斗步枪 - 星之彩",
+      "name": "G3 战斗步枪 - 星之彩",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10906": {
+      "display_name": "S9|K437 突击步枪 - 酸蚀",
+      "name": "K437 突击步枪 - 酸蚀",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10907": {
+      "display_name": "S9|AUG 突击步枪 - 星之彩",
+      "name": "AUG 突击步枪 - 星之彩",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10908": {
+      "display_name": "S9|SR-3M 紧凑突击步枪 - 星之彩",
+      "name": "SR-3M 紧凑突击步枪 - 星之彩",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10909": {
+      "display_name": "S9|P90 冲锋枪 - 酸蚀",
+      "name": "P90 冲锋枪 - 酸蚀",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10910": {
+      "display_name": "S9|M870 霰弹枪 - 酸蚀",
+      "name": "M870 霰弹枪 - 酸蚀",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10911": {
+      "display_name": "S9|SVD 狙击步枪 - 酸蚀",
+      "name": "SVD 狙击步枪 - 酸蚀",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "10912": {
+      "display_name": "S9|R93 狙击步枪 - 星之彩",
+      "name": "R93 狙击步枪 - 星之彩",
+      "season_label": "造物纪元",
+      "source_span_offset": 17267250,
+      "source_group": "S9: 造物纪元"
+    },
+    "11000": {
+      "display_name": "S10|AKM 突击步枪 - 群星 - 极品",
+      "name": "AKM 突击步枪 - 群星 - 极品",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11001": {
+      "display_name": "S10|AKM 突击步枪 - 群星 - 优品",
+      "name": "AKM 突击步枪 - 群星 - 优品",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11002": {
+      "display_name": "S10|QCQ171 冲锋枪 - 海韵之星",
+      "name": "QCQ171 冲锋枪 - 海韵之星",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11003": {
+      "display_name": "S10|QJB201 轻机枪 - 海韵之星",
+      "name": "QJB201 轻机枪 - 海韵之星",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11004": {
+      "display_name": "S10|PSG-1 射手步枪 - 海韵之星",
+      "name": "PSG-1 射手步枪 - 海韵之星",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11005": {
+      "display_name": "S10|M16A4 突击步枪 - 磁暴脉冲",
+      "name": "M16A4 突击步枪 - 磁暴脉冲",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11006": {
+      "display_name": "S10|AUG 突击步枪 - 磁暴脉冲",
+      "name": "AUG 突击步枪 - 磁暴脉冲",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11007": {
+      "display_name": "S10|KC17 突击步枪 - 剑兰",
+      "name": "KC17 突击步枪 - 剑兰",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11008": {
+      "display_name": "S10|CAR-15 突击步枪 - 剑兰",
+      "name": "CAR-15 突击步枪 - 剑兰",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11009": {
+      "display_name": "S10|QCQ171 冲锋枪 - 磁暴脉冲",
+      "name": "QCQ171 冲锋枪 - 磁暴脉冲",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11010": {
+      "display_name": "S10|SR-3M 紧凑突击步枪 - 磁暴脉冲",
+      "name": "SR-3M 紧凑突击步枪 - 磁暴脉冲",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11011": {
+      "display_name": "S10|SV-98 狙击步枪 - 剑兰",
+      "name": "SV-98 狙击步枪 - 剑兰",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11012": {
+      "display_name": "S10 | 沙漠之鹰 - 剑兰",
+      "name": "沙漠之鹰 - 剑兰",
+      "season_label": "群星",
+      "source_span_offset": 17269292,
+      "source_group": "S10: 群星"
+    },
+    "11100": {
+      "display_name": "S11|MK4冲锋枪 - 疾风魅影 - 极品",
+      "name": "MK4冲锋枪 - 疾风魅影 - 极品",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11101": {
+      "display_name": "S11|MK4冲锋枪 - 疾风魅影 - 优品",
+      "name": "MK4冲锋枪 - 疾风魅影 - 优品",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11102": {
+      "display_name": "S11|AUG突击步枪 - 黑银先锋",
+      "name": "AUG突击步枪 - 黑银先锋",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11103": {
+      "display_name": "S11|AS Val突击步枪 - 黑银先锋",
+      "name": "AS Val突击步枪 - 黑银先锋",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11104": {
+      "display_name": "S11|P90冲锋枪 - 黑银先锋",
+      "name": "P90冲锋枪 - 黑银先锋",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11105": {
+      "display_name": "S11|AS Val突击步枪 - 管弦乐队",
+      "name": "AS Val突击步枪 - 管弦乐队",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11106": {
+      "display_name": "S11|M7战斗步枪 - 征服者",
+      "name": "M7战斗步枪 - 征服者",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11107": {
+      "display_name": "S11|M16A4突击步枪 - 征服者",
+      "name": "M16A4突击步枪 - 征服者",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11108": {
+      "display_name": "S11|CAR-15突击步枪 - 管弦乐队",
+      "name": "CAR-15突击步枪 - 管弦乐队",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11109": {
+      "display_name": "S11|UZI冲锋枪 - 管弦乐队",
+      "name": "UZI冲锋枪 - 管弦乐队",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11110": {
+      "display_name": "S11|S12K霰弹枪 - 征服者",
+      "name": "S12K霰弹枪 - 征服者",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11111": {
+      "display_name": "S11|R93狙击步枪 - 管弦乐队",
+      "name": "R93狙击步枪 - 管弦乐队",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    },
+    "11112": {
+      "display_name": "S11 |G18 - 征服者",
+      "name": "G18 - 征服者",
+      "season_label": "疾风魅影",
+      "source_span_offset": 17271382,
+      "source_group": "S11: 疾风魅影"
+    }
+  },
+  "conditions": {
+    "0": "成色S",
+    "1": "成色A",
+    "2": "成色B",
+    "3": "成色C",
+    "4": "仅磨损"
+  },
+  "collection_limit_zero_semantics": "no_quantity_limit",
+  "collection_limit_evidence": "默认0不限制数量(抢购数量限制 达量后不再收藏)"
+}

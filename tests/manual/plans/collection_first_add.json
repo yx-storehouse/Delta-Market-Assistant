@@ -1,0 +1,9 @@
+{
+ "name":"First actual collection from provided file: match fields, add watchlist, read success receipt",
+ "timeout_seconds":20,
+ "steps":[
+  {"kind":"capture","expected_page":"skin_listings","collection_observation":true,"card_index":0},
+  {"kind":"collect_selected","expected_before":"skin_listings","snapshot":"artifacts/m2_savedvalue_collection/input/task_snapshot.json","row_index":0,"viewport":[2560,1440]},
+  {"kind":"capture","expect_collection_added":true,"preview":true}
+ ]
+}

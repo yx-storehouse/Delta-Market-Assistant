@@ -1,0 +1,1878 @@
+{
+  "passed": false,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "skin_home",
+        "--preview-stdout",
+        "--ocr-ui-regions",
+        "--collection-observation"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:1abb9956-bda9-45a0-866c-a86422c213d0",
+          "frame_sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+          "image_file_writes": 0,
+          "page": "skin_home",
+          "regions": [
+            {
+              "error": "",
+              "kind": "catalog_names",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 17,
+                  "text": "M7",
+                  "width": 30,
+                  "x": 129,
+                  "y": 338
+                },
+                {
+                  "height": 19,
+                  "text": "战",
+                  "width": 19,
+                  "x": 161,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "斗",
+                  "width": 20,
+                  "x": 181,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "步",
+                  "width": 19,
+                  "x": 203,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 223,
+                  "y": 337
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 245,
+                  "y": 347
+                },
+                {
+                  "height": 20,
+                  "text": "棱",
+                  "width": 20,
+                  "x": 253,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "镜",
+                  "width": 20,
+                  "x": 274,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "攻",
+                  "width": 20,
+                  "x": 295,
+                  "y": 337
+                },
+                {
+                  "height": 20,
+                  "text": "势",
+                  "width": 19,
+                  "x": 317,
+                  "y": 337
+                },
+                {
+                  "height": 17,
+                  "text": "S2",
+                  "width": 27,
+                  "x": 338,
+                  "y": 338
+                },
+                {
+                  "height": 26,
+                  "text": "0",
+                  "width": 20,
+                  "x": 374,
+                  "y": 396
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 23,
+                  "x": 127,
+                  "y": 439
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 441
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 441
+                },
+                {
+                  "height": 17,
+                  "text": "AUG",
+                  "width": 46,
+                  "x": 127,
+                  "y": 490
+                },
+                {
+                  "height": 20,
+                  "text": "突",
+                  "width": 19,
+                  "x": 176,
+                  "y": 489
+                },
+                {
+                  "height": 19,
+                  "text": "击",
+                  "width": 19,
+                  "x": 197,
+                  "y": 489
+                },
+                {
+                  "height": 20,
+                  "text": "步",
+                  "width": 19,
+                  "x": 218,
+                  "y": 489
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 238,
+                  "y": 489
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 260,
+                  "y": 499
+                },
+                {
+                  "height": 19,
+                  "text": "天",
+                  "width": 19,
+                  "x": 269,
+                  "y": 490
+                },
+                {
+                  "height": 20,
+                  "text": "命",
+                  "width": 20,
+                  "x": 289,
+                  "y": 489
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 24,
+                  "x": 126,
+                  "y": 591
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 593
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 593
+                },
+                {
+                  "height": 17,
+                  "text": "P90",
+                  "width": 40,
+                  "x": 129,
+                  "y": 642
+                },
+                {
+                  "height": 20,
+                  "text": "冲",
+                  "width": 19,
+                  "x": 170,
+                  "y": 641
+                },
+                {
+                  "height": 20,
+                  "text": "锋",
+                  "width": 20,
+                  "x": 191,
+                  "y": 641
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 212,
+                  "y": 641
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 234,
+                  "y": 651
+                },
+                {
+                  "height": 19,
+                  "text": "天",
+                  "width": 19,
+                  "x": 243,
+                  "y": 642
+                },
+                {
+                  "height": 20,
+                  "text": "命",
+                  "width": 20,
+                  "x": 263,
+                  "y": 641
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 23,
+                  "x": 127,
+                  "y": 743
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 745
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 745
+                },
+                {
+                  "height": 18,
+                  "text": "SR",
+                  "width": 29,
+                  "x": 128,
+                  "y": 794
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 159,
+                  "y": 803
+                },
+                {
+                  "height": 17,
+                  "text": "25",
+                  "width": 25,
+                  "x": 169,
+                  "y": 794
+                },
+                {
+                  "height": 20,
+                  "text": "射",
+                  "width": 20,
+                  "x": 195,
+                  "y": 793
+                },
+                {
+                  "height": 19,
+                  "text": "手",
+                  "width": 20,
+                  "x": 216,
+                  "y": 794
+                },
+                {
+                  "height": 20,
+                  "text": "步",
+                  "width": 19,
+                  "x": 238,
+                  "y": 793
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 258,
+                  "y": 793
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 280,
+                  "y": 803
+                },
+                {
+                  "height": 19,
+                  "text": "天",
+                  "width": 19,
+                  "x": 289,
+                  "y": 794
+                },
+                {
+                  "height": 20,
+                  "text": "命",
+                  "width": 20,
+                  "x": 309,
+                  "y": 793
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 23,
+                  "x": 127,
+                  "y": 895
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 897
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 897
+                },
+                {
+                  "height": 18,
+                  "text": "PTR",
+                  "width": 42,
+                  "x": 129,
+                  "y": 946
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 173,
+                  "y": 955
+                },
+                {
+                  "height": 17,
+                  "text": "32",
+                  "width": 26,
+                  "x": 182,
+                  "y": 946
+                },
+                {
+                  "height": 20,
+                  "text": "突",
+                  "width": 19,
+                  "x": 210,
+                  "y": 945
+                },
+                {
+                  "height": 19,
+                  "text": "击",
+                  "width": 19,
+                  "x": 231,
+                  "y": 945
+                },
+                {
+                  "height": 20,
+                  "text": "步",
+                  "width": 19,
+                  "x": 252,
+                  "y": 945
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 272,
+                  "y": 945
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 294,
+                  "y": 955
+                },
+                {
+                  "height": 20,
+                  "text": "花",
+                  "width": 20,
+                  "x": 302,
+                  "y": 945
+                },
+                {
+                  "height": 20,
+                  "text": "岗",
+                  "width": 16,
+                  "x": 325,
+                  "y": 945
+                },
+                {
+                  "height": 19,
+                  "text": "岩",
+                  "width": 19,
+                  "x": 345,
+                  "y": 945
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 23,
+                  "x": 127,
+                  "y": 1047
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 1049
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 1049
+                },
+                {
+                  "height": 17,
+                  "text": "AS",
+                  "width": 30,
+                  "x": 127,
+                  "y": 1098
+                },
+                {
+                  "height": 17,
+                  "text": "Va",
+                  "width": 26,
+                  "x": 164,
+                  "y": 1098
+                },
+                {
+                  "height": 18,
+                  "text": "[",
+                  "width": 5,
+                  "x": 193,
+                  "y": 1097
+                },
+                {
+                  "height": 20,
+                  "text": "突",
+                  "width": 19,
+                  "x": 200,
+                  "y": 1097
+                },
+                {
+                  "height": 19,
+                  "text": "击",
+                  "width": 19,
+                  "x": 221,
+                  "y": 1097
+                },
+                {
+                  "height": 20,
+                  "text": "步",
+                  "width": 19,
+                  "x": 242,
+                  "y": 1097
+                },
+                {
+                  "height": 20,
+                  "text": "枪",
+                  "width": 20,
+                  "x": 262,
+                  "y": 1097
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 284,
+                  "y": 1107
+                },
+                {
+                  "height": 19,
+                  "text": "地",
+                  "width": 20,
+                  "x": 292,
+                  "y": 1097
+                },
+                {
+                  "height": 19,
+                  "text": "平",
+                  "width": 20,
+                  "x": 313,
+                  "y": 1098
+                },
+                {
+                  "height": 19,
+                  "text": "线",
+                  "width": 20,
+                  "x": 334,
+                  "y": 1097
+                },
+                {
+                  "height": 23,
+                  "text": "生",
+                  "width": 23,
+                  "x": 127,
+                  "y": 1199
+                },
+                {
+                  "height": 19,
+                  "text": "典",
+                  "width": 20,
+                  "x": 155,
+                  "y": 1201
+                },
+                {
+                  "height": 19,
+                  "text": "藏",
+                  "width": 19,
+                  "x": 177,
+                  "y": 1201
+                },
+                {
+                  "height": 18,
+                  "text": "SR",
+                  "width": 29,
+                  "x": 128,
+                  "y": 1250
+                },
+                {
+                  "height": 2,
+                  "text": "一",
+                  "width": 7,
+                  "x": 159,
+                  "y": 1259
+                },
+                {
+                  "height": 26.5,
+                  "text": "3M",
+                  "width": 30,
+                  "x": 167,
+                  "y": 1250
+                },
+                {
+                  "height": 36,
+                  "text": "犟",
+                  "width": 25,
+                  "x": 196,
+                  "y": 1249
+                },
+                {
+                  "height": 27,
+                  "text": "虿",
+                  "width": 24,
+                  "x": 335,
+                  "y": 1249
+                },
+                {
+                  "height": 20,
+                  "text": "岗",
+                  "width": 16,
+                  "x": 358,
+                  "y": 1249
+                },
+                {
+                  "height": 19,
+                  "text": "岩",
+                  "width": 19,
+                  "x": 378,
+                  "y": 1249
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "product_title",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 18,
+                  "text": "·",
+                  "width": 17,
+                  "x": 649,
+                  "y": 259
+                },
+                {
+                  "height": 33,
+                  "text": "P",
+                  "width": 24,
+                  "x": 682,
+                  "y": 251
+                },
+                {
+                  "height": 41,
+                  "text": "冲",
+                  "width": 39,
+                  "x": 765,
+                  "y": 247
+                },
+                {
+                  "height": 41,
+                  "text": "锋",
+                  "width": 40,
+                  "x": 808,
+                  "y": 247
+                },
+                {
+                  "height": 41,
+                  "text": "枪",
+                  "width": 41,
+                  "x": 851,
+                  "y": 247
+                },
+                {
+                  "height": 7,
+                  "text": "·",
+                  "width": 14,
+                  "x": 895,
+                  "y": 267
+                },
+                {
+                  "height": 38,
+                  "text": "天",
+                  "width": 41,
+                  "x": 913,
+                  "y": 250
+                },
+                {
+                  "height": 40,
+                  "text": "命",
+                  "width": 41,
+                  "x": 956,
+                  "y": 248
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "product_title_native",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19.360810978132264,
+                  "text": "0",
+                  "width": 15.4597337316182,
+                  "x": 958.4770032103062,
+                  "y": 265.81141144307094
+                },
+                {
+                  "height": 23.384049115409653,
+                  "text": "卩",
+                  "width": 16.557163934009964,
+                  "x": 977.3980349816907,
+                  "y": 265.27592133819013
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "skin_home",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 209,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 255,
+            "pixel_min": 0,
+            "sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+            "source": "dxgi",
+            "source_age_ms": 22,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 3143,
+          "frame_sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 10.399999999999961,
+          "word_count": 97
+        },
+        "ocr_passed": true,
+        "ocr_ui_regions": [
+          {
+            "error": "",
+            "height": 122,
+            "ok": true,
+            "replacement_applied": true,
+            "roi_preprocess": "grayscale_minmax_contrast",
+            "roi_scale": 2,
+            "source_text_angle_degrees": 0,
+            "width": 588,
+            "word_count": 12,
+            "x": 140,
+            "y": 50
+          },
+          {
+            "error": "",
+            "height": 158,
+            "ok": true,
+            "replacement_applied": true,
+            "roi_preprocess": "grayscale_minmax_contrast",
+            "roi_scale": 2,
+            "source_text_angle_degrees": 0,
+            "width": 281,
+            "word_count": 6,
+            "x": 2163,
+            "y": 230
+          },
+          {
+            "error": "",
+            "height": 100,
+            "ok": true,
+            "replacement_applied": false,
+            "roi_preprocess": "grayscale_minmax_contrast_inverted",
+            "roi_scale": 3,
+            "source_text_angle_degrees": 0,
+            "width": 435,
+            "word_count": 0,
+            "x": 1075,
+            "y": 835
+          }
+        ],
+        "ocr_ui_regions_same_frame": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": true,
+            "catalog.rows": false,
+            "catalog.skin_tab": true,
+            "catalog.watch": true,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": false,
+            "listing.default_sort": false,
+            "listing.filter_all": false,
+            "listing.filter_confirm": false,
+            "listing.filter_price": false,
+            "listing.page_number": false,
+            "listing.sale": false,
+            "listing.similar": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": true
+          },
+          "anchors": [
+            "catalog.skin_tab",
+            "catalog.circulation",
+            "catalog.watch_or_rows"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_home"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "skin_home",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 97,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "skin_home",
+            "--preview-stdout",
+            "--ocr-ui-regions",
+            "--collection-observation"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:1abb9956-bda9-45a0-866c-a86422c213d0",
+              "frame_sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+              "image_file_writes": 0,
+              "page": "skin_home",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "catalog_names",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 17,
+                      "text": "M7",
+                      "width": 30,
+                      "x": 129,
+                      "y": 338
+                    },
+                    {
+                      "height": 19,
+                      "text": "战",
+                      "width": 19,
+                      "x": 161,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "斗",
+                      "width": 20,
+                      "x": 181,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "步",
+                      "width": 19,
+                      "x": 203,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 223,
+                      "y": 337
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 245,
+                      "y": 347
+                    },
+                    {
+                      "height": 20,
+                      "text": "棱",
+                      "width": 20,
+                      "x": 253,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "镜",
+                      "width": 20,
+                      "x": 274,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "攻",
+                      "width": 20,
+                      "x": 295,
+                      "y": 337
+                    },
+                    {
+                      "height": 20,
+                      "text": "势",
+                      "width": 19,
+                      "x": 317,
+                      "y": 337
+                    },
+                    {
+                      "height": 17,
+                      "text": "S2",
+                      "width": 27,
+                      "x": 338,
+                      "y": 338
+                    },
+                    {
+                      "height": 26,
+                      "text": "0",
+                      "width": 20,
+                      "x": 374,
+                      "y": 396
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 23,
+                      "x": 127,
+                      "y": 439
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 441
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 441
+                    },
+                    {
+                      "height": 17,
+                      "text": "AUG",
+                      "width": 46,
+                      "x": 127,
+                      "y": 490
+                    },
+                    {
+                      "height": 20,
+                      "text": "突",
+                      "width": 19,
+                      "x": 176,
+                      "y": 489
+                    },
+                    {
+                      "height": 19,
+                      "text": "击",
+                      "width": 19,
+                      "x": 197,
+                      "y": 489
+                    },
+                    {
+                      "height": 20,
+                      "text": "步",
+                      "width": 19,
+                      "x": 218,
+                      "y": 489
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 238,
+                      "y": 489
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 260,
+                      "y": 499
+                    },
+                    {
+                      "height": 19,
+                      "text": "天",
+                      "width": 19,
+                      "x": 269,
+                      "y": 490
+                    },
+                    {
+                      "height": 20,
+                      "text": "命",
+                      "width": 20,
+                      "x": 289,
+                      "y": 489
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 24,
+                      "x": 126,
+                      "y": 591
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 593
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 593
+                    },
+                    {
+                      "height": 17,
+                      "text": "P90",
+                      "width": 40,
+                      "x": 129,
+                      "y": 642
+                    },
+                    {
+                      "height": 20,
+                      "text": "冲",
+                      "width": 19,
+                      "x": 170,
+                      "y": 641
+                    },
+                    {
+                      "height": 20,
+                      "text": "锋",
+                      "width": 20,
+                      "x": 191,
+                      "y": 641
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 212,
+                      "y": 641
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 234,
+                      "y": 651
+                    },
+                    {
+                      "height": 19,
+                      "text": "天",
+                      "width": 19,
+                      "x": 243,
+                      "y": 642
+                    },
+                    {
+                      "height": 20,
+                      "text": "命",
+                      "width": 20,
+                      "x": 263,
+                      "y": 641
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 23,
+                      "x": 127,
+                      "y": 743
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 745
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 745
+                    },
+                    {
+                      "height": 18,
+                      "text": "SR",
+                      "width": 29,
+                      "x": 128,
+                      "y": 794
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 159,
+                      "y": 803
+                    },
+                    {
+                      "height": 17,
+                      "text": "25",
+                      "width": 25,
+                      "x": 169,
+                      "y": 794
+                    },
+                    {
+                      "height": 20,
+                      "text": "射",
+                      "width": 20,
+                      "x": 195,
+                      "y": 793
+                    },
+                    {
+                      "height": 19,
+                      "text": "手",
+                      "width": 20,
+                      "x": 216,
+                      "y": 794
+                    },
+                    {
+                      "height": 20,
+                      "text": "步",
+                      "width": 19,
+                      "x": 238,
+                      "y": 793
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 258,
+                      "y": 793
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 280,
+                      "y": 803
+                    },
+                    {
+                      "height": 19,
+                      "text": "天",
+                      "width": 19,
+                      "x": 289,
+                      "y": 794
+                    },
+                    {
+                      "height": 20,
+                      "text": "命",
+                      "width": 20,
+                      "x": 309,
+                      "y": 793
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 23,
+                      "x": 127,
+                      "y": 895
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 897
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 897
+                    },
+                    {
+                      "height": 18,
+                      "text": "PTR",
+                      "width": 42,
+                      "x": 129,
+                      "y": 946
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 173,
+                      "y": 955
+                    },
+                    {
+                      "height": 17,
+                      "text": "32",
+                      "width": 26,
+                      "x": 182,
+                      "y": 946
+                    },
+                    {
+                      "height": 20,
+                      "text": "突",
+                      "width": 19,
+                      "x": 210,
+                      "y": 945
+                    },
+                    {
+                      "height": 19,
+                      "text": "击",
+                      "width": 19,
+                      "x": 231,
+                      "y": 945
+                    },
+                    {
+                      "height": 20,
+                      "text": "步",
+                      "width": 19,
+                      "x": 252,
+                      "y": 945
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 272,
+                      "y": 945
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 294,
+                      "y": 955
+                    },
+                    {
+                      "height": 20,
+                      "text": "花",
+                      "width": 20,
+                      "x": 302,
+                      "y": 945
+                    },
+                    {
+                      "height": 20,
+                      "text": "岗",
+                      "width": 16,
+                      "x": 325,
+                      "y": 945
+                    },
+                    {
+                      "height": 19,
+                      "text": "岩",
+                      "width": 19,
+                      "x": 345,
+                      "y": 945
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 23,
+                      "x": 127,
+                      "y": 1047
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 1049
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 1049
+                    },
+                    {
+                      "height": 17,
+                      "text": "AS",
+                      "width": 30,
+                      "x": 127,
+                      "y": 1098
+                    },
+                    {
+                      "height": 17,
+                      "text": "Va",
+                      "width": 26,
+                      "x": 164,
+                      "y": 1098
+                    },
+                    {
+                      "height": 18,
+                      "text": "[",
+                      "width": 5,
+                      "x": 193,
+                      "y": 1097
+                    },
+                    {
+                      "height": 20,
+                      "text": "突",
+                      "width": 19,
+                      "x": 200,
+                      "y": 1097
+                    },
+                    {
+                      "height": 19,
+                      "text": "击",
+                      "width": 19,
+                      "x": 221,
+                      "y": 1097
+                    },
+                    {
+                      "height": 20,
+                      "text": "步",
+                      "width": 19,
+                      "x": 242,
+                      "y": 1097
+                    },
+                    {
+                      "height": 20,
+                      "text": "枪",
+                      "width": 20,
+                      "x": 262,
+                      "y": 1097
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 284,
+                      "y": 1107
+                    },
+                    {
+                      "height": 19,
+                      "text": "地",
+                      "width": 20,
+                      "x": 292,
+                      "y": 1097
+                    },
+                    {
+                      "height": 19,
+                      "text": "平",
+                      "width": 20,
+                      "x": 313,
+                      "y": 1098
+                    },
+                    {
+                      "height": 19,
+                      "text": "线",
+                      "width": 20,
+                      "x": 334,
+                      "y": 1097
+                    },
+                    {
+                      "height": 23,
+                      "text": "生",
+                      "width": 23,
+                      "x": 127,
+                      "y": 1199
+                    },
+                    {
+                      "height": 19,
+                      "text": "典",
+                      "width": 20,
+                      "x": 155,
+                      "y": 1201
+                    },
+                    {
+                      "height": 19,
+                      "text": "藏",
+                      "width": 19,
+                      "x": 177,
+                      "y": 1201
+                    },
+                    {
+                      "height": 18,
+                      "text": "SR",
+                      "width": 29,
+                      "x": 128,
+                      "y": 1250
+                    },
+                    {
+                      "height": 2,
+                      "text": "一",
+                      "width": 7,
+                      "x": 159,
+                      "y": 1259
+                    },
+                    {
+                      "height": 26.5,
+                      "text": "3M",
+                      "width": 30,
+                      "x": 167,
+                      "y": 1250
+                    },
+                    {
+                      "height": 36,
+                      "text": "犟",
+                      "width": 25,
+                      "x": 196,
+                      "y": 1249
+                    },
+                    {
+                      "height": 27,
+                      "text": "虿",
+                      "width": 24,
+                      "x": 335,
+                      "y": 1249
+                    },
+                    {
+                      "height": 20,
+                      "text": "岗",
+                      "width": 16,
+                      "x": 358,
+                      "y": 1249
+                    },
+                    {
+                      "height": 19,
+                      "text": "岩",
+                      "width": 19,
+                      "x": 378,
+                      "y": 1249
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "product_title",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 18,
+                      "text": "·",
+                      "width": 17,
+                      "x": 649,
+                      "y": 259
+                    },
+                    {
+                      "height": 33,
+                      "text": "P",
+                      "width": 24,
+                      "x": 682,
+                      "y": 251
+                    },
+                    {
+                      "height": 41,
+                      "text": "冲",
+                      "width": 39,
+                      "x": 765,
+                      "y": 247
+                    },
+                    {
+                      "height": 41,
+                      "text": "锋",
+                      "width": 40,
+                      "x": 808,
+                      "y": 247
+                    },
+                    {
+                      "height": 41,
+                      "text": "枪",
+                      "width": 41,
+                      "x": 851,
+                      "y": 247
+                    },
+                    {
+                      "height": 7,
+                      "text": "·",
+                      "width": 14,
+                      "x": 895,
+                      "y": 267
+                    },
+                    {
+                      "height": 38,
+                      "text": "天",
+                      "width": 41,
+                      "x": 913,
+                      "y": 250
+                    },
+                    {
+                      "height": 40,
+                      "text": "命",
+                      "width": 41,
+                      "x": 956,
+                      "y": 248
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "product_title_native",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19.360810978132264,
+                      "text": "0",
+                      "width": 15.4597337316182,
+                      "x": 958.4770032103062,
+                      "y": 265.81141144307094
+                    },
+                    {
+                      "height": 23.384049115409653,
+                      "text": "卩",
+                      "width": 16.557163934009964,
+                      "x": 977.3980349816907,
+                      "y": 265.27592133819013
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "skin_home",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 209,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 255,
+                "pixel_min": 0,
+                "sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+                "source": "dxgi",
+                "source_age_ms": 22,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 3143,
+              "frame_sha256": "b5baa5f4e33da4d2ae3a6cf68a088413cf1cf6efdd52b3697b96cc4131bda828",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 10.399999999999961,
+              "word_count": 97
+            },
+            "ocr_passed": true,
+            "ocr_ui_regions": [
+              {
+                "error": "",
+                "height": 122,
+                "ok": true,
+                "replacement_applied": true,
+                "roi_preprocess": "grayscale_minmax_contrast",
+                "roi_scale": 2,
+                "source_text_angle_degrees": 0,
+                "width": 588,
+                "word_count": 12,
+                "x": 140,
+                "y": 50
+              },
+              {
+                "error": "",
+                "height": 158,
+                "ok": true,
+                "replacement_applied": true,
+                "roi_preprocess": "grayscale_minmax_contrast",
+                "roi_scale": 2,
+                "source_text_angle_degrees": 0,
+                "width": 281,
+                "word_count": 6,
+                "x": 2163,
+                "y": 230
+              },
+              {
+                "error": "",
+                "height": 100,
+                "ok": true,
+                "replacement_applied": false,
+                "roi_preprocess": "grayscale_minmax_contrast_inverted",
+                "roi_scale": 3,
+                "source_text_angle_degrees": 0,
+                "width": 435,
+                "word_count": 0,
+                "x": 1075,
+                "y": 835
+              }
+            ],
+            "ocr_ui_regions_same_frame": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": true,
+                "catalog.rows": false,
+                "catalog.skin_tab": true,
+                "catalog.watch": true,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": false,
+                "listing.default_sort": false,
+                "listing.filter_all": false,
+                "listing.filter_confirm": false,
+                "listing.filter_price": false,
+                "listing.page_number": false,
+                "listing.sale": false,
+                "listing.similar": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": true
+              },
+              "anchors": [
+                "catalog.skin_tab",
+                "catalog.circulation",
+                "catalog.watch_or_rows"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_home"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "skin_home",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 97,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": "COLLECTION_TITLE_NOT_CONFIRMED",
+  "ide_restored": true,
+  "timestamp": "2026-10-07T19:40:52.861722+08:00",
+  "binary_sha256": "ce44d835f5c77caec3e55caca5360b71c816aff481f1a32565f9c450cd6e0af8",
+  "plan": {
+    "name": "Collection open: source row 4",
+    "timeout_seconds": 30,
+    "steps": [
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_home",
+        "ui_regions": true,
+        "preview": true
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_home",
+        "point": [
+          2240,
+          1180
+        ],
+        "require_label": {
+          "region": "product_title",
+          "label": "P90冲锋枪-天命"
+        },
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings"
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          300,
+          263
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "require_label": {
+          "region": "product_title",
+          "label": "P90冲锋枪-天命"
+        }
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          2187,
+          464
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "expected_overlay": "listing_filter",
+        "skip_if_condition_state": [
+          "S",
+          "checked"
+        ]
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_condition_filter": {
+          "all": "unchecked",
+          "S": "checked",
+          "A": "unchecked",
+          "B": "unchecked",
+          "C": "unchecked"
+        }
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          2340,
+          1355
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "expected_overlay": "listing_filter"
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings",
+        "card_index": 0,
+        "preview": true
+      },
+      {
+        "kind": "collect_selected",
+        "expected_before": "skin_listings",
+        "snapshot": "artifacts/m2_savedvalue_collection/input/task_snapshot.json",
+        "row_index": 4,
+        "viewport": [
+          2560,
+          1440
+        ],
+        "skip_ineligible": true,
+        "skip_favorited": true
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings",
+        "card_index": 0,
+        "expect_collection_added": true,
+        "receipt_if_pending": true,
+        "preview": true
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "ocr_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "runner_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "tests/manual/run_foreground_batch.py",
+    "--plan",
+    "tests/manual/plans/collection_p90_s_resume.json",
+    "--record",
+    "artifacts/m2_savedvalue_collection/live_p90_s_resume_v2.json"
+  ],
+  "exit_status": 1,
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1081148484
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1081148500
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1081153234
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 0,
+  "image_file_writes": 0
+}

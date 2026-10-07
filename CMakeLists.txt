@@ -16,6 +16,7 @@ qt_add_executable(RelinkStudio WIN32
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
   src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
   src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
+  src/diagnostics/savedvalue_preview.cpp src/diagnostics/savedvalue_preview.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
@@ -54,6 +55,7 @@ add_library(relink_business STATIC
   src/business/matcher.cpp src/business/matcher.h
   src/config/v1_adapter.cpp src/config/v1_adapter.h src/config/import_types.h
   src/config/profile_store.cpp src/config/profile_store.h)
+target_sources(relink_business PRIVATE src/config/savedvalue_reader.cpp src/config/savedvalue_reader.h)
 target_include_directories(relink_business PUBLIC src)
 target_link_libraries(relink_business PUBLIC Qt6::Core)
 
@@ -72,6 +74,8 @@ target_link_libraries(business_rule_tests PRIVATE relink_business Qt6::Core)
 add_executable(business_migration_tests tests/business/migration_tests.cpp)
 target_include_directories(business_migration_tests PRIVATE src)
 target_link_libraries(business_migration_tests PRIVATE relink_business Qt6::Core)
+add_executable(savedvalue_tests tests/business/savedvalue_tests.cpp)
+target_link_libraries(savedvalue_tests PRIVATE relink_business)
 
 add_executable(profile_store_tests tests/business/profile_store_tests.cpp)
 target_include_directories(profile_store_tests PRIVATE src)
@@ -213,6 +217,7 @@ target_include_directories(ledger_tests PRIVATE src)
 target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
 
 enable_testing()
+add_test(NAME savedvalue_tests COMMAND savedvalue_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json")
 add_test(NAME catalog_filter_tests COMMAND catalog_filter_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json")
 add_test(NAME domain_tests COMMAND domain_tests)
 add_test(NAME business_tests COMMAND business_tests)

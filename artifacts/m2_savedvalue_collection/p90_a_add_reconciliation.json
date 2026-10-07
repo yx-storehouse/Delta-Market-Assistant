@@ -1,0 +1,30 @@
+{
+  "status": "confirmed_reconciliation",
+  "candidate": {
+    "eligible": true,
+    "product": "P90冲锋枪-天命",
+    "condition": "成色A",
+    "price": "230",
+    "wear": "0.800850",
+    "row_index": 5,
+    "source_frame_id": "dxgi:fa875e4f-54bc-4332-8151-56f94e50ce59",
+    "source_frame_sha256": "9a19f9b28bcaa5603d10a95b4b5c6e0a1eab21b2ad47f5f2bc53cc5c90e6e156",
+    "purchase_phase_enabled": false
+  },
+  "observation": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m2_savedvalue_collection\\live_reconcile_p90_a.json",
+  "gold_indicator": {
+    "border_means": [
+      174.0958333333334,
+      132.33888888888902,
+      198.22500000000028,
+      175.82611111111015
+    ],
+    "favorite_bright_fraction": 0,
+    "favorite_warm_fraction": 0.13398692810457516,
+    "index": 2,
+    "selected": true
+  },
+  "original_failed_batch_unchanged": true,
+  "input_actions": 0,
+  "journal_key": "28404c8848b957eb92969a02292b99c4eecfaf08cf7d5caef0a374cfa86baf94"
+}

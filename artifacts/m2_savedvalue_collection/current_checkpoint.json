@@ -1,0 +1,16 @@
+{
+  "phase": "collection",
+  "task_file_fully_completed": false,
+  "confirmed_collections": 25,
+  "current_source_row": 6,
+  "current_card_index": 5,
+  "current_product_id": "10603",
+  "current_condition": "B",
+  "current_page": "skin_listings",
+  "blocker": "COLLECTION_UNSCANNED_SCROLL_REGION",
+  "next_required": "Calibrate scroll and partial-row geometry; continue row 6 without toggling already confirmed stars.",
+  "ide_restored": true,
+  "last_series": "live_series_s6_v5/summary.json",
+  "latest_live_record": "live_series_s6_v5/live_5.json",
+  "purchase_phase_started": false
+}

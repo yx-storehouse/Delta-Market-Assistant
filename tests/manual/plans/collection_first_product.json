@@ -1,0 +1,130 @@
+{
+  "name": "Select first task season, verify AUG Tianming title, enter its sale listings",
+  "timeout_seconds": 30,
+  "steps": [
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1066,
+        446
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "collection_observation": true
+    },
+    {
+      "kind": "scroll",
+      "expected_before": "catalog_filter",
+      "point": [
+        925,
+        735
+      ],
+      "delta": -240,
+      "viewport": [
+        2560,
+        1440
+      ],
+      "require_label": {
+        "region": "season_options",
+        "label": "全部赛季"
+      }
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "collection_observation": true
+    },
+    {
+      "kind": "click_label",
+      "expected_before": "catalog_filter",
+      "region": "season_options",
+      "label": "棱镜攻势S2",
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "expected_filter": {
+        "season": "棱镜攻势S2",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1280,
+        1008
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "skin_home",
+      "ui_regions": true,
+      "collection_observation": true
+    },
+    {
+      "kind": "click_label",
+      "expected_before": "skin_home",
+      "region": "catalog_names",
+      "label": "AUG突击步枪-天命",
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "skin_home",
+      "ui_regions": true,
+      "collection_observation": true
+    },
+    {
+      "kind": "click",
+      "expected_before": "skin_home",
+      "point": [
+        2240,
+        1180
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "require_label": {
+        "region": "product_title",
+        "label": "AUG突击步枪-天命"
+      }
+    },
+    {
+      "kind": "capture",
+      "ui_regions": true,
+      "market_anchors": true,
+      "preview": true
+    }
+  ]
+}

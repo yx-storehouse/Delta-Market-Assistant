@@ -1,0 +1,18 @@
+{
+  "name":"Original collection startup: recheck watchlist, return filter, inspect season options",
+  "timeout_seconds":30,
+  "steps":[
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[1278,1258],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"skin_home","ui_regions":true},
+    {"kind":"click","expected_before":"skin_home","point":[2310,274],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"empty_watchlist","ui_regions":true},
+    {"kind":"capture","expected_page":"empty_watchlist","ui_regions":true},
+    {"kind":"click","expected_before":"empty_watchlist","point":[165,1402],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"skin_home","ui_regions":true},
+    {"kind":"click","expected_before":"skin_home","point":[340,274],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[1066,446],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","market_anchors":true,"preview":true}
+  ]
+}

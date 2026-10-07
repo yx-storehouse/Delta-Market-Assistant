@@ -1,0 +1,5 @@
+{
+ "name":"Identify current game page before collection navigation",
+ "timeout_seconds":15,
+ "steps":[{"kind":"capture","ui_regions":true,"market_anchors":true,"preview":true}]
+}

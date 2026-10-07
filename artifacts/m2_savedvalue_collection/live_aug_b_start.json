@@ -1,0 +1,4271 @@
+{
+  "passed": true,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "skin_listings",
+        "--collection-observation"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:b94138fb-6693-4185-b473-c478d42452d8",
+          "frame_sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+          "image_file_writes": 0,
+          "page": "skin_listings",
+          "regions": [
+            {
+              "error": "",
+              "kind": "listing_controls",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 26,
+                  "text": "平",
+                  "width": 25,
+                  "x": 238,
+                  "y": 251
+                },
+                {
+                  "height": 18,
+                  "text": "已",
+                  "width": 19,
+                  "x": 276,
+                  "y": 255
+                },
+                {
+                  "height": 21,
+                  "text": "筛",
+                  "width": 20,
+                  "x": 296,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "选",
+                  "width": 20,
+                  "x": 317,
+                  "y": 253
+                },
+                {
+                  "height": 17,
+                  "text": "1",
+                  "width": 6,
+                  "x": 338,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "顶",
+                  "width": 21,
+                  "x": 345,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "不",
+                  "width": 19,
+                  "x": 527,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "限",
+                  "width": 18,
+                  "x": 549,
+                  "y": 254
+                },
+                {
+                  "height": 19,
+                  "text": "公",
+                  "width": 19,
+                  "x": 569,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "示",
+                  "width": 19,
+                  "x": 590,
+                  "y": 255
+                },
+                {
+                  "height": 20,
+                  "text": "期",
+                  "width": 18,
+                  "x": 611,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "默",
+                  "width": 19,
+                  "x": 1153,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "认",
+                  "width": 19,
+                  "x": 1174,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "排",
+                  "width": 19,
+                  "x": 1195,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "序",
+                  "width": 19,
+                  "x": 1216,
+                  "y": 253
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "product_title",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "令",
+                  "width": 17,
+                  "x": 1919,
+                  "y": 251
+                },
+                {
+                  "height": 29,
+                  "text": "％",
+                  "width": 29,
+                  "x": 1931,
+                  "y": 240
+                },
+                {
+                  "height": 24,
+                  "text": "AUG",
+                  "width": 60,
+                  "x": 1972,
+                  "y": 247
+                },
+                {
+                  "height": 26,
+                  "text": "突",
+                  "width": 25,
+                  "x": 2035,
+                  "y": 246
+                },
+                {
+                  "height": 25,
+                  "text": "击",
+                  "width": 26,
+                  "x": 2063,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "步",
+                  "width": 26,
+                  "x": 2091,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "枪",
+                  "width": 26,
+                  "x": 2119,
+                  "y": 246
+                },
+                {
+                  "height": 3,
+                  "text": "一",
+                  "width": 9,
+                  "x": 2148,
+                  "y": 259
+                },
+                {
+                  "height": 24,
+                  "text": "天",
+                  "width": 26,
+                  "x": 2160,
+                  "y": 248
+                },
+                {
+                  "height": 26,
+                  "text": "命",
+                  "width": 27,
+                  "x": 2187,
+                  "y": 246
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "selected_detail",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 1931,
+                  "y": 659
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 1953,
+                  "y": 659
+                },
+                {
+                  "height": 17,
+                  "text": "A",
+                  "width": 14,
+                  "x": 2212,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〔",
+                  "width": 6,
+                  "x": 2228,
+                  "y": 660
+                },
+                {
+                  "height": 17,
+                  "text": "0",
+                  "width": 11,
+                  "x": 2244,
+                  "y": 662
+                },
+                {
+                  "height": 3,
+                  "text": "．",
+                  "width": 3,
+                  "x": 2258,
+                  "y": 676
+                },
+                {
+                  "height": 17,
+                  "text": "897060",
+                  "width": 82,
+                  "x": 2264,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〕",
+                  "width": 6,
+                  "x": 2349,
+                  "y": 660
+                },
+                {
+                  "height": 14,
+                  "text": "7",
+                  "width": 13,
+                  "x": 2387,
+                  "y": 661
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "first_card_fields",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 127,
+                  "y": 537
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 149,
+                  "y": 537
+                },
+                {
+                  "height": 17,
+                  "text": "A",
+                  "width": 14,
+                  "x": 170,
+                  "y": 538
+                },
+                {
+                  "height": 17,
+                  "text": "230",
+                  "width": 39,
+                  "x": 937,
+                  "y": 538
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "collection_page_refinements": [
+          {
+            "error": "",
+            "ok": true
+          }
+        ],
+        "collection_selected_card": {
+          "border_means": [
+            29.123333333333218,
+            31.638194444444515,
+            33.90416666666666,
+            31.451944444444592
+          ],
+          "favorite_bright_fraction": 0.12990196078431374,
+          "favorite_warm_fraction": 0,
+          "index": 0,
+          "selected": false
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "skin_listings",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 212,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 255,
+            "pixel_min": 5,
+            "sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+            "source": "dxgi",
+            "source_age_ms": 35,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 2655,
+          "frame_sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 180
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": true,
+            "listing.default_sort": true,
+            "listing.filter_all": false,
+            "listing.filter_confirm": false,
+            "listing.filter_price": false,
+            "listing.page_number": true,
+            "listing.sale": true,
+            "listing.similar": true,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "list.sale",
+            "list.sort",
+            "list.condition",
+            "list.layout"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_listings"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "skin_listings",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 180,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "skin_listings",
+            "--collection-observation"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:b94138fb-6693-4185-b473-c478d42452d8",
+              "frame_sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+              "image_file_writes": 0,
+              "page": "skin_listings",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "listing_controls",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 26,
+                      "text": "平",
+                      "width": 25,
+                      "x": 238,
+                      "y": 251
+                    },
+                    {
+                      "height": 18,
+                      "text": "已",
+                      "width": 19,
+                      "x": 276,
+                      "y": 255
+                    },
+                    {
+                      "height": 21,
+                      "text": "筛",
+                      "width": 20,
+                      "x": 296,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "选",
+                      "width": 20,
+                      "x": 317,
+                      "y": 253
+                    },
+                    {
+                      "height": 17,
+                      "text": "1",
+                      "width": 6,
+                      "x": 338,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "顶",
+                      "width": 21,
+                      "x": 345,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "不",
+                      "width": 19,
+                      "x": 527,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "限",
+                      "width": 18,
+                      "x": 549,
+                      "y": 254
+                    },
+                    {
+                      "height": 19,
+                      "text": "公",
+                      "width": 19,
+                      "x": 569,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "示",
+                      "width": 19,
+                      "x": 590,
+                      "y": 255
+                    },
+                    {
+                      "height": 20,
+                      "text": "期",
+                      "width": 18,
+                      "x": 611,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "默",
+                      "width": 19,
+                      "x": 1153,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "认",
+                      "width": 19,
+                      "x": 1174,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "排",
+                      "width": 19,
+                      "x": 1195,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "序",
+                      "width": 19,
+                      "x": 1216,
+                      "y": 253
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "product_title",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "令",
+                      "width": 17,
+                      "x": 1919,
+                      "y": 251
+                    },
+                    {
+                      "height": 29,
+                      "text": "％",
+                      "width": 29,
+                      "x": 1931,
+                      "y": 240
+                    },
+                    {
+                      "height": 24,
+                      "text": "AUG",
+                      "width": 60,
+                      "x": 1972,
+                      "y": 247
+                    },
+                    {
+                      "height": 26,
+                      "text": "突",
+                      "width": 25,
+                      "x": 2035,
+                      "y": 246
+                    },
+                    {
+                      "height": 25,
+                      "text": "击",
+                      "width": 26,
+                      "x": 2063,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "步",
+                      "width": 26,
+                      "x": 2091,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "枪",
+                      "width": 26,
+                      "x": 2119,
+                      "y": 246
+                    },
+                    {
+                      "height": 3,
+                      "text": "一",
+                      "width": 9,
+                      "x": 2148,
+                      "y": 259
+                    },
+                    {
+                      "height": 24,
+                      "text": "天",
+                      "width": 26,
+                      "x": 2160,
+                      "y": 248
+                    },
+                    {
+                      "height": 26,
+                      "text": "命",
+                      "width": 27,
+                      "x": 2187,
+                      "y": 246
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "selected_detail",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 1931,
+                      "y": 659
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 1953,
+                      "y": 659
+                    },
+                    {
+                      "height": 17,
+                      "text": "A",
+                      "width": 14,
+                      "x": 2212,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〔",
+                      "width": 6,
+                      "x": 2228,
+                      "y": 660
+                    },
+                    {
+                      "height": 17,
+                      "text": "0",
+                      "width": 11,
+                      "x": 2244,
+                      "y": 662
+                    },
+                    {
+                      "height": 3,
+                      "text": "．",
+                      "width": 3,
+                      "x": 2258,
+                      "y": 676
+                    },
+                    {
+                      "height": 17,
+                      "text": "897060",
+                      "width": 82,
+                      "x": 2264,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〕",
+                      "width": 6,
+                      "x": 2349,
+                      "y": 660
+                    },
+                    {
+                      "height": 14,
+                      "text": "7",
+                      "width": 13,
+                      "x": 2387,
+                      "y": 661
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "first_card_fields",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 127,
+                      "y": 537
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 149,
+                      "y": 537
+                    },
+                    {
+                      "height": 17,
+                      "text": "A",
+                      "width": 14,
+                      "x": 170,
+                      "y": 538
+                    },
+                    {
+                      "height": 17,
+                      "text": "230",
+                      "width": 39,
+                      "x": 937,
+                      "y": 538
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "collection_page_refinements": [
+              {
+                "error": "",
+                "ok": true
+              }
+            ],
+            "collection_selected_card": {
+              "border_means": [
+                29.123333333333218,
+                31.638194444444515,
+                33.90416666666666,
+                31.451944444444592
+              ],
+              "favorite_bright_fraction": 0.12990196078431374,
+              "favorite_warm_fraction": 0,
+              "index": 0,
+              "selected": false
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "skin_listings",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 212,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 255,
+                "pixel_min": 5,
+                "sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+                "source": "dxgi",
+                "source_age_ms": 35,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 2655,
+              "frame_sha256": "ee05b848e90c3ce002a177e704beaf3bb19bb7c784ec9e2365f23d14be347bd7",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 180
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": true,
+                "listing.default_sort": true,
+                "listing.filter_all": false,
+                "listing.filter_confirm": false,
+                "listing.filter_price": false,
+                "listing.page_number": true,
+                "listing.sale": true,
+                "listing.similar": true,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "list.sale",
+                "list.sort",
+                "list.condition",
+                "list.layout"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_listings"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "skin_listings",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 180,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "click",
+      "point": [
+        300,
+        263
+      ],
+      "passed": true
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--collection-observation"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_condition_filter": {
+          "A": {
+            "measurement": {
+              "border_means": [
+                63.07098765432093,
+                61.72839506172845,
+                59.93518518518518,
+                66.26851851851855
+              ],
+              "bright_fraction": 0.9028925619834711,
+              "center_mean": 191.7200520833333,
+              "center_stddev": 1.0283383968352604,
+              "green_fraction": 0,
+              "interior_mean": 162.94834710743748,
+              "interior_stddev": 49.40365534229328,
+              "sample_count": 484
+            },
+            "state": "checked"
+          },
+          "B": {
+            "measurement": {
+              "border_means": [
+                43.79938271604939,
+                43.23765432098765,
+                45.972222222222236,
+                42.9135802469136
+              ],
+              "bright_fraction": 0,
+              "center_mean": 18.666666666666657,
+              "center_stddev": 0,
+              "green_fraction": 0,
+              "interior_mean": 18.666666666666718,
+              "interior_stddev": 0,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "C": {
+            "measurement": {
+              "border_means": [
+                45.62962962962964,
+                29.663580246913604,
+                42.422839506172814,
+                46.95987654320992
+              ],
+              "bright_fraction": 0,
+              "center_mean": 20.333333333333318,
+              "center_stddev": 0,
+              "green_fraction": 0,
+              "interior_mean": 20.324380165289256,
+              "interior_stddev": 0.0538909094940096,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "S": {
+            "measurement": {
+              "border_means": [
+                45.339506172839485,
+                44.11419753086419,
+                47.01234567901237,
+                44.22222222222222
+              ],
+              "bright_fraction": 0,
+              "center_mean": 19.74869791666668,
+              "center_stddev": 0.14357793711053043,
+              "green_fraction": 0,
+              "interior_mean": 19.77892561983472,
+              "interior_stddev": 0.17149036917290372,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "all": {
+            "measurement": {
+              "border_means": [
+                44.97839506172841,
+                44.487654320987666,
+                43.03395061728398,
+                47.129629629629605
+              ],
+              "bright_fraction": 0,
+              "center_mean": 20.17708333333333,
+              "center_stddev": 0.16634082731618946,
+              "green_fraction": 0,
+              "interior_mean": 20.174931129476576,
+              "interior_stddev": 0.16646163651210677,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          }
+        },
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:40db635e-7f4c-4e52-b439-e425d9c5502f",
+          "frame_sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+          "image_file_writes": 0,
+          "page": "skin_listings",
+          "regions": [
+            {
+              "error": "",
+              "kind": "condition_filter",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 24,
+                  "text": "价",
+                  "width": 24,
+                  "x": 1843,
+                  "y": 148
+                },
+                {
+                  "height": 24,
+                  "text": "格",
+                  "width": 24,
+                  "x": 1868,
+                  "y": 148
+                },
+                {
+                  "height": 21,
+                  "text": "区",
+                  "width": 22,
+                  "x": 1895,
+                  "y": 150
+                },
+                {
+                  "height": 23,
+                  "text": "间",
+                  "width": 23,
+                  "x": 1919,
+                  "y": 149
+                },
+                {
+                  "height": 34,
+                  "text": "0",
+                  "width": 33,
+                  "x": 2011,
+                  "y": 209
+                },
+                {
+                  "height": 21,
+                  "text": "230",
+                  "width": 47,
+                  "x": 2059,
+                  "y": 215
+                },
+                {
+                  "height": 24,
+                  "text": "成",
+                  "width": 24,
+                  "x": 1843,
+                  "y": 390
+                },
+                {
+                  "height": 23,
+                  "text": "色",
+                  "width": 24,
+                  "x": 1868,
+                  "y": 390
+                },
+                {
+                  "height": 18,
+                  "text": "所",
+                  "width": 19,
+                  "x": 1894,
+                  "y": 456
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1915,
+                  "y": 455
+                },
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 19,
+                  "x": 1936,
+                  "y": 455
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 1957,
+                  "y": 455
+                },
+                {
+                  "height": 34,
+                  "text": "0",
+                  "width": 33,
+                  "x": 2201,
+                  "y": 209
+                },
+                {
+                  "height": 21,
+                  "text": "10",
+                  "width": 30,
+                  "x": 2249,
+                  "y": 215
+                },
+                {
+                  "height": 7,
+                  "text": "，",
+                  "width": 4,
+                  "x": 2282,
+                  "y": 232
+                },
+                {
+                  "height": 21,
+                  "text": "000",
+                  "width": 47,
+                  "x": 2291,
+                  "y": 215
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "collection_page_refinements": [
+          {
+            "error": "",
+            "ok": true
+          }
+        ],
+        "diagnostic": "live_capture",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 223,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 194,
+            "pixel_min": 2,
+            "sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+            "source": "dxgi",
+            "source_age_ms": 35,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1473,
+          "frame_sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 143
+        },
+        "ocr_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": true,
+            "listing.default_sort": true,
+            "listing.filter_all": true,
+            "listing.filter_confirm": true,
+            "listing.filter_price": true,
+            "listing.page_number": false,
+            "listing.sale": true,
+            "listing.similar": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "list.sale",
+            "list.sort",
+            "list.condition",
+            "list.layout"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_listings"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "listing_filter",
+          "page": "skin_listings",
+          "provider_scores_available": false,
+          "reason": "OVERLAY_REQUIRES_RECHECK",
+          "token_count": 143,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--collection-observation"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_condition_filter": {
+              "A": {
+                "measurement": {
+                  "border_means": [
+                    63.07098765432093,
+                    61.72839506172845,
+                    59.93518518518518,
+                    66.26851851851855
+                  ],
+                  "bright_fraction": 0.9028925619834711,
+                  "center_mean": 191.7200520833333,
+                  "center_stddev": 1.0283383968352604,
+                  "green_fraction": 0,
+                  "interior_mean": 162.94834710743748,
+                  "interior_stddev": 49.40365534229328,
+                  "sample_count": 484
+                },
+                "state": "checked"
+              },
+              "B": {
+                "measurement": {
+                  "border_means": [
+                    43.79938271604939,
+                    43.23765432098765,
+                    45.972222222222236,
+                    42.9135802469136
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 18.666666666666657,
+                  "center_stddev": 0,
+                  "green_fraction": 0,
+                  "interior_mean": 18.666666666666718,
+                  "interior_stddev": 0,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "C": {
+                "measurement": {
+                  "border_means": [
+                    45.62962962962964,
+                    29.663580246913604,
+                    42.422839506172814,
+                    46.95987654320992
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 20.333333333333318,
+                  "center_stddev": 0,
+                  "green_fraction": 0,
+                  "interior_mean": 20.324380165289256,
+                  "interior_stddev": 0.0538909094940096,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "S": {
+                "measurement": {
+                  "border_means": [
+                    45.339506172839485,
+                    44.11419753086419,
+                    47.01234567901237,
+                    44.22222222222222
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 19.74869791666668,
+                  "center_stddev": 0.14357793711053043,
+                  "green_fraction": 0,
+                  "interior_mean": 19.77892561983472,
+                  "interior_stddev": 0.17149036917290372,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "all": {
+                "measurement": {
+                  "border_means": [
+                    44.97839506172841,
+                    44.487654320987666,
+                    43.03395061728398,
+                    47.129629629629605
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 20.17708333333333,
+                  "center_stddev": 0.16634082731618946,
+                  "green_fraction": 0,
+                  "interior_mean": 20.174931129476576,
+                  "interior_stddev": 0.16646163651210677,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              }
+            },
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:40db635e-7f4c-4e52-b439-e425d9c5502f",
+              "frame_sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+              "image_file_writes": 0,
+              "page": "skin_listings",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "condition_filter",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 24,
+                      "text": "价",
+                      "width": 24,
+                      "x": 1843,
+                      "y": 148
+                    },
+                    {
+                      "height": 24,
+                      "text": "格",
+                      "width": 24,
+                      "x": 1868,
+                      "y": 148
+                    },
+                    {
+                      "height": 21,
+                      "text": "区",
+                      "width": 22,
+                      "x": 1895,
+                      "y": 150
+                    },
+                    {
+                      "height": 23,
+                      "text": "间",
+                      "width": 23,
+                      "x": 1919,
+                      "y": 149
+                    },
+                    {
+                      "height": 34,
+                      "text": "0",
+                      "width": 33,
+                      "x": 2011,
+                      "y": 209
+                    },
+                    {
+                      "height": 21,
+                      "text": "230",
+                      "width": 47,
+                      "x": 2059,
+                      "y": 215
+                    },
+                    {
+                      "height": 24,
+                      "text": "成",
+                      "width": 24,
+                      "x": 1843,
+                      "y": 390
+                    },
+                    {
+                      "height": 23,
+                      "text": "色",
+                      "width": 24,
+                      "x": 1868,
+                      "y": 390
+                    },
+                    {
+                      "height": 18,
+                      "text": "所",
+                      "width": 19,
+                      "x": 1894,
+                      "y": 456
+                    },
+                    {
+                      "height": 19,
+                      "text": "有",
+                      "width": 19,
+                      "x": 1915,
+                      "y": 455
+                    },
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 19,
+                      "x": 1936,
+                      "y": 455
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 1957,
+                      "y": 455
+                    },
+                    {
+                      "height": 34,
+                      "text": "0",
+                      "width": 33,
+                      "x": 2201,
+                      "y": 209
+                    },
+                    {
+                      "height": 21,
+                      "text": "10",
+                      "width": 30,
+                      "x": 2249,
+                      "y": 215
+                    },
+                    {
+                      "height": 7,
+                      "text": "，",
+                      "width": 4,
+                      "x": 2282,
+                      "y": 232
+                    },
+                    {
+                      "height": 21,
+                      "text": "000",
+                      "width": 47,
+                      "x": 2291,
+                      "y": 215
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "collection_page_refinements": [
+              {
+                "error": "",
+                "ok": true
+              }
+            ],
+            "diagnostic": "live_capture",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 223,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 194,
+                "pixel_min": 2,
+                "sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+                "source": "dxgi",
+                "source_age_ms": 35,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 1473,
+              "frame_sha256": "128f893c9a7335a217f18a484a36153dd0d9e6f8eaa3a5f58a078fa82b1b5fd7",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 143
+            },
+            "ocr_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": true,
+                "listing.default_sort": true,
+                "listing.filter_all": true,
+                "listing.filter_confirm": true,
+                "listing.filter_price": true,
+                "listing.page_number": false,
+                "listing.sale": true,
+                "listing.similar": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "list.sale",
+                "list.sort",
+                "list.condition",
+                "list.layout"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_listings"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "listing_filter",
+              "page": "skin_listings",
+              "provider_scores_available": false,
+              "reason": "OVERLAY_REQUIRES_RECHECK",
+              "token_count": 143,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "click",
+      "point": [
+        2187,
+        539
+      ],
+      "passed": true
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--collection-observation"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_condition_filter": {
+          "A": {
+            "measurement": {
+              "border_means": [
+                45.21913580246914,
+                44.63271604938271,
+                43.24999999999999,
+                47.39506172839507
+              ],
+              "bright_fraction": 0,
+              "center_mean": 20.333333333333318,
+              "center_stddev": 0,
+              "green_fraction": 0,
+              "interior_mean": 20.333333333333336,
+              "interior_stddev": 0,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "B": {
+            "measurement": {
+              "border_means": [
+                93.73456790123474,
+                93.10802469135804,
+                95.64814814814815,
+                92.25925925925925
+              ],
+              "bright_fraction": 0.9028925619834711,
+              "center_mean": 195.8177083333333,
+              "center_stddev": 1.0650373094126038,
+              "green_fraction": 0,
+              "interior_mean": 166.97107438016562,
+              "interior_stddev": 48.70971612746799,
+              "sample_count": 484
+            },
+            "state": "checked"
+          },
+          "C": {
+            "measurement": {
+              "border_means": [
+                45.62962962962964,
+                29.660493827160515,
+                42.422839506172814,
+                46.95987654320992
+              ],
+              "bright_fraction": 0,
+              "center_mean": 20.333333333333318,
+              "center_stddev": 0,
+              "green_fraction": 0,
+              "interior_mean": 20.324380165289256,
+              "interior_stddev": 0.0538909094940096,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "S": {
+            "measurement": {
+              "border_means": [
+                45.339506172839485,
+                44.11419753086419,
+                47.01234567901237,
+                44.22222222222222
+              ],
+              "bright_fraction": 0,
+              "center_mean": 19.74869791666668,
+              "center_stddev": 0.14357793711053043,
+              "green_fraction": 0,
+              "interior_mean": 19.77892561983472,
+              "interior_stddev": 0.17149036917290372,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          },
+          "all": {
+            "measurement": {
+              "border_means": [
+                44.97839506172841,
+                44.487654320987666,
+                43.03395061728398,
+                47.129629629629605
+              ],
+              "bright_fraction": 0,
+              "center_mean": 20.17708333333333,
+              "center_stddev": 0.16634082731618946,
+              "green_fraction": 0,
+              "interior_mean": 20.174931129476576,
+              "interior_stddev": 0.16646163651210677,
+              "sample_count": 484
+            },
+            "state": "unchecked"
+          }
+        },
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:59c6cf20-8657-47db-8380-06b58701ebfb",
+          "frame_sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+          "image_file_writes": 0,
+          "page": "skin_listings",
+          "regions": [
+            {
+              "error": "",
+              "kind": "condition_filter",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 24,
+                  "text": "价",
+                  "width": 24,
+                  "x": 1843,
+                  "y": 148
+                },
+                {
+                  "height": 24,
+                  "text": "格",
+                  "width": 24,
+                  "x": 1868,
+                  "y": 148
+                },
+                {
+                  "height": 21,
+                  "text": "区",
+                  "width": 22,
+                  "x": 1895,
+                  "y": 150
+                },
+                {
+                  "height": 23,
+                  "text": "间",
+                  "width": 23,
+                  "x": 1919,
+                  "y": 149
+                },
+                {
+                  "height": 34,
+                  "text": "0",
+                  "width": 33,
+                  "x": 2011,
+                  "y": 209
+                },
+                {
+                  "height": 21,
+                  "text": "230",
+                  "width": 47,
+                  "x": 2059,
+                  "y": 215
+                },
+                {
+                  "height": 24,
+                  "text": "成",
+                  "width": 24,
+                  "x": 1843,
+                  "y": 390
+                },
+                {
+                  "height": 23,
+                  "text": "色",
+                  "width": 24,
+                  "x": 1868,
+                  "y": 390
+                },
+                {
+                  "height": 18,
+                  "text": "所",
+                  "width": 19,
+                  "x": 1894,
+                  "y": 456
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1915,
+                  "y": 455
+                },
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 19,
+                  "x": 1936,
+                  "y": 455
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 1957,
+                  "y": 455
+                },
+                {
+                  "height": 34,
+                  "text": "0",
+                  "width": 33,
+                  "x": 2201,
+                  "y": 209
+                },
+                {
+                  "height": 21,
+                  "text": "10",
+                  "width": 30,
+                  "x": 2249,
+                  "y": 215
+                },
+                {
+                  "height": 7,
+                  "text": "，",
+                  "width": 4,
+                  "x": 2282,
+                  "y": 232
+                },
+                {
+                  "height": 21,
+                  "text": "000",
+                  "width": 47,
+                  "x": 2291,
+                  "y": 215
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "collection_page_refinements": [
+          {
+            "error": "",
+            "ok": true
+          }
+        ],
+        "diagnostic": "live_capture",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 209,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 193,
+            "pixel_min": 2,
+            "sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+            "source": "dxgi",
+            "source_age_ms": 29,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1490,
+          "frame_sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 143
+        },
+        "ocr_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": true,
+            "listing.default_sort": true,
+            "listing.filter_all": true,
+            "listing.filter_confirm": true,
+            "listing.filter_price": true,
+            "listing.page_number": false,
+            "listing.sale": true,
+            "listing.similar": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "list.sale",
+            "list.sort",
+            "list.condition",
+            "list.layout"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_listings"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "listing_filter",
+          "page": "skin_listings",
+          "provider_scores_available": false,
+          "reason": "OVERLAY_REQUIRES_RECHECK",
+          "token_count": 143,
+          "valid_input": true
+        },
+        "target_foreground_retained": true,
+        "condition_filter_passed": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--collection-observation"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_condition_filter": {
+              "A": {
+                "measurement": {
+                  "border_means": [
+                    45.21913580246914,
+                    44.63271604938271,
+                    43.24999999999999,
+                    47.39506172839507
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 20.333333333333318,
+                  "center_stddev": 0,
+                  "green_fraction": 0,
+                  "interior_mean": 20.333333333333336,
+                  "interior_stddev": 0,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "B": {
+                "measurement": {
+                  "border_means": [
+                    93.73456790123474,
+                    93.10802469135804,
+                    95.64814814814815,
+                    92.25925925925925
+                  ],
+                  "bright_fraction": 0.9028925619834711,
+                  "center_mean": 195.8177083333333,
+                  "center_stddev": 1.0650373094126038,
+                  "green_fraction": 0,
+                  "interior_mean": 166.97107438016562,
+                  "interior_stddev": 48.70971612746799,
+                  "sample_count": 484
+                },
+                "state": "checked"
+              },
+              "C": {
+                "measurement": {
+                  "border_means": [
+                    45.62962962962964,
+                    29.660493827160515,
+                    42.422839506172814,
+                    46.95987654320992
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 20.333333333333318,
+                  "center_stddev": 0,
+                  "green_fraction": 0,
+                  "interior_mean": 20.324380165289256,
+                  "interior_stddev": 0.0538909094940096,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "S": {
+                "measurement": {
+                  "border_means": [
+                    45.339506172839485,
+                    44.11419753086419,
+                    47.01234567901237,
+                    44.22222222222222
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 19.74869791666668,
+                  "center_stddev": 0.14357793711053043,
+                  "green_fraction": 0,
+                  "interior_mean": 19.77892561983472,
+                  "interior_stddev": 0.17149036917290372,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              },
+              "all": {
+                "measurement": {
+                  "border_means": [
+                    44.97839506172841,
+                    44.487654320987666,
+                    43.03395061728398,
+                    47.129629629629605
+                  ],
+                  "bright_fraction": 0,
+                  "center_mean": 20.17708333333333,
+                  "center_stddev": 0.16634082731618946,
+                  "green_fraction": 0,
+                  "interior_mean": 20.174931129476576,
+                  "interior_stddev": 0.16646163651210677,
+                  "sample_count": 484
+                },
+                "state": "unchecked"
+              }
+            },
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:59c6cf20-8657-47db-8380-06b58701ebfb",
+              "frame_sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+              "image_file_writes": 0,
+              "page": "skin_listings",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "condition_filter",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 24,
+                      "text": "价",
+                      "width": 24,
+                      "x": 1843,
+                      "y": 148
+                    },
+                    {
+                      "height": 24,
+                      "text": "格",
+                      "width": 24,
+                      "x": 1868,
+                      "y": 148
+                    },
+                    {
+                      "height": 21,
+                      "text": "区",
+                      "width": 22,
+                      "x": 1895,
+                      "y": 150
+                    },
+                    {
+                      "height": 23,
+                      "text": "间",
+                      "width": 23,
+                      "x": 1919,
+                      "y": 149
+                    },
+                    {
+                      "height": 34,
+                      "text": "0",
+                      "width": 33,
+                      "x": 2011,
+                      "y": 209
+                    },
+                    {
+                      "height": 21,
+                      "text": "230",
+                      "width": 47,
+                      "x": 2059,
+                      "y": 215
+                    },
+                    {
+                      "height": 24,
+                      "text": "成",
+                      "width": 24,
+                      "x": 1843,
+                      "y": 390
+                    },
+                    {
+                      "height": 23,
+                      "text": "色",
+                      "width": 24,
+                      "x": 1868,
+                      "y": 390
+                    },
+                    {
+                      "height": 18,
+                      "text": "所",
+                      "width": 19,
+                      "x": 1894,
+                      "y": 456
+                    },
+                    {
+                      "height": 19,
+                      "text": "有",
+                      "width": 19,
+                      "x": 1915,
+                      "y": 455
+                    },
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 19,
+                      "x": 1936,
+                      "y": 455
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 1957,
+                      "y": 455
+                    },
+                    {
+                      "height": 34,
+                      "text": "0",
+                      "width": 33,
+                      "x": 2201,
+                      "y": 209
+                    },
+                    {
+                      "height": 21,
+                      "text": "10",
+                      "width": 30,
+                      "x": 2249,
+                      "y": 215
+                    },
+                    {
+                      "height": 7,
+                      "text": "，",
+                      "width": 4,
+                      "x": 2282,
+                      "y": 232
+                    },
+                    {
+                      "height": 21,
+                      "text": "000",
+                      "width": 47,
+                      "x": 2291,
+                      "y": 215
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "collection_page_refinements": [
+              {
+                "error": "",
+                "ok": true
+              }
+            ],
+            "diagnostic": "live_capture",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 209,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 193,
+                "pixel_min": 2,
+                "sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+                "source": "dxgi",
+                "source_age_ms": 29,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 1490,
+              "frame_sha256": "bff59e35815ac074e9f951726f065bec4a8aeb5394a4b45deee08fa4b2906a1e",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 143
+            },
+            "ocr_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": true,
+                "listing.default_sort": true,
+                "listing.filter_all": true,
+                "listing.filter_confirm": true,
+                "listing.filter_price": true,
+                "listing.page_number": false,
+                "listing.sale": true,
+                "listing.similar": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "list.sale",
+                "list.sort",
+                "list.condition",
+                "list.layout"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_listings"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "listing_filter",
+              "page": "skin_listings",
+              "provider_scores_available": false,
+              "reason": "OVERLAY_REQUIRES_RECHECK",
+              "token_count": 143,
+              "valid_input": true
+            },
+            "target_foreground_retained": true,
+            "condition_filter_passed": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "click",
+      "point": [
+        2340,
+        1355
+      ],
+      "passed": true
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "skin_listings",
+        "--preview-stdout",
+        "--collection-observation",
+        "--collection-card-index",
+        "0"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:6eefb032-c805-4e0a-bc13-1740c818ed8f",
+          "frame_sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+          "image_file_writes": 0,
+          "page": "skin_listings",
+          "regions": [
+            {
+              "error": "",
+              "kind": "listing_controls",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 26,
+                  "text": "平",
+                  "width": 25,
+                  "x": 238,
+                  "y": 251
+                },
+                {
+                  "height": 18,
+                  "text": "已",
+                  "width": 19,
+                  "x": 276,
+                  "y": 255
+                },
+                {
+                  "height": 21,
+                  "text": "筛",
+                  "width": 20,
+                  "x": 296,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "选",
+                  "width": 20,
+                  "x": 317,
+                  "y": 253
+                },
+                {
+                  "height": 17,
+                  "text": "1",
+                  "width": 6,
+                  "x": 338,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "顶",
+                  "width": 20,
+                  "x": 346,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "不",
+                  "width": 19,
+                  "x": 527,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "限",
+                  "width": 18,
+                  "x": 549,
+                  "y": 254
+                },
+                {
+                  "height": 19,
+                  "text": "公",
+                  "width": 19,
+                  "x": 569,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "示",
+                  "width": 19,
+                  "x": 590,
+                  "y": 255
+                },
+                {
+                  "height": 20,
+                  "text": "期",
+                  "width": 18,
+                  "x": 611,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "默",
+                  "width": 19,
+                  "x": 1153,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "认",
+                  "width": 19,
+                  "x": 1174,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "排",
+                  "width": 19,
+                  "x": 1195,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "序",
+                  "width": 19,
+                  "x": 1216,
+                  "y": 253
+                },
+                {
+                  "height": 59,
+                  "text": "0",
+                  "width": 58,
+                  "x": 1803,
+                  "y": 233
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "product_title",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "令",
+                  "width": 17,
+                  "x": 1919,
+                  "y": 251
+                },
+                {
+                  "height": 24,
+                  "text": "AUG",
+                  "width": 60,
+                  "x": 1972,
+                  "y": 247
+                },
+                {
+                  "height": 26,
+                  "text": "突",
+                  "width": 25,
+                  "x": 2035,
+                  "y": 246
+                },
+                {
+                  "height": 25,
+                  "text": "击",
+                  "width": 26,
+                  "x": 2063,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "步",
+                  "width": 26,
+                  "x": 2091,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "枪",
+                  "width": 26,
+                  "x": 2119,
+                  "y": 246
+                },
+                {
+                  "height": 3,
+                  "text": "一",
+                  "width": 9,
+                  "x": 2148,
+                  "y": 259
+                },
+                {
+                  "height": 24,
+                  "text": "天",
+                  "width": 26,
+                  "x": 2160,
+                  "y": 248
+                },
+                {
+                  "height": 26,
+                  "text": "命",
+                  "width": 27,
+                  "x": 2187,
+                  "y": 246
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "selected_detail",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 1931,
+                  "y": 659
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 1953,
+                  "y": 659
+                },
+                {
+                  "height": 17,
+                  "text": "B",
+                  "width": 12,
+                  "x": 2214,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〔",
+                  "width": 6,
+                  "x": 2228,
+                  "y": 660
+                },
+                {
+                  "height": 17,
+                  "text": "2",
+                  "width": 11,
+                  "x": 2244,
+                  "y": 662
+                },
+                {
+                  "height": 3,
+                  "text": "．",
+                  "width": 3,
+                  "x": 2258,
+                  "y": 676
+                },
+                {
+                  "height": 17,
+                  "text": "080646",
+                  "width": 81,
+                  "x": 2265,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〕",
+                  "width": 6,
+                  "x": 2349,
+                  "y": 660
+                },
+                {
+                  "height": 14,
+                  "text": "7",
+                  "width": 13,
+                  "x": 2387,
+                  "y": 661
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "first_card_fields",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 127,
+                  "y": 537
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 149,
+                  "y": 537
+                },
+                {
+                  "height": 17,
+                  "text": "B",
+                  "width": 12,
+                  "x": 171,
+                  "y": 538
+                },
+                {
+                  "height": 17,
+                  "text": "230",
+                  "width": 39,
+                  "x": 937,
+                  "y": 538
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "collection_page_refinements": [
+          {
+            "error": "",
+            "ok": true
+          },
+          {
+            "error": "",
+            "ok": true
+          }
+        ],
+        "collection_selected_card": {
+          "border_means": [
+            173.3858333333333,
+            130.88819444444442,
+            197.52083333333363,
+            174.08166666666742
+          ],
+          "favorite_bright_fraction": 0.12990196078431374,
+          "favorite_warm_fraction": 0,
+          "index": 0,
+          "selected": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "skin_listings",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 255,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 255,
+            "pixel_min": 3,
+            "sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+            "source": "dxgi",
+            "source_age_ms": 34,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 3081,
+          "frame_sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 176
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "collection.added": false,
+            "collection.full": false,
+            "listing.condition": true,
+            "listing.default_sort": true,
+            "listing.filter_all": false,
+            "listing.filter_confirm": false,
+            "listing.filter_price": false,
+            "listing.page_number": true,
+            "listing.sale": true,
+            "listing.similar": true,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "list.sale",
+            "list.sort",
+            "list.condition",
+            "list.layout"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_listings"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "skin_listings",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 176,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "skin_listings",
+            "--preview-stdout",
+            "--collection-observation",
+            "--collection-card-index",
+            "0"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:6eefb032-c805-4e0a-bc13-1740c818ed8f",
+              "frame_sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+              "image_file_writes": 0,
+              "page": "skin_listings",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "listing_controls",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 26,
+                      "text": "平",
+                      "width": 25,
+                      "x": 238,
+                      "y": 251
+                    },
+                    {
+                      "height": 18,
+                      "text": "已",
+                      "width": 19,
+                      "x": 276,
+                      "y": 255
+                    },
+                    {
+                      "height": 21,
+                      "text": "筛",
+                      "width": 20,
+                      "x": 296,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "选",
+                      "width": 20,
+                      "x": 317,
+                      "y": 253
+                    },
+                    {
+                      "height": 17,
+                      "text": "1",
+                      "width": 6,
+                      "x": 338,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "顶",
+                      "width": 20,
+                      "x": 346,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "不",
+                      "width": 19,
+                      "x": 527,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "限",
+                      "width": 18,
+                      "x": 549,
+                      "y": 254
+                    },
+                    {
+                      "height": 19,
+                      "text": "公",
+                      "width": 19,
+                      "x": 569,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "示",
+                      "width": 19,
+                      "x": 590,
+                      "y": 255
+                    },
+                    {
+                      "height": 20,
+                      "text": "期",
+                      "width": 18,
+                      "x": 611,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "默",
+                      "width": 19,
+                      "x": 1153,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "认",
+                      "width": 19,
+                      "x": 1174,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "排",
+                      "width": 19,
+                      "x": 1195,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "序",
+                      "width": 19,
+                      "x": 1216,
+                      "y": 253
+                    },
+                    {
+                      "height": 59,
+                      "text": "0",
+                      "width": 58,
+                      "x": 1803,
+                      "y": 233
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "product_title",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "令",
+                      "width": 17,
+                      "x": 1919,
+                      "y": 251
+                    },
+                    {
+                      "height": 24,
+                      "text": "AUG",
+                      "width": 60,
+                      "x": 1972,
+                      "y": 247
+                    },
+                    {
+                      "height": 26,
+                      "text": "突",
+                      "width": 25,
+                      "x": 2035,
+                      "y": 246
+                    },
+                    {
+                      "height": 25,
+                      "text": "击",
+                      "width": 26,
+                      "x": 2063,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "步",
+                      "width": 26,
+                      "x": 2091,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "枪",
+                      "width": 26,
+                      "x": 2119,
+                      "y": 246
+                    },
+                    {
+                      "height": 3,
+                      "text": "一",
+                      "width": 9,
+                      "x": 2148,
+                      "y": 259
+                    },
+                    {
+                      "height": 24,
+                      "text": "天",
+                      "width": 26,
+                      "x": 2160,
+                      "y": 248
+                    },
+                    {
+                      "height": 26,
+                      "text": "命",
+                      "width": 27,
+                      "x": 2187,
+                      "y": 246
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "selected_detail",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 1931,
+                      "y": 659
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 1953,
+                      "y": 659
+                    },
+                    {
+                      "height": 17,
+                      "text": "B",
+                      "width": 12,
+                      "x": 2214,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〔",
+                      "width": 6,
+                      "x": 2228,
+                      "y": 660
+                    },
+                    {
+                      "height": 17,
+                      "text": "2",
+                      "width": 11,
+                      "x": 2244,
+                      "y": 662
+                    },
+                    {
+                      "height": 3,
+                      "text": "．",
+                      "width": 3,
+                      "x": 2258,
+                      "y": 676
+                    },
+                    {
+                      "height": 17,
+                      "text": "080646",
+                      "width": 81,
+                      "x": 2265,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〕",
+                      "width": 6,
+                      "x": 2349,
+                      "y": 660
+                    },
+                    {
+                      "height": 14,
+                      "text": "7",
+                      "width": 13,
+                      "x": 2387,
+                      "y": 661
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "first_card_fields",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 127,
+                      "y": 537
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 149,
+                      "y": 537
+                    },
+                    {
+                      "height": 17,
+                      "text": "B",
+                      "width": 12,
+                      "x": 171,
+                      "y": 538
+                    },
+                    {
+                      "height": 17,
+                      "text": "230",
+                      "width": 39,
+                      "x": 937,
+                      "y": 538
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "collection_page_refinements": [
+              {
+                "error": "",
+                "ok": true
+              },
+              {
+                "error": "",
+                "ok": true
+              }
+            ],
+            "collection_selected_card": {
+              "border_means": [
+                173.3858333333333,
+                130.88819444444442,
+                197.52083333333363,
+                174.08166666666742
+              ],
+              "favorite_bright_fraction": 0.12990196078431374,
+              "favorite_warm_fraction": 0,
+              "index": 0,
+              "selected": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "skin_listings",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 255,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 255,
+                "pixel_min": 3,
+                "sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+                "source": "dxgi",
+                "source_age_ms": 34,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 3081,
+              "frame_sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 176
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "collection.added": false,
+                "collection.full": false,
+                "listing.condition": true,
+                "listing.default_sort": true,
+                "listing.filter_all": false,
+                "listing.filter_confirm": false,
+                "listing.filter_price": false,
+                "listing.page_number": true,
+                "listing.sale": true,
+                "listing.similar": true,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "list.sale",
+                "list.sort",
+                "list.condition",
+                "list.layout"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_listings"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "skin_listings",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 176,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "collect_selected",
+      "point": [
+        2339,
+        320
+      ],
+      "passed": true,
+      "collection_attempt": {
+        "eligible": true,
+        "product": "AUG突击步枪-天命",
+        "condition": "成色B",
+        "price": "230",
+        "wear": "2.080646",
+        "row_index": 2,
+        "source_frame_id": "dxgi:6eefb032-c805-4e0a-bc13-1740c818ed8f",
+        "source_frame_sha256": "5a20731c2421a1e3dbc0325de10045665dc0fc7fd0da36e3d05f1fe9587bf6e5",
+        "purchase_phase_enabled": false,
+        "source_sha256": "cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253",
+        "age_at_action_ms": 3081.0,
+        "receipt_status": "pending"
+      }
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "skin_listings",
+        "--preview-stdout",
+        "--collection-observation",
+        "--collection-card-index",
+        "0"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "collection_observation": {
+          "coverage": "field_projection",
+          "frame_id": "dxgi:1a2a8da2-17a6-471d-ab1e-df0849eca998",
+          "frame_sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+          "image_file_writes": 0,
+          "page": "skin_listings",
+          "regions": [
+            {
+              "error": "",
+              "kind": "listing_controls",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 26,
+                  "text": "平",
+                  "width": 25,
+                  "x": 238,
+                  "y": 251
+                },
+                {
+                  "height": 18,
+                  "text": "已",
+                  "width": 19,
+                  "x": 276,
+                  "y": 255
+                },
+                {
+                  "height": 21,
+                  "text": "筛",
+                  "width": 20,
+                  "x": 296,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "选",
+                  "width": 20,
+                  "x": 317,
+                  "y": 253
+                },
+                {
+                  "height": 17,
+                  "text": "1",
+                  "width": 6,
+                  "x": 338,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "顶",
+                  "width": 20,
+                  "x": 346,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "不",
+                  "width": 19,
+                  "x": 527,
+                  "y": 255
+                },
+                {
+                  "height": 19,
+                  "text": "限",
+                  "width": 18,
+                  "x": 549,
+                  "y": 254
+                },
+                {
+                  "height": 19,
+                  "text": "公",
+                  "width": 19,
+                  "x": 569,
+                  "y": 254
+                },
+                {
+                  "height": 18,
+                  "text": "示",
+                  "width": 19,
+                  "x": 590,
+                  "y": 255
+                },
+                {
+                  "height": 20,
+                  "text": "期",
+                  "width": 18,
+                  "x": 611,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "默",
+                  "width": 19,
+                  "x": 1153,
+                  "y": 253
+                },
+                {
+                  "height": 19,
+                  "text": "认",
+                  "width": 19,
+                  "x": 1174,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "排",
+                  "width": 19,
+                  "x": 1195,
+                  "y": 253
+                },
+                {
+                  "height": 20,
+                  "text": "序",
+                  "width": 19,
+                  "x": 1216,
+                  "y": 253
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "product_title",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "令",
+                  "width": 17,
+                  "x": 1919,
+                  "y": 251
+                },
+                {
+                  "height": 29,
+                  "text": "％",
+                  "width": 29,
+                  "x": 1931,
+                  "y": 240
+                },
+                {
+                  "height": 24,
+                  "text": "AUG",
+                  "width": 60,
+                  "x": 1972,
+                  "y": 247
+                },
+                {
+                  "height": 26,
+                  "text": "突",
+                  "width": 25,
+                  "x": 2035,
+                  "y": 246
+                },
+                {
+                  "height": 25,
+                  "text": "击",
+                  "width": 26,
+                  "x": 2063,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "步",
+                  "width": 26,
+                  "x": 2091,
+                  "y": 246
+                },
+                {
+                  "height": 26,
+                  "text": "枪",
+                  "width": 26,
+                  "x": 2119,
+                  "y": 246
+                },
+                {
+                  "height": 3,
+                  "text": "一",
+                  "width": 9,
+                  "x": 2148,
+                  "y": 259
+                },
+                {
+                  "height": 24,
+                  "text": "天",
+                  "width": 26,
+                  "x": 2160,
+                  "y": 248
+                },
+                {
+                  "height": 26,
+                  "text": "命",
+                  "width": 27,
+                  "x": 2187,
+                  "y": 246
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "selected_detail",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 1931,
+                  "y": 659
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 1953,
+                  "y": 659
+                },
+                {
+                  "height": 17,
+                  "text": "B",
+                  "width": 12,
+                  "x": 2214,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〔",
+                  "width": 6,
+                  "x": 2228,
+                  "y": 660
+                },
+                {
+                  "height": 17,
+                  "text": "2",
+                  "width": 11,
+                  "x": 2244,
+                  "y": 662
+                },
+                {
+                  "height": 3,
+                  "text": "．",
+                  "width": 3,
+                  "x": 2258,
+                  "y": 676
+                },
+                {
+                  "height": 17,
+                  "text": "080646",
+                  "width": 81,
+                  "x": 2265,
+                  "y": 662
+                },
+                {
+                  "height": 20,
+                  "text": "〕",
+                  "width": 6,
+                  "x": 2349,
+                  "y": 660
+                },
+                {
+                  "height": 14,
+                  "text": "7",
+                  "width": 13,
+                  "x": 2387,
+                  "y": 661
+                }
+              ]
+            },
+            {
+              "error": "",
+              "kind": "first_card_fields",
+              "ok": true,
+              "truncated": false,
+              "words": [
+                {
+                  "height": 19,
+                  "text": "成",
+                  "width": 20,
+                  "x": 127,
+                  "y": 537
+                },
+                {
+                  "height": 19,
+                  "text": "色",
+                  "width": 19,
+                  "x": 149,
+                  "y": 537
+                },
+                {
+                  "height": 17,
+                  "text": "B",
+                  "width": 12,
+                  "x": 171,
+                  "y": 538
+                },
+                {
+                  "height": 17,
+                  "text": "230",
+                  "width": 39,
+                  "x": 937,
+                  "y": 538
+                }
+              ]
+            }
+          ],
+          "same_frame": true
+        },
+        "collection_page_refinements": [
+          {
+            "error": "",
+            "ok": true
+          }
+        ],
+        "collection_selected_card": {
+          "border_means": [
+            173.3858333333333,
+            130.88819444444442,
+            197.52083333333363,
+            174.08166666666742
+          ],
+          "favorite_bright_fraction": 0,
+          "favorite_warm_fraction": 0.13398692810457516,
+          "index": 0,
+          "selected": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "skin_listings",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 220,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 255,
+            "pixel_min": 3,
+            "sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+            "source": "dxgi",
+            "source_age_ms": 36,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 2692,
+          "frame_sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 188
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": true,
+            "collection.added": true,
+            "collection.full": false,
+            "listing.condition": true,
+            "listing.default_sort": true,
+            "listing.filter_all": false,
+            "listing.filter_confirm": false,
+            "listing.filter_price": false,
+            "listing.page_number": true,
+            "listing.sale": true,
+            "listing.similar": true,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "list.sale",
+            "list.sort",
+            "list.condition",
+            "list.layout"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "skin_listings"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "skin_listings",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 188,
+          "valid_input": true
+        },
+        "target_foreground_retained": true,
+        "collection_receipt_passed": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "skin_listings",
+            "--preview-stdout",
+            "--collection-observation",
+            "--collection-card-index",
+            "0"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "collection_observation": {
+              "coverage": "field_projection",
+              "frame_id": "dxgi:1a2a8da2-17a6-471d-ab1e-df0849eca998",
+              "frame_sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+              "image_file_writes": 0,
+              "page": "skin_listings",
+              "regions": [
+                {
+                  "error": "",
+                  "kind": "listing_controls",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 26,
+                      "text": "平",
+                      "width": 25,
+                      "x": 238,
+                      "y": 251
+                    },
+                    {
+                      "height": 18,
+                      "text": "已",
+                      "width": 19,
+                      "x": 276,
+                      "y": 255
+                    },
+                    {
+                      "height": 21,
+                      "text": "筛",
+                      "width": 20,
+                      "x": 296,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "选",
+                      "width": 20,
+                      "x": 317,
+                      "y": 253
+                    },
+                    {
+                      "height": 17,
+                      "text": "1",
+                      "width": 6,
+                      "x": 338,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "顶",
+                      "width": 20,
+                      "x": 346,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "不",
+                      "width": 19,
+                      "x": 527,
+                      "y": 255
+                    },
+                    {
+                      "height": 19,
+                      "text": "限",
+                      "width": 18,
+                      "x": 549,
+                      "y": 254
+                    },
+                    {
+                      "height": 19,
+                      "text": "公",
+                      "width": 19,
+                      "x": 569,
+                      "y": 254
+                    },
+                    {
+                      "height": 18,
+                      "text": "示",
+                      "width": 19,
+                      "x": 590,
+                      "y": 255
+                    },
+                    {
+                      "height": 20,
+                      "text": "期",
+                      "width": 18,
+                      "x": 611,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "默",
+                      "width": 19,
+                      "x": 1153,
+                      "y": 253
+                    },
+                    {
+                      "height": 19,
+                      "text": "认",
+                      "width": 19,
+                      "x": 1174,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "排",
+                      "width": 19,
+                      "x": 1195,
+                      "y": 253
+                    },
+                    {
+                      "height": 20,
+                      "text": "序",
+                      "width": 19,
+                      "x": 1216,
+                      "y": 253
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "product_title",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "令",
+                      "width": 17,
+                      "x": 1919,
+                      "y": 251
+                    },
+                    {
+                      "height": 29,
+                      "text": "％",
+                      "width": 29,
+                      "x": 1931,
+                      "y": 240
+                    },
+                    {
+                      "height": 24,
+                      "text": "AUG",
+                      "width": 60,
+                      "x": 1972,
+                      "y": 247
+                    },
+                    {
+                      "height": 26,
+                      "text": "突",
+                      "width": 25,
+                      "x": 2035,
+                      "y": 246
+                    },
+                    {
+                      "height": 25,
+                      "text": "击",
+                      "width": 26,
+                      "x": 2063,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "步",
+                      "width": 26,
+                      "x": 2091,
+                      "y": 246
+                    },
+                    {
+                      "height": 26,
+                      "text": "枪",
+                      "width": 26,
+                      "x": 2119,
+                      "y": 246
+                    },
+                    {
+                      "height": 3,
+                      "text": "一",
+                      "width": 9,
+                      "x": 2148,
+                      "y": 259
+                    },
+                    {
+                      "height": 24,
+                      "text": "天",
+                      "width": 26,
+                      "x": 2160,
+                      "y": 248
+                    },
+                    {
+                      "height": 26,
+                      "text": "命",
+                      "width": 27,
+                      "x": 2187,
+                      "y": 246
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "selected_detail",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 1931,
+                      "y": 659
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 1953,
+                      "y": 659
+                    },
+                    {
+                      "height": 17,
+                      "text": "B",
+                      "width": 12,
+                      "x": 2214,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〔",
+                      "width": 6,
+                      "x": 2228,
+                      "y": 660
+                    },
+                    {
+                      "height": 17,
+                      "text": "2",
+                      "width": 11,
+                      "x": 2244,
+                      "y": 662
+                    },
+                    {
+                      "height": 3,
+                      "text": "．",
+                      "width": 3,
+                      "x": 2258,
+                      "y": 676
+                    },
+                    {
+                      "height": 17,
+                      "text": "080646",
+                      "width": 81,
+                      "x": 2265,
+                      "y": 662
+                    },
+                    {
+                      "height": 20,
+                      "text": "〕",
+                      "width": 6,
+                      "x": 2349,
+                      "y": 660
+                    },
+                    {
+                      "height": 14,
+                      "text": "7",
+                      "width": 13,
+                      "x": 2387,
+                      "y": 661
+                    }
+                  ]
+                },
+                {
+                  "error": "",
+                  "kind": "first_card_fields",
+                  "ok": true,
+                  "truncated": false,
+                  "words": [
+                    {
+                      "height": 19,
+                      "text": "成",
+                      "width": 20,
+                      "x": 127,
+                      "y": 537
+                    },
+                    {
+                      "height": 19,
+                      "text": "色",
+                      "width": 19,
+                      "x": 149,
+                      "y": 537
+                    },
+                    {
+                      "height": 17,
+                      "text": "B",
+                      "width": 12,
+                      "x": 171,
+                      "y": 538
+                    },
+                    {
+                      "height": 17,
+                      "text": "230",
+                      "width": 39,
+                      "x": 937,
+                      "y": 538
+                    }
+                  ]
+                }
+              ],
+              "same_frame": true
+            },
+            "collection_page_refinements": [
+              {
+                "error": "",
+                "ok": true
+              }
+            ],
+            "collection_selected_card": {
+              "border_means": [
+                173.3858333333333,
+                130.88819444444442,
+                197.52083333333363,
+                174.08166666666742
+              ],
+              "favorite_bright_fraction": 0,
+              "favorite_warm_fraction": 0.13398692810457516,
+              "index": 0,
+              "selected": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "skin_listings",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 220,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 255,
+                "pixel_min": 3,
+                "sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+                "source": "dxgi",
+                "source_age_ms": 36,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 2692,
+              "frame_sha256": "856ef7bfdf8c49bb8352d268edb9ac84fea955a99c8705bfccbe806d1e4a494b",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 188
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": true,
+                "collection.added": true,
+                "collection.full": false,
+                "listing.condition": true,
+                "listing.default_sort": true,
+                "listing.filter_all": false,
+                "listing.filter_confirm": false,
+                "listing.filter_price": false,
+                "listing.page_number": true,
+                "listing.sale": true,
+                "listing.similar": true,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "list.sale",
+                "list.sort",
+                "list.condition",
+                "list.layout"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "skin_listings"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "skin_listings",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 188,
+              "valid_input": true
+            },
+            "target_foreground_retained": true,
+            "collection_receipt_passed": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": null,
+  "ide_restored": true,
+  "timestamp": "2026-10-07T19:35:33.004687+08:00",
+  "binary_sha256": "59ffd89c42486240e4c455f660cee96348da679bda980f9a355cba813379cdd9",
+  "plan": {
+    "name": "Collection condition: source row 2",
+    "timeout_seconds": 30,
+    "steps": [
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings"
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          300,
+          263
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "require_label": {
+          "region": "product_title",
+          "label": "AUG突击步枪-天命"
+        }
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          2187,
+          539
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "expected_overlay": "listing_filter",
+        "skip_if_condition_state": [
+          "B",
+          "checked"
+        ]
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_condition_filter": {
+          "all": "unchecked",
+          "S": "unchecked",
+          "A": "unchecked",
+          "B": "checked",
+          "C": "unchecked"
+        }
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_listings",
+        "point": [
+          2340,
+          1355
+        ],
+        "viewport": [
+          2560,
+          1440
+        ],
+        "expected_overlay": "listing_filter"
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings",
+        "card_index": 0,
+        "preview": true
+      },
+      {
+        "kind": "collect_selected",
+        "expected_before": "skin_listings",
+        "snapshot": "artifacts/m2_savedvalue_collection/input/task_snapshot.json",
+        "row_index": 2,
+        "viewport": [
+          2560,
+          1440
+        ],
+        "skip_ineligible": true,
+        "skip_favorited": true
+      },
+      {
+        "kind": "capture",
+        "collection_observation": true,
+        "expected_page": "skin_listings",
+        "card_index": 0,
+        "expect_collection_added": true,
+        "receipt_if_pending": true,
+        "preview": true
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "ocr_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "runner_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "tests/manual/run_foreground_batch.py",
+    "--plan",
+    "tests/manual/plans/collection_aug_b_start.json",
+    "--record",
+    "artifacts/m2_savedvalue_collection/live_aug_b_start.json"
+  ],
+  "exit_status": 0,
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1080816640
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1080816640
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1080833375
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 4,
+  "image_file_writes": 0
+}

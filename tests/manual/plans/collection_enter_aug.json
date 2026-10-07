@@ -1,0 +1,11 @@
+{
+ "name":"Match first requested catalogue name and title, then enter sale listings",
+ "timeout_seconds":20,
+ "steps":[
+  {"kind":"capture","expected_page":"skin_home","ui_regions":true,"collection_observation":true},
+  {"kind":"click_label","expected_before":"skin_home","region":"catalog_names","label":"AUG突击步枪-天命","viewport":[2560,1440]},
+  {"kind":"capture","expected_page":"skin_home","ui_regions":true,"collection_observation":true},
+  {"kind":"click","expected_before":"skin_home","point":[2240,1180],"viewport":[2560,1440],"require_label":{"region":"product_title","label":"AUG突击步枪-天命"}},
+  {"kind":"capture","ui_regions":true,"market_anchors":true,"preview":true}
+ ]
+}
