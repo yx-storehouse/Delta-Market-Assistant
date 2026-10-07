@@ -75,15 +75,45 @@ add_executable(profile_store_tests tests/business/profile_store_tests.cpp)
 target_include_directories(profile_store_tests PRIVATE src)
 target_link_libraries(profile_store_tests PRIVATE relink_business Qt6::Core)
 
-add_library(relink_runtime STATIC src/application/runtime/runtime.cpp src/application/runtime/runtime.h)
+add_library(relink_runtime STATIC
+  src/application/runtime/runtime.cpp src/application/runtime/runtime.h
+  src/application/runtime/observation/observation_adapter.cpp
+  src/application/runtime/observation/observation_adapter.h
+  src/application/vision/worker_protocol.cpp src/application/vision/worker_protocol.h
+  src/application/vision/lease_pool.cpp src/application/vision/lease_pool.h)
 target_include_directories(relink_runtime PUBLIC src)
 target_link_libraries(relink_runtime PUBLIC Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_runtime)
 target_link_libraries(RelinkStudio PRIVATE relink_business)
 
+# Windows transport is independent of the replay/domain/UI layers. The fixture
+# worker is a test executable, never copied into the desktop release directory.
+add_library(relink_vision_transport STATIC
+  src/application/vision/shared_frame_memory.cpp src/application/vision/shared_frame_memory.h
+  src/application/vision/worker_process.cpp src/application/vision/worker_process.h)
+target_include_directories(relink_vision_transport PUBLIC src)
+target_link_libraries(relink_vision_transport PUBLIC relink_runtime Qt6::Core)
+add_executable(shared_frame_memory_tests tests/runtime/shared_frame_memory_tests.cpp)
+target_link_libraries(shared_frame_memory_tests PRIVATE relink_vision_transport)
+add_executable(vision_worker_fixture tests/runtime/vision_worker_fixture.cpp)
+target_link_libraries(vision_worker_fixture PRIVATE relink_vision_transport)
+add_executable(worker_process_tests tests/runtime/worker_process_tests.cpp)
+target_link_libraries(worker_process_tests PRIVATE relink_vision_transport)
+add_dependencies(worker_process_tests vision_worker_fixture)
+
 add_executable(runtime_tests tests/runtime/replay_tests.cpp)
 target_include_directories(runtime_tests PRIVATE src)
 target_link_libraries(runtime_tests PRIVATE relink_runtime Qt6::Core)
+
+add_executable(observation_adapter_tests tests/runtime/observation_adapter_tests.cpp)
+add_executable(worker_protocol_tests tests/runtime/worker_protocol_tests.cpp)
+target_include_directories(worker_protocol_tests PRIVATE src)
+target_link_libraries(worker_protocol_tests PRIVATE relink_runtime Qt6::Core)
+add_executable(vision_pipeline_tests tests/runtime/vision_pipeline_tests.cpp)
+target_include_directories(vision_pipeline_tests PRIVATE src)
+target_link_libraries(vision_pipeline_tests PRIVATE relink_runtime Qt6::Core)
+target_include_directories(observation_adapter_tests PRIVATE src)
+target_link_libraries(observation_adapter_tests PRIVATE relink_runtime Qt6::Core)
 
 # PR07 read-only import preview projection checks.  Keep the adapter and
 # projection under test without constructing the visible application window.
@@ -110,7 +140,15 @@ target_link_libraries(RelinkStudio PRIVATE relink_sqlite)
 add_library(relink_workspace STATIC
   src/application/workspace/workspace_controller.cpp
   src/application/workspace/workspace_controller.h
-  src/application/workspace/workspace_projection.h)
+  src/application/workspace/workspace_projection.h
+  src/application/workspace/profile_catalog.cpp
+  src/application/workspace/profile_catalog.h
+  src/application/workspace/replay_scenario.cpp
+  src/application/workspace/replay_scenario.h
+  src/application/workspace/history_query_service.cpp
+  src/application/workspace/history_query_service.h
+  src/application/workspace/records_exporter.cpp
+  src/application/workspace/records_exporter.h)
 target_include_directories(relink_workspace PUBLIC src)
 target_link_libraries(relink_workspace PUBLIC relink_business relink_runtime relink_sqlite Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_workspace)
@@ -137,6 +175,12 @@ add_test(NAME business_rule_tests COMMAND business_rule_tests)
 add_test(NAME business_migration_tests COMMAND business_migration_tests)
 add_test(NAME profile_store_tests COMMAND profile_store_tests)
 add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/replay_cases.json")
+add_test(NAME observation_adapter_tests COMMAND observation_adapter_tests)
+add_test(NAME worker_protocol_tests COMMAND worker_protocol_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/messages")
+add_test(NAME vision_pipeline_tests COMMAND vision_pipeline_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/messages")
+add_test(NAME shared_frame_memory_tests COMMAND shared_frame_memory_tests)
+add_test(NAME worker_process_tests COMMAND worker_process_tests "$<TARGET_FILE:vision_worker_fixture>" "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/messages")
+set_tests_properties(worker_process_tests PROPERTIES TIMEOUT 45)
 add_test(NAME ui_projection_tests COMMAND ui_projection_tests)
 add_test(NAME ledger_tests COMMAND ledger_tests)
 add_test(NAME sqlite_ledger_tests COMMAND sqlite_ledger_tests)

@@ -1,0 +1,10 @@
+{
+  "services": {
+    "profile_catalog": "src/application/workspace/profile_catalog.h",
+    "replay_scenario": "src/application/workspace/replay_scenario.h",
+    "history_query_service": "src/application/workspace/history_query_service.h",
+    "records_exporter": "src/application/workspace/records_exporter.h"
+  },
+  "controller": "src\\application\\workspace\\workspace_controller.cpp",
+  "cmake_registered": true
+}

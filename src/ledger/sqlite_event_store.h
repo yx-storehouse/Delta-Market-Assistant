@@ -32,6 +32,7 @@ public:
     int schemaVersion() const;
     StoreResult<int> eventCount() const; // Committed events only.
     StoreResult<QVector<StoredRun>> committedRuns() const;
+    StoreResult<QVector<RunSummary>> runSummaries() const;
     StoreResult<QVector<EventDraft>> eventsForRun(const QString& runId) const;
     StoreResult<QVector<RecoveryAuditRecord>> recoveryAudit(const QString& runId) const;
     VoidResult backupTo(const QString& destinationPath) const;

@@ -1,5 +1,9 @@
 #include "application/workspace/workspace_controller.h"
+#include "application/workspace/profile_catalog.h"
+#include "application/workspace/history_query_service.h"
+#include "application/workspace/records_exporter.h"
 #include "config/profile_store.h"
+#include "ledger/sqlite_event_store.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -19,6 +23,7 @@
 
 using namespace relink::workspace;
 using namespace relink::config;
+using namespace relink;
 
 namespace {
 int assertions = 0;
@@ -685,6 +690,112 @@ void testExportStorageProtection(const QString& root)
          QStringLiteral("ordinary_record_export_still_succeeds"));
 }
 
+void testSummaryIsolation(const QString& root)
+{
+    WorkspaceController c;
+    if (!good(c.open(root),c,QStringLiteral("summary_open"))
+        || !good(c.selectBuiltInFixture(),c,QStringLiteral("summary_select_fixture"))
+        || !good(c.start(),c,QStringLiteral("summary_first_start"))
+        || !good(c.advance(),c,QStringLiteral("summary_first_complete"))) return;
+    const QString older = c.projection().selectedRunId;
+    if (!good(c.start(),c,QStringLiteral("summary_second_start"))
+        || !good(c.advance(),c,QStringLiteral("summary_second_complete"))) return;
+    const QString selected = c.projection().selectedRunId;
+    check(c.projection().runs.size()==2,QStringLiteral("summary_contains_two_runs"));
+    for (const auto& row : c.projection().runs) {
+        check(row.profileId==WorkspaceController::builtinProfileId() && row.profileRevision==1
+                  && !row.profileName.isEmpty() && row.mode==QStringLiteral("Replay")
+                  && row.source==QStringLiteral("synthetic_replay") && row.state==QStringLiteral("Completed"),
+              QStringLiteral("summary_preserves_metadata_without_detail_")+row.id);
+        check(row.confirmedSuccess==1 && row.unknownCount==1 && row.reservationCount==1,
+              QStringLiteral("summary_preserves_ledger_counts_without_detail_")+row.id);
+    }
+    const auto before=businessState(c.projection());
+    const QString database=c.projection().databasePath;
+    RawConnection raw(database);
+    if (!check(raw.opened,QStringLiteral("summary_raw_connection"))) return;
+    QString eventId,payload;
+    {
+        QSqlQuery q(raw.database);
+        q.prepare(QStringLiteral("SELECT event_id,payload_json FROM events WHERE run_id=? AND type='Observation' ORDER BY seq LIMIT 1"));
+        q.addBindValue(older);
+        if (!check(q.exec() && q.next(),QStringLiteral("summary_unselected_observation_located"))) return;
+        eventId=q.value(0).toString(); payload=q.value(1).toString();
+    }
+    {
+        QSqlQuery q(raw.database);
+        q.prepare(QStringLiteral("UPDATE events SET payload_json='not-json' WHERE event_id=?")); q.addBindValue(eventId);
+        if (!check(q.exec(),QStringLiteral("summary_corrupt_unselected_detail"))) return;
+    }
+    check(c.refresh() && c.projection().selectedRunId==selected && businessState(c.projection())==before,
+          QStringLiteral("summary_refresh_does_not_parse_unselected_event_detail"));
+    check(!c.selectRun(older) && c.lastError().contains(QStringLiteral("EVENT_PAYLOAD_INVALID"))
+              && c.projection().selectedRunId==selected && businessState(c.projection())==before,
+          QStringLiteral("selected_corrupt_detail_rejected_without_projection_mutation"));
+    {
+        QSqlQuery q(raw.database);
+        q.prepare(QStringLiteral("UPDATE events SET payload_json=? WHERE event_id=?")); q.addBindValue(payload); q.addBindValue(eventId);
+        check(q.exec(),QStringLiteral("summary_restore_unselected_detail"));
+    }
+    check(c.selectRun(older) && c.projection().confirmedSuccess==1,
+          QStringLiteral("summary_restored_detail_selectable"));
+
+    // A committed metadata-only query must use the same count semantics as
+    // snapshot: success quantities, held-reservation count, not receipt events.
+    check(c.close(),QStringLiteral("summary_controller_close"));
+    relink::ledger::SqliteEventStore store;
+    check(std::holds_alternative<relink::ledger::StoreVoid>(store.open(database)),QStringLiteral("summary_direct_store_open"));
+    {
+        QSqlQuery q(raw.database);
+        q.prepare(QStringLiteral("UPDATE attempts SET quantity=3 WHERE run_id=? AND state='Success'")); q.addBindValue(older);
+        check(q.exec(),QStringLiteral("summary_quantity_greater_than_one_fixture"));
+    }
+    {
+        QSqlQuery q(raw.database);
+        q.prepare(QStringLiteral("INSERT INTO events(event_id,run_id,session_id,clock_domain_id,step_id,seq,at_mono_ms,cancel_epoch,viewport_generation,type,payload_json) SELECT ?,run_id,session_id,clock_domain_id,step_id,(SELECT max(seq)+1 FROM events WHERE run_id=?),at_mono_ms,cancel_epoch,viewport_generation,'ReceiptConfirmed','{\"confirmed_price\":\"9999\",\"attempt_id\":\"forged\",\"transaction_id\":\"forged\"}' FROM events WHERE run_id=? ORDER BY seq DESC LIMIT 1"));
+        q.addBindValue(QStringLiteral("summary-forged-receipt")); q.addBindValue(older); q.addBindValue(older);
+        check(q.exec(),QStringLiteral("summary_forged_receipt_without_run_state"));
+    }
+    const auto summaryResult=store.runSummaries();
+    const auto snapshotResult=store.snapshot(older);
+    check(std::holds_alternative<QVector<relink::ledger::RunSummary>>(summaryResult)
+              && std::holds_alternative<relink::ledger::LedgerSnapshot>(snapshotResult),
+          QStringLiteral("summary_and_snapshot_read_succeed"));
+    if (const auto* rows=std::get_if<QVector<relink::ledger::RunSummary>>(&summaryResult)) {
+        if (const auto* snapshot=std::get_if<relink::ledger::LedgerSnapshot>(&snapshotResult))
+            for (const auto& row : *rows) if (row.runId==older)
+                check(row.confirmedSuccess==3 && row.confirmedSuccess==snapshot->confirmedSuccess
+                          && row.state==QStringLiteral("Completed") && row.unknownCount==1
+                          && row.reservationCount==snapshot->unresolvedReservations,
+                      QStringLiteral("summary_quantity_and_reservation_semantics_match_snapshot"));
+    }
+    check(std::holds_alternative<relink::ledger::StoreVoid>(store.close()),QStringLiteral("summary_direct_store_close"));
+}
+
+void testServiceBoundaries(const QString& root)
+{
+    QDir().mkpath(QDir(root).filePath(QStringLiteral("profiles")));
+    ProfileCatalog catalog;
+    const auto scanned = catalog.scan(root, ProfileCatalog::builtinProfileId());
+    check(scanned.ok && scanned.rows.size() == 1, QStringLiteral("profile_catalog_scans_builtin_only"));
+    check(scanned.documents.contains(ProfileCatalog::builtinProfileId()), QStringLiteral("profile_catalog_publishes_builtin_document"));
+    check(WorkspaceController::builtinProfileId() == ProfileCatalog::builtinProfileId(), QStringLiteral("controller_uses_profile_catalog_identity"));
+
+    relink::ledger::SqliteEventStore store;
+    relink::ledger::SqliteEventStore::OpenOptions options; options.busyTimeoutMs = 30;
+    check(std::holds_alternative<relink::ledger::StoreVoid>(store.open(QDir(root).filePath(QStringLiteral("workspace.sqlite")), options)),
+          QStringLiteral("history_service_store_open"));
+    HistoryQueryService history;
+    const auto summaries = history.loadSummaries(store);
+    check(std::holds_alternative<QVector<relink::ledger::RunSummary>>(summaries)
+              && std::get<QVector<relink::ledger::RunSummary>>(summaries).isEmpty(),
+          QStringLiteral("history_summary_does_not_load_detail_for_empty_workspace"));
+    check(std::holds_alternative<relink::ledger::StoreVoid>(store.close()),
+          QStringLiteral("history_service_store_close"));
+    store.close();
+    check(RecordsExporter::csvCell(QStringLiteral("=SUM(A1)")) == QStringLiteral("\"'=SUM(A1)\""),
+          QStringLiteral("records_exporter_preserves_formula_guard"));
+}
 void testCsvEscaping()
 {
     const QStringList dangerous{
@@ -730,6 +841,8 @@ int main(int argc, char** argv)
     testUncommittedReceiptProjection(path(QStringLiteral("receipt_projection")));
     testExportStorageProtection(path(QStringLiteral("export_protection")));
     testCsvEscaping();
+    testServiceBoundaries(path(QStringLiteral("services")));
+    testSummaryIsolation(path(QStringLiteral("summary_isolation")));
     std::cout << "WORKSPACE_TESTS=" << (failures == 0 ? "PASS" : "FAIL")
               << "; assertions=" << assertions << "; failures=" << failures
               << "; real_database=true; real_lock_failures=true; external_actions=0\n";

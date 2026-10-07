@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <QJsonObject>
 #include <QString>
@@ -128,6 +128,13 @@ struct RecoverySet {
 struct StoredRun {
     QString runId;
     QString sessionId;
+};
+
+// Metadata-only catalogue row. Detail payloads are selected-run only.
+struct RunSummary {
+    QString runId, sessionId, profileId, profileName, mode, source, state;
+    int profileRevision = 0, confirmedSuccess = 0, unknownCount = 0, reservationCount = 0;
+    bool recovered = false;
 };
 struct RecoveryAuditRecord {
     QString attemptId, previousState, recoveredState, previousProof, reason;

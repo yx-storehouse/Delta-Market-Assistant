@@ -1,12 +1,16 @@
 # Delta Market Assistant · 三角洲市场助手
 
-## 当前开发进度：PR12A 页面与验收模块化
+## 当前开发进度：PR12B 服务整理与 M2 非游戏基础层
 
 项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR11 已接入领域规则、只读导入预览、审定方案保存、持久化合成回放、已提交账本与历史记录。运行页可选择审定方案或内置回放样例；工作台提供回放单步/快速推进，日志页查看并导出历史事实。已保存方案持续未启用，只有显式选择的内置合成样例产生模拟账本，不连接真实市场。
 
 开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/workspace_pr11.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。正常业务数据位于应用本地数据目录的 `business` 子目录；`--workspace-dir` 可指定独立目录，`--workspace-read-only` 用于只读查看。界面显示中文状态，完整原始 ID 和原因码保留在提示中。
 
-本轮在 PR11 业务不变的前提下完成 PR12A：独立任务页、运行参数页、记录面板、任务编辑器，以及离屏验收 runner；新增不链接 SQLite 的 `relink_ui` 与 90 条模块断言。维护入口见 `docs/business_rebuild/implementation/ui_modularization_pr12a.md`。下一步先做 PR12B 服务/历史查询整理，再完成原 PR12 总体验收。
+PR12A 的独立 UI 页面和验收模块保持；这轮完成 `ProfileCatalog`、`ReplayScenario`、`HistoryQueryService`、`RecordsExporter` 的服务职责分离。历史列表先读摘要、选中运行才读明细；UI、领域、运行时、SQLite 仍为轻量模块化单体，不引入后台服务或通用插件框架。
+
+图像基础层已加入步骤触发的内存观察、worker 协议/双槽 lease、真实 Win32 共享内存及隐藏合成子进程传输。纯状态层 `relink_runtime` 与操作系统传输层 `relink_vision_transport` 分离；后者由独立测试目标验证，没有接入桌面程序。测试子程序不是 OCR worker，不随发布包交付。产品仍不读取游戏画面；`--snapshot-dir` 单独使用只作离屏呈现，交互回放仅由 `--self-test` 启动。
+
+本轮完整 CTest 已通过 19/19：工作区 432、UI 模块 90、观察适配器 828、worker 协议 646、进程内图像链路 279、Win32 共享帧 65、隐藏合成 worker 传输 206 条断言通过；UI / 工作区 UI / 存储自检分别为 206 / 58 / 22 项，独立负向包验收为 41/41。最终发布、包内复验及回退状态以 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 和 `artifacts/m1_pr12b_delivery/VERIFICATION.txt` 中与本轮构建哈希对应的命令为准，不沿用旧包结果。接口见 [内存观察](docs/business_rebuild/implementation/runtime/observation_adapter_pr12b.md)、[协议与 lease](docs/business_rebuild/implementation/runtime/worker_protocol_pr12b.md) 和 [真实内存/进程传输](docs/business_rebuild/implementation/runtime/vision_transport_pr12b.md)。下一步是真实游戏窗口、ROI 和 OCR provider 校准；现有测试不代表真实识别已接通。
 
 ## 当前版本：0.6 Windows 11 浅色 · 微软商店布局
 
@@ -60,6 +64,9 @@ src/ui/dialogs/       本地任务编辑草稿与校验
 src/ui/presentation/  共享表格、卡片、按钮与显示文字
 src/diagnostics/      原有离屏几何/文字/交互验收 runner
 src/application/startup_config.*  启动配置恢复的共享入口
+src/application/workspace/       工作区协调、方案目录、回放、历史查询和导出服务
+src/application/runtime/observation/ 步骤触发、有界合成内存帧与识别接口
+src/application/vision/          协议/lease 状态；独立 Win32 共享帧/隐藏进程传输层
 src/domain.*          演示数据、运行参数、事务配置校验、模拟状态与 CSV
 src/widgets.*         导航项、筛选胶囊、开关、星标、下拉/数字框、指标、价格曲线
 src/theme.qss         Win11 浅色公共样式
@@ -105,7 +112,7 @@ GUI 程序从某些 PowerShell 会话启动时可能不等待退出；自动化�
 3. 行情持久化与真实任务状态机。
 4. 操作回执和结果确认，再接真实统计。
 
-本交付没有接入 OpenCV、ONNX Runtime、DXGI 或 SQLite；它们属于后续采集、识别与数据层计划，不是前端预览版已经完成的组件。
+SQLite/QSQLITE 已接入工作区持久化、恢复、历史与账本，并通过发布包驱动验证。独立传输模块已验证 Win32 共享内存和隐藏合成子进程，但桌面产品仍未接入 WGC/DXGI 游戏窗口来源、OpenCV/ONNX OCR provider、真实 ROI 校准或交易。传输测试传递的是合成像素，不保存原始图片或临时截图。
 
 ## 依赖说明
 

@@ -755,6 +755,60 @@ StoreResult<QVector<StoredRun>> SqliteEventStore::committedRuns() const
     return result;
 }
 
+StoreResult<QVector<RunSummary>> SqliteEventStore::runSummaries() const
+{
+    if (auto e = d->ready()) return *e;
+    QSqlQuery query(d->reader);
+    // One metadata-only reader statement preserves a consistent committed view.
+    // The selected start/state rows expose scalar fields only; observation
+    // payloads, attempts, transactions and recovery records are not materialized.
+    const QString sql = QStringLiteral(R"SQL(
+        SELECT r.run_id, r.session_id,
+               json_extract(start.payload_json, '$.profile_snapshot.profile.id'),
+               json_extract(start.payload_json, '$.profile_snapshot.profile.name'),
+               json_extract(start.payload_json, '$.profile_snapshot.profile.revision'),
+               json_extract(start.payload_json, '$.mode'),
+               json_extract(start.payload_json, '$.source'),
+               json_extract(last.payload_json, '$.run_state'),
+               COALESCE(totals.confirmed_success, 0),
+               COALESCE(totals.unknown_count, 0),
+               COALESCE(totals.reservation_count, 0),
+               COALESCE(audit.recovered, 0)
+        FROM runs r
+        LEFT JOIN events start ON start.event_id = (
+            SELECT e1.event_id FROM events e1 WHERE e1.run_id=r.run_id AND e1.type='Start' ORDER BY e1.seq DESC LIMIT 1)
+        LEFT JOIN events last ON last.event_id = (
+            SELECT e2.event_id FROM events e2 WHERE e2.run_id=r.run_id
+              AND CASE WHEN json_valid(e2.payload_json) THEN json_type(e2.payload_json, '$.run_state') IS NOT NULL ELSE 0 END
+            ORDER BY e2.seq DESC,e2.event_id DESC LIMIT 1)
+        LEFT JOIN (SELECT run_id,
+                   COALESCE(sum(CASE WHEN state='Success' THEN quantity ELSE 0 END),0) confirmed_success,
+                   sum(CASE WHEN state='Unknown' THEN 1 ELSE 0 END) unknown_count,
+                   sum(CASE WHEN reservation_held=1 THEN 1 ELSE 0 END) reservation_count
+                   FROM attempts GROUP BY run_id) totals ON totals.run_id=r.run_id
+        LEFT JOIN (SELECT a.run_id, count(*) recovered FROM recovery_audit ra JOIN attempts a ON a.attempt_id=ra.attempt_id GROUP BY a.run_id) audit ON audit.run_id=r.run_id
+        WHERE r.run_id<>'' ORDER BY r.rowid DESC)SQL");
+    if (!query.exec(sql)) return sqlError(query.lastError());
+    QVector<RunSummary> result;
+    while (query.next()) {
+        RunSummary row;
+        row.runId=query.value(0).toString(); row.sessionId=query.value(1).toString();
+        row.profileId=query.value(2).toString(); row.profileName=query.value(3).toString();
+        row.profileRevision=query.value(4).toInt(); row.mode=query.value(5).toString();
+        row.source=query.value(6).toString(); row.state=query.value(7).toString();
+        const qint64 successes=query.value(8).toLongLong();
+        const qint64 unknown=query.value(9).toLongLong(), reservations=query.value(10).toLongLong();
+        if (successes>std::numeric_limits<int>::max() || unknown>std::numeric_limits<int>::max() || reservations>std::numeric_limits<int>::max())
+            return err("SNAPSHOT_OVERFLOW", QStringLiteral("Committed summary count exceeds the projection type"),row.runId);
+        row.confirmedSuccess=int(successes); row.unknownCount=int(unknown); row.reservationCount=int(reservations);
+        row.recovered=query.value(11).toLongLong()>0;
+        if (row.state.isEmpty()) row.state=QStringLiteral("Recovered");
+        result.push_back(row);
+    }
+    if (query.lastError().isValid()) return sqlError(query.lastError());
+    return result;
+}
+
 StoreResult<QVector<EventDraft>> SqliteEventStore::eventsForRun(const QString& runId) const
 {
     if (auto e = d->ready()) return *e;

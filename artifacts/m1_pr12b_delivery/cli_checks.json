@@ -1,0 +1,12 @@
+{
+  "workspace_before": "351bf6819ecdf583632ab385fa9a295b418c3834b9d9acdfe3e8f7cdb7030582",
+  "workspace_after": "351bf6819ecdf583632ab385fa9a295b418c3834b9d9acdfe3e8f7cdb7030582",
+  "config_before": "4e586a865b80ee71cc428496565f7d414f2fc0076cf8e3a85a8c15c4e23ae9c2",
+  "config_after": "4e586a865b80ee71cc428496565f7d414f2fc0076cf8e3a85a8c15c4e23ae9c2",
+  "snapshot_only_no_write": true,
+  "headless_default_config": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\m1_pr12b_delivery\\cli\\isolated_temp\\RelinkStudioOffscreen\\config.json",
+  "temporary_workspace_removed": true,
+  "normal_app_local_data_business_branch": "source_checked_not_launched",
+  "game_connected": false,
+  "system_input_sent": false
+}

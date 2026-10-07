@@ -1,6 +1,6 @@
 # 实施契约与当前实现入口
 
-更新时间：2026-10-06（Asia/Shanghai）。PR11 已在现有 Win11 界面接入方案审定、持久化回放、已提交账本、恢复与历史记录；本轮验收结果统一见 [实施进度](../09_m1_progress.md)。PR12A 已完成页面与诊断模块化；下一票先做 PR12B 服务/历史查询整理，再完成 PR12 整套端到端与发布回归，不将单票构建/打包等同于完整里程碑完成。
+更新时间：2026-10-07（Asia/Shanghai）。服务、历史、观察、协议/lease 和通用视觉传输基础层已有 19/19 CTest 通过记录。独立 `relink_vision_transport` 已实际验证 Win32 共享帧与隐藏合成 fixture child；它没有链接桌面程序，child 不是 OCR worker、不随包发布。下一步是真实游戏窗口/frame source、ROI 与 OCR provider 校准。最终新版发布/回退以本轮构建后更新的 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 和 `artifacts/m1_pr12b_delivery_final/VERIFICATION.txt` 为准。
 
 这里同时保留**历史开工规格**和**当前实现记录**。Schema、fixture、DDL、backlog 与测试矩阵是设计输入；它们通过文档校验，不代表相应生产功能或真实捕获已通过测试。当前行为以源码、CTest 与分票实现记录为准。
 
@@ -11,7 +11,11 @@
 3. [PR10 · SQLite 事件仓库](sqlite_store_pr10.md)：接口、版本迁移、提交快照、进程恢复、备份和验证记录。
 4. [PR11 · 持久化工作区](workspace_pr11.md)：方案审定、运行/历史快照、controller/projection、错误处理和 CSV。
 5. [PR12A · 页面模块化](ui_modularization_pr12a.md)：控件归属、接口、独立测试与剩余耦合。
-6. [下一轮开发提示词](../NEXT_IMPLEMENTATION.md)：PR12B 整理及后续完整 PR12 验收任务。
+6. [内存观察适配器](runtime/observation_adapter_pr12b.md)：步骤触发、内存帧、取消/超时/新鲜度和合成回归；不是实屏识别。
+7. [Worker 协议与 lease](runtime/worker_protocol_pr12b.md)：NDJSON、关联、资源上限、双槽回收与合成回归。
+8. [进程内图像链路](runtime/vision_pipeline_pr12b.md)：合成内存帧、协议/lease 串联与取消回收回归。
+9. [真实共享帧/隐藏进程传输](runtime/vision_transport_pr12b.md)：Win32 mapping、QProcess、fixture 隔离和异常回收。
+10. [下一轮开发提示词](../NEXT_IMPLEMENTATION.md)：M2 真实游戏窗口、ROI 与 OCR provider 校准；保留 PR12 历史验收清单。
 
 ## 查阅冻结规格
 
@@ -62,6 +66,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Package
 src/business/              精确值对象、模型、校验与纯规则
 src/application/           Replay/Fake 运行时与 UI projection
 src/application/workspace/ WorkspaceController、持久化 UI 投影与离屏自测
+src/application/runtime/observation/ 步骤触发式合成内存观察
+src/application/vision/    NDJSON/双槽 lease 状态；独立 Win32 共享帧与隐藏进程传输实现
 src/config/                LegacyImportPreview 与 ConfigV2 ProfileStore
 src/ledger/                InMemoryEventStore 与 SqliteEventStore
 tests/business/            领域、迁移、profile、内存与 SQLite 仓库测试
@@ -70,3 +76,24 @@ tests/application/         工作区、方案审定、提交失败、历史快�
 ~~~
 
 PR11 在 PR10 结构化持久化之上显式接入 UI，不接入真实捕获/OCR、鼠标键盘动作或交易。配置仍走 PR08 的 QSaveFile 文件；审定保存不会自动选择方案或启用规则。界面显示的是已提交合成回放事实，历史运行使用冻结方案快照；Win11 浅色白灰布局保持不变。
+
+## PR12B 服务边界与发布验收
+
+PR12B 已完成四个服务边界的提取，控制器保留生命周期和命令协调；UI 页面继续消费只读投影，不操作 SQL：
+
+| 服务 | 已提取的职责 | 保留的边界 |
+|---|---|---|
+| `ProfileCatalog` | 方案目录扫描、校验与审定物化 | QSaveFile 配置持久化独立于账本 |
+| `ReplayScenario` | 内建八步合成场景和观察序列 | 不启动真实游戏，不是 OCR |
+| `HistoryQueryService` | 运行摘要与选中 run 明细查询 | SQLite 连接保持在所属线程内 |
+| `RecordsExporter` | CSV 转义、路径保护和只读投影导出 | 不修改账本或配置 |
+
+当前通过 19/19 CTest：工作区 432、UI 模块 90、观察 828、协议 646、进程内链路 279、Win32 共享帧 65、隐藏合成 worker 进程 206 条断言；UI / 工作区 UI / 存储自检为 206 / 58 / 22 项，独立负向包验收为 41/41。发布脚本强制执行这些目标、检查 fixture child 不入包，并记录命令/输出/退出状态；新增 transport 后最终打包和独立副本回退以与本轮构建哈希对应的报告为准。41 条负向测试验证的是交付工具拒绝路径，不代替真实发布目录验收。
+
+`tests/verify_delivery.py --build-dir ... --release-dir ... --output-dir ...` 只写入新建验收目录，核对清单全部文件/哈希/字节数、拒绝发布链接/重解析点、检查包内依赖、测试快照模式配置和工作区逐字节保持，并实际执行配置回退脚本。验收不会直接修改正常用户配置或账本。
+
+## M2 接入边界
+
+ObservationAdapter 通过合成内存源验证，SharedFrameMemory / ReadOnlyFrameMemory 与 WorkerProcess 通过真实 Win32 transport 测试。IObservationSource 与 IObservationRecognizer 仍未连接真实游戏画面和 OCR provider。观察/协议属于 relink_runtime，OS 传输属于独立 relink_vision_transport；内存字节和隐藏合成进程通过不代表真实 ROI 或 OCR 准确率已验收。
+
+下一轮按 [M2 提示词](../NEXT_IMPLEMENTATION.md) 复用这些接口，不把捕获或识别代码塞进窗口，不写运行时截图或临时图片。需要真实游戏画面时进入单独联调；当前仍为 `game_connected=false`、`system_input_sent=false`、`image_file_write_count=0`，没有执行输入注入、购买或交易。

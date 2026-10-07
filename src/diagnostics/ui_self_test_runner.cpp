@@ -527,38 +527,40 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
         check(legacyHeroRemoved, "LEGACY_HERO_REMOVED");
         QJsonArray textEncodingIssues = inspectUiText(&window);
         check(textEncodingIssues.isEmpty(), "INITIAL_UI_TEXT_ENCODING");
-        auto* replaySource = window.findChild<QLabel*>("replaySourceLabel");
-        auto* replayState = window.findChild<QLabel*>("replayStateLabel");
-        auto* replayStart = window.findChild<QPushButton*>("replayStartButton");
-        auto* replayPause = window.findChild<QPushButton*>("replayPauseButton");
-        auto* replayResume = window.findChild<QPushButton*>("replayResumeButton");
-        auto* replayStop = window.findChild<QPushButton*>("replayStopButton");
-        auto* workspaceProfiles = window.findChild<QComboBox*>("workspaceProfileCombo");
-        if (workspaceProfiles)
-            workspaceProfiles->setCurrentIndex(workspaceProfiles->findData(relink::workspace::WorkspaceController::builtinProfileId()));
-        flush();
-        check(replaySource && replayState && replayStart && replayPause && replayResume && replayStop
-                  && replaySource->text().contains(QStringLiteral("回放"))
-                  && replaySource->toolTip().contains(QStringLiteral("Replay"))
-                  && replayState->property("status").toString() == QStringLiteral("Ready")
-                  && replayStart->isEnabled() && !replayPause->isEnabled()
-                  && !replayResume->isEnabled() && !replayStop->isEnabled(),
-              "REPLAY_UI_INITIAL");
-        if (replayStart) replayStart->click();
-        flush();
-        check(replayState && replayState->property("status").toString() != QStringLiteral("Ready")
-                  && replayPause && replayPause->isEnabled(), "REPLAY_UI_START");
-        if (replayPause) replayPause->click();
-        flush();
-        check(replayState && replayState->property("status").toString() == QStringLiteral("Paused")
-                  && replayResume && replayResume->isEnabled(), "REPLAY_UI_PAUSE");
-        if (replayResume) replayResume->click();
-        flush();
-        check(replayState && replayState->property("status").toString() != QStringLiteral("Paused"), "REPLAY_UI_RESUME");
-        if (replayStop) replayStop->click();
-        flush();
-        check(replayState && replayState->property("status").toString() == QStringLiteral("Stopped")
-                  && replayStop && !replayStop->isEnabled(), "REPLAY_UI_STOP");
+        if (runInteractionChecks) {
+            auto* replaySource = window.findChild<QLabel*>("replaySourceLabel");
+            auto* replayState = window.findChild<QLabel*>("replayStateLabel");
+            auto* replayStart = window.findChild<QPushButton*>("replayStartButton");
+            auto* replayPause = window.findChild<QPushButton*>("replayPauseButton");
+            auto* replayResume = window.findChild<QPushButton*>("replayResumeButton");
+            auto* replayStop = window.findChild<QPushButton*>("replayStopButton");
+            auto* workspaceProfiles = window.findChild<QComboBox*>("workspaceProfileCombo");
+            if (workspaceProfiles)
+                workspaceProfiles->setCurrentIndex(workspaceProfiles->findData(relink::workspace::WorkspaceController::builtinProfileId()));
+            flush();
+            check(replaySource && replayState && replayStart && replayPause && replayResume && replayStop
+                      && replaySource->text().contains(QStringLiteral("回放"))
+                      && replaySource->toolTip().contains(QStringLiteral("Replay"))
+                      && replayState->property("status").toString() == QStringLiteral("Ready")
+                      && replayStart->isEnabled() && !replayPause->isEnabled()
+                      && !replayResume->isEnabled() && !replayStop->isEnabled(),
+                  "REPLAY_UI_INITIAL");
+            if (replayStart) replayStart->click();
+            flush();
+            check(replayState && replayState->property("status").toString() != QStringLiteral("Ready")
+                      && replayPause && replayPause->isEnabled(), "REPLAY_UI_START");
+            if (replayPause) replayPause->click();
+            flush();
+            check(replayState && replayState->property("status").toString() == QStringLiteral("Paused")
+                      && replayResume && replayResume->isEnabled(), "REPLAY_UI_PAUSE");
+            if (replayResume) replayResume->click();
+            flush();
+            check(replayState && replayState->property("status").toString() != QStringLiteral("Paused"), "REPLAY_UI_RESUME");
+            if (replayStop) replayStop->click();
+            flush();
+            check(replayState && replayState->property("status").toString() == QStringLiteral("Stopped")
+                      && replayStop && !replayStop->isEnabled(), "REPLAY_UI_STOP");
+        }
         if (runInteractionChecks) {
             check(workspace.setMode(QStringLiteral("Demo")), "WORKSPACE_DEMO_MODE");
             window.setPage(1);

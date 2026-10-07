@@ -1,12 +1,12 @@
 # M1 实施进度与分阶段基线
 
-更新时间：2026-10-06（Asia/Shanghai）
+更新时间：2026-10-07（Asia/Shanghai）
 
 ## 当前结论
 
-M1 已完成 PR01–PR11，并在原 PR12 总体验收前完成 **PR12A 页面/诊断模块化**。本轮 14/14 CTest、90 条独立页面断言、400 条工作区服务断言、58 条工作区 UI 断言、22 条发布存储自检及独立副本回退通过。功能语义与 PR11 相同，Win11 白灰布局与功能入口不变。
+M1 已完成 PR01–PR11、PR12A 与 PR12B 的服务、历史、观察、协议/lease 和通用视觉传输基础层。当前源码已有 19/19 CTest 记录：工作区 432、UI 模块 90、观察 828、协议 646、进程内链路 279、Win32 共享帧 65、隐藏合成进程传输 206 条断言通过；独立负向包验收记录为 41/41。新增 transport 后的最终发布、哈希与回退结果以本轮构建后更新的 VERIFICATION.txt 为准，不沿用旧包结果。
 
-PR12A 不是完整 PR12 完成：下一票是 PR12B 服务/历史查询职责整理，之后逐项完成原 PR12 验收。已保存方案继续禁用，只有显式内置合成样例产生模拟账本；当前没有真实捕获/OCR/市场动作。PR11、PR10 的历史通过数保留在下方对应节。
+本轮业务来源仍为 synthetic/replay。纯状态层 relink_runtime 与独立 relink_vision_transport 分离；后者已实际验证 Win32 paging-file mapping 和隐藏合成 fixture child，但未链接桌面程序。child 不是 OCR worker，不随发布包交付。当前仍没有 WGC/DXGI 游戏窗口来源、真实 ROI 和 OCR provider 校准，也没有系统输入或交易。像素仅走内存，imageFileWriteCount=0。下一步需要真实游戏窗口/帧参与识别业务时暂停总结；历史测试数量保留在各自章节。
 
 ## 已完成 PR
 
@@ -23,11 +23,12 @@ PR12A 不是完整 PR12 完成：下一票是 PR12B 服务/历史查询职责整
 | PR09 | 完成 | InMemoryEventStore、事件幂等、attempt/quota reservation、receipt、ledger、快照、恢复与显式事务回滚 |
 | PR10 | 完成 | SqliteEventStore、v1→v2 迁移、提交快照、回执门槛、进程恢复、一致备份与包内 QSQLITE 验证 |
 | PR11 | 完成 | WorkspaceController、审定保存、持久化合成回放、已提交投影、历史快照、恢复提示、CSV 与错误交互 |
-| PR12A | 完成 | 页面/编辑器/诊断入口解耦，独立 UI 模块与回归；原 PR12 总体验收仍待完成 |
+| PR12A | 完成 | 页面/编辑器/诊断入口解耦，独立 UI 模块与回归；服务层整理已由 PR12B 完成 |
+| PR12B | 源码与应用测试记录完成，发布复验独立记录 | 服务边界、内存观察、协议/lease、Win32 共享帧与隐藏合成 worker transport；19/19 CTest，最终发布/回退证据单独记录 |
 
-## PR12A 本轮实施范围与验证
+## PR12A 历史实施范围与验证
 
-详见 [页面模块化实现记录](implementation/ui_modularization_pr12a.md)。
+详见 [页面模块化实现记录](implementation/ui_modularization_pr12a.md)。本节数量和“本轮”均指 PR12A 当时记录，不是当前 PR12B 的测试数量。
 
 - 独立 `TaskPage`、`RunSettingsPage`、`WorkspaceRecordsPanel`、`TaskEditorDialog`；控件和回调由所属页面持有，主窗口只保留组合引用。
 - 共享呈现工具不重复复制；WorkspaceProjection DTO 独立头文件，记录面板不依赖 controller/SQL。
@@ -70,7 +71,7 @@ PR12A 不是完整 PR12 完成：下一票是 PR12B 服务/历史查询职责整
 - 写操作在显式事务中暂存；SQLite 查询只返回已提交快照。业务/SQL 写失败回滚整笔事务并锁存 aborted，显式 `rollback()` 后才继续。
 - 重开时，明确未派发的 Prepared 取消并释放预留；可能已派发的未决记录转 Unknown 并保留预留，写入恢复审计，不自动重发。
 - `commitLedger()` 对 Unknown/ambiguous 回执返回 `RECEIPT_UNCONFIRMED`；终态与已确认回执不一致返回 `RECEIPT_OUTCOME_MISMATCH`。同一保护同步到内存仓库，避免将未确认回执直接记成成功/失败。
-- 程序新增 `--storage-self-test`，仅使用临时数据库自测驱动、提交、重开恢复与备份；正常前台数据流未接 SQLite。
+- PR10 当时新增 `--storage-self-test`，仅使用临时数据库自测驱动、提交、重开恢复与备份；当时正常前台数据流尚未接 SQLite。PR11 已由 WorkspaceController 接通正常工作区，当前行为见上方 PR11 记录。
 - 发布目录增加 `Qt6Sql.dll`、`sqldrivers/qsqlite.dll` 和 `qt.conf`，驱动目录与 `platforms` 同级；实际发布验证结果见下节。
 
 ## PR06 验收范围
@@ -94,7 +95,7 @@ PR12A 不是完整 PR12 完成：下一票是 PR12B 服务/历史查询职责整
 
 ### PR08 历史验证
 
-以下为 PR08 已记录结果，不是本轮 PR11 的新测试输出：
+以下为 PR08 已记录结果，不是当前 PR12B 的新测试输出：
 
 ```text
 domain_tests                 PASS
@@ -110,9 +111,9 @@ ui_offscreen                 PASS
 CTest                        10/10 PASS
 ```
 
-### PR11 本轮验证
+### PR11 历史验证
 
-当前状态：**本轮实测通过**。最终命令为 `powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test -Package`，实际构建目录 `build_relocated`。`artifacts/m1_pr11_transaction/build_result.json` 保存命令、工作目录、stdout/stderr 和 exit=0；原始构建日志为 `logs/final_build.stdout` 与 `logs/final_build.stderr`。早期 `build_test_2.log` 与 49 条 UI 联调记录保留为历史，不作为最终通过数。
+PR11 当时状态：**实测通过**。本节“本轮”和“最终”均指 PR11。最终命令为 `powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Test -Package`，实际构建目录 `build_relocated`。`artifacts/m1_pr11_transaction/build_result.json` 保存命令、工作目录、stdout/stderr 和 exit=0；原始构建日志为 `logs/final_build.stdout` 与 `logs/final_build.stderr`。早期 `build_test_2.log` 与 49 条 UI 联调记录保留为历史，不作为 PR11 最终通过数。
 
 | 检查 | 本轮结果 | 实际证据 |
 |---|---|---|
@@ -145,7 +146,7 @@ PR11_PACKAGE_VERIFICATION=PASS
 
 ### PR10 历史验证
 
-本节保留 PR10 的历史记录；其中“本轮”指 PR10，不是 PR11。
+本节保留 PR10 的历史记录；其中“本轮”指 PR10，不是当前 PR12B。
 
 离屏人工复核发现并修复了历史主窗口乱码：330 处字符串、3 条注释恢复为正常中文，右上角状态 HTML 一并修正；字符串/注释之外的代码以及全部 ASCII 标识保持不变。新增 `UI_NAVIGATION_TEXT_UTF8`、`UI_ACTION_TEXT_UTF8`、`UI_NO_MOJIBAKE_LABELS` 三项运行时回归，均通过。Win11 白灰布局和功能入口不变；最终关注页、运行页截图已重新查看。
 
@@ -188,15 +189,43 @@ C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
 - `artifacts/business_rebuild_docs/m1_pr06_pr09_baseline.json`：PR06/PR09 历史实现、测试与发布目录基线，保留用于审计。
 - `artifacts/business_rebuild_docs/m1_pr08_baseline.json`：PR08 历史实现基线，保留用于审计。
 - `artifacts/business_rebuild_docs/m1_pr10_baseline.json`：历史 PR10 源码、测试、当时状态文档与发布目录基线，保留不覆盖。
-- `artifacts/business_rebuild_docs/m1_pr11_baseline.json`：本轮 PR11 源码、测试、当前入口文档与发布目录基线；最终校验以本轮验证工件为准。
+- `artifacts/business_rebuild_docs/m1_pr11_baseline.json`：历史 PR11 源码、测试、当时入口文档与发布目录基线；保留用于审计。
+- `artifacts/business_rebuild_docs/m1_pr12b_baseline.json`：PR12B 源码、测试、当前文档与发布目录基线；本轮命令证据见 `artifacts/m1_pr12b_transaction/VERIFICATION.txt`。
 
 每一轮基线都只记录实际变更范围，不覆盖历史快照；文档验证同时检查项目基线漂移是否被最新 M1 基线明确覆盖。
 
 ## 下一阶段
 
-| PR | 状态 | 下一步 |
+| 阶段 | 状态 | 下一步 |
 |---|---|---|
-| PR11 | 完成 | 方案/回放/账本/记录已接 UI，13/13 CTest 与发布副本验收通过 |
-| PR12 | 下一阶段 | 旧配置与端到端回归、package-only PATH、依赖清单、数据隔离、异常关闭与固定路径交付 |
+| PR12B / 本轮非游戏验收 | 实现与应用回归已通过 | 工作区/界面/存储/观察/协议/进程内集成/独立 OS 传输；固定发布、参数化交付及独立副本回退由本轮最终报告确认 |
+| M2 | 通用 transport 已验证，真实视觉业务待联调 | 复用观察、共享帧与进程接口；真实游戏窗口/frame source、ROI 和 OCR provider 校准尚未完成 |
 
-下一轮任务见 [NEXT_IMPLEMENTATION.md](NEXT_IMPLEMENTATION.md)。PR12 不将预览候选直接提升为可执行配置；真实捕获/OCR 属于后续 M2，旧延迟/限购语义与外部动作仍是独立阶段。
+下一轮任务见 [NEXT_IMPLEMENTATION.md](NEXT_IMPLEMENTATION.md)。已完成的非游戏模块不重复重做；每次发布仍重跑对应回归并刷新证据。真实图像识别需要游戏画面时才进入单独的业务联调，合成观察、配置、账本、恢复及通用传输与真实视觉验收分别记录。
+
+## PR12B 本轮证据（2026-10-07）
+
+服务职责分离为 `ProfileCatalog`、`ReplayScenario`、`HistoryQueryService`、`RecordsExporter`，控制器保留协调和生命周期。步骤触发式观察层通过 `IObservationSource`、`IObservationRecognizer` 分离来源与识别；当前测试来源只提供合成内存帧。接口和限制见 [内存观察适配器](implementation/runtime/observation_adapter_pr12b.md)。
+
+| 本轮实际运行 | 结果 |
+|---|---|
+| 全量 CTest | 19/19 通过 |
+| 工作区服务测试 | 432 条断言，0 失败 |
+| 独立 UI 模块测试 | 90 条断言，0 失败 |
+| 原 UI / 工作区 UI 自检 | 206 / 58 项通过 |
+| 存储自检 | 22 条断言通过；本轮包内复验见最终事务报告 |
+| 观察适配器 | 828 条合成内存帧断言通过；未使用游戏画面 |
+| worker 协议与 lease | 646 条断言通过；外部进程和图像文件写入均为 0 |
+| 进程内图像链路 | 279 条断言通过；合成内存帧/协议/lease 集成，未启动真实 worker |
+| Win32 共享帧 | 65 条断言通过；真实 paging-file mapping、只读读取和容量/身份检查，像素为合成数据 |
+| 隐藏合成进程传输 | 206 条断言通过；实际启动 fixture child，验证协议往返/取消/超时/回收；不是 OCR，child 不随桌面包交付 |
+| 独立负向包验收 | 41/41；tiny fixture 验证清单及交付工具的拒绝路径，不等于最终发布包通过 |
+| 打包 / 修改 / 回退 / 恢复副本 | 2026-10-07 最新源码重新构建、19/19 CTest 与固定目录打包通过；修改版/恢复副本自检和回退均 exit=0；新 DB/profile sentinel 保留 |
+| 参数化交付验收 | 最终交付目录清单、配置/工作区保持及配置回退通过，exit=0；证据 `artifacts/m1_pr12b_delivery_final/VERIFICATION.txt`，与 41 条负向测试分开记录 |
+| 视觉保持 | 任务页、编辑器、运行页、完整运行页、关注页、价格页共 6 张离屏图像与基线像素一致 |
+
+命令、输入、字面 stdout/stderr、退出状态和哈希以本轮构建后更新的 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 为准。同目录保留 `MODIFIED_FILE.exe`、`DIFF_FILE`、`ROLLBACK.sh`；回退只在独立副本验收。
+
+本轮保持 `game_connected=false`、`system_input_sent=false`、`image_file_write_count=0`。离屏 PNG 仅是显式 UI 测试产物；真实游戏进程、桌面采集、OCR、输入注入、购买和交易未运行，不属于本轮 PASS 的含义。
+
+worker 的具体实现、资源上限和回收语义见 [协议与 lease 实现](implementation/runtime/worker_protocol_pr12b.md)，合成内存帧与协议的串联见 [进程内图像链路](implementation/runtime/vision_pipeline_pr12b.md)，真实 mapping/隐藏合成进程边界见 [独立传输层](implementation/runtime/vision_transport_pr12b.md)。发布验收额外覆盖 `--snapshot-dir` 单独运行时配置/工作区逐字节保持、默认临时工作区清理、清单精确匹配、链接/重解析点拒绝，以及实际执行回退脚本恢复另一份已修改程序。

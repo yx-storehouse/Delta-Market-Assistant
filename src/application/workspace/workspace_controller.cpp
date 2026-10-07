@@ -1,17 +1,17 @@
 #include "workspace_controller.h"
+#include "profile_catalog.h"
+#include "replay_scenario.h"
+#include "history_query_service.h"
+#include "records_exporter.h"
 
 #include "application/runtime/runtime.h"
 #include "business/matcher.h"
 #include "business/validator.h"
 #include "config/profile_store.h"
 #include "ledger/sqlite_event_store.h"
-#include <QCryptographicHash>
 #include <QDir>
 #include <QFileInfo>
 #include <QJsonArray>
-#include <QJsonDocument>
-#include <QRegularExpression>
-#include <QSaveFile>
 #include <QThread>
 #include <QUuid>
 #include <algorithm>
@@ -21,90 +21,6 @@ namespace relink::workspace {
 namespace {
 QString uid(const QString& prefix) { return prefix + QUuid::createUuid().toString(QUuid::WithoutBraces); }
 QString s(const QJsonObject& o, const char* key) { return o.value(QLatin1String(key)).toString(); }
-business::DecimalValue decimal(const QJsonObject& o) { return {s(o, "unscaled"), quint8(o.value(QStringLiteral("scale")).toInt())}; }
-business::Money money(const QJsonObject& o) { return {decimal(o.value(QStringLiteral("value")).toObject()), s(o, "unit")}; }
-QString priceText(const business::DecimalValue& value)
-{
-    QString result = value.unscaled;
-    while (result.size() <= value.scale) result.prepend(QLatin1Char('0'));
-    if (value.scale) result.insert(result.size() - value.scale, QLatin1Char('.'));
-    return result;
-}
-QJsonObject builtinDocument()
-{
-    return {{QStringLiteral("schema_version"), 2}, {QStringLiteral("kind"), QStringLiteral("ConfigV2")},
-        {QStringLiteral("profile"), QJsonObject{{QStringLiteral("id"), WorkspaceController::builtinProfileId()},
-            {QStringLiteral("revision"), 1}, {QStringLiteral("name"), QStringLiteral("内置合成回放 · 八步验收")}}},
-        {QStringLiteral("source"), QJsonObject{{QStringLiteral("format"), QStringLiteral("synthetic_fixture")}}},
-        {QStringLiteral("extensions"), QJsonObject{{QStringLiteral("x-live_market_data"), false},
-            {QStringLiteral("x-built-in-fixture"), true}}}};
-}
-business::TaskRule fixtureRule()
-{
-    business::TaskRule rule;
-    rule.task_id = QStringLiteral("fixture-rule"); rule.revision = 1;
-    rule.name = QStringLiteral("Synthetic price range"); rule.product_ref = QStringLiteral("synthetic-product-1");
-    rule.enabled = true;
-    rule.price_range = business::PriceRange{{{QStringLiteral("100"), 0}, QStringLiteral("synthetic-unit")},
-                                          {{QStringLiteral("200"), 0}, QStringLiteral("synthetic-unit")}};
-    return rule;
-}
-business::Selector selector(const QJsonObject& o)
-{
-    return {o.value(QStringLiteral("op")).toString(QStringLiteral("any")), s(o, "value")};
-}
-business::TaskRule savedRule(const QJsonObject& document)
-{
-    const auto rules = document.value(QStringLiteral("rules")).toArray();
-    const auto o = rules.isEmpty() ? QJsonObject{} : rules.first().toObject();
-    business::TaskRule r;
-    r.task_id = s(o, "task_id"); r.revision = o.value(QStringLiteral("revision")).toInt(1);
-    r.name = s(o, "name"); r.enabled = false; // Saved profiles are never activated by selecting them.
-    r.review_required = o.value(QStringLiteral("review_required")).toBool();
-    if (!s(o, "product_ref").isEmpty()) r.product_ref = s(o, "product_ref");
-    if (o.value(QStringLiteral("price_range")).isObject()) {
-        const auto p = o.value(QStringLiteral("price_range")).toObject();
-        r.price_range = business::PriceRange{money(p.value(QStringLiteral("min")).toObject()), money(p.value(QStringLiteral("max")).toObject())};
-    }
-    if (o.value(QStringLiteral("max_wear")).isObject()) r.max_wear = decimal(o.value(QStringLiteral("max_wear")).toObject());
-    const auto f = o.value(QStringLiteral("filters")).toObject();
-    r.filters = {selector(f.value(QStringLiteral("season")).toObject()), selector(f.value(QStringLiteral("ownership")).toObject()),
-        selector(f.value(QStringLiteral("grade")).toObject()), selector(f.value(QStringLiteral("condition")).toObject()),
-        selector(f.value(QStringLiteral("publicity")).toObject()), selector(f.value(QStringLiteral("rarity")).toObject())};
-    return r;
-}
-bool profileValid(const QJsonObject& doc)
-{
-    const auto p = doc.value(QStringLiteral("profile")).toObject();
-    static const QRegularExpression idPattern(QStringLiteral("^profile-[0-9a-f]{24}$"));
-    if (!idPattern.match(s(p, "id")).hasMatch() || p.value(QStringLiteral("revision")).toInt() < 1 || s(p, "name").trimmed().isEmpty()) return false;
-    const auto source = doc.value(QStringLiteral("source")).toObject();
-    static const QRegularExpression hashPattern(QStringLiteral("^[0-9a-f]{64}$"));
-    if (!hashPattern.match(s(source,"sha256")).hasMatch()
-        || !QStringList{QStringLiteral("schema_v1"),QStringLiteral("bbzps_13")}.contains(s(source,"format"))
-        || !QStringList{QStringLiteral("UTF-8"),QStringLiteral("UTF-8-BOM"),QStringLiteral("UTF-16LE-BOM"),QStringLiteral("GB18030-explicit")}.contains(s(source,"encoding"))) return false;
-    const QByteArray identity = (s(p,"name").trimmed() + QChar(0x1f) + s(source,"sha256")).toUtf8();
-    if (s(p,"id") != QStringLiteral("profile-") + QString::fromLatin1(QCryptographicHash::hash(identity,QCryptographicHash::Sha256).toHex().left(24))) return false;
-    const auto extensions = doc.value(QStringLiteral("extensions")).toObject();
-    if (!extensions.value(QStringLiteral("x-activation_required")).toBool()
-        || extensions.value(QStringLiteral("x-live_market_data")).toBool(true)
-        || !doc.value(QStringLiteral("rules")).isArray()) return false;
-    const auto decisions = doc.value(QStringLiteral("review_decisions")).toObject();
-    const QString quantumText=s(decisions,"unit_quantum").trimmed();
-    static const QRegularExpression quantumPattern(QStringLiteral("^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"));
-    if (!quantumPattern.match(quantumText).hasMatch()) return false;
-    const auto quantum=business::parseDecimal(QStringView(quantumText));
-    const auto* quantumValue=std::get_if<business::DecimalValue>(&quantum);
-    if (!quantumValue || !business::decimalIsPositive(*quantumValue)) return false;
-    for (const auto* key : {"products", "price_range", "taxonomy", "preserve_unknown_columns", "keep_quantity_unbound"})
-        if (!decisions.value(QLatin1String(key)).toBool()) return false;
-    for (const auto& value : doc.value(QStringLiteral("rules")).toArray()) {
-        const auto r = value.toObject();
-        if (r.value(QStringLiteral("enabled")).toBool(true) || r.value(QStringLiteral("review_required")).toBool(true)
-            || !r.value(QStringLiteral("activation_required")).toBool()) return false;
-    }
-    return true;
-}
 } // namespace
 
 class WorkspaceController::Impl {
@@ -113,6 +29,9 @@ public:
     WorkspaceController* owner;
     QThread* const thread = QThread::currentThread();
     ledger::SqliteEventStore store;
+    ProfileCatalog profileCatalog;
+    HistoryQueryService historyQuery;
+    RecordsExporter recordsExporter;
     WorkspaceProjection p;
     QHash<QString, QJsonObject> profiles;
     QJsonObject runDocument;
@@ -153,22 +72,10 @@ public:
         return true;
     }
     bool readProfiles(WorkspaceProjection& output, QHash<QString,QJsonObject>& documents) {
-        auto builtin = builtinDocument(); const auto b = builtin.value(QStringLiteral("profile")).toObject();
-        output.profiles = {{s(b,"id"),s(b,"name"),QStringLiteral("synthetic_fixture"),{},QStringLiteral("SyntheticOnly"),{},1,true,false,false}};
-        documents.insert(WorkspaceController::builtinProfileId(), builtin);
-        const QDir dir(QDir(p.rootPath).filePath(QStringLiteral("profiles")));
-        for (const auto& info : dir.entryInfoList({QStringLiteral("*.json")}, QDir::Files, QDir::Name)) {
-            QJsonObject doc; QString message;
-            if (!config::ProfileStore::load(info.absoluteFilePath(), doc, &message)) return error(QStringLiteral("PROFILE_LOAD_FAILED: ") + message);
-            if (!profileValid(doc)) return error(QStringLiteral("PROFILE_INVALID: ") + info.fileName());
-            const auto profile = doc.value(QStringLiteral("profile")).toObject(), sourceObject = doc.value(QStringLiteral("source")).toObject();
-            const QString id = s(profile,"id");
-            if (info.fileName() != id + QStringLiteral(".json") || documents.contains(id)) return error(QStringLiteral("PROFILE_ID_CONFLICT"));
-            documents.insert(id,doc);
-            output.profiles.push_back({id,s(profile,"name"),s(sourceObject,"format"),s(sourceObject,"sha256"),
-                QStringLiteral("ReviewedDisabled"),info.absoluteFilePath(),profile.value(QStringLiteral("revision")).toInt(),false,false,true});
-        }
-        for (auto& row : output.profiles) row.selected = row.id == output.selectedProfileId;
+        const auto result = profileCatalog.scan(p.rootPath, output.selectedProfileId);
+        if (!result.ok) return error(result.error);
+        output.profiles = result.rows;
+        documents = result.documents;
         return true;
     }
     bool refresh(const WorkspaceProjection* candidate = nullptr) {
@@ -176,8 +83,16 @@ public:
         WorkspaceProjection next = candidate ? *candidate : p;
         QHash<QString,QJsonObject> documents;
         if (!readProfiles(next,documents)) return false;
-        const auto runsResult = store.committedRuns();
-        if (!accepted(runsResult)) return false;
+        const auto runsResult = historyQuery.loadSummaries(store);
+        if (const auto* failure = std::get_if<HistoryQueryError>(&runsResult))
+            return error(failure->code + QStringLiteral(": ") + failure->message);
+        HistoryDetailResult selectedDetail;
+        const bool hasSelectedRun = !next.selectedRunId.isEmpty();
+        if (hasSelectedRun) {
+            selectedDetail = historyQuery.loadSelected(store, next.selectedRunId);
+            if (const auto* failure = std::get_if<HistoryQueryError>(&selectedDetail))
+                return error(failure->code + QStringLiteral(": ") + failure->message);
+        }
         next.runs.clear(); next.records.clear(); next.listings.clear();
         next.confirmedSuccess = next.unknownCount = next.reservationCount = 0;
         next.matchedCount = next.failedCount = next.noMatchCount = next.needsReviewCount = next.dispatchedCount = next.collectedCount = 0;
@@ -185,15 +100,25 @@ public:
         next.clockDomainId.clear(); next.source.clear(); next.nowMonoMs = 0; next.fixtureStep = 0;
         next.runState = QStringLiteral("Ready"); next.historyReadOnly = false;
         QJsonObject selectedRunDocument;
-        for (const auto& run : std::get<QVector<ledger::StoredRun>>(runsResult)) {
-            const auto eventResult = store.eventsForRun(run.runId);
-            const auto ledgerResult = store.snapshot(run.runId);
-            const auto auditResult = store.recoveryAudit(run.runId);
-            if (!accepted(eventResult) || !accepted(ledgerResult) || !accepted(auditResult)) return false;
-            const auto& events = std::get<QVector<ledger::EventDraft>>(eventResult);
-            const auto& snap = std::get<ledger::LedgerSnapshot>(ledgerResult);
-            const auto& audits = std::get<QVector<ledger::RecoveryAuditRecord>>(auditResult);
-            RunRow row; row.id = run.runId; row.state = QStringLiteral("Recovered"); row.recovered = !audits.isEmpty();
+        const auto& summaries = std::get<QVector<ledger::RunSummary>>(runsResult);
+        const HistoryRunBundle* selectedBundle = hasSelectedRun ? &std::get<HistoryRunBundle>(selectedDetail) : nullptr;
+        for (const auto& summary : summaries) {
+            RunRow row; row.id = summary.runId; row.profileId = summary.profileId; row.profileName = summary.profileName;
+            row.profileRevision = summary.profileRevision; row.mode = summary.mode; row.source = summary.source;
+            row.state = summary.state; row.confirmedSuccess = summary.confirmedSuccess;
+            row.unknownCount = summary.unknownCount; row.reservationCount = summary.reservationCount;
+            row.recovered = summary.recovered;
+            if (summary.runId != activeRun && row.state != QStringLiteral("Completed") && row.state != QStringLiteral("Stopped")) {
+                row.state = QStringLiteral("Recovered"); row.recovered = true;
+            }
+            if (!selectedBundle || selectedBundle->summary.runId != summary.runId) {
+                next.runs.push_back(row);
+                continue;
+            }
+            const auto& events = selectedBundle->events;
+            const auto& snap = selectedBundle->snapshot;
+            const auto& audits = selectedBundle->audits;
+            row.state = summary.state; row.recovered = summary.recovered || !audits.isEmpty();
             QJsonObject profileDocument;
             for (const auto& event : events) {
                 if (event.type == QStringLiteral("Start")) {
@@ -204,18 +129,19 @@ public:
                 }
                 if (event.payload.contains(QStringLiteral("run_state"))) row.state = s(event.payload,"run_state");
             }
-            if (run.runId != activeRun && row.state != QStringLiteral("Completed") && row.state != QStringLiteral("Stopped")) {
+            if (summary.runId != activeRun && row.state != QStringLiteral("Completed") && row.state != QStringLiteral("Stopped")) {
                 row.state = QStringLiteral("Recovered"); row.recovered = true;
             }
             row.confirmedSuccess = snap.confirmedSuccess; row.reservationCount = snap.unresolvedReservations;
+            row.unknownCount = 0;
             for (const auto& attempt : snap.attempts) if (attempt.state == QStringLiteral("Unknown")) ++row.unknownCount;
             next.runs.push_back(row);
-            if (run.runId != next.selectedRunId) continue;
+            if (summary.runId != next.selectedRunId) continue;
             selectedRunDocument = profileDocument;
             next.runProfileId = row.profileId; next.runProfileName = row.profileName; next.runProfileRevision = row.profileRevision;
             next.runState = row.state; next.source = row.source;
             next.confirmedSuccess = row.confirmedSuccess; next.unknownCount = row.unknownCount; next.reservationCount = row.reservationCount;
-            next.historyReadOnly = run.runId != activeRun;
+            next.historyReadOnly = summary.runId != activeRun;
             QHash<QString,int> listingIndex;
             QHash<QString,QString> successfulTransactions;
             QHash<QString,QString> successfulAttempts;
@@ -268,7 +194,7 @@ public:
                 if (attempt.kind == QStringLiteral("collection") && attempt.state == QStringLiteral("Success")) next.collectedCount += attempt.quantity;
             }
             for (const auto& audit : audits) {
-                RecordRow r; r.eventId = QStringLiteral("recovery:") + audit.attemptId; r.runId = run.runId;
+                RecordRow r; r.eventId = QStringLiteral("recovery:") + audit.attemptId; r.runId = summary.runId;
                 r.type = QStringLiteral("Recovery"); r.source = QStringLiteral("committed_recovery_audit");
                 r.reason = audit.previousState + QStringLiteral(" → ") + audit.recoveredState + QStringLiteral("; ") + audit.reason;
                 next.records.push_back(r);
@@ -326,38 +252,6 @@ public:
         if (command != QStringLiteral("Resume") && !markInflightUnknown(e)) return false;
         return commit(next,p.fixtureStep,command == QStringLiteral("Stop"));
     }
-    QJsonObject observation(int n, qint64 now) {
-        const QChar suffix = QChar('A' + (n == 1 ? 0 : n == 4 ? 1 : n == 5 ? 2 : n == 6 ? 3 : n == 7 ? 4 : 5));
-        business::ListingObservation o;
-        o.observation_id = QStringLiteral("observation-") + suffix; o.market_listing_id = QStringLiteral("listing-") + suffix;
-        o.product_ref = QStringLiteral("synthetic-product-1"); o.association = {QStringLiteral("fixture-association"),QStringLiteral("confirmed")};
-        o.frame_ref = QStringLiteral("memory-frame-") + suffix; o.session_id = runtime.sessionId; o.clock_domain_id = runtime.clockDomainId;
-        o.viewport_generation = 1; o.observed_mono_ms = n == 5 ? 0 : now;
-        if (n != 6) o.price = business::Money{{QString::number(n == 7 ? 250 : n == 4 ? 149 : n == 8 ? 155 : 150),0},QStringLiteral("synthetic-unit")};
-        for (const auto* field : {"product_ref","price","wear","condition","season","ownership","grade","rarity","publicity"}) {
-            business::FieldEvidence evidence; evidence.source_ref = o.frame_ref;
-            if (QLatin1String(field) == QStringLiteral("product_ref") || (QLatin1String(field) == QStringLiteral("price") && o.price)) evidence.status = QStringLiteral("observed");
-            o.field_evidence.insert(QLatin1String(field),evidence);
-        }
-        const bool builtin = s(runDocument.value(QStringLiteral("profile")).toObject(),"id") == WorkspaceController::builtinProfileId();
-        const auto rule = builtin ? fixtureRule() : savedRule(runDocument);
-        business::EvaluationContext context{runtime.sessionId,runtime.clockDomainId,1,quint64(now),250,QStringLiteral("filter_only"),{QStringLiteral("synthetic-unit")}};
-        const auto vr = business::validateRule(rule);
-        const auto vo = business::validateObservation(o);
-        QString decision = QStringLiteral("NeedsReview"), reason = QStringLiteral("RULE_INVALID");
-        if (const auto* validatedRule = std::get_if<business::ValidatedRule>(&vr)) {
-            if (const auto* validatedObservation = std::get_if<business::ValidatedObservation>(&vo)) {
-                const auto result = business::evaluate(*validatedRule,*validatedObservation,context);
-                decision = result.status; reason = result.primary_reason;
-            } else reason = QStringLiteral("OBSERVATION_INVALID");
-        }
-        QJsonArray missing; if (!o.price) missing.append(QStringLiteral("price"));
-        return {{QStringLiteral("listing_id"),*o.market_listing_id},{QStringLiteral("observation_id"),o.observation_id},
-            {QStringLiteral("product_id"),*o.product_ref},{QStringLiteral("product_name"),QStringLiteral("合成商品 · 非市场数据")},
-            {QStringLiteral("observed_price"),o.price ? priceText(o.price->value) : QString()},
-            {QStringLiteral("observed_mono_ms"),qint64(o.observed_mono_ms)}, {QStringLiteral("stale"),quint64(now)-o.observed_mono_ms>250},
-            {QStringLiteral("missing_fields"),missing},{QStringLiteral("decision"),decision},{QStringLiteral("reason"),reason}};
-    }
     bool dispatch(const QString& suffix, ledger::EventDraft dispatchEvent) {
         const QString id = activeRun + QStringLiteral(":attempt-") + suffix;
         ledger::AttemptDraft a; a.attemptId=id; a.intentId=id+QStringLiteral(":intent"); a.runId=activeRun;
@@ -382,7 +276,7 @@ public:
         const bool paused=next.runState==QStringLiteral("Paused");
         const bool builtin=s(runDocument.value(QStringLiteral("profile")).toObject(),"id")==WorkspaceController::builtinProfileId();
         if (n==1 || n>=4) {
-            const auto payload=observation(n,next.nowMonoMs);
+            const auto payload=ReplayScenario::observation(n,next.nowMonoMs,runtime,runDocument);
             if (!append(event(QStringLiteral("Observation"),payload,next,next.nextSeq++))) return false;
             if (builtin && (n==4 || n==8) && s(payload,"decision")==QStringLiteral("Match")) {
                 auto dispatchEvent=event(QStringLiteral("DispatchSimulated"),payload,next,next.nextSeq++);
@@ -394,14 +288,14 @@ public:
                 }
             }
         } else if (n==2 && builtin) {
-            const auto payload=observation(1,next.nowMonoMs);
+            const auto payload=ReplayScenario::observation(1,next.nowMonoMs,runtime,runDocument);
             if (!dispatch(QStringLiteral("A"),event(QStringLiteral("DispatchSimulated"),payload,next,next.nextSeq++))) return false;
         } else if (n==3 && builtin) {
             const auto snapshot=store.snapshot(activeRun); if (!accepted(snapshot)) return false;
             bool pending=false;
             for (const auto& attempt:std::get<ledger::LedgerSnapshot>(snapshot).attempts)
                 if (attempt.attemptId==activeRun+QStringLiteral(":attempt-A") && attempt.state==QStringLiteral("Dispatching")) pending=true;
-            auto payload=observation(1,next.nowMonoMs);
+            auto payload=ReplayScenario::observation(1,next.nowMonoMs,runtime,runDocument);
             if (pending) {
                 payload.insert(QStringLiteral("confirmed_price"),QStringLiteral("148"));
                 payload.insert(QStringLiteral("reason"),QStringLiteral("SIMULATED_CONFIRMED_RECEIPT"));
@@ -419,7 +313,7 @@ public:
 
 WorkspaceController::WorkspaceController(QObject* parent) : QObject(parent),d(std::make_unique<Impl>(this)) {}
 WorkspaceController::~WorkspaceController() = default;
-QString WorkspaceController::builtinProfileId() { return QStringLiteral("builtin-synthetic-fixture"); }
+QString WorkspaceController::builtinProfileId() { return ProfileCatalog::builtinProfileId(); }
 const WorkspaceProjection& WorkspaceController::projection() const { return d->p; }
 QString WorkspaceController::lastError() const { return d->p.lastError; }
 QJsonObject WorkspaceController::selectedProfileDocument() const { return d->profiles.value(d->p.selectedProfileId); }
@@ -449,20 +343,15 @@ bool WorkspaceController::saveReviewedPreview(const QJsonObject& preview,const c
     if (!d->ready()) return false;
     if (d->active()) return d->error(QStringLiteral("RUN_ACTIVE"));
     if (d->p.readOnly) return d->error(QStringLiteral("DB_READ_ONLY"));
-    const QString quantumText=choices.quantum.trimmed();
-    static const QRegularExpression quantumPattern(QStringLiteral("^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"));
-    if (!quantumPattern.match(quantumText).hasMatch()) return d->error(QStringLiteral("QUANTUM_INVALID: positive plain decimal required"));
-    const auto quantum=business::parseDecimal(QStringView(quantumText));
-    const auto* quantumValue=std::get_if<business::DecimalValue>(&quantum);
-    if (!quantumValue || !business::decimalIsPositive(*quantumValue)) return d->error(QStringLiteral("QUANTUM_INVALID: positive plain decimal required"));
-    const auto result=config::ProfileStore::materializePreview(preview,choices);
-    if (const auto* failure=std::get_if<config::ProfileStoreError>(&result)) return d->error(failure->code+QStringLiteral(": ")+failure->message);
-    if (!profileValid(std::get<config::ProfileCommitResult>(result).document)) return d->error(QStringLiteral("PROFILE_INVALID: review source or document is invalid"));
+    QJsonObject materialized;
+    QString materializeError;
+    if (!d->profileCatalog.materializeAndValidate(preview, choices, &materialized, &materializeError))
+        return d->error(materializeError);
     // Validate existing files before committing anything. A malformed catalogue
     // must not turn a failed save into an on-disk overwrite with a stale UI.
     auto catalogue=d->p; QHash<QString,QJsonObject> documents;
     if (!d->readProfiles(catalogue,documents)) return false;
-    const QString id=std::get<config::ProfileCommitResult>(result).profileId;
+    const QString id=materialized.value(QStringLiteral("profile")).toObject().value(QStringLiteral("id")).toString();
     const QString path=QDir(d->p.rootPath).filePath(QStringLiteral("profiles/")+id+QStringLiteral(".json"));
     QString error;
     if (!config::ProfileStore::commitPreview(preview,choices,path,&error)) return d->error(QStringLiteral("PROFILE_SAVE_FAILED: ")+error);
@@ -538,46 +427,14 @@ bool WorkspaceController::advance(int steps)
 bool WorkspaceController::stop() { return d->control(QStringLiteral("Stop")); }
 QString WorkspaceController::csvCell(QString value)
 {
-    int index=0; while(index<value.size() && value.at(index).isSpace()) ++index;
-    const bool formula=index<value.size() && QStringLiteral("=+-@").contains(value.at(index));
-    if (formula || (!value.isEmpty() && (value.front()==QLatin1Char('\t') || value.front()==QLatin1Char('\r') || value.front()==QLatin1Char('\n')))) value.prepend(QLatin1Char('\''));
-    value.replace(QStringLiteral("\""),QStringLiteral("\"\"")); return QLatin1Char('\"')+value+QLatin1Char('\"');
+    return RecordsExporter::csvCell(value);
 }
 bool WorkspaceController::exportRecordsCsv(const QString& path)
 {
     if (!d->ready()) return false;
-    // QSaveFile atomically replaces its destination. Never let a record export
-    // replace the open database, its sidecars, or any saved profile.
-    const auto resolved = [](const QString& filePath) {
-        const QFileInfo info(filePath);
-        const QString canonical = info.canonicalFilePath();
-        if (!canonical.isEmpty()) return QDir::cleanPath(canonical);
-        const QString parent = info.dir().canonicalPath();
-        return QDir::cleanPath(parent.isEmpty() ? info.absoluteFilePath() : QDir(parent).filePath(info.fileName()));
-    };
-#ifdef Q_OS_WIN
-    constexpr auto pathCase = Qt::CaseInsensitive;
-#else
-    constexpr auto pathCase = Qt::CaseSensitive;
-#endif
-    const QString target = resolved(path), database = resolved(d->p.databasePath);
-    const QString profileDirectory = resolved(QDir(d->p.rootPath).filePath(QStringLiteral("profiles")));
-    bool protectedPath = target.compare(profileDirectory,pathCase)==0
-        || target.startsWith(profileDirectory+QLatin1Char('/'),pathCase);
-    for (const auto& suffix : {QString(),QStringLiteral("-wal"),QStringLiteral("-shm"),QStringLiteral("-journal"),QStringLiteral(".writer.lock")})
-        protectedPath |= target.compare(database+suffix,pathCase)==0;
-    if (protectedPath) return d->error(QStringLiteral("CSV_TARGET_PROTECTED: choose an export file outside workspace storage"));
-    QByteArray bytes("\xEF\xBB\xBF");
-    bytes += "run_id,event_id,type,mode,run_profile_id,run_profile_revision,source,clock_domain,mono_ms,listing_id,observation_id,observed_price,confirmed_simulated_price,reason\r\n";
-    QString runMode;
-    for (const auto& run:d->p.runs) if(run.id==d->p.selectedRunId) { runMode=run.mode; break; }
-    for (const auto& row:d->p.records) {
-        QStringList fields{row.runId,row.eventId,row.type,runMode,d->p.runProfileId,QString::number(d->p.runProfileRevision),row.source,row.clockDomainId,QString::number(row.atMonoMs),row.listingId,row.observationId,row.observedPrice,row.confirmedPrice,row.reason};
-        for (auto& field:fields) field=csvCell(field);
-        bytes+=fields.join(QLatin1Char(',')).toUtf8()+"\r\n";
-    }
-    QSaveFile file(path);
-    if (!file.open(QIODevice::WriteOnly) || file.write(bytes)!=bytes.size() || !file.commit()) return d->error(QStringLiteral("CSV_WRITE_FAILED: ")+file.errorString());
+    const auto result = d->recordsExporter.writeCsv(path, d->p.rootPath, d->p.databasePath, d->p);
+    if (!result.ok) return d->error(result.error);
     d->p.lastError.clear(); d->notify(); return true;
 }
+
 } // namespace relink::workspace

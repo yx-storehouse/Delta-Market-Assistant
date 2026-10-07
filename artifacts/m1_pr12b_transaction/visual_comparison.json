@@ -1,0 +1,26 @@
+{
+  "tasks.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  },
+  "task_editor.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  },
+  "run.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  },
+  "run_full.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  },
+  "favorites.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  },
+  "prices.png": {
+    "same_dimensions": true,
+    "same_pixels": true
+  }
+}

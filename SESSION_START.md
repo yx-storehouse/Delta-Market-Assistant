@@ -1,16 +1,19 @@
 # Relink Studio — new session entry
 
-## 当前开发节点：PR12A 页面模块化已完成
+## 当前开发节点：PR12B 与 M2 非游戏基础层
 
-- PR01–PR11 的领域、方案、持久化回放与账本功能保持；PR12A 是原 PR12 总体验收前的第一轮维护性整理。
-- `src/ui/pages/` 独立拥有任务页、运行参数页和记录面板；`src/ui/dialogs/` 独立任务编辑器；共享呈现工具在 `src/ui/presentation/`。
-- `main.cpp` 为 164 行启动入口；完整离屏验收搬到 `src/diagnostics/ui_self_test_runner.*`，仍链接进 EXE 保持 CLI 兼容，不宣称包体缩小。
-- `relink_ui` 只链接 Qt Core/Gui/Widgets 与 Windows DWM；独立 `ui_module_tests` 不依赖 MainWindow/WorkspaceController/SQLite。
-- 阅读 `docs/business_rebuild/implementation/ui_modularization_pr12a.md`、`09_m1_progress.md` 和 `NEXT_IMPLEMENTATION.md`。下一步 PR12B 服务/历史查询整理，随后才是原 PR12 总体验收和 M2。
-- 本轮 14/14 CTest、90 条独立模块断言、400 条 workspace 服务断言、58 条 workspace UI 断言、22 条存储自检通过。
-- 构建发布：`build.ps1 -Test -Package`；发布验收：`python -I -X utf8 tests/release/verify_pr12a_package.py modified`。
-- 证据 `artifacts/m1_pr12a_transaction/VERIFICATION.txt`；旧程序在其 `baseline/release/`，回退在独立副本验证并保留新账本/方案。
-- 页面构造后由宿主显式调用 `refresh()`；旧 Demo 与新业务仍分开，新功能不堆入旧页面。
+续接日期：2026-10-07（Asia/Shanghai）。用户要求继续全部非游戏开发和验收，只在需要真实游戏画面验证识别业务时暂停总结。
+
+- PR01–PR11 和 PR12A 已完成；PR12B 增加四个独立服务，历史列表先读摘要、选中运行才读详细事件/账本/审计。
+- `src/ui/pages/`、`src/ui/dialogs/`、`src/diagnostics/` 保持页面、编辑器和离屏验收边界；`relink_ui` 不依赖 SQLite。
+- `src/application/runtime/observation/` 实现步骤触发、有界内存帧、请求关联、新鲜度、取消和资源回收；来源仍为合成回放。
+- `src/application/vision/` 已实现协议/lease，以及独立 `relink_vision_transport` 的 Win32 共享帧和隐藏合成子进程；fixture child 不是 OCR worker，不随桌面包发布，桌面程序未链接传输模块。
+- 当前源码已有完整 CTest 19/19 记录；工作区 432、观察 828、协议 646、进程内链路 279、共享帧 65、隐藏合成进程传输 206 条断言通过；独立负向包验收记录为 41/41。最终发布、哈希与副本回退以本轮构建后更新的 `VERIFICATION.txt` 为准，不沿用旧包证据。
+- 快照单独运行不得改写配置/工作区。`tests/verify_delivery.py` 参数化 build/release/output，使用新目录验证全部包文件清单、工作区字节保持和真实回退脚本。
+- 优先读 `docs/business_rebuild/09_m1_progress.md`、`implementation/runtime/observation_adapter_pr12b.md`、`implementation/runtime/worker_protocol_pr12b.md`、`implementation/runtime/vision_transport_pr12b.md` 和 `NEXT_IMPLEMENTATION.md`；不重复重做 PR12A/PR12B。下一步需要真实游戏窗口/帧、ROI 与 OCR provider 校准，通用内存/进程传输已验证。
+- 保存仍不等于启用：`enabled=false`、`activation_required=true`；真实画面识别不等于确认成交，更不自动接入购买。
+- 构建发布：`build.ps1 -Test -Package`；发布验收：`python -I -X utf8 tests/release/verify_pr12b_package.py modified --build-dir build_relocated`。
+- 固定交付为 `dist/RelinkStudio/RelinkStudio.exe`，保留 DLL、`platforms`、`sqldrivers`、`qt.conf`；只离屏验收，不弹出可见窗口。
 
 ## 当前 UI 版本：0.6 Windows 11 浅色 · 微软商店布局
 
@@ -18,7 +21,7 @@
 
 - 更新后的程序仍在 `dist/RelinkStudio/RelinkStudio.exe`。
 - 当前说明与原程序入口对照：`docs/STORE_UI.md`。
-- 本轮验收与恢复记录：`artifacts/store_ui/VERIFICATION.txt`；0.5 备份在 `artifacts/store_ui/baseline/`。
+- UI 0.6 样式改版的历史验收与恢复记录：`artifacts/store_ui/VERIFICATION.txt`；0.5 备份在 `artifacts/store_ui/baseline/`。当前 PR12B 发布状态看本轮事务报告。
 - 直接修改当前 `src/`，不重复执行一次性补丁脚本；不自动开启前台窗口，验收继续离屏。
 - “优化”入口的具体功能待用户确认；运行参数只保存配置，不执行点击或购买。
 

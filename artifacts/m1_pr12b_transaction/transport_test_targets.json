@@ -1,0 +1,9 @@
+{
+  "library": "relink_vision_transport",
+  "worker_process_test": "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\worker_process_tests.exe",
+  "fixture_child": "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\vision_worker_fixture.exe",
+  "fixture_child_sha256": "2616d53027efe57c47182f2201efd71ca2b2dc98e35cefde0c53c2f1bdfb5a65",
+  "fixture_is_ocr_worker": false,
+  "fixture_shipped_in_desktop_release": false,
+  "desktop_product_behavior": "synthetic_replay_only"
+}
