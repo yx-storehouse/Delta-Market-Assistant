@@ -1751,6 +1751,15 @@ STDERR:
 (empty)
 EXIT_STATUS: 0
 
+FINAL_IDE_RESTORE
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe C:\Users\Administrator\Desktop\price\artifacts\m2_live_capture_transaction\restore_ide.py --hwnd 31592856 --pid 271768
+INPUT: Restore explicit Mirasim identity after analysis; no game input or screenshot.
+STDOUT:
+{"ide_foreground_restored": true, "expected_hwnd": 31592856, "foreground_hwnd": 31592856, "game_capture": false, "game_input_sent": false}
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
 LIVE_CAPTURE_1
 COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --live-capture-check --target-hwnd 51845362 --target-pid 294852 --return-hwnd 31592856 --return-pid 271768 --frames 3
 INPUT: Explicit game window, three read-only in-memory frames; return Mirasim foreground. No game input.
