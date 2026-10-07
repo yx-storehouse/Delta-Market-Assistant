@@ -1,8 +1,26 @@
 import unittest
-from foreground_batch_core import execute_batch
+from foreground_batch_core import execute_batch, stabilize_capture
+import time
 
 
 class BatchTests(unittest.TestCase):
+    def test_unknown_retry_keeps_all_observations(self):
+        answers=[{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
+            {'passed':True,'exit_status':0,'result':{'startup_page':{'page':'empty_watchlist'}}}]
+        r=stabilize_capture(lambda t:answers.pop(0),lambda:True,deadline=time.monotonic()+3,wait=lambda t:None)
+        self.assertTrue(r['passed']);self.assertEqual(r['attempt_count'],2);self.assertFalse(r['attempts'][0]['passed'])
+    def test_known_wrong_page_is_not_retried(self):
+        calls=[]
+        r=stabilize_capture(lambda t:calls.append(1) or {'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'skin_listings'}}},
+            lambda:True,deadline=time.monotonic()+3,wait=lambda t:None)
+        self.assertEqual(len(calls),1);self.assertFalse(r['passed'])
+    def test_unknown_retry_is_bounded(self):
+        r=stabilize_capture(lambda t:{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
+            lambda:True,deadline=time.monotonic()+3,wait=lambda t:None)
+        self.assertEqual(r['attempt_count'],3);self.assertFalse(r['passed'])
+    def test_retry_does_not_reclaim_lost_focus(self):
+        with self.assertRaisesRegex(RuntimeError,'BATCH_FOREGROUND_LOST'):
+            stabilize_capture(lambda t:self.fail('capture must not run'),lambda:False,deadline=time.monotonic()+3)
     def run_case(self, fail_at=None, lose_at=None):
         events=[]; focus=[False]; index=[0]
         def enter(): events.append('enter');focus[0]=True

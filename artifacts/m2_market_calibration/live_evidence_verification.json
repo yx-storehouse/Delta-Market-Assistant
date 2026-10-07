@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "batches_checked": 9,
+  "fixture_projections": 6,
+  "final_matched_checkpoints": 7,
+  "final_capture_attempts": 9,
+  "final_navigation_clicks": 4,
+  "entry_calls": 1,
+  "restore_calls": 1,
+  "child_focus_switches": 0,
+  "images_written": 0,
+  "new_capture": false,
+  "current_binary_sha256": "2115155a8d490ac6ef25c74200f74b130e689b153cc712490aa006306f8cf38b",
+  "current_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "note": "Page calibration and manual navigation, not full automatic S01-S39 or transaction execution. Failed attempts retained."
+}

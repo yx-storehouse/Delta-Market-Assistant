@@ -62,8 +62,11 @@ try {
             $words.Add([ordered]@{text=$word.Text; x=$bounds.X; y=$bounds.Y; width=$bounds.Width; height=$bounds.Height})
         }
     }
+    $angle = $null
+    if ($null -ne $result.TextAngle) { $angle = [double]$result.TextAngle }
     $reply = [ordered]@{protocol='windows-ocr-once-v1'; request_id=$requestId; ok=$true;
-        width=$width; height=$height; language=$engine.RecognizerLanguage.LanguageTag; words=@($words.ToArray())}
+        width=$width; height=$height; language=$engine.RecognizerLanguage.LanguageTag;
+        coordinate_space='windows_ocr_rotated'; text_angle=$angle; words=@($words.ToArray())}
 } catch {
     $code = $_.Exception.Message
     if ($code -cnotin @('E_OCR_WORKER_INPUT','E_OCR_IMAGE_SIZE','E_OCR_LANGUAGE','E_OCR_TOKEN_LIMIT')) { $code = 'E_OCR_ENGINE' }

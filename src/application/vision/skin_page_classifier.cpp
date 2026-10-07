@@ -5,6 +5,7 @@
 #include <QVector>
 #include <algorithm>
 #include <cmath>
+#include <functional>
 
 namespace relink::vision {
 namespace {
@@ -19,7 +20,7 @@ QString normalized(QString text) {
 bool inBand(const QRectF& rect, const QRectF& band) { return band.contains(rect.center()); }
 class Anchors {
 public:
-    explicit Anchors(QVector<Token> tokens) : m_tokens(std::move(tokens)) {
+    explicit Anchors(QVector<Token> tokens, double aspect) : m_tokens(std::move(tokens)), m_aspect(aspect) {
         // Windows OCR can split a Chinese label into adjacent words. Combine
         // only nearby same-line tokens, never concatenate the entire screen.
         std::sort(m_tokens.begin(), m_tokens.end(), [](const Token& a, const Token& b) {
@@ -55,12 +56,12 @@ public:
     bool exact(const QString& text, const QRectF& band) const {
         for (const auto& token : m_tokens) if (token.text == text && inBand(token.bounds, band)) return true;
         for (const auto& token : m_joined) if (token.text == text && inBand(token.bounds, band)) return true;
-        return false;
+        return localSequence(text,band);
     }
     bool contains(const QString& text, const QRectF& band) const {
         for (const auto& token : m_tokens) if (token.text.contains(text) && inBand(token.bounds, band)) return true;
         for (const auto& token : m_joined) if (token.text.contains(text) && inBand(token.bounds, band)) return true;
-        return false;
+        return localSequence(text,band);
     }
     int countExact(const QString& text, const QRectF& band) const {
         int count = 0;
@@ -75,8 +76,35 @@ public:
         return false;
     }
 private:
+    bool localSequence(const QString& label,const QRectF& band) const {
+        // Whole-screen row grouping can be disrupted by unrelated scene text.
+        // Match a bounded exact label locally, with physical-pixel adjacency;
+        // no arbitrary character substitution or whole-screen concatenation.
+        int comparisons=8192;
+        std::function<bool(int,int,int)> extend=[&](int last,int used,int depth){
+            if(used==label.size())return true;
+            if(depth>=8)return false;
+            const auto& previous=m_tokens[last];
+            for(int j=0;j<m_tokens.size();++j){
+                if(--comparisons<0)return false;
+                const auto& next=m_tokens[j];
+                if(next.bounds.left()<=previous.bounds.left() || !inBand(next.bounds,band))continue;
+                const double font=std::min(previous.bounds.height(),next.bounds.height());
+                const double gap=next.bounds.left()-previous.bounds.right();
+                if(gap < -.35*font/m_aspect || gap > .60*font/m_aspect
+                    || std::abs(next.bounds.center().y()-previous.bounds.center().y())>.5*font)continue;
+                if(label.mid(used).startsWith(next.text) && extend(j,used+next.text.size(),depth+1))return true;
+            }
+            return false;
+        };
+        for(int i=0;i<m_tokens.size() && comparisons>0;++i)
+            if(inBand(m_tokens[i].bounds,band) && label.startsWith(m_tokens[i].text)
+                && extend(i,m_tokens[i].text.size(),1))return true;
+        return false;
+    }
     QVector<Token> m_tokens;
     QVector<Token> m_joined;
+    double m_aspect;
 };
 }
 
@@ -109,7 +137,7 @@ QJsonObject SkinPageResult::toJson() const {
         {"reason", reason}, {"anchors", QJsonArray::fromStringList(anchors)},
         {"candidate_pages", QJsonArray::fromStringList(candidates)}, {"token_count", tokenCount},
         {"low_score_tokens", lowScoreTokens}, {"provider_scores_available", providerScoresAvailable},
-        {"calibration", calibrationEvidence}, {"live_calibrated", false}, {"actions_enabled", false}};
+        {"calibration", calibrationEvidence}, {"anchor_checks", anchorChecks}, {"live_calibrated", false}, {"actions_enabled", false}};
 }
 
 SkinPageResult classifySkinPage(const QJsonObject& observation) {
@@ -151,7 +179,7 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
             QRectF(x.toDouble()/width.toDouble(), y.toDouble()/height.toDouble(), w.toDouble()/width.toDouble(), h.toDouble()/height.toDouble())});
     }
     result.validInput = true;
-    const Anchors a(std::move(tokens));
+    const Anchors a(std::move(tokens),width.toDouble()/height.toDouble());
     const QRectF top(0, 0, 1, .25), body(0, .12, 1, .82), leftBody(0, .12, .5, .82);
     const QRectF bottom(0, .5, 1, .5), center(.1, .12, .8, .7), right(.65, 0, .35, 1);
     const auto exact = [&](const char16_t* text, const QRectF& band) { return a.exact(QString::fromUtf16(text), band); };
@@ -179,6 +207,9 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         if (exact(u"价格区间", right) && exact(u"所有成色", right) && exact(u"确定", right))
             result.overlay = PageOverlay::ListingFilter;
     }
+    result.anchorChecks={{"catalog.skin_tab",exact(u"典藏外观",top)},{"catalog.circulation",has(u"流通量",body)},
+        {"catalog.watch",exact(u"我的关注",top)},{"catalog.rows",a.countExact(QStringLiteral("典藏"),leftBody)>=2},
+        {"mandel.tab",exact(u"曼德尔砖",top)},{"mandel.current",exact(u"当季产出",body)},{"mandel.past",exact(u"往季产出",body)}};
     if (exact(u"典藏外观", top) && has(u"流通量", body)
         && (exact(u"我的关注", top) || a.countExact(QStringLiteral("典藏"), leftBody) >= 2))
         candidate(SkinPage::SkinHome, {"catalog.skin_tab", "catalog.circulation", "catalog.watch_or_rows"});
@@ -247,6 +278,36 @@ QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation) {
             {"excluded_tokens", excluded}, {"truncated", truncated}});
     }
     output["regions"] = projected;
+    return output;
+}
+QJsonObject projectMarketAnchorDiagnostics(const QJsonObject& observation) {
+    const auto validated = classifySkinPage(observation);
+    QJsonObject output{{"schema", "market-anchor-diagnostics-v1"}, {"coverage", "anchor_projection"},
+        {"valid_input", validated.validInput}, {"actions_enabled", false}};
+    if (!validated.validInput) { output["error"] = validated.reason; return output; }
+    const double width = observation.value("width").toDouble(), height = observation.value("height").toDouble();
+    output["width"] = width; output["height"] = height;
+    QJsonArray words;
+    int excluded = 0;
+    bool truncated = false;
+    // Fixed page-label areas only; no UID strip or wallet at the top right.
+    const QRectF areas[] = {QRectF(.035,.04,.50,.16), QRectF(.035,.20,.20,.67),
+        QRectF(.10,.12,.70,.70), QRectF(.84,.15,.115,.13), QRectF(.025,.90,.85,.08)};
+    static const QRegularExpression characters(QStringLiteral("^[曼德尔砖典藏外观挂饰当季产出往我的关注流通量在售默认排序成色第页价格区间所有确定赛品阶枪种确认暂未添加任何皮肤未拥有全部搜索筛选返回取消成交均价\\s□■△◇◆:：/0-9]+$"));
+    for (const auto& value : observation.value("words").toArray()) {
+        const auto word = value.toObject();
+        const QRectF rect(word.value("x").toDouble()/width,word.value("y").toDouble()/height,
+            word.value("width").toDouble()/width,word.value("height").toDouble()/height);
+        bool inside = false; for (const auto& area : areas) inside |= area.contains(rect);
+        if (!inside) continue;
+        if (word.value("text").toString().size()>32 || !characters.match(word.value("text").toString()).hasMatch()) { ++excluded; continue; }
+        if (words.size()==256) { truncated=true; continue; }
+        QJsonObject minimal;
+        for (const auto* field : {"text","x","y","width","height","score"})
+            if (word.contains(field)) minimal[field]=word.value(field);
+        words.append(minimal);
+    }
+    output["words"]=words; output["excluded_tokens"]=excluded; output["truncated"]=truncated;
     return output;
 }
 } // namespace relink::vision

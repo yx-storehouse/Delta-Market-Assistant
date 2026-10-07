@@ -6,8 +6,8 @@
   "verified_primary_references": 16,
   "evidence_groups": 12,
   "evidence_files_verified": 23,
-  "json_files_parsed": 82,
-  "relative_markdown_links_checked": 196,
+  "json_files_parsed": 83,
+  "relative_markdown_links_checked": 200,
   "html_sections": 11,
   "svg_diagrams": 2,
   "application_baseline_files": 102,
@@ -24,7 +24,7 @@
     {
       "path": "CMakeLists.txt",
       "expected": "45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c",
-      "actual": "da738aebb62113d089c158fe1da1e6daa5bf8e3e1adbcd144ec00d44f39ad377",
+      "actual": "245814a9d8ab8ff21416d2cd590d5cb00d44f603deb67705807f02a0478b20bb",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -32,7 +32,7 @@
     {
       "path": "SESSION_START.md",
       "expected": "04e9bff567d18b7544d9d22ec65b8d0ce7beb8efa6f2b83709bf860ad70041a5",
-      "actual": "4fe9c63b5982aa8d6d48d081a14b28398b4b079af85b18ac187dfbc9bdd2b8ce",
+      "actual": "35c602b3f76df6f6a1cbf8319502be65f49ebb3a002bf97aa2e10c28b085fdfe",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -48,7 +48,7 @@
     {
       "path": "dist/RelinkStudio/README.md",
       "expected": "f4d64adc160f2293887a0e8da405896c2afe3a6c5225f46715d79e1e2a557171",
-      "actual": "02cb36a09a0018c6a584192cb9649584b754070d5dbe7cd1d8a7bff089f2c893",
+      "actual": "6ba1441f1fc9c376915c4d6ad5ab358092c54992285e612beb21a20f4af25033",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -56,7 +56,7 @@
     {
       "path": "dist/RelinkStudio/RelinkStudio.exe",
       "expected": "b2d2e6b5ad2e1e28823bf62e79f839ae1d7379b06af02eb821867b145b91b15d",
-      "actual": "9ca3a85f4b8f886718df8226bb6a55d8001404cf1a3acf0aa3afd395ab615f03",
+      "actual": "2115155a8d490ac6ef25c74200f74b130e689b153cc712490aa006306f8cf38b",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -64,7 +64,7 @@
     {
       "path": "dist/RelinkStudio/file_manifest.json",
       "expected": "a5f196bc39ba6a6c9132432b7b4bf0fc5cc2e411d91843d81c975d6c0a203750",
-      "actual": "b63aa61f0da4fe7bee37839f61f33d00346b91e6ed5f09d0b0e7c279ac2e0b71",
+      "actual": "5faf931b33f0c2089f7be4063876e5773e23c05828265d9c2cd0fc8989d62e4c",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -72,7 +72,7 @@
     {
       "path": "resources.qrc",
       "expected": "78d52f4f4acd8b0c700ac718a76c191c4a29f4a79edba20d2134e9c96ebd78bc",
-      "actual": "593726379671a45aafabdad07c67b432e4be5ed38093de676269530ee64c94aa",
+      "actual": "96e6db09505260737e9f7ccb3ed2482bca5d7f64be75be71faf7d7d1b1b20f0b",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -126,9 +126,9 @@
       "expected_m1_drift": true
     }
   ],
-  "m1_baseline_id": "m2_startup_observer_v3_focus_batch",
-  "m1_baseline_files": 385,
-  "m1_baseline_files_unchanged": 385,
+  "m1_baseline_id": "m2_startup_observer_v4_market_verified",
+  "m1_baseline_files": 398,
+  "m1_baseline_files_unchanged": 398,
   "m1_baseline_differences": [],
   "sample_execution": 0,
   "step_capture_contract": "PASS",

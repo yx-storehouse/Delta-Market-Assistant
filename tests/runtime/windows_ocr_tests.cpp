@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QTemporaryDir>
 #include <iostream>
+#include <cmath>
 
 using namespace relink::vision;
 using namespace relink::runtime::observation;
@@ -34,6 +35,39 @@ int main(int argc, char** argv) {
     QJsonObject valid{{"protocol", "windows-ocr-once-v1"}, {"request_id", "test"}, {"ok", true},
         {"width", 100}, {"height", 100}, {"language", "en-US"}, {"words", QJsonArray{word("MARKET")}}};
     check(validateOcrReply(json(valid), "test", 100, 100).ok, "valid_result_accepted");
+    auto rotated = valid;
+    rotated["coordinate_space"]="windows_ocr_rotated";
+    rotated["words"]=QJsonArray{QJsonObject{{"text","MARKET"},{"x",60},{"y",40},{"width",20},{"height",10}}};
+    for (double angle : {0.0,90.0,-90.0,180.0}) {
+        rotated["text_angle"]=angle;
+        const auto reply=validateOcrReply(json(rotated),"test",100,100);
+        check(reply.ok && reply.observation.value("coordinate_space")=="client_physical_px", "native_angle_maps_to_client_coordinates");
+        const auto box=reply.observation.value("words").toArray().first().toObject();
+        double ex=60,ey=40,ew=20,eh=10;
+        if(angle==90){ex=50;ey=60;ew=10;eh=20;}
+        if(angle==-90){ex=40;ey=20;ew=10;eh=20;}
+        if(angle==180){ex=20;ey=50;ew=20;eh=10;}
+        check(std::abs(box["x"].toDouble()-ex)<.00001 && std::abs(box["y"].toDouble()-ey)<.00001
+            && std::abs(box["width"].toDouble()-ew)<.00001 && std::abs(box["height"].toDouble()-eh)<.00001,
+            "rotation_uses_clockwise_four_corners_about_image_center");
+    }
+    rotated["text_angle"]=QJsonValue(QJsonValue::Null);
+    check(validateOcrReply(json(rotated),"test",100,100).ok,"null_native_angle_means_identity");
+    for(const auto& angle : {QJsonValue("90"),QJsonValue(181),QJsonValue(-181)}) {
+        rotated["text_angle"]=angle;
+        check(validateOcrReply(json(rotated),"test",100,100).error=="E_OCR_ANGLE","malformed_native_angle_rejected");
+    }
+    rotated.remove("text_angle");
+    check(validateOcrReply(json(rotated),"test",100,100).error=="E_OCR_COORDINATES","rotation_space_requires_angle_metadata");
+    rotated=valid;rotated["text_angle"]=10;
+    check(validateOcrReply(json(rotated),"test",100,100).error=="E_OCR_COORDINATES","unlabelled_angle_never_silently_ignored");
+    rotated=valid;rotated["coordinate_space"]="windows_ocr_rotated";rotated["text_angle"]=0;
+    rotated["words"]=QJsonArray{QJsonObject{{"text","edge"},{"x",95},{"y",20},{"width",10},{"height",10}}};
+    auto clipped=validateOcrReply(json(rotated),"test",100,100);
+    check(clipped.ok && clipped.observation["words"].toArray().first().toObject()["width"]==5,"rotated_edge_box_clips_to_original_frame");
+    rotated["words"]=QJsonArray{QJsonObject{{"text","outside"},{"x",110},{"y",20},{"width",10},{"height",10}}};
+    auto outside=validateOcrReply(json(rotated),"test",100,100);
+    check(outside.ok && outside.observation["words"].toArray().isEmpty() && outside.observation["outside_frame_tokens_dropped"]==1,"fully_outside_box_counted_and_not_used");
     check(!validateOcrReply({}, "test", 100, 100).ok, "empty_result_rejected");
     check(!validateOcrReply(QByteArray(1048577, ' '), "test", 100, 100).ok, "oversized_result_rejected");
     check(!validateOcrReply("not-json", "test", 100, 100).ok, "malformed_json_rejected");
@@ -95,6 +129,23 @@ int main(int argc, char** argv) {
     check(result.observation.value("language") == "en-US", "exact_recognizer_language");
     check(result.helperUiChecks > 0 && !result.helperVisibleWindowObserved && !result.helperForegroundObserved,
           "actual_helper_has_no_observed_visible_window_or_foreground_ownership");
+    const auto originalPixels=frame.pixels;
+    const auto regionReply=recognizer.recognizeRegion(frame,QRect(20,20,650,100));
+    check(regionReply.ok && regionReply.observation.value("coverage")=="roi"
+        && regionReply.observation.value("width")==frame.width,"region_ocr_returns_client_coordinates_but_partial_coverage");
+    QString regionText; bool regionBounds=true;
+    for(const auto& v:regionReply.observation.value("words").toArray()) {const auto w=v.toObject();regionText+=w.value("text").toString();
+        regionBounds &= w.value("x").toDouble()>=20 && w.value("y").toDouble()>=20;}
+    check(regionText.contains("MARKET") && regionBounds,"actual_region_text_translated_to_parent_frame");
+    check(recognizer.recognizeRegion(frame,QRect(-1,0,10,10)).error=="E_OCR_REGION","out_of_frame_roi_rejected");
+    check(frame.pixels==originalPixels && regionReply.observation["roi_scale"]==2
+        && regionReply.observation["roi_preprocess"]=="grayscale_minmax_contrast","contrast_upscale_keeps_original_frame_unchanged");
+    const auto inverted=recognizer.recognizeRegion(frame,QRect(20,20,650,100),3,true);
+    QString invertedText;for(const auto& word:inverted.observation["words"].toArray())invertedText+=word.toObject()["text"].toString();
+    check(inverted.ok && invertedText.contains("MARKET") && inverted.observation["roi_scale"]==3,
+        "actual_inverted_three_times_roi_preserves_text_and_client_scale");
+    check(recognizer.recognizeRegion(frame,QRect(20,20,650,100),0).error=="E_OCR_REGION","zero_roi_scale_rejected");
+    check(recognizer.recognizeRegion(frame,QRect(20,20,650,100),4).error=="E_OCR_REGION","excessive_roi_scale_rejected");
     auto invalidFrame = frame; invalidFrame.pixelFormat = "RGB8";
     check(recognizer.recognizeFrame(invalidFrame).error == "E_OCR_FRAME", "pixel_format_rejected");
     invalidFrame = frame; ++invalidFrame.validBytes;

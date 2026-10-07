@@ -1,0 +1,9 @@
+{
+  "name": "Verify skin home, open existing watchlist, read it without modifications",
+  "timeout_seconds": 20,
+  "steps": [
+    {"kind": "capture", "expected_page": "skin_home", "market_anchors": true, "ui_regions": true},
+    {"kind": "click", "expected_before": "skin_home", "point": [2310, 274], "viewport": [2560, 1440]},
+    {"kind": "capture", "market_anchors": true, "ui_regions": true, "preview": true}
+  ]
+}

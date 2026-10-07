@@ -22,6 +22,7 @@ struct SkinPageResult {
     int lowScoreTokens = 0;
     bool providerScoresAvailable = false;
     QString calibrationEvidence = QStringLiteral("historical_ocr_only");
+    QJsonObject anchorChecks;
     QJsonObject toJson() const;
 };
 
@@ -33,4 +34,5 @@ SkinPageResult classifySkinPage(const QJsonObject& observation);
 // Opt-in calibration aid: only three fixed, non-personal lobby button regions.
 // This is a partial projection, not a page classification or action target.
 QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation);
+QJsonObject projectMarketAnchorDiagnostics(const QJsonObject& observation);
 } // namespace relink::vision

@@ -1,0 +1,9 @@
+{
+  "name": "Verify Mandel coordinates, open the visually observed skin tab, read back in one batch",
+  "timeout_seconds": 20,
+  "steps": [
+    {"kind": "capture", "expected_page": "mandel", "market_anchors": true},
+    {"kind": "click", "expected_before": "mandel", "point": [430, 103], "viewport": [2560, 1440]},
+    {"kind": "capture", "market_anchors": true, "preview": true}
+  ]
+}

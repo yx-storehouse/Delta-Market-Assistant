@@ -1,0 +1,8 @@
+{
+  "name": "Calibrate skin UI labels on the same captured frame, one foreground batch",
+  "timeout_seconds": 20,
+  "steps": [
+    {"kind": "capture", "market_anchors": true, "ui_regions": true},
+    {"kind": "capture", "market_anchors": true, "ui_regions": true}
+  ]
+}

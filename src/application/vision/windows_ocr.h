@@ -2,6 +2,7 @@
 
 #include "application/runtime/observation/observation_adapter.h"
 #include <QJsonObject>
+#include <QRect>
 
 namespace relink::vision {
 
@@ -22,6 +23,8 @@ public:
     explicit WindowsOcrRecognizer(QString helperPath, QString language = QStringLiteral("zh-Hans-CN"), int timeoutMs = 8000);
     QString recognize(const runtime::observation::FrameEnvelope& frame, QString* errorCode = nullptr) override;
     OcrReply recognizeFrame(const runtime::observation::FrameEnvelope& frame);
+    OcrReply recognizeRegion(const runtime::observation::FrameEnvelope& frame, const QRect& clientRegion,
+        int scale = 2, bool invert = false);
 private:
     QString m_helperPath;
     QString m_language;

@@ -17,7 +17,7 @@ import sys
 import threading
 import time
 
-from foreground_batch_core import execute_batch
+from foreground_batch_core import execute_batch, stabilize_capture
 from navigate_lobby_to_warehouse import u, activate, Input
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,15 +81,21 @@ def main():
             argv = list(command)
             if step.get('expected_page'): argv += ['--expected-page', step['expected_page']]
             if step.get('preview'): argv += ['--preview-stdout']
-            p = subprocess.run(argv, capture_output=True, timeout=max(.1,min(20,remaining)),
-                creationflags=subprocess.CREATE_NO_WINDOW)
-            result = json.loads(p.stdout)
-            last_preview = result.pop('preview_png_base64', None)
-            previous = result
-            passed = p.returncode == 0 and result.get('capture_passed') and result.get('ocr_passed')
-            passed = passed and result.get('focus_activation_requests') == 0 and result.get('focus_restore_requests') == 0
-            return dict(kind='capture', passed=bool(passed), command=argv, result=result,
-                stderr=p.stderr.decode('utf-8',errors='replace'), exit_status=p.returncode)
+            if step.get('market_anchors'): argv += ['--ocr-market-anchors']
+            if step.get('ui_regions'): argv += ['--ocr-ui-regions']
+            def once(budget):
+                nonlocal previous,last_preview
+                p = subprocess.run(argv, capture_output=True, timeout=max(.1,min(20,budget)),
+                    creationflags=subprocess.CREATE_NO_WINDOW)
+                result = json.loads(p.stdout)
+                last_preview = result.pop('preview_png_base64', None)
+                previous = result
+                passed = p.returncode == 0 and result.get('capture_passed') and result.get('ocr_passed')
+                passed = passed and result.get('focus_activation_requests') == 0 and result.get('focus_restore_requests') == 0
+                return dict(kind='capture', passed=bool(passed), command=argv, result=result,
+                    stderr=p.stderr.decode('utf-8',errors='replace'), exit_status=p.returncode)
+            return stabilize_capture(once,lambda:u.GetForegroundWindow()==handles['target_hwnd'],
+                attempts=step.get('attempts',3 if step.get('expected_page') else 1),deadline=time.monotonic()+remaining)
         assert previous.get('startup_page',{}).get('page') == step['expected_before'] != 'unknown'
         assert previous['startup_page']['overlay'] == 'none'
         rect = w.RECT(); origin = w.POINT()
@@ -124,6 +130,8 @@ def main():
         halt.set();watcher.join(timeout=1);u.SetThreadDpiAwarenessContext(dpi)
     report.update(timestamp=datetime.datetime.now().astimezone().isoformat(),
         binary_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(), plan=plan, identities=handles,
+        ocr_helper_sha256=hashlib.sha256((exe.parent/'vision/windows_ocr_worker.ps1').read_bytes()).hexdigest(),
+        runner_command=[sys.executable,*sys.argv],exit_status=0 if report['passed'] else 1,
         foreground_transitions=transitions, foreground_sampling_interval_ms=10,
         manual_clicks=clicks, image_file_writes=0)
     output.parent.mkdir(parents=True,exist_ok=True)

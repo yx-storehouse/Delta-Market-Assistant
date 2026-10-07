@@ -99,6 +99,8 @@ add_executable(lobby_calibration_tests tests/runtime/lobby_calibration_tests.cpp
 target_link_libraries(lobby_calibration_tests PRIVATE relink_startup_observation)
 add_executable(foreground_policy_tests tests/runtime/foreground_policy_tests.cpp)
 target_include_directories(foreground_policy_tests PRIVATE src)
+add_executable(market_calibration_tests tests/runtime/market_calibration_tests.cpp)
+target_link_libraries(market_calibration_tests PRIVATE relink_startup_observation)
 
 # Opt-in on-demand capture, isolated from UI configuration / replay reducers.
 add_library(relink_windows_capture STATIC
@@ -216,6 +218,7 @@ add_test(NAME startup_observer_tests COMMAND startup_observer_tests "${CMAKE_SOU
 add_test(NAME startup_observer_self_test COMMAND RelinkStudio --startup-observer-self-test)
 add_test(NAME lobby_calibration_tests COMMAND lobby_calibration_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json")
 add_test(NAME foreground_policy_tests COMMAND foreground_policy_tests)
+add_test(NAME market_calibration_tests COMMAND market_calibration_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/market_live_20261007.json")
 set_tests_properties(windows_capture_tests PROPERTIES TIMEOUT 20)
 add_test(NAME windows_ocr_tests COMMAND windows_ocr_tests "${CMAKE_SOURCE_DIR}/src/vision/windows_ocr_worker.ps1")
 set_tests_properties(windows_ocr_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 45)

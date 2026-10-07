@@ -48,6 +48,8 @@ int runLiveCaptureCheck(int argc, char** argv) {
     parser.addOption({"preview-stdout", "Explicit final-frame PNG preview over stdout only; no file output."});
     parser.addOption({"ocr", "Run Windows OCR on the final in-memory frame without intermediate foreground switches."});
     parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
+    parser.addOption({"ocr-market-anchors", "With --ocr: emit bounded allowlisted market labels, not full OCR or images."});
+    parser.addOption({"ocr-ui-regions", "With --ocr: reread three UI-label regions at 2x from the same memory frame; no extra capture."});
     parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
     parser.process(app);
     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
@@ -73,7 +75,7 @@ int runLiveCaptureCheck(int argc, char** argv) {
     }
     if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
     if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
-        || (parser.isSet("ocr-lobby-anchors") && !parser.isSet("ocr"))) {
+        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions")) && !parser.isSet("ocr"))) {
         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
     }
     QString error;
@@ -153,7 +155,39 @@ int runLiveCaptureCheck(int argc, char** argv) {
     if (!error.isEmpty()) result["error"] = error;
     if (error.isEmpty() && parser.isSet("ocr")) {
         WindowsOcrRecognizer recognizer(QCoreApplication::applicationDirPath() + QStringLiteral("/vision/windows_ocr_worker.ps1"));
-        const auto recognized = recognizer.recognizeFrame(ocrFrame);
+        auto recognized = recognizer.recognizeFrame(ocrFrame);
+        if(recognized.ok && parser.isSet("ocr-ui-regions")) {
+            QJsonArray refinements;
+            const QRect regions[]={QRect(int(ocrFrame.width*.055),int(ocrFrame.height*.035),int(ocrFrame.width*.23),int(ocrFrame.height*.085)),
+                QRect(int(ocrFrame.width*.845),int(ocrFrame.height*.16),int(ocrFrame.width*.11),int(ocrFrame.height*.11)),
+                QRect(int(ocrFrame.width*.42),int(ocrFrame.height*.58),int(ocrFrame.width*.17),int(ocrFrame.height*.07))};
+            auto words=recognized.observation.value("words").toArray();
+            int regionIndex=0;
+            for(const auto& region:regions){
+                const bool emptyMessage=regionIndex++==2;
+                const auto refined=recognizer.recognizeRegion(ocrFrame,region,emptyMessage?3:2,emptyMessage);
+                refinements.append(QJsonObject{{"ok",refined.ok},{"error",refined.error},
+                    {"x",region.x()},{"y",region.y()},{"width",region.width()},{"height",region.height()},
+                    {"source_text_angle_degrees",refined.observation.value("source_text_angle_degrees")},
+                    {"roi_scale",refined.observation.value("roi_scale")},
+                    {"roi_preprocess",refined.observation.value("roi_preprocess")},
+                    {"replacement_applied",refined.ok && !refined.observation.value("words").toArray().isEmpty()},
+                    {"word_count",refined.observation.value("words").toArray().size()}});
+                if(!refined.ok){recognized.ok=false;recognized.error=refined.error;break;}
+                if(refined.observation.value("words").toArray().isEmpty())continue;
+                QJsonArray merged;
+                for(const auto& value:words){const auto word=value.toObject();
+                    const QPointF center(word.value("x").toDouble()+word.value("width").toDouble()/2,
+                        word.value("y").toDouble()+word.value("height").toDouble()/2);
+                    if(!QRectF(region).contains(center))merged.append(value);
+                }
+                for(const auto& value:refined.observation.value("words").toArray())merged.append(value);
+                words=merged;
+            }
+            recognized.observation["words"]=words;
+            result["ocr_ui_regions"]=refinements;
+            result["ocr_ui_regions_same_frame"]=true;
+        }
         result["recognition_performed"] = true;
         result["ocr_passed"] = recognized.ok;
         if (recognized.ok) {
@@ -170,9 +204,15 @@ int runLiveCaptureCheck(int argc, char** argv) {
             }
             if (parser.isSet("ocr-lobby-anchors"))
                 result["lobby_anchor_diagnostics"] = projectLobbyAnchorDiagnostics(pageObservation);
+            if (parser.isSet("ocr-market-anchors"))
+                result["market_anchor_diagnostics"] = projectMarketAnchorDiagnostics(pageObservation);
             auto summary = summarizeRecognizedPage(recognized.observation);
             summary["provider"] = "Windows.Media.Ocr";
             summary["language"] = recognized.observation.value("language");
+            summary["source_text_angle_degrees"] = recognized.observation.value("source_text_angle_degrees");
+            summary["coordinate_space"] = recognized.observation.value("coordinate_space");
+            summary["coordinate_transform"] = recognized.observation.value("coordinate_transform");
+            summary["outside_frame_tokens_dropped"] = recognized.observation.value("outside_frame_tokens_dropped");
             summary["frame_age_at_result_ms"] = captureClockMs() - ocrFrame.sourceMonoMs;
             summary["frame_sha256"] = QString::fromLatin1(QCryptographicHash::hash(ocrFrame.pixels, QCryptographicHash::Sha256).toHex());
             result["ocr"] = summary;

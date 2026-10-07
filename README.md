@@ -1,5 +1,7 @@
 # Delta Market Assistant · 三角洲市场助手
 
+> **最新市场校准：** 已修复Windows OCR角度坐标、同帧UI文字重读与背景行干扰；曼德尔、典藏首页、空关注和总筛选已实测。最终批次7个匹配检查点/4次导航，中间不切屏，结束一次回IDE；26组应用测试通过。游戏停在总筛选页，尚未调整筛选条件或接通完整自动业务。见 `docs/business_rebuild/implementation/runtime/market_page_calibration_m2.md`。
+
 > **前台执行方式已修正：** 实机联调以整段任务为单位前置游戏，中间连续操作/识别，结束或异常才统一回IDE；不再逐动作闪屏。25组应用测试和一段真实双帧批次通过。当前市场已进入曼德尔砖页，其页类识别仍待校准；详见 `docs/business_rebuild/implementation/runtime/foreground_batch_m2.md`。
 
 > **最新进展：** 大厅实机2560×1440/144DPI识别已校准：修复Windows OCR“戏→观”的局部误读，两次独立大厅帧通过，错误预期页会明确失败。24组应用回归；27历史页/5分支及1条大厅文字投影可离线自检。运行截图不落盘、无游戏输入、每轮恢复IDE。下一页由用户展示仓库；详见 `docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md`，不把大厅通过写成完整业务已完成。

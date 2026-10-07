@@ -1,5 +1,7 @@
 # Delta Market Assistant · 业务重构开发文档
 
+> **最新：** [市场页校准与原关注预检](implementation/runtime/market_page_calibration_m2.md) 已验证曼德尔→典藏入口，以及空关注两次确认→回首页→总筛选；保留失败记录，整段只进出游戏一次。当前26组CTest。下一步读取筛选状态，不把本轮人工联调导航说成完整自动业务。
+
 > **最新实机约定及实现：** [整段批次前台控制](implementation/runtime/foreground_batch_m2.md)。已修复逐动作切屏，25组CTest和真实两帧批次通过。页面导航由智能体执行，用户不必逐页代点。曼德尔界面已到达，但当前页类仍Unknown，不能当作完整业务验收。
 
 > **当前实现：** [大厅实机校准](implementation/runtime/lobby_live_calibration_m2.md) 已验证两次独立真实大厅帧；增加局部OCR误字兼容、预期页断言和最小锚点诊断。当前24组应用测试；下一页待用户展示仓库。原关注预检与已有列表接续保留，不将单页通过标成完整原业务完成。

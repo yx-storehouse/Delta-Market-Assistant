@@ -1,0 +1,327 @@
+{
+  "passed": false,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": false,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "empty_watchlist",
+        "--ocr-market-anchors",
+        "--ocr-ui-regions"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "diagnostic": "live_capture",
+        "expected_page": "empty_watchlist",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 217,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 238,
+            "pixel_min": 8,
+            "sha256": "bb4ddc6333d4f78ff126c7f58af5b558a8c88610b79f259d00f1f6864d33edab",
+            "source": "dxgi",
+            "source_age_ms": 30,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "market_anchor_diagnostics": {
+          "actions_enabled": false,
+          "coverage": "anchor_projection",
+          "excluded_tokens": 1,
+          "height": 1440,
+          "schema": "market-anchor-diagnostics-v1",
+          "truncated": false,
+          "valid_input": true,
+          "width": 2560,
+          "words": [
+            {
+              "height": 18,
+              "text": "未",
+              "width": 18,
+              "x": 1187,
+              "y": 879
+            },
+            {
+              "height": 18,
+              "text": "添",
+              "width": 18,
+              "x": 1208,
+              "y": 880
+            },
+            {
+              "height": 18,
+              "text": "加",
+              "width": 17,
+              "x": 1229,
+              "y": 879
+            },
+            {
+              "height": 18,
+              "text": "任",
+              "width": 18,
+              "x": 1250,
+              "y": 879
+            },
+            {
+              "height": 19,
+              "text": "何",
+              "width": 18,
+              "x": 1271,
+              "y": 879
+            },
+            {
+              "height": 19,
+              "text": "关",
+              "width": 17,
+              "x": 1293,
+              "y": 879
+            },
+            {
+              "height": 18,
+              "text": "注",
+              "width": 18,
+              "x": 1313,
+              "y": 879
+            },
+            {
+              "height": 19,
+              "text": "的",
+              "width": 17,
+              "x": 1335,
+              "y": 879
+            },
+            {
+              "height": 19,
+              "text": "皮",
+              "width": 17,
+              "x": 1355,
+              "y": 879
+            },
+            {
+              "height": 18,
+              "text": "肤",
+              "width": 18,
+              "x": 1376,
+              "y": 879
+            },
+            {
+              "height": 20,
+              "text": "在",
+              "width": 20,
+              "x": 235,
+              "y": 93
+            },
+            {
+              "height": 20,
+              "text": "售",
+              "width": 19,
+              "x": 257,
+              "y": 93
+            }
+          ]
+        },
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1762,
+          "frame_sha256": "bb4ddc6333d4f78ff126c7f58af5b558a8c88610b79f259d00f1f6864d33edab",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 29
+        },
+        "ocr_passed": true,
+        "ocr_ui_regions": [
+          {
+            "error": "",
+            "height": 122,
+            "ok": true,
+            "replacement_applied": true,
+            "roi_scale": 2,
+            "source_text_angle_degrees": 0,
+            "width": 588,
+            "word_count": 2,
+            "x": 140,
+            "y": 50
+          },
+          {
+            "error": "",
+            "height": 158,
+            "ok": true,
+            "replacement_applied": false,
+            "roi_scale": 2,
+            "source_text_angle_degrees": 0,
+            "width": 281,
+            "word_count": 0,
+            "x": 2163,
+            "y": 230
+          },
+          {
+            "error": "",
+            "height": 100,
+            "ok": true,
+            "replacement_applied": false,
+            "roi_scale": 2,
+            "source_text_angle_degrees": 0,
+            "width": 435,
+            "word_count": 0,
+            "x": 1075,
+            "y": 835
+          }
+        ],
+        "ocr_ui_regions_same_frame": true,
+        "page_error": "E_DIAGNOSTIC_PAGE_MISMATCH",
+        "page_match_passed": false,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "unknown",
+          "provider_scores_available": false,
+          "reason": "E_PAGE_INSUFFICIENT_ANCHORS",
+          "token_count": 29,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": "BATCH_STEP_FAILED",
+  "ide_restored": true,
+  "timestamp": "2026-10-07T18:04:21.571510+08:00",
+  "binary_sha256": "cc529127597184efda6701a8fb6d52debd7f1b6d90c349be6d3461606ee1890c",
+  "plan": {
+    "name": "Original empty watchlist confirmation, return home, then filter without selecting options",
+    "timeout_seconds": 30,
+    "steps": [
+      {
+        "kind": "capture",
+        "expected_page": "empty_watchlist",
+        "market_anchors": true,
+        "ui_regions": true
+      },
+      {
+        "kind": "capture",
+        "expected_page": "empty_watchlist",
+        "market_anchors": true,
+        "ui_regions": true
+      },
+      {
+        "kind": "click",
+        "expected_before": "empty_watchlist",
+        "point": [
+          165,
+          1402
+        ],
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "kind": "capture",
+        "expected_page": "skin_home",
+        "market_anchors": true,
+        "ui_regions": true
+      },
+      {
+        "kind": "click",
+        "expected_before": "skin_home",
+        "point": [
+          340,
+          274
+        ],
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "kind": "capture",
+        "market_anchors": true,
+        "ui_regions": true,
+        "preview": true
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1075359421
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1075359437
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1075361937
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 0,
+  "image_file_writes": 0
+}

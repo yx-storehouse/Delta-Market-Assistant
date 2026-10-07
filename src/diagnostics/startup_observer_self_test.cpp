@@ -72,6 +72,22 @@ int runStartupObserverSelfTest(const QString& fixturePath) {
     checks.append(QJsonObject{{"id", "recorded_lobby_anchor_projection"}, {"passed", liveProjectionPass},
         {"live_capture_performed", false}});
     report["live_projection_checks"] = liveProjectionChecks;
+    int marketChecks=0;
+    QFile marketFile(QStringLiteral(":/fixtures/market_live_20261007.json"));
+    if(!marketFile.open(QIODevice::ReadOnly) || marketFile.size()>1048576){++failed;}
+    else {
+        const auto market=QJsonDocument::fromJson(marketFile.readAll()).object();
+        const auto samples=market.value("cases").toArray();
+        if(samples.size()!=6 || market.value("source_kind")!="live_ocr_anchor_projection" || market.value("pixels_included").toBool())++failed;
+        for(const auto& value:samples){const auto sample=value.toObject();const auto ocr=sample.value("observation").toObject();
+            const auto actual=vision::classifySkinPage(ocr);
+            const bool ok=actual.validInput && vision::toString(actual.page)==sample.value("expected_page").toString();
+            if(!ok)++failed;++marketChecks;pages.insert("live:"+sample.value("id").toString(),ocr);
+            checks.append(QJsonObject{{"id","live:"+sample.value("id").toString()},{"passed",ok},{"live_capture_performed",false}});
+        }
+        trace(QStringLiteral("recorded_live_empty_watchlist_route"),{"live:skin_home","live:empty_1","live:empty_2","live:home_after_empty","live:catalog_filter"},runtime::StartupPhase::FilterObserved);
+    }
+    report["market_projection_checks"]=marketChecks;
     report["page_checks"] = pageChecks; report["trace_checks"] = traceChecks;
     report["checks"] = checks; report["failures"] = failed; report["passed"] = failed == 0;
     report["live_calibrated"] = false;

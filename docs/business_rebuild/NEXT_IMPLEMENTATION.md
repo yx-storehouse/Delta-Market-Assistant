@@ -1,5 +1,7 @@
 # 下一轮开发交接：M2 真实画面采集与识别边界
 
+> **最新入口：** `implementation/runtime/market_page_calibration_m2.md`。曼德尔、典藏、空关注和总筛选已经实测；游戏当前在总筛选页。保持整段前台批次，自行导航，不让用户逐页代点。下一步读取S10–S14的赛季值、拥有/未拥有及品阶勾选状态，再做商品字段关联。不要重做坐标/局部OCR，不把人工测试脚本冒充完整自动执行器；多ROI延迟可能超出原StartupObserver 1秒门槛，接异步运行时前需单独明确页类时效契约。
+
 > **取代下方旧实机安排：** 先读 `implementation/runtime/foreground_batch_m2.md`。用户要求智能体自行导航，整段操作完成再回IDE，不允许每次动作切屏。使用 `run_foreground_batch.py` 一次执行完整有限计划，子诊断 `--focus-policy caller-owned`；不要循环调用单次探针。当前已到曼德尔砖页（F4市场入口），页类仍Unknown，先后台补锚点诊断再整段验证。25组应用测试及连续两帧焦点实测已通过。
 
 > **最新：大厅实机校准通过。** 阅读 `implementation/runtime/lobby_live_calibration_m2.md`。用户已展示大厅，Windows OCR局部误字修复后，两次独立帧通过；当前24组CTest。已请用户手动点仓库，收到到页消息后重解析窗口身份并执行只读页类校准。复用 `SkinPageClassifier` / `StartupObserver`，不重做原流程；尚未验证其它页和完整导航。CLI `--expected-page` 不把截图成功当页类通过，每轮结束恢复IDE前台。

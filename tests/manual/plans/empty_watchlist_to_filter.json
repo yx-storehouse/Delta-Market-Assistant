@@ -1,0 +1,12 @@
+{
+  "name": "Original empty watchlist confirmation, return home, then filter without selecting options",
+  "timeout_seconds": 30,
+  "steps": [
+    {"kind": "capture", "expected_page": "empty_watchlist", "market_anchors": true, "ui_regions": true},
+    {"kind": "capture", "expected_page": "empty_watchlist", "market_anchors": true, "ui_regions": true},
+    {"kind": "click", "expected_before": "empty_watchlist", "point": [165, 1402], "viewport": [2560, 1440]},
+    {"kind": "capture", "expected_page": "skin_home", "market_anchors": true, "ui_regions": true},
+    {"kind": "click", "expected_before": "skin_home", "point": [340, 274], "viewport": [2560, 1440]},
+    {"kind": "capture", "market_anchors": true, "ui_regions": true, "preview": true}
+  ]
+}

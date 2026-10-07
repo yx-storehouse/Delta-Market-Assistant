@@ -61,6 +61,9 @@ artifacts/m2_lobby_calibration/*/
 artifacts/m2_lobby_calibration/MODIFIED_FILE.exe
 artifacts/m2_lobby_calibration/LOBBY_CALIBRATED_FILE.exe
 artifacts/m2_lobby_calibration/*-config.json
+artifacts/m2_market_calibration/*/
+artifacts/m2_market_calibration/*.exe
+artifacts/m2_market_calibration/*-config.json
 *.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/
 artifacts/business_rebuild_docs/shell-profile-*/

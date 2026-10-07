@@ -1,0 +1,8 @@
+{
+  "name": "Read current market labels in one foreground batch",
+  "timeout_seconds": 15,
+  "steps": [
+    {"kind": "capture", "market_anchors": true},
+    {"kind": "capture", "market_anchors": true}
+  ]
+}
