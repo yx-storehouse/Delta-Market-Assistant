@@ -5,6 +5,7 @@
 #include "application/workspace/workspace_controller.h"
 #include "diagnostics/ui_self_test_runner.h"
 #include "ledger/storage_self_test.h"
+#include "diagnostics/live_capture_check.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -20,6 +21,10 @@
 #include <cstdio>
 
 int main(int argc, char** argv) {
+    // Explicit diagnostic uses QCoreApplication and never creates the main UI.
+    for (int i = 1; i < argc; ++i)
+        if (QByteArray(argv[i]) == "--live-capture-check")
+            return relink::diagnostics::runLiveCaptureCheck(argc, argv);
     bool headless = false;
     for (int i = 1; i < argc; ++i) {
         const QByteArray a(argv[i]);
@@ -55,7 +60,7 @@ int main(int argc, char** argv) {
     QFile theme(":/theme.qss");
     if (theme.open(QIODevice::ReadOnly)) app.setStyleSheet(QString::fromUtf8(theme.readAll()));
     QCommandLineParser parser;
-    parser.setApplicationDescription("Relink Studio offline frontend. No game connection or input automation.");
+    parser.setApplicationDescription("Relink Studio offline frontend. No input automation. Explicit --live-capture-check provides read-only diagnostics.");
     parser.addHelpOption(); parser.addVersionOption();
     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
     parser.addOption({"storage-self-test", "Verify the packaged SQLite driver, transactions, recovery and backup using temporary data."});

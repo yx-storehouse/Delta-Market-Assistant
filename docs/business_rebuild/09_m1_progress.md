@@ -2,7 +2,16 @@
 
 更新时间：2026-10-07（Asia/Shanghai）
 
-## 当前结论
+## 2026-10-07 新增：真实采集基础层与原启动流程重核
+
+- 最新入口：[10 · BBZPS 首次启动逐步复刻](10_bbzps_first_startup_reconstruction.md)。用户要求按原业务复制，不重写业务路径。原始日志重新全量扫描，100次运行入口（97次全自动皮肤/3次发送测试），1,192条定位证据重新读取验证；不是冷启动100次。
+- 新增独立 `relink_windows_capture`：显式窗口/PID/创建时间身份，DPI、前台/遮挡、窗口变化检查，DXGI一步触发的内存帧。真实游戏3帧已通过：2560×1440、144DPI；159–220ms是首次检查的单帧采集耗时，不是端到端识别延迟。已记录一次焦点切换失败，并通过创建线程消息队列修复后成功复验。
+- `relink_windows_ocr` 使用独立隐藏系统PowerShell进程和Windows.Media.Ocr，通过paging-file mapping读取像素。已用合成“MARKET 123456”实际调用Windows OCR并核对文字，不再是hash fixture。尚未把真实枪皮字段/原页面识别宣称为已验证。
+- 发布EXE新增显式 `--live-capture-check` 诊断入口；正常UI/配置/回放行为不变，未接入游戏点击或交易。最新应用回归为21组；新增原流程文档测试独立执行，不把文本断言当真实业务验收。
+- 用户纠正业务入口后，优先细拆原启动分派/关注预检/筛选/商品回读/关注接续；暂停扩展臆测的普通交易行业务。详细模块边界见 [M2实现记录](implementation/runtime/live_capture_m2.md)。
+- 新事务证据：`artifacts/m2_live_capture_transaction/VERIFICATION.txt`；旧PR12B记录保持原样。下面保留历史实施信息。
+
+## PR12B 阶段历史结论
 
 M1 已完成 PR01–PR11、PR12A 与 PR12B 的服务、历史、观察、协议/lease 和通用视觉传输基础层。当前源码已有 19/19 CTest 记录：工作区 432、UI 模块 90、观察 828、协议 646、进程内链路 279、Win32 共享帧 65、隐藏合成进程传输 206 条断言通过；独立负向包验收记录为 41/41。新增 transport 后的最终发布、哈希与回退结果以本轮构建后更新的 VERIFICATION.txt 为准，不沿用旧包结果。
 

@@ -1,5 +1,7 @@
 # 实施契约与当前实现入口
 
+> **当前开发入口已更新（2026-10-07）：** 先读 [原启动流程S01–S39](../10_bbzps_first_startup_reconstruction.md)，按原页面分派和关注预检复刻；随后读 [M2真实采集基础层](runtime/live_capture_m2.md)。新增DXGI源与Windows OCR独立模块、21组应用测试；真实采集已测，OCR仅完成合成文字测试。下面19组/未链接transport等描述是PR12B阶段记录，不表示当前包仍缺采集基础层，也不表示整套原业务已经实现。
+
 更新时间：2026-10-07（Asia/Shanghai）。服务、历史、观察、协议/lease 和通用视觉传输基础层已有 19/19 CTest 通过记录。独立 `relink_vision_transport` 已实际验证 Win32 共享帧与隐藏合成 fixture child；它没有链接桌面程序，child 不是 OCR worker、不随包发布。下一步是真实游戏窗口/frame source、ROI 与 OCR provider 校准。最终新版发布/回退以本轮构建后更新的 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 和 `artifacts/m1_pr12b_delivery_final/VERIFICATION.txt` 为准。
 
 这里同时保留**历史开工规格**和**当前实现记录**。Schema、fixture、DDL、backlog 与测试矩阵是设计输入；它们通过文档校验，不代表相应生产功能或真实捕获已通过测试。当前行为以源码、CTest 与分票实现记录为准。

@@ -1,0 +1,8 @@
+{
+  "label": "LIVE_CAPTURE_1",
+  "command": "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe --live-capture-check --target-hwnd 51845362 --target-pid 294852 --return-hwnd 31592856 --return-pid 271768 --frames 3",
+  "input": "Explicit game window, three read-only in-memory frames; return Mirasim foreground. No game input.",
+  "stdout": "{\"adapter_state\":\"Closed\",\"capture_passed\":true,\"diagnostic\":\"live_capture\",\"foreground_hwnd\":\"31592856\",\"frames\":[{\"bytes\":14745600,\"capture_ms\":220,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":244,\"pixel_min\":0,\"sha256\":\"96890cbdd6014b0bd5d88bc6dc28f79a21a1e8ff5325976d2cc2ef7e6544841d\",\"source\":\"dxgi\",\"source_age_ms\":26,\"source_uncertainty_ms\":1,\"width\":2560},{\"bytes\":14745600,\"capture_ms\":176,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":255,\"pixel_min\":0,\"sha256\":\"ec6af59aac4a056d7b449d1c9784c6a79a4bc6e38f2d2200333fb304bd70092f\",\"source\":\"dxgi\",\"source_age_ms\":33,\"source_uncertainty_ms\":1,\"width\":2560},{\"bytes\":14745600,\"capture_ms\":159,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":244,\"pixel_min\":0,\"sha256\":\"da2cdf748222a5d3c1bc12839061b4a9987e08a26153c985d1277139c70a9455\",\"source\":\"dxgi\",\"source_age_ms\":23,\"source_uncertainty_ms\":1,\"width\":2560}],\"game_in_background\":true,\"game_input_sent\":false,\"ide_foreground_restored\":true,\"image_file_writes\":0,\"recognition_performed\":false,\"resources_drained\":true,\"return_hwnd\":\"31592856\"}\n",
+  "stderr": "",
+  "exit_status": 0
+}

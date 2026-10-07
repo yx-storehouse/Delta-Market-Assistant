@@ -27,6 +27,8 @@ try {
         $Dest = Join-Path $Root 'dist\RelinkStudio'
         New-Item -ItemType Directory -Path $Dest -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $BuildDir 'RelinkStudio.exe') -Destination $Dest -Force
+        New-Item -ItemType Directory -Path (Join-Path $Dest 'vision') -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $BuildDir 'vision\windows_ocr_worker.ps1') -Destination (Join-Path $Dest 'vision') -Force
         & (Join-Path $Qt 'bin\windeployqt.exe') --release --no-translations --no-opengl-sw --no-system-d3d-compiler --compiler-runtime --skip-plugin-types generic,networkinformation,tls --dir $Dest (Join-Path $Dest 'RelinkStudio.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Qt deployment failed.' }
         New-Item -ItemType Directory -Path (Join-Path $Dest 'platforms') -Force | Out-Null

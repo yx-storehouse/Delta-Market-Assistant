@@ -1,0 +1,30 @@
+{
+  "adapter_state": "Closed",
+  "capture_passed": true,
+  "diagnostic": "live_capture",
+  "foreground_hwnd": "31592856",
+  "frames": [
+    {
+      "bytes": 14745600,
+      "capture_ms": 204,
+      "dpi": 144,
+      "freshness": "source_timestamp",
+      "height": 1440,
+      "near_black": false,
+      "pixel_max": 244,
+      "pixel_min": 0,
+      "sha256": "f6bcdb0b6359a346238760a809d39ce9ccf6e30a334458fdadd7c4064a64f38a",
+      "source": "dxgi",
+      "source_age_ms": 30,
+      "source_uncertainty_ms": 1,
+      "width": 2560
+    }
+  ],
+  "game_in_background": true,
+  "game_input_sent": false,
+  "ide_foreground_restored": true,
+  "image_file_writes": 0,
+  "recognition_performed": false,
+  "resources_drained": true,
+  "return_hwnd": "31592856"
+}

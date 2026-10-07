@@ -51,6 +51,9 @@ artifacts/m1_pr12b_delivery_final/BASELINE.json
 artifacts/m1_pr12b_delivery_final/MODIFIED_FILE.json
 artifacts/m1_pr12b_delivery_final/ROLLBACK_TEST.json
 __pycache__/
+artifacts/m2_live_capture_transaction/*/
+artifacts/m2_live_capture_transaction/MODIFIED_FILE.exe
+artifacts/m2_live_capture_transaction/*-config.json
 *.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/
 artifacts/business_rebuild_docs/shell-profile-*/

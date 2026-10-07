@@ -1,0 +1,14 @@
+{
+  "capture_passed": false,
+  "diagnostic": "live_capture",
+  "error": "E_FOREGROUND_ACTIVATION",
+  "foreground_hwnd": "10295376",
+  "frames": [],
+  "game_in_background": false,
+  "game_input_sent": false,
+  "ide_foreground_restored": false,
+  "image_file_writes": 0,
+  "recognition_performed": false,
+  "restore_error": "E_FOREGROUND_ACTIVATION",
+  "return_hwnd": "31592856"
+}

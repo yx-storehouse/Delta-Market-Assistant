@@ -1,5 +1,25 @@
 # 下一轮开发交接：M2 真实画面采集与识别边界
 
+## 2026-10-07 用户纠正后的最高优先级
+
+先阅读 `10_bbzps_first_startup_reconstruction.md` 和 `evidence/startup_flow_evidence.json`。
+按BBZPS已证实的原顺序复刻业务：当前页分派/恢复→典藏外观→已有关注预检→空队列回筛选，或者已有列表直接接续；再实现赛季/拥有/品阶、批次查找、标题复核、成色/公示/排序、价格/磨损联合匹配、收藏回执、关注排序/校时/倒计时/确认/结果处理。
+不要要求用户进入普通物资交易行；不要把顶部导航文字当当前业务页；不要省略启动关注预检或强制每次从头收藏。
+
+```text
+继续开发时复用 src/application/vision/target_window.*、dxgi_observation_source.*、
+windows_ocr.* 及已有 ObservationAdapter/SharedFrameMemory。
+当前21组应用测试通过；真实游戏采集已测，Windows OCR已用合成英文文字验证。
+原流程细节以S01–S39与入口分支表为实施规格，缺少证据的动作/公式不自行补造。
+保持Win11白灰UI，保存配置不触发点击/购买；业务参数仍独立于诊断。
+联调只短暂切游戏，完成后恢复并验证Mirasim为前台。
+不运行BBZPS，不使用其DLL；不保存运行截图或OCR全文；不修改用户系统时间。
+先完成原页面识别与只读启动路径回放，再按原顺序接入各步；不另造简化流程。
+固定解压路径仍为 C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe。
+```
+
+下文为PR12B结束时的历史交接，不能覆盖上述新进展和用户纠正。
+
 更新时间：2026-10-07（Asia/Shanghai）。当前源码已有 19/19 CTest 记录：工作区 432、UI 模块 90、观察 828、协议 646、进程内链路 279、Win32 共享帧 65、隐藏合成进程传输 206 条断言通过；负向包验收已有 41/41 记录。新增 transport 后的最终发布/回退记录须以本轮构建后更新的 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 和 `artifacts/m1_pr12b_delivery_final/VERIFICATION.txt` 为准；不复用先前版本结果。
 
 **通用内存、协议、lease 和进程传输已完成；下一步是真实游戏窗口/frame source、ROI 与 OCR provider 校准。** relink_vision_transport 已实际验证 Win32 共享内存和隐藏合成 fixture child，但未链接桌面程序；child 不是 OCR worker，也不随包发布。产品仍为 synthetic/replay。只有真正需要游戏画面验证识别业务时才暂停总结，不把通用传输通过称为生产视觉链路完成。

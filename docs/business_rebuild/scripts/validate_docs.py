@@ -25,6 +25,11 @@ def sha(path):
             h.update(b)
     return h.hexdigest()
 
+def development_baselines():
+    # Retain all historical M1 snapshots. M2 is a new explicitly scoped
+    # snapshot, not a silent replacement of the original evidence hashes.
+    return sorted([*ART.glob('m1_pr*_baseline.json'), *ART.glob('m2_*_baseline.json')])
+
 def load_baseline(path):
     """Load either the original flat baseline or a scoped M1 baseline.
 
@@ -79,7 +84,7 @@ def evidence_check(eid=None):
     total=0
     evidence_diffs=[]
     m1_entries={}
-    m1_candidates=sorted(ART.glob('m1_pr*_baseline.json'))
+    m1_candidates=development_baselines()
     if m1_candidates:
         _meta,m1_entries=load_baseline(m1_candidates[-1])
     for e in groups:
@@ -206,8 +211,8 @@ def main():
     project_meta, project_baseline=load_baseline(ART/'project_baseline.json')
     # Prefer the newest explicit development baseline while retaining every
     # previous baseline as an immutable audit record.
-    m1_candidates=sorted(ART.glob('m1_pr*_baseline.json'))
-    need(bool(m1_candidates),'Missing M1 development baseline in '+str(ART))
+    m1_candidates=development_baselines()
+    need(bool(m1_candidates),'Missing scoped development baseline in '+str(ART))
     m1_path=m1_candidates[-1]
     m1_meta, m1_baseline=load_baseline(m1_path)
     project_diffs=baseline_diff(project_baseline)
@@ -255,6 +260,7 @@ def main():
     print(f'APPLICATION_BASELINE_FILES={len(project_baseline)} APPLICATION_BASELINE_FILES_UNCHANGED={len(project_baseline)-len(project_diffs)} APPLICATION_BASELINE_DIFFS={len(project_diffs)}')
     print(f'M1_BASELINE_ID={m1_id} M1_BASELINE_FILES={len(m1_baseline)} M1_BASELINE_FILES_UNCHANGED={len(m1_baseline)-len(m1_diffs)} M1_BASELINE_DIFFS={len(m1_diffs)} SAMPLE_EXECUTIONS=0')
     print('STEP_CAPTURE_CONTRACT=PASS LIVE_CAPTURE_TESTS_EXECUTED=0')
+    print(f'DEVELOPMENT_BASELINE_ID={m1_id}; legacy_m1_output_fields_retained=true')
     return 0
 
 if __name__=='__main__':

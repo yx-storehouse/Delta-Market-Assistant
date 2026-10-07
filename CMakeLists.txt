@@ -14,6 +14,7 @@ qt_add_executable(RelinkStudio WIN32
   src/main.cpp src/mainwindow.cpp src/mainwindow.h
   src/application/startup_config.cpp src/application/startup_config.h
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
+  src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
@@ -84,6 +85,19 @@ add_library(relink_runtime STATIC
 target_include_directories(relink_runtime PUBLIC src)
 target_link_libraries(relink_runtime PUBLIC Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_runtime)
+
+# Opt-in on-demand capture, isolated from UI configuration / replay reducers.
+add_library(relink_windows_capture STATIC
+  src/application/vision/target_window.cpp src/application/vision/target_window.h
+  src/application/vision/dxgi_observation_source.cpp src/application/vision/dxgi_observation_source.h)
+target_include_directories(relink_windows_capture PUBLIC src)
+target_link_libraries(relink_windows_capture PUBLIC relink_runtime Qt6::Core)
+if(WIN32)
+  target_link_libraries(relink_windows_capture PRIVATE d3d11 dxgi dxguid dwmapi)
+endif()
+target_link_libraries(RelinkStudio PRIVATE relink_windows_capture)
+add_executable(windows_capture_tests tests/runtime/windows_capture_tests.cpp)
+target_link_libraries(windows_capture_tests PRIVATE relink_windows_capture)
 target_link_libraries(RelinkStudio PRIVATE relink_business)
 
 # Windows transport is independent of the replay/domain/UI layers. The fixture
@@ -93,6 +107,13 @@ add_library(relink_vision_transport STATIC
   src/application/vision/worker_process.cpp src/application/vision/worker_process.h)
 target_include_directories(relink_vision_transport PUBLIC src)
 target_link_libraries(relink_vision_transport PUBLIC relink_runtime Qt6::Core)
+add_library(relink_windows_ocr STATIC src/application/vision/windows_ocr.cpp src/application/vision/windows_ocr.h)
+target_include_directories(relink_windows_ocr PUBLIC src)
+target_link_libraries(relink_windows_ocr PUBLIC relink_windows_capture relink_vision_transport Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_windows_ocr)
+configure_file(src/vision/windows_ocr_worker.ps1 vision/windows_ocr_worker.ps1 COPYONLY)
+add_executable(windows_ocr_tests tests/runtime/windows_ocr_tests.cpp)
+target_link_libraries(windows_ocr_tests PRIVATE relink_windows_ocr Qt6::Gui)
 add_executable(shared_frame_memory_tests tests/runtime/shared_frame_memory_tests.cpp)
 target_link_libraries(shared_frame_memory_tests PRIVATE relink_vision_transport)
 add_executable(vision_worker_fixture tests/runtime/vision_worker_fixture.cpp)
@@ -176,6 +197,10 @@ add_test(NAME business_migration_tests COMMAND business_migration_tests)
 add_test(NAME profile_store_tests COMMAND profile_store_tests)
 add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/replay_cases.json")
 add_test(NAME observation_adapter_tests COMMAND observation_adapter_tests)
+add_test(NAME windows_capture_tests COMMAND windows_capture_tests)
+set_tests_properties(windows_capture_tests PROPERTIES TIMEOUT 20)
+add_test(NAME windows_ocr_tests COMMAND windows_ocr_tests "${CMAKE_SOURCE_DIR}/src/vision/windows_ocr_worker.ps1")
+set_tests_properties(windows_ocr_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 45)
 add_test(NAME worker_protocol_tests COMMAND worker_protocol_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/messages")
 add_test(NAME vision_pipeline_tests COMMAND vision_pipeline_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/messages")
 add_test(NAME shared_frame_memory_tests COMMAND shared_frame_memory_tests)
