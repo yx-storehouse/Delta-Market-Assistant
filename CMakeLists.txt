@@ -13,6 +13,8 @@ endif()
 qt_add_executable(RelinkStudio WIN32
   src/main.cpp src/mainwindow.cpp src/mainwindow.h
   src/application/startup_config.cpp src/application/startup_config.h
+  src/application/catalog_startup.cpp src/application/catalog_startup.h
+  src/diagnostics/catalog_self_test.cpp src/diagnostics/catalog_self_test.h
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
   src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
   src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
@@ -26,6 +28,12 @@ target_include_directories(RelinkStudio PRIVATE src)
 target_link_libraries(RelinkStudio PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
 # Pages own their controls and publish UI intents. This library and its tests
 # deliberately have no workspace controller, runtime or SQLite link dependency.
+add_library(relink_catalog STATIC src/catalog/skin_catalog.cpp src/catalog/skin_catalog.h)
+target_include_directories(relink_catalog PUBLIC src)
+target_link_libraries(relink_catalog PUBLIC Qt6::Core)
+add_executable(skin_catalog_tests tests/catalog/skin_catalog_tests.cpp)
+target_link_libraries(skin_catalog_tests PRIVATE relink_catalog)
+
 add_library(relink_ui STATIC
   src/domain.cpp src/domain.h src/widgets.cpp src/widgets.h
   src/fluenttheme.cpp src/fluenttheme.h
@@ -33,9 +41,15 @@ add_library(relink_ui STATIC
   src/ui/pages/task_page.cpp src/ui/pages/task_page.h
   src/ui/pages/run_settings_page.cpp src/ui/pages/run_settings_page.h
   src/ui/pages/workspace_records_panel.cpp src/ui/pages/workspace_records_panel.h
-  src/ui/dialogs/task_editor_dialog.cpp src/ui/dialogs/task_editor_dialog.h)
+  src/ui/dialogs/task_editor_dialog.cpp src/ui/dialogs/task_editor_dialog.h
+  src/ui/dialogs/skin_catalog_dialog.cpp src/ui/dialogs/skin_catalog_dialog.h
+  src/application/catalog_configuration.cpp src/application/catalog_configuration.h)
 target_include_directories(relink_ui PUBLIC src)
-target_link_libraries(relink_ui PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets)
+target_link_libraries(relink_ui PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets relink_catalog)
+add_executable(skin_catalog_dialog_tests tests/ui/skin_catalog_dialog_tests.cpp)
+target_link_libraries(skin_catalog_dialog_tests PRIVATE relink_ui)
+add_executable(catalog_configuration_tests tests/catalog/catalog_configuration_tests.cpp)
+target_link_libraries(catalog_configuration_tests PRIVATE relink_ui)
 target_link_libraries(RelinkStudio PRIVATE relink_ui)
 if(WIN32)
   # Explorer and the taskbar show the same neutral icon the window paints.
@@ -217,6 +231,10 @@ target_include_directories(ledger_tests PRIVATE src)
 target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
 
 enable_testing()
+add_test(NAME skin_catalog_tests COMMAND skin_catalog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json" "${CMAKE_SOURCE_DIR}/docs/business_rebuild/skin_reference/skin_reference.json")
+add_test(NAME skin_catalog_dialog_tests COMMAND skin_catalog_dialog_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
+set_tests_properties(skin_catalog_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 60)
+add_test(NAME catalog_configuration_tests COMMAND catalog_configuration_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
 add_test(NAME savedvalue_tests COMMAND savedvalue_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json")
 add_test(NAME catalog_filter_tests COMMAND catalog_filter_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json")
 add_test(NAME domain_tests COMMAND domain_tests)
@@ -251,5 +269,7 @@ set_tests_properties(workspace_tests PROPERTIES TIMEOUT 120)
 add_test(NAME storage_self_test COMMAND RelinkStudio --storage-self-test)
 set_tests_properties(sqlite_ledger_tests PROPERTIES TIMEOUT 120)
 set_tests_properties(storage_self_test PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1")
+add_test(NAME catalog_offscreen COMMAND RelinkStudio --catalog-self-test --snapshot-dir "${CMAKE_BINARY_DIR}/catalog_snapshots")
+set_tests_properties(catalog_offscreen PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 90)
 add_test(NAME ui_offscreen COMMAND RelinkStudio --self-test --snapshot-dir "${CMAKE_BINARY_DIR}/snapshots" --config "${CMAKE_BINARY_DIR}/selftest-config.json")
 set_tests_properties(ui_offscreen PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1")

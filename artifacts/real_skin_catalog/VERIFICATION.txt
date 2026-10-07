@@ -1,0 +1,3408 @@
+Delta Market Assistant — Real Skin Catalog
+Date: 2026-10-07 (Asia/Shanghai)
+Changed branch: main
+Baseline source: 80b26b4265fc7e7848c5fc88b15a9e3751ee148b
+Changed fields: catalogProductId/menuColor/variant/skinSeries/known flags/dataSource; default startup real catalog; empty artwork/history; season append/import; atomic extensions; legacy config backups.
+Sources: user screenshot-backed S1-S11 149-item reference, not a claim about later game updates.
+Test fixtures remain explicitly opt-in diagnostics, never normal startup or simulated running buttons.
+Restored behavior/status: isolated baseline UI/workspace/SQLite tests pass with exit 0; user extension/config sentinels preserved.
+Delivery and MODIFIED_FILE remain modified; no game window, game capture or input used in this transaction.
+DELIVERY: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
+MODIFIED_FILE.exe: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\MODIFIED_FILE.exe
+DIFF_FILE: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\DIFF_FILE
+VERIFICATION.txt: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\VERIFICATION.txt
+ROLLBACK.sh: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\ROLLBACK.sh
+BASELINE_SHA256: 7cc1b5b6f4d60fddb17e1645f7a56e085fb63253738846ad9f16dbb2f0776371
+MODIFIED_SHA256: 0a5960d0ffcf4575fd8aa19d5846745967dad5b575a93fbe8cccf249a89cc4a8
+RESTORED_SHA256: 7cc1b5b6f4d60fddb17e1645f7a56e085fb63253738846ad9f16dbb2f0776371
+
+Exact commands, input, literal output/result, and exit status:
+
+BASELINE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\baseline\release\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\baseline\ui_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\baseline-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+BASELINE_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\baseline\release\RelinkStudio.exe --storage-self-test
+INPUT: Original extracted PR11; temporary SQLite database and recovery/backup checks.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+REAL_UI_CHECK_INITIAL_FAILED
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1 -Test
+INPUT: Initial integration build; later corrected and rerun. Captured combined stdout/stderr.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.2s)
+-- Generating done (0.5s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/20] Automatic MOC for target catalog_configuration_tests
+[2/20] Automatic MOC for target skin_catalog_dialog_tests
+[3/20] Building CXX object CMakeFiles/catalog_configuration_tests.dir/catalog_configuration_tests_autogen/mocs_compilation.cpp.obj
+[4/20] Building CXX object CMakeFiles/skin_catalog_dialog_tests.dir/skin_catalog_dialog_tests_autogen/mocs_compilation.cpp.obj
+[5/20] Automatic MOC for target RelinkStudio
+[6/20] Automatic RCC for resources.qrc
+[7/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/startup_config.cpp.obj
+[8/20] Building CXX object CMakeFiles/RelinkStudio.dir/RelinkStudio_autogen/mocs_compilation.cpp.obj
+[9/20] Building CXX object CMakeFiles/catalog_configuration_tests.dir/tests/catalog/catalog_configuration_tests.cpp.obj
+[10/20] Building CXX object CMakeFiles/skin_catalog_dialog_tests.dir/tests/ui/skin_catalog_dialog_tests.cpp.obj
+[11/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/main.cpp.obj
+[12/20] Building CXX object CMakeFiles/RelinkStudio.dir/RelinkStudio_autogen/EWIEGA46WW/qrc_resources.cpp.obj
+[13/20] Linking CXX executable skin_catalog_dialog_tests.exe
+[14/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/catalog_startup.cpp.obj
+[15/20] Linking CXX executable catalog_configuration_tests.exe
+[16/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/catalog_self_test.cpp.obj
+[17/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/workspace/workspace_ui_self_test.cpp.obj
+[18/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/ui_self_test_runner.cpp.obj
+[19/20] Building CXX object CMakeFiles/RelinkStudio.dir/src/mainwindow.cpp.obj
+[20/20] Linking CXX executable RelinkStudio.exe
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: skin_catalog_tests
+ 1/32 Test  #1: skin_catalog_tests ...............   Passed    0.07 sec
+      Start  2: skin_catalog_dialog_tests
+ 2/32 Test  #2: skin_catalog_dialog_tests ........   Passed    0.10 sec
+      Start  3: catalog_configuration_tests
+ 3/32 Test  #3: catalog_configuration_tests ......   Passed    0.08 sec
+      Start  4: savedvalue_tests
+ 4/32 Test  #4: savedvalue_tests .................   Passed    0.07 sec
+      Start  5: catalog_filter_tests
+ 5/32 Test  #5: catalog_filter_tests .............   Passed    0.69 sec
+      Start  6: domain_tests
+ 6/32 Test  #6: domain_tests .....................   Passed    0.11 sec
+      Start  7: business_tests
+ 7/32 Test  #7: business_tests ...................   Passed    0.03 sec
+      Start  8: business_value_tests
+ 8/32 Test  #8: business_value_tests .............   Passed    0.03 sec
+      Start  9: business_rule_tests
+ 9/32 Test  #9: business_rule_tests ..............   Passed    0.03 sec
+      Start 10: business_migration_tests
+10/32 Test #10: business_migration_tests .........   Passed    0.03 sec
+      Start 11: profile_store_tests
+11/32 Test #11: profile_store_tests ..............   Passed    0.03 sec
+      Start 12: runtime_tests
+12/32 Test #12: runtime_tests ....................   Passed    0.03 sec
+      Start 13: observation_adapter_tests
+13/32 Test #13: observation_adapter_tests ........   Passed    0.09 sec
+      Start 14: windows_capture_tests
+14/32 Test #14: windows_capture_tests ............   Passed    0.05 sec
+      Start 15: startup_observer_tests
+15/32 Test #15: startup_observer_tests ...........   Passed    0.08 sec
+      Start 16: startup_observer_self_test
+16/32 Test #16: startup_observer_self_test .......   Passed    0.07 sec
+      Start 17: lobby_calibration_tests
+17/32 Test #17: lobby_calibration_tests ..........   Passed    0.03 sec
+      Start 18: foreground_policy_tests
+18/32 Test #18: foreground_policy_tests ..........   Passed    0.01 sec
+      Start 19: market_calibration_tests
+19/32 Test #19: market_calibration_tests .........   Passed    0.05 sec
+      Start 20: windows_ocr_tests
+20/32 Test #20: windows_ocr_tests ................   Passed    1.71 sec
+      Start 21: worker_protocol_tests
+21/32 Test #21: worker_protocol_tests ............   Passed    0.06 sec
+      Start 22: vision_pipeline_tests
+22/32 Test #22: vision_pipeline_tests ............   Passed    0.04 sec
+      Start 23: shared_frame_memory_tests
+23/32 Test #23: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 24: worker_process_tests
+24/32 Test #24: worker_process_tests .............   Passed    1.39 sec
+      Start 25: ui_projection_tests
+25/32 Test #25: ui_projection_tests ..............   Passed    0.03 sec
+      Start 26: ledger_tests
+26/32 Test #26: ledger_tests .....................   Passed    0.03 sec
+      Start 27: sqlite_ledger_tests
+27/32 Test #27: sqlite_ledger_tests ..............   Passed    0.82 sec
+      Start 28: workspace_tests
+28/32 Test #28: workspace_tests ..................   Passed    0.97 sec
+      Start 29: ui_module_tests
+29/32 Test #29: ui_module_tests ..................   Passed    0.06 sec
+      Start 30: storage_self_test
+30/32 Test #30: storage_self_test ................   Passed    0.09 sec
+      Start 31: catalog_offscreen
+31/32 Test #31: catalog_offscreen ................***Failed    0.95 sec
+CATALOG_SAME_NORMAL_STARTUP_PATH=PASS
+CATALOG_REAL_149_11_SEASONS=PASS
+CATALOG_NO_DEFAULT_TASKS=PASS
+CATALOG_NO_INVENTED_QUOTES_WEAR_OR_FOLLOWS=PASS
+CATALOG_NORMAL_MODE_HAS_NO_SIMULATOR=PASS
+CATALOG_REAL_CONFIG_NOT_DEMO=PASS
+CATALOG_ALL_PRODUCTS_IN_MAIN_UI=PASS
+CATALOG_UNKNOWN_CELLS_AND_EMPTY_SPARKLINES=PASS
+CATALOG_THUMBNAILS_EMPTY=PASS
+CATALOG_CONDITION_SEPARATE_FROM_QUALITY=FAIL
+CATALOG_MENU_COLOR_FILTER=FAIL
+CATALOG_SEASON_SEARCH=PASS
+CATALOG_VARIANT_SEARCH=PASS
+CATALOG_NO_NORMAL_REPLAY_CONTROLS=PASS
+CATALOG_NO_FABRICATED_HISTORY=PASS
+CATALOG_SCREENSHOT_overview=PASS
+CATALOG_SCREENSHOT_favorites=PASS
+CATALOG_SCREENSHOT_tasks=PASS
+CATALOG_SCREENSHOT_prices=PASS
+CATALOG_SCREENSHOT_stats=PASS
+CATALOG_SCREENSHOT_logs=PASS
+CATALOG_SCREENSHOT_settings=PASS
+CATALOG_SCREENSHOT_run=PASS
+CATALOG_NO_VISIBLE_DEMO_UI=PASS
+CATALOG_COMPACT_SCREENSHOT=PASS
+CATALOG_REAL_MAINTENANCE_ENTRY=PASS
+CATALOG_CATALOG_BROWSE_SCREENSHOT=PASS
+CATALOG_CATALOG_ADD_SCREENSHOT=PASS
+CATALOG_APPEND_UPDATES_MAIN_STATE=PASS
+CATALOG_ORIGINAL_TASK_UNCHANGED=PASS
+CATALOG_ORIGINAL_FOLLOW_PRESERVED=PASS
+CATALOG_DUPLICATE_IMPORT_NO_CHANGE=PASS
+CATALOG_APPENDED_ITEM_SEARCHABLE=PASS
+CATALOG_APPENDED_ITEM_USABLE_IN_TASK=PASS
+CATALOG_SAVE_USER_CONFIGURATION=PASS
+CATALOG_RESTART_RETAINS_APPEND_AND_TASKS=PASS
+CATALOG_TEST_ADDITIONS_NOT_IN_BUILTIN=PASS
+CATALOG_BROKEN_EXTENSION_PRESERVED=PASS
+CATALOG_DEMO_MIGRATION_TO_REAL=PASS
+CATALOG_MIGRATION_BACKUP_EXACT=PASS
+CATALOG_SELF_TEST=FAIL; assertions=40; offscreen=true; game_connected=false; system_input_sent=false
+
+      Start 32: ui_offscreen
+32/32 Test #32: ui_offscreen .....................   Passed    2.73 sec
+
+97% tests passed, 1 tests failed out of 32
+
+Total Test time (real) =  10.62 sec
+
+The following tests FAILED:
+	 31 - catalog_offscreen (Failed)
+powershell : Errors while running CTest
+所在位置 行:21 字符: 1
++ powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1 -Test * ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Errors while running CTest:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Tests failed.
+At C:\Users\Administrator\Desktop\price\build.ps1:24 char:36
++         if ($LASTEXITCODE -ne 0) { throw 'Tests failed.' }
++                                    ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Tests failed.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Tests failed.
+STDERR:
+(empty)
+EXIT_STATUS: 1
+
+INITIAL_BUILD_FAILED
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1 -Test
+INPUT: Initial integration build; later corrected and rerun. Captured combined stdout/stderr.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.2s)
+-- Generating done (0.5s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/156] Automatic MOC for target relink_runtime
+[2/154] Automatic MOC for target relink_ledger
+[3/152] Automatic MOC for target relink_sqlite
+[4/150] Automatic MOC for target relink_startup_observation
+[5/148] Automatic MOC for target relink_business
+[6/147] Automatic MOC for target relink_catalog
+[7/147] Automatic MOC for target relink_vision_transport
+[8/145] Automatic MOC for target relink_windows_capture
+[9/143] Automatic MOC for target relink_catalog_filter
+[10/141] Automatic MOC for target domain_tests
+[11/140] Building CXX object CMakeFiles/relink_catalog.dir/relink_catalog_autogen/mocs_compilation.cpp.obj
+[12/140] Automatic MOC for target relink_windows_ocr
+[13/138] Automatic MOC for target vision_worker_fixture
+[14/136] Automatic MOC for target catalog_filter_tests
+[15/134] Automatic MOC for target startup_observer_tests
+[16/132] Automatic MOC for target foreground_policy_tests
+[17/130] Automatic MOC for target lobby_calibration_tests
+[18/128] Automatic MOC for target market_calibration_tests
+[19/126] Automatic MOC for target windows_capture_tests
+[20/124] Automatic MOC for target windows_ocr_tests
+[21/122] Automatic MOC for target shared_frame_memory_tests
+[22/120] Automatic MOC for target worker_process_tests
+[23/118] Automatic MOC for target runtime_tests
+[24/116] Automatic MOC for target observation_adapter_tests
+[25/114] Automatic MOC for target worker_protocol_tests
+[26/112] Automatic MOC for target vision_pipeline_tests
+[27/110] Building CXX object CMakeFiles/relink_business.dir/src/config/profile_store.cpp.obj
+[28/110] Automatic MOC for target sqlite_ledger_tests
+[29/108] Automatic MOC for target ledger_tests
+[30/106] Building CXX object CMakeFiles/relink_catalog.dir/src/catalog/skin_catalog.cpp.obj
+[31/106] Linking CXX static library librelink_catalog.a
+[32/106] Automatic MOC for target skin_catalog_tests
+[33/106] Building CXX object CMakeFiles/skin_catalog_tests.dir/skin_catalog_tests_autogen/mocs_compilation.cpp.obj
+[34/106] Automatic MOC for target relink_ui
+[35/106] Building CXX object CMakeFiles/domain_tests.dir/tests/domain_tests.cpp.obj
+[36/106] Building CXX object CMakeFiles/domain_tests.dir/src/domain.cpp.obj
+[37/106] Building CXX object CMakeFiles/relink_business.dir/src/config/v1_adapter.cpp.obj
+[38/106] Linking CXX static library librelink_business.a
+[39/106] Automatic MOC for target relink_workspace
+[40/104] Building CXX object CMakeFiles/relink_ui.dir/relink_ui_autogen/mocs_compilation.cpp.obj
+[41/104] Building CXX object CMakeFiles/skin_catalog_tests.dir/tests/catalog/skin_catalog_tests.cpp.obj
+[42/104] Building CXX object CMakeFiles/relink_ui.dir/src/domain.cpp.obj
+[43/104] Building CXX object CMakeFiles/relink_ui.dir/src/ui/pages/task_page.cpp.obj
+[44/104] Building CXX object CMakeFiles/relink_ui.dir/src/ui/dialogs/task_editor_dialog.cpp.obj
+[45/104] Automatic MOC for target business_tests
+[46/103] Automatic MOC for target business_value_tests
+[47/102] Building CXX object CMakeFiles/relink_ui.dir/src/ui/presentation/ui_helpers.cpp.obj
+[48/102] Automatic MOC for target business_rule_tests
+[49/101] Automatic MOC for target business_migration_tests
+[50/100] Building CXX object CMakeFiles/relink_ui.dir/src/ui/pages/run_settings_page.cpp.obj
+[51/100] Automatic MOC for target savedvalue_tests
+[52/99] Automatic MOC for target profile_store_tests
+[53/98] Automatic MOC for target ui_projection_tests
+[54/97] Automatic MOC for target workspace_tests
+[55/96] Linking CXX executable skin_catalog_tests.exe
+[56/96] Linking CXX executable domain_tests.exe
+[57/96] Linking CXX executable business_value_tests.exe
+[58/96] Linking CXX executable business_tests.exe
+[59/96] Linking CXX executable business_rule_tests.exe
+[60/96] Linking CXX executable savedvalue_tests.exe
+[61/96] Linking CXX executable ui_projection_tests.exe
+[62/96] Building CXX object CMakeFiles/relink_ui.dir/src/ui/dialogs/skin_catalog_dialog.cpp.obj
+[63/96] Linking CXX executable workspace_tests.exe
+[64/96] Building CXX object CMakeFiles/profile_store_tests.dir/tests/business/profile_store_tests.cpp.obj
+FAILED: [code=1] CMakeFiles/profile_store_tests.dir/tests/business/profile_store_tests.cpp.obj 
+C:\Users\Administrator\Desktop\price\.tools\Qt\Tools\mingw1310_64\bin\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_NO_DEBUG -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -IC:/Users/Administrator/Desktop/price/build_relocated/profile_store_tests_autogen/include -IC:/Users/Administrator/Desktop/price/src -isystem C:/Users/Administrator/Desktop/price/.tools/Qt/6.8.3/mingw_64/include/QtCore -isystem C:/Users/Administrator/Desktop/price/.tools/Qt/6.8.3/mingw_64/include -isystem C:/Users/Administrator/Desktop/price/.tools/Qt/6.8.3/mingw_64/mkspecs/win32-g++ -O3 -DNDEBUG -std=gnu++17 -Wall -Wextra -finput-charset=UTF-8 -fexec-charset=UTF-8 -MD -MT CMakeFiles/profile_store_tests.dir/tests/business/profile_store_tests.cpp.obj -MF CMakeFiles\profile_store_tests.dir\tests\business\profile_store_tests.cpp.obj.d -o CMakeFiles/profile_store_tests.dir/tests/business/profile_store_tests.cpp.obj -c C:/Users/Administrator/Desktop/price/tests/business/profile_store_tests.cpp
+C:/Users/Administrator/Desktop/price/tests/business/profile_store_tests.cpp: In function 'int main(int, char**)':
+C:/Users/Administrator/Desktop/price/tests/business/profile_store_tests.cpp:63:143: error: expected '}' before ';' token
+   63 |                                      {QStringLiteral("extensions"), QJsonObject{{QStringLiteral("x-menuColor"), QStringLiteral("purple")}}}}}};
+      |                                                                                                                                               ^
+C:/Users/Administrator/Desktop/price/tests/business/profile_store_tests.cpp:59:33: note: to match this '{'
+   59 |     QJsonObject actualExtensions{{QStringLiteral("x-target_mode"), QStringLiteral("configuration")},
+      |                                 ^
+[65/96] Building CXX object CMakeFiles/business_migration_tests.dir/tests/business/migration_tests.cpp.obj
+[66/96] Building CXX object CMakeFiles/relink_ui.dir/src/application/catalog_configuration.cpp.obj
+ninja: build stopped: subcommand failed.
+powershell : CMake build failed.
+所在位置 行:2 字符: 204
++ ... eLists.txt; powershell -NoProfile -ExecutionPolicy Bypass -File build ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (CMake build failed.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+At C:\Users\Administrator\Desktop\price\build.ps1:21 char:32
++     if ($LASTEXITCODE -ne 0) { throw 'CMake build failed.' }
++                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (CMake build failed.:String) [], RuntimeException
+    + FullyQualifiedErrorId : CMake build failed.
+STDERR:
+(empty)
+EXIT_STATUS: 1
+
+MODIFIED_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\price\build.ps1 -Test -Package
+INPUT: Current source; actual build directory selected by build.ps1; CTest then extracted deployment.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.3s)
+-- Generating done (0.5s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/19] Automatic MOC for target ui_module_tests
+[2/18] Automatic MOC for target skin_catalog_tests
+[3/17] Automatic MOC for target catalog_configuration_tests
+[4/16] Automatic MOC for target RelinkStudio
+[5/15] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/catalog_startup.cpp.obj
+[6/15] Building CXX object CMakeFiles/RelinkStudio.dir/src/main.cpp.obj
+[7/15] Building CXX object CMakeFiles/catalog_configuration_tests.dir/tests/catalog/catalog_configuration_tests.cpp.obj
+[8/15] Building CXX object CMakeFiles/skin_catalog_tests.dir/tests/catalog/skin_catalog_tests.cpp.obj
+[9/15] Linking CXX executable skin_catalog_tests.exe
+[10/15] Linking CXX executable catalog_configuration_tests.exe
+[11/15] Building CXX object CMakeFiles/ui_module_tests.dir/tests/ui/ui_module_tests.cpp.obj
+[12/15] Linking CXX executable ui_module_tests.exe
+[13/15] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/catalog_self_test.cpp.obj
+[14/15] Building CXX object CMakeFiles/RelinkStudio.dir/src/mainwindow.cpp.obj
+[15/15] Linking CXX executable RelinkStudio.exe
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: skin_catalog_tests
+ 1/32 Test  #1: skin_catalog_tests ...............   Passed    0.08 sec
+      Start  2: skin_catalog_dialog_tests
+ 2/32 Test  #2: skin_catalog_dialog_tests ........   Passed    0.09 sec
+      Start  3: catalog_configuration_tests
+ 3/32 Test  #3: catalog_configuration_tests ......   Passed    0.09 sec
+      Start  4: savedvalue_tests
+ 4/32 Test  #4: savedvalue_tests .................   Passed    0.06 sec
+      Start  5: catalog_filter_tests
+ 5/32 Test  #5: catalog_filter_tests .............   Passed    0.70 sec
+      Start  6: domain_tests
+ 6/32 Test  #6: domain_tests .....................   Passed    0.12 sec
+      Start  7: business_tests
+ 7/32 Test  #7: business_tests ...................   Passed    0.02 sec
+      Start  8: business_value_tests
+ 8/32 Test  #8: business_value_tests .............   Passed    0.03 sec
+      Start  9: business_rule_tests
+ 9/32 Test  #9: business_rule_tests ..............   Passed    0.03 sec
+      Start 10: business_migration_tests
+10/32 Test #10: business_migration_tests .........   Passed    0.04 sec
+      Start 11: profile_store_tests
+11/32 Test #11: profile_store_tests ..............   Passed    0.04 sec
+      Start 12: runtime_tests
+12/32 Test #12: runtime_tests ....................   Passed    0.03 sec
+      Start 13: observation_adapter_tests
+13/32 Test #13: observation_adapter_tests ........   Passed    0.03 sec
+      Start 14: windows_capture_tests
+14/32 Test #14: windows_capture_tests ............   Passed    0.04 sec
+      Start 15: startup_observer_tests
+15/32 Test #15: startup_observer_tests ...........   Passed    0.06 sec
+      Start 16: startup_observer_self_test
+16/32 Test #16: startup_observer_self_test .......   Passed    0.07 sec
+      Start 17: lobby_calibration_tests
+17/32 Test #17: lobby_calibration_tests ..........   Passed    0.03 sec
+      Start 18: foreground_policy_tests
+18/32 Test #18: foreground_policy_tests ..........   Passed    0.01 sec
+      Start 19: market_calibration_tests
+19/32 Test #19: market_calibration_tests .........   Passed    0.05 sec
+      Start 20: windows_ocr_tests
+20/32 Test #20: windows_ocr_tests ................   Passed    1.67 sec
+      Start 21: worker_protocol_tests
+21/32 Test #21: worker_protocol_tests ............   Passed    0.05 sec
+      Start 22: vision_pipeline_tests
+22/32 Test #22: vision_pipeline_tests ............   Passed    0.06 sec
+      Start 23: shared_frame_memory_tests
+23/32 Test #23: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 24: worker_process_tests
+24/32 Test #24: worker_process_tests .............   Passed    1.44 sec
+      Start 25: ui_projection_tests
+25/32 Test #25: ui_projection_tests ..............   Passed    0.03 sec
+      Start 26: ledger_tests
+26/32 Test #26: ledger_tests .....................   Passed    0.02 sec
+      Start 27: sqlite_ledger_tests
+27/32 Test #27: sqlite_ledger_tests ..............   Passed    0.82 sec
+      Start 28: workspace_tests
+28/32 Test #28: workspace_tests ..................   Passed    0.95 sec
+      Start 29: ui_module_tests
+29/32 Test #29: ui_module_tests ..................   Passed    0.06 sec
+      Start 30: storage_self_test
+30/32 Test #30: storage_self_test ................   Passed    0.09 sec
+      Start 31: catalog_offscreen
+31/32 Test #31: catalog_offscreen ................   Passed    1.04 sec
+      Start 32: ui_offscreen
+32/32 Test #32: ui_offscreen .....................   Passed    2.66 sec
+
+100% tests passed out of 32
+
+Total Test time (real) =  10.59 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\fixture_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\modified-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_REAL_CATALOG
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --catalog-self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\real_snapshots
+INPUT: Same startup as normal application; embedded 149 skins; isolated extensions/config; actual dialog append, persistence, duplicate/collision rejection; no game input.
+STDOUT:
+CATALOG_SAME_NORMAL_STARTUP_PATH=PASS
+CATALOG_REAL_149_11_SEASONS=PASS
+CATALOG_NO_DEFAULT_TASKS=PASS
+CATALOG_NO_INVENTED_QUOTES_WEAR_OR_FOLLOWS=PASS
+CATALOG_NORMAL_MODE_HAS_NO_SIMULATOR=PASS
+CATALOG_REAL_CONFIG_NOT_DEMO=PASS
+CATALOG_ALL_PRODUCTS_IN_MAIN_UI=PASS
+CATALOG_UNKNOWN_CELLS_AND_EMPTY_SPARKLINES=PASS
+CATALOG_THUMBNAILS_EMPTY=PASS
+CATALOG_CONDITION_SEPARATE_FROM_QUALITY=PASS
+CATALOG_MENU_COLOR_FILTER=PASS
+CATALOG_SEASON_SEARCH=PASS
+CATALOG_VARIANT_SEARCH=PASS
+CATALOG_NO_NORMAL_REPLAY_CONTROLS=PASS
+CATALOG_NO_FABRICATED_HISTORY=PASS
+CATALOG_SCREENSHOT_overview=PASS
+CATALOG_SCREENSHOT_favorites=PASS
+CATALOG_SCREENSHOT_tasks=PASS
+CATALOG_SCREENSHOT_prices=PASS
+CATALOG_SCREENSHOT_stats=PASS
+CATALOG_SCREENSHOT_logs=PASS
+CATALOG_SCREENSHOT_settings=PASS
+CATALOG_SCREENSHOT_run=PASS
+CATALOG_NO_VISIBLE_DEMO_UI=PASS
+CATALOG_VISIBLE_CATALOG_TEXT_UTF8=PASS
+CATALOG_COMPACT_SCREENSHOT=PASS
+CATALOG_REAL_MAINTENANCE_ENTRY=PASS
+CATALOG_CATALOG_BROWSE_SCREENSHOT=PASS
+CATALOG_CATALOG_ADD_SCREENSHOT=PASS
+CATALOG_APPEND_UPDATES_MAIN_STATE=PASS
+CATALOG_ORIGINAL_TASK_UNCHANGED=PASS
+CATALOG_ORIGINAL_FOLLOW_PRESERVED=PASS
+CATALOG_DUPLICATE_IMPORT_NO_CHANGE=PASS
+CATALOG_CONFIG_COLLISION_REJECTED_BEFORE_COMMIT=PASS
+CATALOG_APPENDED_ITEM_SEARCHABLE=PASS
+CATALOG_APPENDED_ITEM_USABLE_IN_TASK=PASS
+CATALOG_SAVE_USER_CONFIGURATION=PASS
+CATALOG_RESTART_RETAINS_APPEND_AND_TASKS=PASS
+CATALOG_TEST_ADDITIONS_NOT_IN_BUILTIN=PASS
+CATALOG_BROKEN_EXTENSION_PRESERVED=PASS
+CATALOG_DEMO_MIGRATION_TO_REAL=PASS
+CATALOG_MIGRATION_BACKUP_EXACT=PASS
+CATALOG_SELF_TEST=PASS; assertions=42; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --storage-self-test
+INPUT: Packaged SQLite driver, temporary database, transactions and recovery.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json C:\Users\Administrator\Desktop\price\docs\business_rebuild\skin_reference\skin_reference.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS builtin_file_read
+PASS builtin_parses
+PASS 149_real_skins_11_seasons
+PASS every_thumbnail_reserved_empty
+PASS formal_quality_not_invented_from_menu_color
+PASS original_numeric_ids_preserved
+PASS known_purple_aug_identity
+PASS same_weapon_variants_remain_distinct
+PASS missing_lookup_is_null
+PASS season_numeric_source_order
+PASS canonical_roundtrip
+PASS all_149_items_match_user_verified_reference
+PASS malformed_parse_preserves_output
+PASS bounded_file_size
+PASS schema_checked
+PASS market_data_not_catalog_fields
+PASS wrong_array_type_rejected
+PASS duplicate_product_in_import_rejected
+PASS duplicate_season_in_import_rejected
+PASS conflicting_skin_season_rejected
+PASS thumbnail_paths_rejected_in_current_version
+PASS condition_not_accepted_as_menu_color
+PASS unsafe_nonstable_id_rejected
+PASS control_characters_rejected
+PASS field_length_bounded
+PASS invalid_utf8_rejected
+PASS unloaded_store_cannot_save
+PASS isolated_temp_directory
+PASS missing_user_extension_loads_builtin
+PASS read_only_load_creates_no_extension
+PASS append_new_season_commits
+PASS appended_skin_available_and_persisted
+PASS existing_season_append_rejected_without_rewrite
+PASS duplicate_id_never_overwrites
+PASS self_full_import_rejected_atomically
+PASS append_skin_existing_season
+PASS user_skins_survive_restart
+PASS extension_export_excludes_builtin
+PASS conflicting_existing_season_import_rejected
+PASS corrupt_extension_neither_erased_nor_replaces_memory
+PASS mixed_import_failure_has_no_partial_addition
+PASS test_holds_writer_lock
+PASS writer_lock_preserves_disk_and_memory
+PASS external_changes_are_not_lost
+PASS write_failure_fixture
+PASS missing_extension_below_blocked_parent_loads
+PASS failed_save_does_not_modify_memory_or_original_file
+PASS two_readers_load_missing_extension
+PASS first_writer_commits
+PASS second_stale_writer_cannot_overwrite_first
+PASS extension_import_on_other_store
+PASS commit_guard_store_loads
+PASS projection_guard_rejects_before_first_disk_or_memory_mutation
+PASS standalone_store_with_no_guard_can_commit
+PASS projection_guard_failure_preserves_existing_bytes_and_memory
+PASS local_ids_stable_namespace_and_unique
+PASS generated_id_passes_schema
+SKIN_CATALOG_TESTS=PASS; assertions=57; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+CATALOG_CONFIGURATION_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\catalog_configuration_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS real_catalog_loads
+PASS empty_state_projects_real_catalog
+PASS real_149_without_synthetic_tasks
+PASS no_market_condition_or_quality_fabrication
+PASS no_fake_follows
+PASS stable_source_product_ids
+PASS metadata_projected_without_color_quality_guess
+PASS distinct_variants_preserved
+PASS repeat_projection_preserves_follows_tasks_parameters_and_observations
+PASS task_runtime_status_and_run_settings_untouched
+PASS legacy_numeric_id_remaps_only_task_reference
+PASS numeric_id_follow_preserved
+PASS default_fixture_migration_succeeds
+PASS strict_12_skins_5_tasks_removed
+PASS migration_preserves_user_run_parameters
+PASS migrated_state_cannot_restart_synthetic_runtime
+PASS migration_is_idempotent
+PASS historical_all_disabled_defaults_and_follow_toggles_removed
+PASS user_modified_default_task_never_deleted
+PASS referenced_default_skin_preserved_but_fake_market_fields_cleared
+PASS only_proven_unreferenced_defaults_removed
+PASS retained_legacy_migration_idempotent
+PASS condition_only_user_edit_is_not_mistaken_for_default
+PASS unknown_user_skin_and_task_preserved
+PASS unknown_user_values_unchanged_even_with_demo_prefix
+PASS ambiguous_old_identity_rejected_without_loss
+PASS orphan_task_not_silently_discarded
+PASS invalid_catalog_leaves_configuration_unchanged
+PASS catalog_state_valid_in_existing_codec
+PASS catalog_metadata_and_unknown_flags_persist
+CATALOG_CONFIGURATION_TESTS=PASS; assertions=30; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_DIALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_dialog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+skin_catalog_dialog_tests: 40 checks, 0 failures
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+UI_MODULE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\ui_module_tests.exe
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+UI_MODULE_TESTS=PASS; assertions=102; failures=0; mainwindow=false; sqlite=false; offscreen=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_PRODUCTION_COPY
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_copy_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_config_copy\config.json
+INPUT: Read-only source copy; original SHA256=0c7560566e424d9688c140699252787734a16d1b2ebcd3c6c9171f7c3bfc6937; same normal startup migration + geometry checks.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\price\build.ps1 -Test -Package
+INPUT: Current source; actual build directory selected by build.ps1; CTest then extracted deployment.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.3s)
+-- Generating done (0.4s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/145] Automatic MOC for target relink_runtime
+[2/143] Automatic MOC for target relink_startup_observation
+[3/141] Automatic MOC for target relink_sqlite
+[4/139] Automatic MOC for target relink_business
+[5/137] Automatic MOC for target relink_ledger
+[6/135] Automatic MOC for target relink_catalog
+[7/133] Automatic MOC for target relink_windows_capture
+[8/131] Automatic MOC for target relink_vision_transport
+[9/129] Automatic MOC for target relink_catalog_filter
+[10/127] Automatic MOC for target relink_workspace
+[11/125] Automatic MOC for target skin_catalog_tests
+[12/123] Automatic MOC for target relink_windows_ocr
+[13/121] Automatic MOC for target business_tests
+[14/119] Automatic MOC for target vision_worker_fixture
+[15/117] Automatic MOC for target domain_tests
+[16/117] Automatic MOC for target business_rule_tests
+[17/115] Automatic MOC for target business_value_tests
+[18/113] Automatic MOC for target relink_ui
+[19/113] Automatic MOC for target business_migration_tests
+[20/111] Automatic MOC for target savedvalue_tests
+[21/109] Automatic MOC for target catalog_filter_tests
+[22/107] Automatic MOC for target profile_store_tests
+[23/105] Automatic MOC for target startup_observer_tests
+[24/103] Building CXX object CMakeFiles/relink_ui.dir/src/ui/dialogs/task_editor_dialog.cpp.obj
+[25/103] Building CXX object CMakeFiles/relink_ui.dir/relink_ui_autogen/mocs_compilation.cpp.obj
+[26/103] Automatic MOC for target lobby_calibration_tests
+[27/101] Building CXX object CMakeFiles/relink_ui.dir/src/ui/pages/task_page.cpp.obj
+[28/101] Automatic MOC for target foreground_policy_tests
+[29/99] Building CXX object CMakeFiles/relink_ui.dir/src/ui/pages/run_settings_page.cpp.obj
+[30/99] Automatic MOC for target market_calibration_tests
+[31/97] Automatic MOC for target windows_capture_tests
+[32/95] Automatic MOC for target windows_ocr_tests
+[33/93] Automatic MOC for target shared_frame_memory_tests
+[34/91] Automatic MOC for target worker_process_tests
+[35/89] Automatic MOC for target runtime_tests
+[36/87] Automatic MOC for target observation_adapter_tests
+[37/85] Building CXX object CMakeFiles/relink_ui.dir/src/ui/presentation/ui_helpers.cpp.obj
+[38/85] Automatic MOC for target worker_protocol_tests
+[39/83] Automatic MOC for target vision_pipeline_tests
+[40/81] Building CXX object CMakeFiles/relink_ui.dir/src/domain.cpp.obj
+[41/81] Automatic MOC for target ui_projection_tests
+[42/79] Automatic MOC for target sqlite_ledger_tests
+[43/77] Automatic MOC for target workspace_tests
+[44/75] Automatic MOC for target ledger_tests
+[45/73] Building CXX object CMakeFiles/domain_tests.dir/domain_tests_autogen/mocs_compilation.cpp.obj
+[46/73] Building CXX object CMakeFiles/relink_ui.dir/src/application/catalog_configuration.cpp.obj
+[47/73] Linking CXX static library librelink_ui.a
+[48/73] Automatic MOC for target ui_module_tests
+[49/72] Automatic MOC for target catalog_configuration_tests
+[50/71] Automatic MOC for target RelinkStudio
+[51/70] Automatic MOC for target skin_catalog_dialog_tests
+[52/69] Building CXX object CMakeFiles/domain_tests.dir/tests/domain_tests.cpp.obj
+[53/69] Building CXX object CMakeFiles/ui_module_tests.dir/src/application/startup_config.cpp.obj
+[54/69] Building CXX object CMakeFiles/domain_tests.dir/src/domain.cpp.obj
+[55/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/main.cpp.obj
+[56/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/startup_config.cpp.obj
+[57/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/catalog_startup.cpp.obj
+[58/69] Building CXX object CMakeFiles/ui_module_tests.dir/tests/ui/ui_module_tests.cpp.obj
+[59/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/catalog_self_test.cpp.obj
+[60/69] Linking CXX executable domain_tests.exe
+[61/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/application/workspace/workspace_ui_self_test.cpp.obj
+[62/69] Linking CXX executable ui_module_tests.exe
+[63/69] Building CXX object CMakeFiles/skin_catalog_dialog_tests.dir/tests/ui/skin_catalog_dialog_tests.cpp.obj
+[64/69] Building CXX object CMakeFiles/catalog_configuration_tests.dir/tests/catalog/catalog_configuration_tests.cpp.obj
+[65/69] Linking CXX executable skin_catalog_dialog_tests.exe
+[66/69] Linking CXX executable catalog_configuration_tests.exe
+[67/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/ui_self_test_runner.cpp.obj
+[68/69] Building CXX object CMakeFiles/RelinkStudio.dir/src/mainwindow.cpp.obj
+[69/69] Linking CXX executable RelinkStudio.exe
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: skin_catalog_tests
+ 1/32 Test  #1: skin_catalog_tests ...............   Passed    0.08 sec
+      Start  2: skin_catalog_dialog_tests
+ 2/32 Test  #2: skin_catalog_dialog_tests ........   Passed    0.09 sec
+      Start  3: catalog_configuration_tests
+ 3/32 Test  #3: catalog_configuration_tests ......   Passed    0.08 sec
+      Start  4: savedvalue_tests
+ 4/32 Test  #4: savedvalue_tests .................   Passed    0.06 sec
+      Start  5: catalog_filter_tests
+ 5/32 Test  #5: catalog_filter_tests .............   Passed    0.69 sec
+      Start  6: domain_tests
+ 6/32 Test  #6: domain_tests .....................   Passed    0.11 sec
+      Start  7: business_tests
+ 7/32 Test  #7: business_tests ...................   Passed    0.02 sec
+      Start  8: business_value_tests
+ 8/32 Test  #8: business_value_tests .............   Passed    0.03 sec
+      Start  9: business_rule_tests
+ 9/32 Test  #9: business_rule_tests ..............   Passed    0.03 sec
+      Start 10: business_migration_tests
+10/32 Test #10: business_migration_tests .........   Passed    0.03 sec
+      Start 11: profile_store_tests
+11/32 Test #11: profile_store_tests ..............   Passed    0.03 sec
+      Start 12: runtime_tests
+12/32 Test #12: runtime_tests ....................   Passed    0.03 sec
+      Start 13: observation_adapter_tests
+13/32 Test #13: observation_adapter_tests ........   Passed    0.02 sec
+      Start 14: windows_capture_tests
+14/32 Test #14: windows_capture_tests ............   Passed    0.03 sec
+      Start 15: startup_observer_tests
+15/32 Test #15: startup_observer_tests ...........   Passed    0.06 sec
+      Start 16: startup_observer_self_test
+16/32 Test #16: startup_observer_self_test .......   Passed    0.07 sec
+      Start 17: lobby_calibration_tests
+17/32 Test #17: lobby_calibration_tests ..........   Passed    0.03 sec
+      Start 18: foreground_policy_tests
+18/32 Test #18: foreground_policy_tests ..........   Passed    0.01 sec
+      Start 19: market_calibration_tests
+19/32 Test #19: market_calibration_tests .........   Passed    0.05 sec
+      Start 20: windows_ocr_tests
+20/32 Test #20: windows_ocr_tests ................   Passed    1.72 sec
+      Start 21: worker_protocol_tests
+21/32 Test #21: worker_protocol_tests ............   Passed    0.04 sec
+      Start 22: vision_pipeline_tests
+22/32 Test #22: vision_pipeline_tests ............   Passed    0.03 sec
+      Start 23: shared_frame_memory_tests
+23/32 Test #23: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 24: worker_process_tests
+24/32 Test #24: worker_process_tests .............   Passed    1.41 sec
+      Start 25: ui_projection_tests
+25/32 Test #25: ui_projection_tests ..............   Passed    0.03 sec
+      Start 26: ledger_tests
+26/32 Test #26: ledger_tests .....................   Passed    0.03 sec
+      Start 27: sqlite_ledger_tests
+27/32 Test #27: sqlite_ledger_tests ..............   Passed    0.81 sec
+      Start 28: workspace_tests
+28/32 Test #28: workspace_tests ..................   Passed    0.95 sec
+      Start 29: ui_module_tests
+29/32 Test #29: ui_module_tests ..................   Passed    0.06 sec
+      Start 30: storage_self_test
+30/32 Test #30: storage_self_test ................   Passed    0.11 sec
+      Start 31: catalog_offscreen
+31/32 Test #31: catalog_offscreen ................   Passed    0.93 sec
+      Start 32: ui_offscreen
+32/32 Test #32: ui_offscreen .....................   Passed    2.69 sec
+
+100% tests passed out of 32
+
+Total Test time (real) =  10.45 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+EXIT_STATUS: 0
+
+MODIFIED_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\price\build.ps1 -Test -Package
+INPUT: Current source; actual build directory selected by build.ps1; CTest then extracted deployment.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.3s)
+-- Generating done (0.5s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+ninja: no work to do.
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: skin_catalog_tests
+ 1/32 Test  #1: skin_catalog_tests ...............   Passed    0.09 sec
+      Start  2: skin_catalog_dialog_tests
+ 2/32 Test  #2: skin_catalog_dialog_tests ........   Passed    0.10 sec
+      Start  3: catalog_configuration_tests
+ 3/32 Test  #3: catalog_configuration_tests ......   Passed    0.09 sec
+      Start  4: savedvalue_tests
+ 4/32 Test  #4: savedvalue_tests .................   Passed    0.06 sec
+      Start  5: catalog_filter_tests
+ 5/32 Test  #5: catalog_filter_tests .............   Passed    0.66 sec
+      Start  6: domain_tests
+ 6/32 Test  #6: domain_tests .....................   Passed    0.11 sec
+      Start  7: business_tests
+ 7/32 Test  #7: business_tests ...................   Passed    0.03 sec
+      Start  8: business_value_tests
+ 8/32 Test  #8: business_value_tests .............   Passed    0.03 sec
+      Start  9: business_rule_tests
+ 9/32 Test  #9: business_rule_tests ..............   Passed    0.03 sec
+      Start 10: business_migration_tests
+10/32 Test #10: business_migration_tests .........   Passed    0.03 sec
+      Start 11: profile_store_tests
+11/32 Test #11: profile_store_tests ..............   Passed    0.03 sec
+      Start 12: runtime_tests
+12/32 Test #12: runtime_tests ....................   Passed    0.03 sec
+      Start 13: observation_adapter_tests
+13/32 Test #13: observation_adapter_tests ........   Passed    0.02 sec
+      Start 14: windows_capture_tests
+14/32 Test #14: windows_capture_tests ............   Passed    0.03 sec
+      Start 15: startup_observer_tests
+15/32 Test #15: startup_observer_tests ...........   Passed    0.06 sec
+      Start 16: startup_observer_self_test
+16/32 Test #16: startup_observer_self_test .......   Passed    0.06 sec
+      Start 17: lobby_calibration_tests
+17/32 Test #17: lobby_calibration_tests ..........   Passed    0.03 sec
+      Start 18: foreground_policy_tests
+18/32 Test #18: foreground_policy_tests ..........   Passed    0.01 sec
+      Start 19: market_calibration_tests
+19/32 Test #19: market_calibration_tests .........   Passed    0.05 sec
+      Start 20: windows_ocr_tests
+20/32 Test #20: windows_ocr_tests ................   Passed    1.71 sec
+      Start 21: worker_protocol_tests
+21/32 Test #21: worker_protocol_tests ............   Passed    0.04 sec
+      Start 22: vision_pipeline_tests
+22/32 Test #22: vision_pipeline_tests ............   Passed    0.03 sec
+      Start 23: shared_frame_memory_tests
+23/32 Test #23: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 24: worker_process_tests
+24/32 Test #24: worker_process_tests .............   Passed    1.39 sec
+      Start 25: ui_projection_tests
+25/32 Test #25: ui_projection_tests ..............   Passed    0.03 sec
+      Start 26: ledger_tests
+26/32 Test #26: ledger_tests .....................   Passed    0.03 sec
+      Start 27: sqlite_ledger_tests
+27/32 Test #27: sqlite_ledger_tests ..............   Passed    0.92 sec
+      Start 28: workspace_tests
+28/32 Test #28: workspace_tests ..................   Passed    0.97 sec
+      Start 29: ui_module_tests
+29/32 Test #29: ui_module_tests ..................   Passed    0.06 sec
+      Start 30: storage_self_test
+30/32 Test #30: storage_self_test ................   Passed    0.09 sec
+      Start 31: catalog_offscreen
+31/32 Test #31: catalog_offscreen ................   Passed    0.92 sec
+      Start 32: ui_offscreen
+32/32 Test #32: ui_offscreen .....................   Passed    2.82 sec
+
+100% tests passed out of 32
+
+Total Test time (real) =  10.63 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\fixture_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\modified-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_REAL_CATALOG
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --catalog-self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\real_snapshots
+INPUT: Same startup as normal application; embedded 149 skins; isolated extensions/config; actual dialog append, persistence, duplicate/collision rejection; no game input.
+STDOUT:
+CATALOG_SAME_NORMAL_STARTUP_PATH=PASS
+CATALOG_REAL_149_11_SEASONS=PASS
+CATALOG_NO_DEFAULT_TASKS=PASS
+CATALOG_NO_INVENTED_QUOTES_WEAR_OR_FOLLOWS=PASS
+CATALOG_NORMAL_MODE_HAS_NO_SIMULATOR=PASS
+CATALOG_REAL_CONFIG_NOT_DEMO=PASS
+CATALOG_ALL_PRODUCTS_IN_MAIN_UI=PASS
+CATALOG_UNKNOWN_CELLS_AND_EMPTY_SPARKLINES=PASS
+CATALOG_THUMBNAILS_EMPTY=PASS
+CATALOG_NEW_TASK_REQUIRES_USER_PRICE=PASS
+CATALOG_CONDITION_SEPARATE_FROM_QUALITY=PASS
+CATALOG_MENU_COLOR_FILTER=PASS
+CATALOG_SEASON_SEARCH=PASS
+CATALOG_VARIANT_SEARCH=PASS
+CATALOG_NO_NORMAL_REPLAY_CONTROLS=PASS
+CATALOG_NO_FABRICATED_HISTORY=PASS
+CATALOG_SCREENSHOT_overview=PASS
+CATALOG_SCREENSHOT_favorites=PASS
+CATALOG_SCREENSHOT_tasks=PASS
+CATALOG_SCREENSHOT_prices=PASS
+CATALOG_SCREENSHOT_stats=PASS
+CATALOG_SCREENSHOT_logs=PASS
+CATALOG_SCREENSHOT_settings=PASS
+CATALOG_SCREENSHOT_run=PASS
+CATALOG_NO_VISIBLE_DEMO_UI=PASS
+CATALOG_VISIBLE_CATALOG_TEXT_UTF8=PASS
+CATALOG_COMPACT_SCREENSHOT=PASS
+CATALOG_REAL_MAINTENANCE_ENTRY=PASS
+CATALOG_CATALOG_BROWSE_SCREENSHOT=PASS
+CATALOG_CATALOG_ADD_SCREENSHOT=PASS
+CATALOG_APPEND_UPDATES_MAIN_STATE=PASS
+CATALOG_ORIGINAL_TASK_UNCHANGED=PASS
+CATALOG_ORIGINAL_FOLLOW_PRESERVED=PASS
+CATALOG_DUPLICATE_IMPORT_NO_CHANGE=PASS
+CATALOG_CONFIG_COLLISION_REJECTED_BEFORE_COMMIT=PASS
+CATALOG_APPENDED_ITEM_SEARCHABLE=PASS
+CATALOG_APPENDED_ITEM_USABLE_IN_TASK=PASS
+CATALOG_SAVE_USER_CONFIGURATION=PASS
+CATALOG_RESTART_RETAINS_APPEND_AND_TASKS=PASS
+CATALOG_TEST_ADDITIONS_NOT_IN_BUILTIN=PASS
+CATALOG_BROKEN_EXTENSION_PRESERVED=PASS
+CATALOG_DEMO_MIGRATION_TO_REAL=PASS
+CATALOG_MIGRATION_BACKUP_EXACT=PASS
+CATALOG_SELF_TEST=PASS; assertions=43; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --storage-self-test
+INPUT: Packaged SQLite driver, temporary database, transactions and recovery.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json C:\Users\Administrator\Desktop\price\docs\business_rebuild\skin_reference\skin_reference.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS builtin_file_read
+PASS builtin_parses
+PASS 149_real_skins_11_seasons
+PASS every_thumbnail_reserved_empty
+PASS formal_quality_not_invented_from_menu_color
+PASS original_numeric_ids_preserved
+PASS known_purple_aug_identity
+PASS same_weapon_variants_remain_distinct
+PASS missing_lookup_is_null
+PASS season_numeric_source_order
+PASS canonical_roundtrip
+PASS all_149_items_match_user_verified_reference
+PASS malformed_parse_preserves_output
+PASS bounded_file_size
+PASS schema_checked
+PASS market_data_not_catalog_fields
+PASS wrong_array_type_rejected
+PASS duplicate_product_in_import_rejected
+PASS duplicate_season_in_import_rejected
+PASS conflicting_skin_season_rejected
+PASS thumbnail_paths_rejected_in_current_version
+PASS condition_not_accepted_as_menu_color
+PASS unsafe_nonstable_id_rejected
+PASS control_characters_rejected
+PASS field_length_bounded
+PASS invalid_utf8_rejected
+PASS unloaded_store_cannot_save
+PASS isolated_temp_directory
+PASS missing_user_extension_loads_builtin
+PASS read_only_load_creates_no_extension
+PASS append_new_season_commits
+PASS appended_skin_available_and_persisted
+PASS existing_season_append_rejected_without_rewrite
+PASS duplicate_id_never_overwrites
+PASS self_full_import_rejected_atomically
+PASS append_skin_existing_season
+PASS user_skins_survive_restart
+PASS extension_export_excludes_builtin
+PASS conflicting_existing_season_import_rejected
+PASS corrupt_extension_neither_erased_nor_replaces_memory
+PASS mixed_import_failure_has_no_partial_addition
+PASS test_holds_writer_lock
+PASS writer_lock_preserves_disk_and_memory
+PASS external_changes_are_not_lost
+PASS write_failure_fixture
+PASS missing_extension_below_blocked_parent_loads
+PASS failed_save_does_not_modify_memory_or_original_file
+PASS two_readers_load_missing_extension
+PASS first_writer_commits
+PASS second_stale_writer_cannot_overwrite_first
+PASS extension_import_on_other_store
+PASS commit_guard_store_loads
+PASS projection_guard_rejects_before_first_disk_or_memory_mutation
+PASS standalone_store_with_no_guard_can_commit
+PASS projection_guard_failure_preserves_existing_bytes_and_memory
+PASS local_ids_stable_namespace_and_unique
+PASS generated_id_passes_schema
+SKIN_CATALOG_TESTS=PASS; assertions=57; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+CATALOG_CONFIGURATION_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\catalog_configuration_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS real_catalog_loads
+PASS empty_state_projects_real_catalog
+PASS real_149_without_synthetic_tasks
+PASS no_market_condition_or_quality_fabrication
+PASS no_fake_follows
+PASS stable_source_product_ids
+PASS metadata_projected_without_color_quality_guess
+PASS distinct_variants_preserved
+PASS repeat_projection_preserves_follows_tasks_parameters_and_observations
+PASS task_runtime_status_and_run_settings_untouched
+PASS legacy_numeric_id_remaps_only_task_reference
+PASS numeric_id_follow_preserved
+PASS default_fixture_migration_succeeds
+PASS strict_12_skins_5_tasks_removed
+PASS migration_preserves_user_run_parameters
+PASS migrated_state_cannot_restart_synthetic_runtime
+PASS migration_is_idempotent
+PASS historical_all_disabled_defaults_and_follow_toggles_removed
+PASS missing_legacy_condition_records_absence_not_user_choice
+PASS actual_legacy_missing_condition_disabled_defaults_migrate_to_149_zero_tasks
+PASS missing_condition_does_not_relax_other_default_task_fingerprints
+PASS explicit_no_condition_user_rules_all_remain
+PASS new_tasks_have_explicit_condition
+PASS user_modified_default_task_never_deleted
+PASS referenced_default_skin_preserved_but_fake_market_fields_cleared
+PASS only_proven_unreferenced_defaults_removed
+PASS retained_legacy_migration_idempotent
+PASS condition_only_user_edit_is_not_mistaken_for_default
+PASS unknown_user_skin_and_task_preserved
+PASS unknown_user_values_unchanged_even_with_demo_prefix
+PASS ambiguous_old_identity_rejected_without_loss
+PASS orphan_task_not_silently_discarded
+PASS invalid_catalog_leaves_configuration_unchanged
+PASS catalog_state_valid_in_existing_codec
+PASS catalog_metadata_and_unknown_flags_persist
+CATALOG_CONFIGURATION_TESTS=PASS; assertions=35; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_DIALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_dialog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+skin_catalog_dialog_tests: 43 checks, 0 failures
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+UI_MODULE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\ui_module_tests.exe
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+UI_MODULE_TESTS=PASS; assertions=102; failures=0; mainwindow=false; sqlite=false; offscreen=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_PRODUCTION_COPY
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_copy_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_config_copy\config.json
+INPUT: Read-only source copy; original SHA256=0c7560566e424d9688c140699252787734a16d1b2ebcd3c6c9171f7c3bfc6937; same normal startup migration + geometry checks.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=FAIL
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=FAIL; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 1
+
+MODIFIED_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\price\build.ps1 -Test -Package
+INPUT: Current source; actual build directory selected by build.ps1; CTest then extracted deployment.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.3s)
+-- Generating done (0.4s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+[1/14] Automatic MOC for target relink_ui
+[2/13] Building CXX object CMakeFiles/relink_ui.dir/src/application/catalog_configuration.cpp.obj
+[3/13] Linking CXX static library librelink_ui.a
+[4/13] Automatic MOC for target catalog_configuration_tests
+[5/12] Automatic MOC for target RelinkStudio
+[6/11] Linking CXX executable ui_module_tests.exe
+[7/11] Linking CXX executable skin_catalog_dialog_tests.exe
+[8/11] Building CXX object CMakeFiles/catalog_configuration_tests.dir/tests/catalog/catalog_configuration_tests.cpp.obj
+[9/11] Linking CXX executable catalog_configuration_tests.exe
+[10/11] Building CXX object CMakeFiles/RelinkStudio.dir/src/diagnostics/ui_self_test_runner.cpp.obj
+[11/11] Linking CXX executable RelinkStudio.exe
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: skin_catalog_tests
+ 1/32 Test  #1: skin_catalog_tests ...............   Passed    0.08 sec
+      Start  2: skin_catalog_dialog_tests
+ 2/32 Test  #2: skin_catalog_dialog_tests ........   Passed    0.09 sec
+      Start  3: catalog_configuration_tests
+ 3/32 Test  #3: catalog_configuration_tests ......   Passed    0.09 sec
+      Start  4: savedvalue_tests
+ 4/32 Test  #4: savedvalue_tests .................   Passed    0.06 sec
+      Start  5: catalog_filter_tests
+ 5/32 Test  #5: catalog_filter_tests .............   Passed    0.68 sec
+      Start  6: domain_tests
+ 6/32 Test  #6: domain_tests .....................   Passed    0.11 sec
+      Start  7: business_tests
+ 7/32 Test  #7: business_tests ...................   Passed    0.03 sec
+      Start  8: business_value_tests
+ 8/32 Test  #8: business_value_tests .............   Passed    0.03 sec
+      Start  9: business_rule_tests
+ 9/32 Test  #9: business_rule_tests ..............   Passed    0.04 sec
+      Start 10: business_migration_tests
+10/32 Test #10: business_migration_tests .........   Passed    0.03 sec
+      Start 11: profile_store_tests
+11/32 Test #11: profile_store_tests ..............   Passed    0.03 sec
+      Start 12: runtime_tests
+12/32 Test #12: runtime_tests ....................   Passed    0.03 sec
+      Start 13: observation_adapter_tests
+13/32 Test #13: observation_adapter_tests ........   Passed    0.02 sec
+      Start 14: windows_capture_tests
+14/32 Test #14: windows_capture_tests ............   Passed    0.04 sec
+      Start 15: startup_observer_tests
+15/32 Test #15: startup_observer_tests ...........   Passed    0.06 sec
+      Start 16: startup_observer_self_test
+16/32 Test #16: startup_observer_self_test .......   Passed    0.06 sec
+      Start 17: lobby_calibration_tests
+17/32 Test #17: lobby_calibration_tests ..........   Passed    0.03 sec
+      Start 18: foreground_policy_tests
+18/32 Test #18: foreground_policy_tests ..........   Passed    0.01 sec
+      Start 19: market_calibration_tests
+19/32 Test #19: market_calibration_tests .........   Passed    0.05 sec
+      Start 20: windows_ocr_tests
+20/32 Test #20: windows_ocr_tests ................   Passed    1.62 sec
+      Start 21: worker_protocol_tests
+21/32 Test #21: worker_protocol_tests ............   Passed    0.04 sec
+      Start 22: vision_pipeline_tests
+22/32 Test #22: vision_pipeline_tests ............   Passed    0.03 sec
+      Start 23: shared_frame_memory_tests
+23/32 Test #23: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 24: worker_process_tests
+24/32 Test #24: worker_process_tests .............   Passed    1.38 sec
+      Start 25: ui_projection_tests
+25/32 Test #25: ui_projection_tests ..............   Passed    0.03 sec
+      Start 26: ledger_tests
+26/32 Test #26: ledger_tests .....................   Passed    0.02 sec
+      Start 27: sqlite_ledger_tests
+27/32 Test #27: sqlite_ledger_tests ..............   Passed    0.82 sec
+      Start 28: workspace_tests
+28/32 Test #28: workspace_tests ..................   Passed    0.95 sec
+      Start 29: ui_module_tests
+29/32 Test #29: ui_module_tests ..................   Passed    0.06 sec
+      Start 30: storage_self_test
+30/32 Test #30: storage_self_test ................   Passed    0.10 sec
+      Start 31: catalog_offscreen
+31/32 Test #31: catalog_offscreen ................   Passed    0.88 sec
+      Start 32: ui_offscreen
+32/32 Test #32: ui_offscreen .....................   Passed    2.63 sec
+
+100% tests passed out of 32
+
+Total Test time (real) =  10.21 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\fixture_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\modified-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_REAL_CATALOG
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --catalog-self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\real_snapshots
+INPUT: Same startup as normal application; embedded 149 skins; isolated extensions/config; actual dialog append, persistence, duplicate/collision rejection; no game input.
+STDOUT:
+CATALOG_SAME_NORMAL_STARTUP_PATH=PASS
+CATALOG_REAL_149_11_SEASONS=PASS
+CATALOG_NO_DEFAULT_TASKS=PASS
+CATALOG_NO_INVENTED_QUOTES_WEAR_OR_FOLLOWS=PASS
+CATALOG_NORMAL_MODE_HAS_NO_SIMULATOR=PASS
+CATALOG_REAL_CONFIG_NOT_DEMO=PASS
+CATALOG_ALL_PRODUCTS_IN_MAIN_UI=PASS
+CATALOG_UNKNOWN_CELLS_AND_EMPTY_SPARKLINES=PASS
+CATALOG_THUMBNAILS_EMPTY=PASS
+CATALOG_NEW_TASK_REQUIRES_USER_PRICE=PASS
+CATALOG_CONDITION_SEPARATE_FROM_QUALITY=PASS
+CATALOG_MENU_COLOR_FILTER=PASS
+CATALOG_SEASON_SEARCH=PASS
+CATALOG_VARIANT_SEARCH=PASS
+CATALOG_NO_NORMAL_REPLAY_CONTROLS=PASS
+CATALOG_NO_FABRICATED_HISTORY=PASS
+CATALOG_SCREENSHOT_overview=PASS
+CATALOG_SCREENSHOT_favorites=PASS
+CATALOG_SCREENSHOT_tasks=PASS
+CATALOG_SCREENSHOT_prices=PASS
+CATALOG_SCREENSHOT_stats=PASS
+CATALOG_SCREENSHOT_logs=PASS
+CATALOG_SCREENSHOT_settings=PASS
+CATALOG_SCREENSHOT_run=PASS
+CATALOG_NO_VISIBLE_DEMO_UI=PASS
+CATALOG_VISIBLE_CATALOG_TEXT_UTF8=PASS
+CATALOG_COMPACT_SCREENSHOT=PASS
+CATALOG_REAL_MAINTENANCE_ENTRY=PASS
+CATALOG_CATALOG_BROWSE_SCREENSHOT=PASS
+CATALOG_CATALOG_ADD_SCREENSHOT=PASS
+CATALOG_APPEND_UPDATES_MAIN_STATE=PASS
+CATALOG_ORIGINAL_TASK_UNCHANGED=PASS
+CATALOG_ORIGINAL_FOLLOW_PRESERVED=PASS
+CATALOG_DUPLICATE_IMPORT_NO_CHANGE=PASS
+CATALOG_CONFIG_COLLISION_REJECTED_BEFORE_COMMIT=PASS
+CATALOG_APPENDED_ITEM_SEARCHABLE=PASS
+CATALOG_APPENDED_ITEM_USABLE_IN_TASK=PASS
+CATALOG_SAVE_USER_CONFIGURATION=PASS
+CATALOG_RESTART_RETAINS_APPEND_AND_TASKS=PASS
+CATALOG_TEST_ADDITIONS_NOT_IN_BUILTIN=PASS
+CATALOG_BROKEN_EXTENSION_PRESERVED=PASS
+CATALOG_DEMO_MIGRATION_TO_REAL=PASS
+CATALOG_MIGRATION_BACKUP_EXACT=PASS
+CATALOG_SELF_TEST=PASS; assertions=43; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --storage-self-test
+INPUT: Packaged SQLite driver, temporary database, transactions and recovery.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json C:\Users\Administrator\Desktop\price\docs\business_rebuild\skin_reference\skin_reference.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS builtin_file_read
+PASS builtin_parses
+PASS 149_real_skins_11_seasons
+PASS every_thumbnail_reserved_empty
+PASS formal_quality_not_invented_from_menu_color
+PASS original_numeric_ids_preserved
+PASS known_purple_aug_identity
+PASS same_weapon_variants_remain_distinct
+PASS missing_lookup_is_null
+PASS season_numeric_source_order
+PASS canonical_roundtrip
+PASS all_149_items_match_user_verified_reference
+PASS malformed_parse_preserves_output
+PASS bounded_file_size
+PASS schema_checked
+PASS market_data_not_catalog_fields
+PASS wrong_array_type_rejected
+PASS duplicate_product_in_import_rejected
+PASS duplicate_season_in_import_rejected
+PASS conflicting_skin_season_rejected
+PASS thumbnail_paths_rejected_in_current_version
+PASS condition_not_accepted_as_menu_color
+PASS unsafe_nonstable_id_rejected
+PASS control_characters_rejected
+PASS field_length_bounded
+PASS invalid_utf8_rejected
+PASS unloaded_store_cannot_save
+PASS isolated_temp_directory
+PASS missing_user_extension_loads_builtin
+PASS read_only_load_creates_no_extension
+PASS append_new_season_commits
+PASS appended_skin_available_and_persisted
+PASS existing_season_append_rejected_without_rewrite
+PASS duplicate_id_never_overwrites
+PASS self_full_import_rejected_atomically
+PASS append_skin_existing_season
+PASS user_skins_survive_restart
+PASS extension_export_excludes_builtin
+PASS conflicting_existing_season_import_rejected
+PASS corrupt_extension_neither_erased_nor_replaces_memory
+PASS mixed_import_failure_has_no_partial_addition
+PASS test_holds_writer_lock
+PASS writer_lock_preserves_disk_and_memory
+PASS external_changes_are_not_lost
+PASS write_failure_fixture
+PASS missing_extension_below_blocked_parent_loads
+PASS failed_save_does_not_modify_memory_or_original_file
+PASS two_readers_load_missing_extension
+PASS first_writer_commits
+PASS second_stale_writer_cannot_overwrite_first
+PASS extension_import_on_other_store
+PASS commit_guard_store_loads
+PASS projection_guard_rejects_before_first_disk_or_memory_mutation
+PASS standalone_store_with_no_guard_can_commit
+PASS projection_guard_failure_preserves_existing_bytes_and_memory
+PASS local_ids_stable_namespace_and_unique
+PASS generated_id_passes_schema
+SKIN_CATALOG_TESTS=PASS; assertions=57; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+CATALOG_CONFIGURATION_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\catalog_configuration_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+PASS real_catalog_loads
+PASS empty_state_projects_real_catalog
+PASS real_149_without_synthetic_tasks
+PASS no_market_condition_or_quality_fabrication
+PASS no_fake_follows
+PASS stable_source_product_ids
+PASS metadata_projected_without_color_quality_guess
+PASS distinct_variants_preserved
+PASS repeat_projection_preserves_follows_tasks_parameters_and_observations
+PASS task_runtime_status_and_run_settings_untouched
+PASS legacy_numeric_id_remaps_only_task_reference
+PASS numeric_id_follow_preserved
+PASS default_fixture_migration_succeeds
+PASS strict_12_skins_5_tasks_removed
+PASS migration_preserves_user_run_parameters
+PASS migrated_state_cannot_restart_synthetic_runtime
+PASS migration_is_idempotent
+PASS historical_all_disabled_defaults_and_follow_toggles_removed
+PASS missing_legacy_condition_records_absence_not_user_choice
+PASS actual_legacy_missing_condition_disabled_defaults_migrate_to_149_zero_tasks
+PASS missing_condition_does_not_relax_other_default_task_fingerprints
+PASS explicit_no_condition_user_rules_all_remain
+PASS new_tasks_have_explicit_condition
+PASS user_modified_default_task_never_deleted
+PASS referenced_default_skin_preserved_but_fake_market_fields_cleared
+PASS only_proven_unreferenced_defaults_removed
+PASS retained_legacy_migration_idempotent
+PASS condition_only_user_edit_is_not_mistaken_for_default
+PASS unknown_user_skin_and_task_preserved
+PASS unknown_user_values_unchanged_even_with_demo_prefix
+PASS renamed_synthetic_observations_not_relabelled_as_real
+PASS ambiguous_old_identity_rejected_without_loss
+PASS orphan_task_not_silently_discarded
+PASS invalid_catalog_leaves_configuration_unchanged
+PASS catalog_state_valid_in_existing_codec
+PASS catalog_metadata_and_unknown_flags_persist
+CATALOG_CONFIGURATION_TESTS=PASS; assertions=36; failures=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+SKIN_CATALOG_DIALOG_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\skin_catalog_dialog_tests.exe C:\Users\Administrator\Desktop\price\src\assets\catalog\skins.json
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+skin_catalog_dialog_tests: 43 checks, 0 failures
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+UI_MODULE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\ui_module_tests.exe
+INPUT: Temporary state; packaged dependencies; explicit offline test data; no game.
+STDOUT:
+UI_MODULE_TESTS=PASS; assertions=102; failures=0; mainwindow=false; sqlite=false; offscreen=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_PRODUCTION_COPY
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_copy_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\production_config_copy\config.json
+INPUT: Read-only source copy; original SHA256=0c7560566e424d9688c140699252787734a16d1b2ebcd3c6c9171f7c3bfc6937; same normal startup migration + geometry checks.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE_REMOVED=PASS
+UI_NO_DEMO_THUMBNAILS=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+ROLLBACK
+COMMAND: "C:\Program Files\Git\bin\bash.exe" -c "chmod +x \"artifacts/real_skin_catalog/ROLLBACK.sh\" && \"./artifacts/real_skin_catalog/ROLLBACK.sh\" \"$1\"" rollback C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\rollback_test
+INPUT: Separate modified release copy; restore baseline managed files; keep extension/config sentinels.
+STDOUT:
+ROLLBACK_RESTORED=PASS; new_databases_preserved=true; added_helper_removed=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESTORED
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\rollback_test\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\restored_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\restored-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESTORED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\real_skin_catalog\rollback_test\RelinkStudio.exe --storage-self-test
+INPUT: Original package on isolated copy; temporary data.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+INITIAL_PACKAGE_VERIFIER_ASSERTION
+COMMAND: python tests/release/verify_real_catalog_package.py verify
+INPUT: Initial real production config copy migration exposed missing legacy condition metadata; repaired and rerun. Combined stdout/stderr.
+STDOUT:
+MODIFIED_EXIT=0
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+MODIFIED_REAL_CATALOG_EXIT=0
+CATALOG_SELF_TEST=PASS; assertions=42; offscreen=true; game_connected=false; system_input_sent=false
+MODIFIED_STORAGE_EXIT=0
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+SKIN_CATALOG_TESTS_EXIT=0
+CATALOG_CONFIGURATION_TESTS_EXIT=0
+SKIN_CATALOG_DIALOG_TESTS_EXIT=0
+UI_MODULE_TESTS_EXIT=0
+MODIFIED_PRODUCTION_COPY_EXIT=0
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+python : Traceback (most recent call last):
+所在位置 行:2 字符: 1
++ python tests/release/verify_real_catalog_package.py verify *> artifac ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\Administrator\Desktop\price\tests\release\verify_real_catalog_package.py", line 118, in <module>
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('phase',choices=['build','verify','finalize
+']);args=parser.parse_args();globals()[args.phase]()
+                                                                                                                       
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\price\tests\release\verify_real_catalog_package.py", line 53, in verify
+    assert all(not skin['id'].startswith('demo-') for skin in value['skins'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+STDERR:
+(empty)
+EXIT_STATUS: 1

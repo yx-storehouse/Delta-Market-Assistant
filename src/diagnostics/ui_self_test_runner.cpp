@@ -355,14 +355,14 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
         check(window.findChild<QFrame*>("titleBar") && window.findChild<QFrame*>("navRail")
               && window.findChild<QFrame*>("contentLayer"), "STORE_SHELL");
         const QImage artwork(":/assets/demo_skin_atlas.png");
-        check(!artwork.isNull() && artwork.width() >= 1200 && artwork.height() >= 900, "ART_RESOURCE");
-        check(artwork.hasAlphaChannel() && qAlpha(artwork.pixel(0, 0)) == 0, "ART_TRANSPARENCY");
+        check(artwork.isNull(), "ART_RESOURCE_REMOVED");
+        check(!QFile::exists(":/assets/demo_skin_atlas.png"), "NO_DEMO_THUMBNAILS");
         check(FluentTheme::hasIconFont(), "ICON_FONT_AVAILABLE");
         flush();
         check(app.palette().color(QPalette::Window) == FluentTheme::window
               && app.palette().color(QPalette::Base) == FluentTheme::surface, "LIGHT_PALETTE");
         auto* preview = window.findChild<ArtworkView*>("skinPreview");
-        check(preview && preview->hasArtwork() && QRectF(preview->rect()).contains(preview->artworkRect()), "PREVIEW_FITS");
+        check(preview && !preview->hasArtwork(), "PREVIEW_FITS");
         auto* workSurface = window.findChild<QWidget*>("watchlistWorkspace");
         auto* detailSurface = window.findChild<QFrame*>("terminalInspector");
         check(workSurface && detailSurface && detailSurface->geometry().left() - workSurface->geometry().right() >= 12,
@@ -490,6 +490,9 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
         } else check(false, "DROPDOWN_RENDER");
         auto* createButton = window.findChild<QPushButton*>("favoriteCreateTaskButton");
         if (createButton) {
+            const bool originallyEnabled = createButton->isEnabled();
+            createButton->setEnabled(true);
+            flush();
             const QPixmap enabledPixels = createButton->grab();
             createButton->setEnabled(false);
             flush();
@@ -500,7 +503,7 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
             const QColor after = disabledPixels.toImage().pixelColor(point);
             check(qAbs(before.lightness() - after.lightness()) > 50, "DISABLED_CONTROL_DISTINCT");
             disabledPixels.save(output + "/create_disabled.png");
-            createButton->setEnabled(true);
+            createButton->setEnabled(originallyEnabled);
             flush();
         } else check(false, "DISABLED_CONTROL_DISTINCT");
         for (int i = 0; i < nav.size(); ++i) {

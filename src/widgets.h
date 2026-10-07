@@ -31,8 +31,8 @@ private:
     QLabel *detailLabel_ = nullptr;
 };
 
-// Small dependency-free time-series view. This frontend explicitly labels
-// its demo axis and values; it does not fetch prices or interact with a game.
+// Small dependency-free time-series view. Empty input draws no invented prices
+// or numeric axes; callers supply only real observations or explicit test data.
 class PriceChart : public QWidget
 {
     Q_OBJECT

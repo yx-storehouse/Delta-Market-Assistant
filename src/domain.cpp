@@ -62,7 +62,12 @@ QJsonObject skinJson(const Skin& skin) {
             {QStringLiteral("series"), skin.series}, {QStringLiteral("condition"), skin.condition},
             {QStringLiteral("rarity"), skin.rarity}, {QStringLiteral("wear"), skin.wear},
             {QStringLiteral("price"), skin.price}, {QStringLiteral("change"), skin.change},
-            {QStringLiteral("followed"), skin.followed}};
+            {QStringLiteral("followed"), skin.followed},
+            {QStringLiteral("catalogProductId"), skin.catalogProductId},
+            {QStringLiteral("menuColor"), skin.menuColor}, {QStringLiteral("variant"), skin.variant},
+            {QStringLiteral("skinSeries"), skin.skinSeries},
+            {QStringLiteral("priceKnown"), skin.priceKnown}, {QStringLiteral("wearKnown"), skin.wearKnown},
+            {QStringLiteral("changeKnown"), skin.changeKnown}, {QStringLiteral("dataSource"), skin.dataSource}};
 }
 
 QJsonObject taskJson(const Task& task) {
@@ -181,9 +186,8 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
     if (!root.value(QStringLiteral("schema_version")).isDouble()
         || root.value(QStringLiteral("schema_version")).toDouble() != 1.0)
         return fail(error, QStringLiteral("不支持的配置版本：schema_version 必须为1"));
-    if (!root.value(QStringLiteral("demo")).isBool()
-        || !root.value(QStringLiteral("demo")).toBool())
-        return fail(error, QStringLiteral("此原型仅接受 demo=true 的模拟配置"));
+    if (!root.value(QStringLiteral("demo")).isBool())
+        return fail(error, QStringLiteral("demo 必须为布尔值"));
     if (!root.value(QStringLiteral("skins")).isArray()
         || !root.value(QStringLiteral("tasks")).isArray())
         return fail(error, QStringLiteral("skins 和 tasks 必须为数组"));
@@ -209,6 +213,37 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
         if (!object.value(QStringLiteral("followed")).isBool())
             return fail(error, context + QStringLiteral("：followed 必须为布尔值"));
         skin.followed = object.value(QStringLiteral("followed")).toBool();
+        auto optionalText = [&](const char* key, QString& field) {
+            const auto value = object.value(QLatin1String(key));
+            if (value.isUndefined()) return true;
+            if (!value.isString() || value.toString().size() > 4096)
+                return fail(error, context + QStringLiteral("：%1 必须是最多4096字符的文本")
+                                               .arg(QLatin1String(key)));
+            field = value.toString();
+            return true;
+        };
+        // Old files have no availability flags: retain their values rather than
+        // silently deleting user observations. Catalogue rows explicitly save false.
+        auto optionalKnown = [&](const char* key, bool& field) {
+            const auto value = object.value(QLatin1String(key));
+            if (value.isUndefined()) { field = true; return true; }
+            if (!value.isBool())
+                return fail(error, context + QStringLiteral("：%1 必须为布尔值")
+                                               .arg(QLatin1String(key)));
+            field = value.toBool();
+            return true;
+        };
+        skin.dataSource = root.value(QStringLiteral("source")).toString()
+                == QStringLiteral("synthetic_frontend_fixture")
+            ? QStringLiteral("test_fixture") : QStringLiteral("legacy_configuration");
+        if (!optionalText("catalogProductId", skin.catalogProductId)
+            || !optionalText("menuColor", skin.menuColor)
+            || !optionalText("variant", skin.variant)
+            || !optionalText("skinSeries", skin.skinSeries)
+            || !optionalText("dataSource", skin.dataSource)
+            || !optionalKnown("priceKnown", skin.priceKnown)
+            || !optionalKnown("wearKnown", skin.wearKnown)
+            || !optionalKnown("changeKnown", skin.changeKnown)) return false;
         if (skinIds.contains(skin.id)) return fail(error, context + QStringLiteral("：皮肤ID重复"));
         skinIds.insert(skin.id);
         parsedSkins.append(skin);
@@ -245,6 +280,7 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
             return fail(error, context + QStringLiteral("：enabled 必须为布尔值"));
         task.enabled = object.value(QStringLiteral("enabled")).toBool();
         const auto condition = object.value(QStringLiteral("condition"));
+        task.conditionExplicit = !condition.isUndefined();
         if (!condition.isUndefined()) {
             if (!condition.isString() || condition.toString().trimmed().isEmpty()
                 || condition.toString().size() > 20)
@@ -264,8 +300,12 @@ QJsonObject configJson(const QVector<Skin>& skins, const QVector<Task>& tasks, c
     QJsonArray skinArray, taskArray;
     for (const auto& skin : skins) skinArray.append(skinJson(skin));
     for (const auto& task : tasks) taskArray.append(taskJson(task));
-    return {{QStringLiteral("schema_version"), 1}, {QStringLiteral("demo"), true},
-            {QStringLiteral("source"), QStringLiteral("synthetic_frontend_fixture")},
+    const bool fixture = !skins.isEmpty() && std::all_of(skins.cbegin(), skins.cend(), [](const Skin& skin) {
+        return skin.dataSource == QStringLiteral("test_fixture");
+    });
+    return {{QStringLiteral("schema_version"), 1}, {QStringLiteral("demo"), fixture},
+            {QStringLiteral("source"), fixture ? QStringLiteral("synthetic_frontend_fixture")
+                                               : QStringLiteral("catalog_configuration")},
             {QStringLiteral("skins"), skinArray}, {QStringLiteral("tasks"), taskArray},
             {QStringLiteral("run_settings"), runJson(run)}};
 }
@@ -281,12 +321,16 @@ QString csvCell(QString text) {
 } // namespace
 
 AppState::AppState(QObject* parent) : QObject(parent), m_timer(new QTimer(this)) {
+    setProperty("testFixture", false);
     m_timer->setInterval(1600);
     connect(m_timer, &QTimer::timeout, this, &AppState::simulateTick);
-    loadDemo();
 }
 
-void AppState::loadDemo() {
+void AppState::loadDemo() { loadTestFixture(); }
+
+void AppState::loadTestFixture() {
+    m_testFixture = true;
+    setProperty("testFixture", true);
     m_timer->stop();
     simulationRunning = false;
     simulatedScans = simulatedMatches = simulatedSuccess = 0;
@@ -306,6 +350,10 @@ void AppState::loadDemo() {
         {QStringLiteral("demo-11"), QStringLiteral("SR-3M · 幻影"), QStringLiteral("S7 典藏"), QStringLiteral("成色A"), QStringLiteral("紫色"), 9.16, 198, 2.1, false},
         {QStringLiteral("demo-12"), QStringLiteral("M249 · 机械黎明"), QStringLiteral("S6 典藏"), QStringLiteral("成色B"), QStringLiteral("橙色"), 12.28, 384, -3.6, false}
     };
+    for (auto& skin : skins) {
+        skin.priceKnown = skin.wearKnown = skin.changeKnown = true;
+        skin.dataSource = QStringLiteral("test_fixture");
+    }
     tasks = {
         {QStringLiteral("task-01"), QStringLiteral("天命 · 低磨收藏"), QStringLiteral("demo-01"), 100, 650, 5, 3, true, QStringLiteral("待启动"), QStringLiteral("成色S")},
         {QStringLiteral("task-02"), QStringLiteral("星海回响 · 价格观察"), QStringLiteral("demo-02"), 100, 450, 5, 2, true, QStringLiteral("待启动"), QStringLiteral("成色S")},
@@ -358,10 +406,12 @@ bool AppState::loadFrom(const QString& path, QString* error) {
     skins = std::move(parsedSkins);
     tasks = std::move(parsedTasks);
     run = parsedRun;
+    m_testFixture = false;
+    setProperty("testFixture", false);
     simulatedScans = simulatedMatches = simulatedSuccess = 0;
     m_simulatedByTask.clear();
     configPath = path;
-    addLog(QStringLiteral("INFO"), QStringLiteral("已导入模拟配置；演示运行状态与计数已重置。"));
+    addLog(QStringLiteral("INFO"), QStringLiteral("已导入配置；运行状态与计数已重置。"));
     emit changed();
     return true;
 }
@@ -374,12 +424,14 @@ bool AppState::exportPricesCsv(const QString& path, QString* error) const {
         if (!std::isfinite(skin.price) || skin.price < 0 || !std::isfinite(skin.wear)
             || skin.wear < 0 || !std::isfinite(skin.change))
             return fail(error, QStringLiteral("价格数据中存在无效数值"));
-        csv += QStringLiteral("DEMO_SYNTHETIC,") + csvCell(skin.id) + QLatin1Char(',')
+        csv += csvCell(skin.dataSource == QStringLiteral("test_fixture")
+                           ? QStringLiteral("DEMO_SYNTHETIC") : skin.dataSource)
+            + QLatin1Char(',') + csvCell(skin.id) + QLatin1Char(',')
             + csvCell(skin.name) + QLatin1Char(',') + csvCell(skin.series) + QLatin1Char(',')
             + csvCell(skin.condition) + QLatin1Char(',') + csvCell(skin.rarity) + QLatin1Char(',')
-            + QString::number(skin.wear, 'f', 6) + QLatin1Char(',')
-            + QString::number(skin.price, 'f', 2) + QLatin1Char(',')
-            + QString::number(skin.change, 'f', 2) + QLatin1Char(',')
+            + (skin.wearKnown ? QString::number(skin.wear, 'f', 6) : QString()) + QLatin1Char(',')
+            + (skin.priceKnown ? QString::number(skin.price, 'f', 2) : QString()) + QLatin1Char(',')
+            + (skin.changeKnown ? QString::number(skin.change, 'f', 2) : QString()) + QLatin1Char(',')
             + (skin.followed ? QStringLiteral("true") : QStringLiteral("false")) + QLatin1Char(',')
             + csvCell(now) + QStringLiteral("\r\n");
     }
@@ -399,7 +451,8 @@ void AppState::addLog(const QString& level, const QString& message) {
 }
 
 void AppState::startSimulation() {
-    if (simulationRunning) return;
+    // A catalogue/configuration is not an observed listing or a replay fixture.
+    if (!m_testFixture || !property("testFixture").toBool() || simulationRunning) return;
     bool anyEnabled = false;
     for (const auto& task : tasks) anyEnabled |= task.enabled;
     if (!anyEnabled) {
@@ -436,7 +489,7 @@ void AppState::resetTaskSimulation(const QString& id) {
 }
 
 void AppState::simulateTick() {
-    if (!simulationRunning) return;
+    if (!m_testFixture || !property("testFixture").toBool() || !simulationRunning) return;
     bool hasPending = false;
     for (auto& task : tasks) {
         if (!task.enabled) { task.status = QStringLiteral("未启用"); continue; }
@@ -456,7 +509,8 @@ void AppState::simulateTick() {
         }
         const bool conditionMatches = task.condition == QStringLiteral("不限")
             || task.condition == skin->condition;
-        if (!std::isfinite(skin->price) || !std::isfinite(skin->wear)
+        if (!skin->priceKnown || !skin->wearKnown
+            || !std::isfinite(skin->price) || !std::isfinite(skin->wear)
             || skin->price < task.minPrice || skin->price > task.maxPrice
             || skin->wear < 0 || skin->wear > task.maxWear || !conditionMatches) {
             task.status = QStringLiteral("演示等待条件");

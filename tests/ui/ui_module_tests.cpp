@@ -1,5 +1,7 @@
 // Independent page tests: no MainWindow, WorkspaceController, SQLite or live I/O.
 #include "domain.h"
+#include "widgets.h"
+#include "ui/presentation/ui_helpers.h"
 #include "application/startup_config.h"
 #include "application/workspace/workspace_projection.h"
 #include "ui/pages/task_page.h"
@@ -13,6 +15,7 @@
 #include <QFile>
 #include <QHeaderView>
 #include <QJsonDocument>
+#include <QImage>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPointer>
@@ -47,6 +50,7 @@ int main(int argc, char** argv) {
     app.setApplicationName("RelinkStudioModuleTest");
     using namespace relink::ui;
     AppState state;
+    state.loadTestFixture();
     const QByteArray initial = config(state);
     int modelSignals = 0;
     QObject::connect(&state, &AppState::changed, &app, [&] { ++modelSignals; });
@@ -196,6 +200,80 @@ int main(int argc, char** argv) {
     QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
     check(transient.isNull() && transientControl.isNull(), "destroyed page releases controls and refresh context");
     check(!state.simulationRunning && state.simulatedScans == 0, "module tests did not start simulation");
+
+    check(skinCategory(QStringLiteral("S6|P90 冲锋枪 - 天命")) == "smg"
+          && skinCategory(QStringLiteral("S11|P90冲锋枪 - 黑银先锋")) == "smg"
+          && skinCategory(QStringLiteral("S5 | 勇士冲锋枪 - 私人定制")) == "smg",
+          "real catalogue smg categories ignore season prefix and optional spacing");
+    check(skinCategory(QStringLiteral("S5|AWM 狙击步枪 - 私人定制")) == "sniper"
+          && skinCategory(QStringLiteral("S8|SVD狙击步枪 - 檀劫铳影")) == "sniper",
+          "real catalogue sniper categories");
+    check(skinCategory(QStringLiteral("S2|M249 轻机枪 - 青纹")) == "lmg"
+          && skinCategory(QStringLiteral("S3|PKM通用机枪 - 黑潮")) == "lmg",
+          "real catalogue machine gun categories");
+    check(skinCategory(QStringLiteral("S6|AUG突击步枪 - 天命")) == "rifle"
+          && skinCategory(QStringLiteral("S6|SR-25 射手步枪 - 天命")) == "rifle"
+          && skinCategory(QStringLiteral("S6|M7 战斗步枪 - 棱镜攻势")) == "rifle"
+          && skinCategory(QStringLiteral("S6|SR-3M 紧凑突击步枪 - 花岗岩")) == "rifle",
+          "real catalogue assault battle and marksman rifles classified correctly");
+    check(skinCategory(QStringLiteral("S11|S12K霰弹枪 - 征服者")) == "shotgun"
+          && skinCategory(QStringLiteral("S11|G18 - 征服者")) == "pistol",
+          "shotguns and pistols not mislabeled rifles");
+    check(skinCategory(QStringLiteral("AWM · 极光")) == "sniper"
+          && skinCategory(QStringLiteral("SR-3M · 幻影")) == "smg"
+          && skinCategory(QStringLiteral("M249 · 机械黎明")) == "lmg"
+          && skinCategory(QStringLiteral("AUG · 天命")) == "rifle",
+          "explicit historical fixture weapon categories remain compatible");
+
+    Skin alreadyLabeled;
+    alreadyLabeled.series = QStringLiteral("S6 · 棱镜攻势 S2");
+    alreadyLabeled.name = QStringLiteral("S6|AUG突击步枪 - 天命");
+    check(skinChoice(alreadyLabeled) == alreadyLabeled.name,
+          "task selector does not repeat an existing season prefix");
+
+    AppState catalogConditions;
+    Skin unobservedSkin;
+    unobservedSkin.condition = QStringLiteral("未采集");
+    catalogConditions.skins.append(unobservedSkin);
+    Task customConditionTask;
+    customConditionTask.condition = QStringLiteral("自定义成色");
+    catalogConditions.tasks.append(customConditionTask);
+    const auto availableConditions = conditionOptions(&catalogConditions);
+    check(availableConditions.mid(0, 5) == QStringList{QStringLiteral("不限"), QStringLiteral("成色S"),
+              QStringLiteral("成色A"), QStringLiteral("成色B"), QStringLiteral("成色C")}
+          && availableConditions.contains(QStringLiteral("自定义成色"))
+          && !availableConditions.contains(QStringLiteral("未采集")),
+          "condition options include all standard grades and retain custom task value");
+    check(skinArtIndex(unobservedSkin) == -1 && skinArtwork(0).isNull()
+          && skinArtwork(5).isNull() && skinArtwork(-1).isNull(),
+          "catalogue thumbnails never fall back to generated atlas");
+
+    // Empty image and price regions preserve layout without invented content.
+    ArtworkView emptyArtwork;
+    emptyArtwork.resize(240, 140);
+    const QImage artworkPixels = emptyArtwork.grab().toImage();
+    bool blankInterior = !artworkPixels.isNull();
+    for (int y = 20; y < artworkPixels.height() - 20 && blankInterior; ++y)
+        for (int x = 20; x < artworkPixels.width() - 20; ++x)
+            if (artworkPixels.pixelColor(x, y) != artworkPixels.pixelColor(20, y)) {
+                blankInterior = false; break;
+            }
+    check(!emptyArtwork.hasArtwork() && emptyArtwork.artworkRect().isEmpty() && blankInterior,
+          "empty artwork leaves neutral blank surface without mock image or text");
+    PriceChart emptyChart;
+    emptyChart.resize(520, 220);
+    emptyChart.setSeries({});
+    const QImage chartPixels = emptyChart.grab().toImage();
+    bool hasFalseAxis = false;
+    for (int y = 50; y < chartPixels.height() - 10 && !hasFalseAxis; ++y)
+        for (int x = 10; x < 100; ++x) {
+            const auto color = chartPixels.pixelColor(x, y);
+            if (color.alpha() > 0 && color.lightness() < 180) { hasFalseAxis = true; break; }
+        }
+    check(!hasFalseAxis, "empty price chart has no invented numeric axis");
+    check(!emptyChart.accessibleName().contains(QStringLiteral("模拟"))
+          && !emptyChart.toolTip().contains(QStringLiteral("演示")),
+          "normal price chart is not a simulated data view");
 
     QTemporaryDir directory;
     check(directory.isValid(), "isolated startup fixture directory");

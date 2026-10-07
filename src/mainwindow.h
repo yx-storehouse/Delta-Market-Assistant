@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QVector>
 #include <QPointer>
+namespace relink::catalog { class CatalogStore; }
 namespace relink::runtime { class ReplayController; }
 namespace relink::workspace { class WorkspaceController; }
 namespace relink::ui { class TaskPage; class RunSettingsPage; class WorkspaceRecordsPanel; }
@@ -34,7 +35,8 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
     explicit MainWindow(AppState* state, QWidget* parent = nullptr,
-                        relink::workspace::WorkspaceController* workspace = nullptr);
+                        relink::workspace::WorkspaceController* workspace = nullptr,
+                        relink::catalog::CatalogStore* catalog = nullptr);
     void setPage(int index);
     QString currentPageName() const;
     void refreshAll();
@@ -44,6 +46,7 @@ public slots:
     // Deterministic in-memory entry used by the offscreen self-test.  It opens
     // the same read-only dialog as the file import path without touching disk.
     void previewImportDemo();
+    void manageSkinCatalog();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -89,6 +92,7 @@ private:
     relink::ui::RunSettingsPage* m_runSettingsPage = nullptr;
     relink::ui::WorkspaceRecordsPanel* m_workspaceRecordsPanel = nullptr;
     AppState* m_state;
+    relink::catalog::CatalogStore* m_catalog = nullptr;
     relink::workspace::WorkspaceController* m_workspace = nullptr;
     QByteArray m_savedConfiguration;
     QPointer<QDialog> m_reviewDialog;

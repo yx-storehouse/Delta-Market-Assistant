@@ -5,7 +5,7 @@
     <file alias="fixtures/lobby_live_20261007.json">docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json</file>
     <file alias="fixtures/market_live_20261007.json">docs/business_rebuild/implementation/runtime/fixtures/market_live_20261007.json</file>
     <file alias="theme.qss">src/theme.qss</file>
-    <file alias="assets/demo_skin_atlas.png">src/assets/demo_skin_atlas.png</file>
+    <file alias="catalog/skins.json">src/assets/catalog/skins.json</file>
     <file alias="icons/check.xpm">src/icons/check.xpm</file>
     <file alias="icons/dash.xpm">src/icons/dash.xpm</file>
     <file alias="icons/chevron-down.xpm">src/icons/chevron-down.xpm</file>

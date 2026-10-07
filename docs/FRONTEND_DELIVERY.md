@@ -1,6 +1,6 @@
 # 前端交付记录
 
-当前交付为 2026-10-05 的 0.5 石墨深色 UI，入口为 `dist/RelinkStudio/RelinkStudio.exe`，最新说明见 `WIN11_DARK_UI.md`。下文保留 0.1 初版的历史记录，不是当前验收计数。
+当前交付为 2026-10-07 的 Windows 11 白灰 UI 与 S1–S11 真实皮肤目录，入口为 `dist/RelinkStudio/RelinkStudio.exe`。新赛季追加和目录说明见 `REAL_SKIN_CATALOG.md`；本轮证据见 `../artifacts/real_skin_catalog/VERIFICATION.txt`。下文为 0.1 初版历史记录，不描述当前默认数据、主题或验收计数。
 
 日期：2026-10-04。版本：0.1.0 frontend preview。
 

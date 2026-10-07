@@ -81,3 +81,14 @@ tiny.cpp
 tiny.log
 deliverables/RelinkStudio_0.3.0_Windows_x64/
 deliverables/RelinkStudio_0.4.0_Windows_x64/
+
+# Real catalog delivery: preserve logs/manifests, omit binary/copies and temporary UI configs
+artifacts/catalog_module_check/
+artifacts/real_skin_catalog/*/
+artifacts/real_skin_catalog/*.exe
+artifacts/real_skin_catalog/*-config.json
+artifacts/real_skin_catalog/integrate_*.py
+artifacts/real_skin_catalog/add_catalog_self_test.py
+
+artifacts/catalog_ui_qa/
+artifacts/real_skin_catalog/*.py

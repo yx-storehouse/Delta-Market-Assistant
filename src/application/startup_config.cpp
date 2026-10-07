@@ -16,7 +16,7 @@ QString prepareStartupConfig(AppState& state, const QString& requested, bool loa
             destination = stem + ".json";
             for (int suffix = 1; QFileInfo::exists(destination); ++suffix)
                 destination = stem + "-" + QString::number(suffix) + ".json";
-            state.addLog("WARN", QStringLiteral("原配置未载入且保持原样：%1；演示配置另存到 %2").arg(error, destination));
+            state.addLog("WARN", QStringLiteral("原配置未载入且保持原样：%1；恢复配置另存到 %2").arg(error, destination));
         }
     }
     state.configPath = destination;

@@ -12,7 +12,7 @@
 // Preview extensions (all keys are x- prefixed because core.schema.json limits
 // Extensions property names; values are metadata and never participate in
 // matching or execution):
-//   x-target_mode           "demo" — old synthetic data never becomes Observe/live.
+//   x-target_mode           "demo" for explicit fixtures, "configuration" otherwise.
 //   x-catalog               complete SkinCatalogEntry[] built from /skins.
 //   x-ui_run_settings       all 21 RunSettings fields after per-field default fill.
 //   x-ui_run_settings_sources  field -> "default" | "v1" | "invalid".
@@ -22,9 +22,9 @@
 //                           stable ID is minted only when the old ID is not a
 //                           valid new-schema Id, the mapping keeps the original.
 //   x-legacy_unknown_fields unrecognized root keys, redacted, keyed by pointer.
-//   x-observation_source    "synthetic_demo".
-//   x-live_market_data      false — legacy price/wear/change is demo metadata,
-//                           not an observation of a live market.
+//   x-observation_source    "synthetic_demo" or "configuration_metadata".
+//   x-live_market_data      false — saved price/wear/change remains metadata,
+//                           not a fresh observation of a live market.
 //
 // Every candidate also carries candidate.extensions.x-product_name (catalog
 // display name) and candidate.legacy_raw.unknown_json with the original number

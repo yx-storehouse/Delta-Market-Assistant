@@ -116,8 +116,11 @@ ProfileStoreResult ProfileStore::materializePreview(const QJsonObject& preview,
             {QStringLiteral("keep_quantity_unbound"), choices.keepQuantityUnbound},
             {QStringLiteral("unit_quantum"), choices.quantum}}},
         {QStringLiteral("extensions"), QJsonObject{
-            {QStringLiteral("x-target_mode"), QStringLiteral("demo")},
-            {QStringLiteral("x-observation_source"), QStringLiteral("synthetic_demo")},
+            {QStringLiteral("x-target_mode"), extensions.value(QStringLiteral("x-target_mode")).toString(QStringLiteral("configuration"))},
+            {QStringLiteral("x-observation_source"), extensions.value(QStringLiteral("x-observation_source")).toString(QStringLiteral("configuration_metadata"))},
+            {QStringLiteral("x-catalog"), extensions.value(QStringLiteral("x-catalog")).toArray()},
+            {QStringLiteral("x-id_map"), extensions.value(QStringLiteral("x-id_map")).toObject()},
+            {QStringLiteral("x-legacy_unknown_fields"), extensions.value(QStringLiteral("x-legacy_unknown_fields")).toObject()},
             {QStringLiteral("x-live_market_data"), false},
             {QStringLiteral("x-import_preview_committable"), false},
             {QStringLiteral("x-activation_required"), true}}}

@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "review": "Offscreen images visually reviewed: Win11 white/gray shell, blank thumbnails, actual catalog names/colors, no fake price history, readable new-season form. Compact content uses intended scrollbars and elision, no overlap.",
+  "images": [
+    {
+      "path": "real_snapshots/favorites_compact.png",
+      "sha256": "ef77d8d486351d473a15a7d67c5e2212169eedc58a34be0be51145092298903f"
+    },
+    {
+      "path": "production_copy_snapshots/favorites.png",
+      "sha256": "afca6924a31df623416a050485b76aa3b0369cc61b81b771d23ab95651311c88"
+    },
+    {
+      "path": "real_snapshots/catalog_append.png",
+      "sha256": "802618325ca4636b286ec6cc9306be7e726b716c86e6f130ccc849edf6fa2a4c"
+    },
+    {
+      "path": "real_snapshots/catalog_browse.png",
+      "sha256": "9d15da082094cb1076155a189ed411f446f5e37aa3db4570efda8c1489ff32c3"
+    }
+  ]
+}

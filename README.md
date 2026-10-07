@@ -1,24 +1,16 @@
 # Delta Market Assistant · 三角洲市场助手
 
-> **最新市场校准：** 已修复Windows OCR角度坐标、同帧UI文字重读与背景行干扰；曼德尔、典藏首页、空关注和总筛选已实测。最终批次7个匹配检查点/4次导航，中间不切屏，结束一次回IDE；26组应用测试通过。游戏停在总筛选页，尚未调整筛选条件或接通完整自动业务。见 `docs/business_rebuild/implementation/runtime/market_page_calibration_m2.md`。
+## 当前交付：真实皮肤目录与赛季追加（2026-10-07）
 
-> **前台执行方式已修正：** 实机联调以整段任务为单位前置游戏，中间连续操作/识别，结束或异常才统一回IDE；不再逐动作闪屏。25组应用测试和一段真实双帧批次通过。当前市场已进入曼德尔砖页，其页类识别仍待校准；详见 `docs/business_rebuild/implementation/runtime/foreground_batch_m2.md`。
+正常启动内置用户提供并核对的 **S1–S11 共 149 项皮肤**，不再装载旧默认演示商品、任务、价格和运行结果。保留原商品 ID、赛季、武器、皮肤系列、极品 / 优品标记和菜单颜色。正式游戏品质尚未核实，不按颜色自动推断。缩略图暂时留空；无市场观测时，报价、磨损和历史曲线保持空白。
 
-> **最新进展：** 大厅实机2560×1440/144DPI识别已校准：修复Windows OCR“戏→观”的局部误读，两次独立大厅帧通过，错误预期页会明确失败。24组应用回归；27历史页/5分支及1条大厅文字投影可离线自检。运行截图不落盘、无游戏输入、每轮恢复IDE。下一页由用户展示仓库；详见 `docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md`，不把大厅通过写成完整业务已完成。
+关注页点击 **“皮肤资料 / 追加赛季”** 可查看全部资料、添加同季皮肤、新建赛季、批量导入新增 JSON、导出或下载空白模板。新增数据独立保存在配置同级 `catalog_extensions.json`，升级程序不覆盖。重复 ID、格式错误或与现有配置冲突时整次拒绝，原数据保留。详见 [目录使用说明](docs/REAL_SKIN_CATALOG.md)。
 
-> **2026-10-07 更新：** 当前优先按BBZPS原业务顺序复刻，详见 `docs/business_rebuild/10_bbzps_first_startup_reconstruction.md`（39个步骤、启动入口分支与逐行证据）。已补入显式只读DXGI内存采集诊断和独立Windows OCR组件；真实采集、合成文字OCR分别验证，完整游戏业务尚未接入。正常桌面UI仍为离线/回放，不执行点击购买。后文PR12B进度为历史阶段记录。
+旧配置在目录迁移前备份。已证实的默认模拟条目被移除；用户自定义任务条件与关注保留，不用截图中另一份方案的价格覆盖真实 `.savedValue` 参数。目录是固定商品资料，不是当前游戏账户的关注清单。
 
-## 当前开发进度：PR12B 服务整理与 M2 非游戏基础层
+**实机业务仍以原流程为准：** 上轮已实际添加 25 条关注，暂停在 P90 天命 B 第 1 页的滚动/半行关联点；本轮没有操作游戏。接续开发读 `SESSION_START.md` 和 `artifacts/m2_savedvalue_collection/current_checkpoint.json`，不要重放已确认星标。正常 UI 的任务配置不代表完整游戏执行器已接通。
 
-项目保留 `RelinkStudio` 构建目标和可执行文件名。PR01–PR11 已接入领域规则、只读导入预览、审定方案保存、持久化合成回放、已提交账本与历史记录。运行页可选择审定方案或内置回放样例；工作台提供回放单步/快速推进，日志页查看并导出历史事实。已保存方案持续未启用，只有显式选择的内置合成样例产生模拟账本，不连接真实市场。
-
-开发入口：`docs/business_rebuild/09_m1_progress.md`、`docs/business_rebuild/implementation/workspace_pr11.md`、`docs/business_rebuild/NEXT_IMPLEMENTATION.md`。正常业务数据位于应用本地数据目录的 `business` 子目录；`--workspace-dir` 可指定独立目录，`--workspace-read-only` 用于只读查看。界面显示中文状态，完整原始 ID 和原因码保留在提示中。
-
-PR12A 的独立 UI 页面和验收模块保持；这轮完成 `ProfileCatalog`、`ReplayScenario`、`HistoryQueryService`、`RecordsExporter` 的服务职责分离。历史列表先读摘要、选中运行才读明细；UI、领域、运行时、SQLite 仍为轻量模块化单体，不引入后台服务或通用插件框架。
-
-图像基础层已加入步骤触发的内存观察、worker 协议/双槽 lease、真实 Win32 共享内存及隐藏合成子进程传输。纯状态层 `relink_runtime` 与操作系统传输层 `relink_vision_transport` 分离；后者由独立测试目标验证，没有接入桌面程序。测试子程序不是 OCR worker，不随发布包交付。产品仍不读取游戏画面；`--snapshot-dir` 单独使用只作离屏呈现，交互回放仅由 `--self-test` 启动。
-
-本轮完整 CTest 已通过 19/19：工作区 432、UI 模块 90、观察适配器 828、worker 协议 646、进程内图像链路 279、Win32 共享帧 65、隐藏合成 worker 传输 206 条断言通过；UI / 工作区 UI / 存储自检分别为 206 / 58 / 22 项，独立负向包验收为 41/41。最终发布、包内复验及回退状态以 `artifacts/m1_pr12b_transaction/VERIFICATION.txt` 和 `artifacts/m1_pr12b_delivery/VERIFICATION.txt` 中与本轮构建哈希对应的命令为准，不沿用旧包结果。接口见 [内存观察](docs/business_rebuild/implementation/runtime/observation_adapter_pr12b.md)、[协议与 lease](docs/business_rebuild/implementation/runtime/worker_protocol_pr12b.md) 和 [真实内存/进程传输](docs/business_rebuild/implementation/runtime/vision_transport_pr12b.md)。下一步是真实游戏窗口、ROI 和 OCR provider 校准；现有测试不代表真实识别已接通。
+本轮 32 组 CTest、真实目录离屏追加/重启、实际旧配置副本迁移、发布包独立依赖和隔离回滚的最终证据在 `artifacts/real_skin_catalog/VERIFICATION.txt`。测试用合成数据仅保留在显式诊断入口；正常应用不显示模拟运行或合成账本入口。
 
 ## 当前版本：0.6 Windows 11 浅色 · 微软商店布局
 
@@ -29,7 +21,7 @@ PR12A 的独立 UI 页面和验收模块保持；这轮完成 `ProfileCatalog`�
 直接打开 `C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe`；不需要再次解压。详见 `docs/STORE_UI.md`。关注列表、右侧条件编辑和底部价格图保留。
 
 这是 **C++17 + Qt 6.8.3 Widgets** 编写的独立 Windows 桌面前端。
-当前版本验证界面与本地工作流，所有皮肤名称组合、价格、趋势和运行结果均为合成演示数据。
+当前版本使用真实静态皮肤目录维护本地任务条件。未知市场数据留空，观察与执行模块独立于目录和界面。
 
 ## 打开程序
 
@@ -40,27 +32,25 @@ PR12A 的独立 UI 页面和验收模块保持；这轮完成 `ProfileCatalog`�
 
 | 页面 | 已实现的交互 |
 |---|---|
-| 工作台 | 指标、模拟开始/暂停、任务摘要、趋势与最近日志 |
-| 我的关注 | 顶部搜索、类型/关注筛选、品级与任务筛选、星标关注、查看合成价格、按成色创建任务 |
+| 工作台 | 本地关注与任务摘要、价格空状态、最近日志 |
+| 我的关注 | 149 项目录、搜索与类型/菜单颜色筛选、本地关注、条件任务创建、目录及赛季维护 |
 | 自动任务 | 新增、编辑、成色、范围校验、确认删除、多选启用/暂停、数量上限 |
 | 运行设置 | 原程序全部参数：方案、快捷键、定时、延迟、连点、品级限购、挂机、自动收藏、优化/记录/帮助入口 |
-| 价格中心 | 皮肤切换、合成趋势、样本表、CSV 导出 |
-| 运行统计 | 模拟扫描、命中、确认计数及结果分布；实际成交与支出留空 |
+| 价格中心 | 皮肤切换、已知报价、无采样时空图、CSV 导出 |
+| 运行统计 | 无实际记录时保持空白，不生成模拟成交或支出 |
 | 运行日志 | 级别与关键字筛选、最新事件定位、确认清空 |
 | 设置 | 紧凑列表、日志自动定位、本地配置保存、运行模式与版本信息 |
 
-演示引擎只推进本地内存状态，不连接游戏、不采集屏幕、不注入键鼠、不产生订单。
-“我的关注”中的 12 条皮肤样本不是从当前游戏账户读取的关注记录。
-价格单位、真实磨损语义和市场卖单字段尚待实际数据模块确认，演示数据不作为真实交易依据。
+正常启动不会开启模拟引擎。目录皮肤、用户配置与实际游戏关注属于不同数据，不将本地星标伪称为游戏已关注回执。
 
 ## 配置与导出
 
 - 默认配置保存于应用本地数据目录，确切路径可在“设置”页查看。
-- 界面关闭时保存当前任务和关注配置；模拟执行结果不恢复为真实运行结果。
-- “导入配置”校验完整文件后才替换当前数据；导入源文件不被退出保存覆盖。
-- JSON 配置包含 `schema_version: 1`、`demo: true`、`skins`、`tasks` 和 `run_settings`；任务可带 `condition`（缺省“不限”）。旧文件缺少新字段时按默认值载入。
-- 数量上限从 1 开始；0 在原程序中的含义未确认，本版不自行解释为无限。
-- CSV 明示 `DEMO_SYNTHETIC` 与 `exported_at`，不是实际行情采集时间。
+- 界面关闭时保存当前任务和本地关注配置。
+- 右上角“导入”保留配置只读预览；追加目录使用目录弹窗中的独立导入入口，不覆盖现有配置。
+- JSON 配置包含 `schema_version: 1`、`demo: false`、`skins`、`tasks` 和 `run_settings`；任务可带 `condition`（缺省“不限”）。旧文件缺少新字段时按默认值载入。
+- 当前本地任务编辑的数量范围是 1–9999；原 `.savedValue` 的 0 不限值仍在其业务输入中保留，本轮不改该执行参数。
+- CSV 保留数据来源与导出时间；未知数值为空，不编造价格或采集时间。
 
 ## 工程结构
 
@@ -75,7 +65,9 @@ src/application/startup_config.*  启动配置恢复的共享入口
 src/application/workspace/       工作区协调、方案目录、回放、历史查询和导出服务
 src/application/runtime/observation/ 步骤触发、有界合成内存帧与识别接口
 src/application/vision/          协议/lease 状态；独立 Win32 共享帧/隐藏进程传输层
-src/domain.*          演示数据、运行参数、事务配置校验、模拟状态与 CSV
+src/catalog/         真实目录、扩展合并、提交验证与原子保存
+src/application/catalog_*  目录投影、旧配置迁移、启动备份
+src/domain.*          配置模型、运行参数、可用性字段、配置校验与 CSV
 src/widgets.*         导航项、筛选胶囊、开关、星标、下拉/数字框、指标、价格曲线
 src/theme.qss         Win11 浅色公共样式
 src/fluenttheme.*     WinUI 浅色色值、字体、Fluent 图标、应用图标、标题栏主题请求

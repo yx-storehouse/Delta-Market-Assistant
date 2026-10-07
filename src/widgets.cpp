@@ -148,8 +148,8 @@ PriceChart::PriceChart(QWidget *parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setMinimumSize(220, 150);
     setMouseTracking(true);
-    setAccessibleName(QStringLiteral("模拟价格趋势图"));
-    setToolTip(QStringLiteral("前端演示样本，不代表游戏市场实时价格；横轴表示样本顺序。"));
+    setAccessibleName(QStringLiteral("价格趋势图"));
+    setToolTip(QStringLiteral("仅显示已有价格样本；尚无采集数据时保持为空。"));
 }
 
 void PriceChart::setSeries(const QVector<double> &values)
@@ -214,23 +214,21 @@ void PriceChart::paintEvent(QPaintEvent *event)
 
     int top = 10;
     if (headerVisible_) {
-        // Charts are always labeled as synthetic; the badge is only added when
-        // the caption itself does not already say so.
-        const bool labeled = caption_.contains(QStringLiteral("模拟"))
-            || caption_.contains(QStringLiteral("演示"))
-            || caption_.contains(QStringLiteral("合成"));
-        const int badgeWidth = labeled ? 0 : 64;
         painter.setFont(FluentTheme::font(12));
         painter.setPen(secondary);
-        const int titleWidth = std::max(0, width() - 2 * side - badgeWidth);
+        const int titleWidth = std::max(0, width() - 2 * side);
         painter.drawText(QRectF(side, 0, titleWidth, 22), Qt::AlignVCenter | Qt::AlignLeft,
                          QFontMetrics(painter.font()).elidedText(caption_, Qt::ElideRight, titleWidth));
-        if (!labeled) {
-            painter.setPen(tertiary);
-            painter.drawText(QRectF(width() - side - badgeWidth, 0, badgeWidth, 22),
-                             Qt::AlignVCenter | Qt::AlignRight, QStringLiteral("模拟数据"));
-        }
         top = 36;
+    }
+
+    if (series_.isEmpty()) {
+        plot_ = {};
+        painter.setPen(secondary);
+        painter.setFont(FluentTheme::font(14));
+        painter.drawText(QRectF(side, top, width() - 2 * side, height() - top),
+                         Qt::AlignCenter, QStringLiteral("暂无价格样本"));
+        return;
     }
 
     double minimum = 0.0;
@@ -658,11 +656,8 @@ void ArtworkView::paintEvent(QPaintEvent *)
     painter.setPen(QPen(FluentTheme::stroke, 1));
     painter.setBrush(backdrop);
     painter.drawRoundedRect(plate, 6, 6);
-    if (artwork_.isNull()) {
-        painter.setFont(FluentTheme::font(12));
-        painter.setPen(FluentTheme::secondary);
-        painter.drawText(rect(), Qt::AlignCenter, QStringLiteral("暂无演示插图"));
-        return;
-    }
+    // The reserved artwork region intentionally stays blank until actual
+    // per-product thumbnails are supplied; never draw a substitute weapon.
+    if (artwork_.isNull()) return;
     painter.drawPixmap(artworkRect(), artwork_, QRectF(artwork_.rect()));
 }

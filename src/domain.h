@@ -12,7 +12,12 @@ class QTimer;
 struct Skin {
     QString id, name, series, condition, rarity;
     double wear = 0, price = 0, change = 0;
-    bool followed = true;
+    bool followed = false;
+    // Product identity is separate from a listing's condition/price/wear.
+    QString catalogProductId = {}, menuColor = {}, variant = {}, skinSeries = {};
+    // A zero is not evidence that an unobserved market value is known.
+    bool priceKnown = false, wearKnown = false, changeKnown = false;
+    QString dataSource = QStringLiteral("catalog");
 };
 
 struct Task {
@@ -23,6 +28,9 @@ struct Task {
     QString status = QStringLiteral("待启动");
     // Condition filter from the original task row; "不限" keeps older files unfiltered.
     QString condition = QStringLiteral("不限");
+    // Decode-only provenance distinguishes a missing legacy condition field
+    // from the user's explicit 不限 choice. New tasks are always explicit.
+    bool conditionExplicit = true;
 };
 
 // Parameters mirrored from the original assistant's main screen. They are
@@ -64,7 +72,9 @@ QJsonObject encodeV1Config(const QVector<Skin>& skins, const QVector<Task>& task
                            const RunSettings& run);
 QJsonObject encodeRunSettings(const RunSettings& run);
 
-// Offline presentation model only. Every price, match and result is synthetic.
+// Configuration/presentation model. Construction never invents products, prices,
+// follows or tasks. The startup composition supplies the verified catalogue.
+// Synthetic matching remains available only after explicit test-fixture loading.
 class AppState : public QObject {
     Q_OBJECT
 public:
@@ -78,7 +88,8 @@ public:
     int simulatedScans = 0, simulatedMatches = 0, simulatedSuccess = 0;
     QString configPath;
 
-    void loadDemo();
+    void loadTestFixture();
+    void loadDemo(); // Compatibility alias for old explicit tests; never called at startup.
     bool saveTo(const QString& path, QString* error = nullptr) const;
     bool loadFrom(const QString& path, QString* error = nullptr);
     bool exportPricesCsv(const QString& path, QString* error = nullptr) const;
@@ -93,6 +104,7 @@ signals:
     void changed();
 
 private:
+    bool m_testFixture = false;
     QTimer* m_timer = nullptr;
     QHash<QString, int> m_simulatedByTask;
 };

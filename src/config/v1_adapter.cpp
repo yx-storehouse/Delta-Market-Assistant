@@ -85,7 +85,8 @@ QJsonValue redactedCopy(const QJsonValue& value, const QString& key = {}) {
     }
     if (value.isObject()) {
         QJsonObject result;
-        for (auto it = value.toObject().constBegin(); it != value.toObject().constEnd(); ++it)
+        const auto object = value.toObject();
+        for (auto it = object.constBegin(); it != object.constEnd(); ++it)
             result.insert(it.key(), redactedCopy(it.value(), it.key()));
         return result;
     }
@@ -277,7 +278,8 @@ QJsonObject taskCandidate(const QString& taskId, const QString& name,
                           const QJsonValue& quantity,
                           const QStringList& columns,
                           const QJsonObject& unknown,
-                          const QString& productName) {
+                          const QString& productName,
+                          bool synthetic = false) {
     QJsonArray codes; for (const auto& c : reviewCodes) codes.append(c);
     QJsonObject extensions{{QStringLiteral("x-product_name"), productName}};
     return {{QStringLiteral("task_id"), taskId}, {QStringLiteral("revision"), 1},
@@ -288,7 +290,8 @@ QJsonObject taskCandidate(const QString& taskId, const QString& name,
             {QStringLiteral("price_range"), priceRange.isEmpty() ? nullValue() : QJsonValue(priceRange)},
             {QStringLiteral("max_wear"), maxWear}, {QStringLiteral("requested_sort"), requestedSort},
             {QStringLiteral("quantity_candidate"), quantity},
-            {QStringLiteral("quantity_semantics"), quantity.isNull() ? QStringLiteral("none") : QStringLiteral("demo_count_only")},
+            {QStringLiteral("quantity_semantics"), quantity.isNull() ? QStringLiteral("none")
+                : synthetic ? QStringLiteral("demo_count_only") : QStringLiteral("unreviewed")},
             {QStringLiteral("legacy_raw"), legacyRaw(QStringLiteral("legacy_v1"), hash, line, columns, unknown)},
             {QStringLiteral("extensions"), extensions}};
 }
@@ -371,12 +374,12 @@ QJsonObject previewV1(const QByteArray& bytes) {
         return basePreview(QStringLiteral("schema_v1"), sourceHash(bytes), bytes.size(), encoding, {}, rootDiagnostics, {});
     }
     const QJsonObject root = document.object();
-    if (!root.value(QStringLiteral("schema_version")).isDouble() || root.value(QStringLiteral("schema_version")).toInt() != 1) {
+    if (!root.value(QStringLiteral("schema_version")).isDouble() || root.value(QStringLiteral("schema_version")).toDouble() != 1.0) {
         appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("VERSION_UNSUPPORTED"), -1, -1, QStringLiteral("/schema_version"), QStringLiteral("schema_version must be 1"));
         return basePreview(QStringLiteral("schema_v1"), sourceHash(bytes), bytes.size(), encoding, {}, rootDiagnostics, {});
     }
-    if (!root.value(QStringLiteral("demo")).isBool() || !root.value(QStringLiteral("demo")).toBool()) {
-        appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("V1_NOT_DEMO"), -1, -1, QStringLiteral("/demo"), QStringLiteral("schema v1 preview accepts demo=true only"));
+    if (!root.value(QStringLiteral("demo")).isBool()) {
+        appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("V1_DEMO_FLAG_INVALID"), -1, -1, QStringLiteral("/demo"), QStringLiteral("schema v1 demo must be a boolean"));
         return basePreview(QStringLiteral("schema_v1"), sourceHash(bytes), bytes.size(), encoding, {}, rootDiagnostics, {});
     }
     if (!root.value(QStringLiteral("skins")).isArray() || !root.value(QStringLiteral("tasks")).isArray()) {
@@ -384,6 +387,7 @@ QJsonObject previewV1(const QByteArray& bytes) {
         return basePreview(QStringLiteral("schema_v1"), sourceHash(bytes), bytes.size(), encoding, {}, rootDiagnostics, {});
     }
 
+    const bool synthetic = root.value(QStringLiteral("demo")).toBool();
     const QString hash = sourceHash(bytes);
     const auto skins = root.value(QStringLiteral("skins")).toArray();
     const auto tasks = root.value(QStringLiteral("tasks")).toArray();
@@ -406,14 +410,43 @@ QJsonObject previewV1(const QByteArray& bytes) {
             appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("DUPLICATE_ID"), i + 1, -1, QStringLiteral("/skins/%1/id").arg(i), QStringLiteral("duplicate legacy skin id"));
         const QString id = stableId(oldId, QStringLiteral("skin"), i, usedSkinIds);
         skinMap.insert(oldId, id);
+        QJsonObject skinExtensions{{QStringLiteral("x-followed"), skin.value(QStringLiteral("followed")).toBool()},
+                                   {QStringLiteral("x-condition"), stringField(skin, QStringLiteral("condition"))}};
+        for (const auto& key : {QStringLiteral("catalogProductId"), QStringLiteral("menuColor"),
+                                QStringLiteral("variant"), QStringLiteral("skinSeries"), QStringLiteral("dataSource")}) {
+            if (!skin.contains(key)) continue;
+            if (!skin.value(key).isString() || skin.value(key).toString().size() > 4096)
+                appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("SKIN_METADATA_INVALID"),
+                                 i + 1, -1, QStringLiteral("/skins/%1/%2").arg(i).arg(key),
+                                 QStringLiteral("skin metadata must be text of at most 4096 characters"));
+            else skinExtensions.insert(QStringLiteral("x-") + key, skin.value(key));
+        }
+        for (const auto& key : {QStringLiteral("priceKnown"), QStringLiteral("wearKnown"), QStringLiteral("changeKnown")}) {
+            if (!skin.contains(key)) continue;
+            if (!skin.value(key).isBool())
+                appendDiagnostic(rootDiagnostics, QStringLiteral("error"), QStringLiteral("SKIN_METADATA_INVALID"),
+                                 i + 1, -1, QStringLiteral("/skins/%1/%2").arg(i).arg(key),
+                                 QStringLiteral("market field availability must be boolean"));
+            else skinExtensions.insert(QStringLiteral("x-") + key, skin.value(key));
+        }
+        // Saved market values are metadata, never fresh observations; preserve
+        // them and their availability flags for lossless configuration migration.
+        QJsonObject marketMetadata;
+        for (const auto& key : {QStringLiteral("wear"), QStringLiteral("price"), QStringLiteral("change")})
+            if (skin.contains(key)) marketMetadata.insert(key, skin.value(key));
+        skinExtensions.insert(QStringLiteral("x-saved-market-metadata"), marketMetadata);
+        static const QRegularExpression seasonPattern(QStringLiteral("^S[1-9][0-9]*(?=\\s|$)"));
+        const auto seasonMatch = seasonPattern.match(stringField(skin, QStringLiteral("series")));
+        const QString collectionSeries = stringField(skin, QStringLiteral("skinSeries"));
         QJsonObject entry{
             {QStringLiteral("product_id"), id}, {QStringLiteral("name"), stringField(skin, QStringLiteral("name")).isEmpty() ? id : stringField(skin, QStringLiteral("name"))},
-            {QStringLiteral("series"), skin.contains(QStringLiteral("series")) ? QJsonValue(stringField(skin, QStringLiteral("series"))) : nullValue()},
-            {QStringLiteral("season"), nullValue()}, {QStringLiteral("grade"), nullValue()},
+            {QStringLiteral("series"), !collectionSeries.isEmpty() ? QJsonValue(collectionSeries)
+                : skin.contains(QStringLiteral("series")) ? QJsonValue(stringField(skin, QStringLiteral("series"))) : nullValue()},
+            {QStringLiteral("season"), seasonMatch.hasMatch() ? QJsonValue(seasonMatch.captured()) : nullValue()},
+            {QStringLiteral("grade"), nullValue()},
             {QStringLiteral("rarity"), skin.contains(QStringLiteral("rarity")) ? QJsonValue(stringField(skin, QStringLiteral("rarity"))) : nullValue()},
             {QStringLiteral("aliases"), QJsonArray{}}, {QStringLiteral("source_kind"), QStringLiteral("legacy_v1")},
-            {QStringLiteral("extensions"), QJsonObject{{QStringLiteral("x-followed"), skin.value(QStringLiteral("followed")).toBool()},
-                                                        {QStringLiteral("x-condition"), stringField(skin, QStringLiteral("condition"))}}}
+            {QStringLiteral("extensions"), skinExtensions}
         };
         catalogArray.append(entry);
         catalog.insert(oldId, entry);
@@ -486,7 +519,7 @@ QJsonObject previewV1(const QByteArray& bytes) {
                 unknown.insert(QStringLiteral("/tasks/%1/%2").arg(i).arg(it.key()), redactedCopy(it.value(), it.key()));
         row.insert(QStringLiteral("candidate"), taskCandidate(taskId, stringField(task, QStringLiteral("name")), {}, hash, line, reviewCodes,
                                                                makeFilters({}, {}, {}, conditionValue, {}, {}), priceRange, maxWear,
-                                                               QStringLiteral("default"), quantityCandidate, {}, unknown, productName));
+                                                               QStringLiteral("default"), quantityCandidate, {}, unknown, productName, synthetic));
         if (!minOk || !maxOk || (minOk && maxOk && relink::business::compareDecimal(minPrice, maxPrice) == relink::business::Ordering::Greater)) row.insert(QStringLiteral("status"), QStringLiteral("invalid"));
         row.insert(QStringLiteral("diagnostics"), diagnostics);
         rows.append(row);
@@ -513,7 +546,7 @@ QJsonObject previewV1(const QByteArray& bytes) {
             unknownRoot.insert(QStringLiteral("/") + it.key(), redactedCopy(it.value(), it.key()));
 
     QJsonObject extensions{
-        {QStringLiteral("x-target_mode"), QStringLiteral("demo")},
+        {QStringLiteral("x-target_mode"), synthetic ? QStringLiteral("demo") : QStringLiteral("configuration")},
         {QStringLiteral("x-catalog"), catalogArray},
         {QStringLiteral("x-ui_run_settings"), runSettings},
         {QStringLiteral("x-ui_run_settings_sources"), settingSources},
@@ -521,7 +554,7 @@ QJsonObject previewV1(const QByteArray& bytes) {
         {QStringLiteral("x-ui_run_settings_legacy_unknown"), legacyUnknown},
         {QStringLiteral("x-id_map"), QJsonObject{{QStringLiteral("skins"), skinMap}, {QStringLiteral("tasks"), taskMap}}},
         {QStringLiteral("x-legacy_unknown_fields"), unknownRoot},
-        {QStringLiteral("x-observation_source"), QStringLiteral("synthetic_demo")},
+        {QStringLiteral("x-observation_source"), synthetic ? QStringLiteral("synthetic_demo") : QStringLiteral("configuration_metadata")},
         {QStringLiteral("x-live_market_data"), false}
     };
     return basePreview(QStringLiteral("schema_v1"), hash, bytes.size(), encoding, rows, rootDiagnostics, extensions);

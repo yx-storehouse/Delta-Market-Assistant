@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "domain.h"
+#include "catalog/skin_catalog.h"
+#include "application/catalog_configuration.h"
+#include "ui/dialogs/skin_catalog_dialog.h"
 #include "config/v1_adapter.h"
 #include "application/runtime/replay_controller.h"
 #include "application/runtime/ui_projection.h"
@@ -70,6 +73,13 @@ const QStringList titles = {QStringLiteral("工作台"), QStringLiteral("我的�
                             QStringLiteral("价格中心"), QStringLiteral("运行统计"), QStringLiteral("运行日志"),
                             QStringLiteral("设置"), QStringLiteral("运行设置")};
 constexpr int RunPage = 7;
+QString menuColorName(const QString& color) {
+    if (color == "red") return QStringLiteral("红色");
+    if (color == "orange") return QStringLiteral("橙色");
+    if (color == "purple") return QStringLiteral("紫色");
+    if (color == "blue") return QStringLiteral("蓝色");
+    return QStringLiteral("未记录");
+}
 
 // Review edits remain visible on save failure; Escape and the title-bar close
 // take the same explicit discard path as the Cancel command.
@@ -113,10 +123,21 @@ protected:
 
 } // namespace
 
-MainWindow::MainWindow(AppState* state, QWidget* parent, relink::workspace::WorkspaceController* workspace)
-    : QMainWindow(parent), m_state(state), m_workspace(workspace)
+MainWindow::MainWindow(AppState* state, QWidget* parent, relink::workspace::WorkspaceController* workspace, relink::catalog::CatalogStore* catalog)
+    : QMainWindow(parent), m_state(state), m_catalog(catalog), m_workspace(workspace)
 {
-    if (!m_workspace) {
+    if (m_catalog) {
+        // A user extension must also fit existing config identities BEFORE the
+        // store commits it; failed imports leave both files and memory intact.
+        QPointer<AppState> owner(m_state);
+        m_catalog->setCommitValidator([owner](const relink::catalog::Catalog& candidate, QString* error) {
+            if (!owner) { if (error) *error = QStringLiteral("配置窗口已关闭，请重新打开程序。"); return false; }
+            AppState draft;
+            draft.skins = owner->skins; draft.tasks = owner->tasks; draft.run = owner->run;
+            return relink::application::applyCatalogConfiguration(draft, candidate, nullptr, error);
+        });
+    }
+    if (!m_workspace && !m_catalog) {
         m_replayController = new relink::runtime::ReplayController(this);
         connect(m_replayController, &relink::runtime::ReplayController::changed, this, &MainWindow::refreshReplayProjection);
     }
@@ -260,7 +281,7 @@ QWidget* MainWindow::buildOverview()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("我的关注"), QStringLiteral("启用任务"), QStringLiteral("扫描条目"), QStringLiteral("模拟确认")};
+    const QStringList names = {QStringLiteral("我的关注"), QStringLiteral("启用任务"), QStringLiteral("扫描条目"), (m_catalog ? QStringLiteral("确认结果") : QStringLiteral("模拟确认"))};
     for (int i = 0; i < names.size(); ++i) {
         auto* metric = new MetricCard(names[i], QStringLiteral("0"), QString());
         metric->setObjectName(QStringLiteral("overviewMetric%1").arg(i));
@@ -320,13 +341,16 @@ QWidget* MainWindow::buildOverview()
     }
     replayLayout->addLayout(replayCommands, 5, 0, 1, 2);
     layout->addWidget(replayPanel);
+    replayPanel->setVisible(!m_catalog);
+    m_startButton->setVisible(!m_catalog);
+    m_pauseButton->setVisible(!m_catalog);
     layout->addSpacing(28);
     if (m_workspace) {
         connect(m_replayStartButton, &QPushButton::clicked, this, [this] { if (confirmWorkspaceTransition(QStringLiteral("开始回放"))) m_workspace->start(); });
         connect(m_replayPauseButton, &QPushButton::clicked, this, [this] { m_workspace->pause(); });
         connect(m_replayResumeButton, &QPushButton::clicked, this, [this] { m_workspace->resume(); });
         connect(m_replayStopButton, &QPushButton::clicked, this, [this] { m_workspace->stop(); });
-    } else {
+    } else if (m_replayController) {
         connect(m_replayStartButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::startReplay);
         connect(m_replayPauseButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::pauseReplay);
         connect(m_replayResumeButton, &QPushButton::clicked, m_replayController, &relink::runtime::ReplayController::resumeReplay);
@@ -406,7 +430,12 @@ QWidget* MainWindow::buildFavorites()
     auto* layout = new QVBoxLayout(page);
     layout->setContentsMargins(32, 24, 32, 24);
     layout->setSpacing(0);
-    pageHeader(layout, titles[1], &m_favoritesCount);
+    auto* catalogHeader = pageHeader(layout, titles[1], &m_favoritesCount);
+    if (m_catalog) {
+        auto* manageCatalog = button(QStringLiteral("皮肤资料 / 追加赛季"), QStringLiteral("manageSkinCatalogButton"));
+        catalogHeader->addWidget(manageCatalog);
+        connect(manageCatalog, &QPushButton::clicked, this, &MainWindow::manageSkinCatalog);
+    }
     layout->addSpacing(16);
 
     auto* filterBar = new QFrame;
@@ -430,11 +459,11 @@ QWidget* MainWindow::buildFavorites()
     addFilter(QStringLiteral("步枪"), QStringLiteral("rifle"));
     addFilter(QStringLiteral("冲锋枪"), QStringLiteral("smg"));
     addFilter(QStringLiteral("狙击枪"), QStringLiteral("sniper"));
-    addFilter(QStringLiteral("轻机枪"), QStringLiteral("lmg"));
+    addFilter(m_catalog ? QStringLiteral("机枪") : QStringLiteral("轻机枪"), QStringLiteral("lmg"));
     filters->addStretch();
     m_rarityFilter = new FluentComboBox;
     m_rarityFilter->setObjectName(QStringLiteral("favoriteRarity"));
-    m_rarityFilter->addItem(QStringLiteral("全部品级"));
+    m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部颜色") : QStringLiteral("全部品级")));
     m_rarityFilter->setFixedWidth(132);
     m_favoriteStateFilter = new FluentComboBox;
     m_favoriteStateFilter->setObjectName(QStringLiteral("favoriteTaskFilter"));
@@ -452,7 +481,7 @@ QWidget* MainWindow::buildFavorites()
     auto* work = new QVBoxLayout(workspace);
     work->setContentsMargins(0, 0, 0, 0);
     work->setSpacing(12);
-    m_favoritesTable = table({QStringLiteral("关注"), QStringLiteral("物品"), QStringLiteral("磨损"), QStringLiteral("演示报价"),
+    m_favoritesTable = table({QStringLiteral("关注"), QStringLiteral("物品"), QStringLiteral("磨损"), (m_catalog ? QStringLiteral("已知报价") : QStringLiteral("演示报价")),
                               QStringLiteral("样本趋势"), QStringLiteral("目标价格"), QStringLiteral("任务状态")},
                              QStringLiteral("favoriteTable"), RowStyle::Cards);
     auto* columns = m_favoritesTable->horizontalHeader();
@@ -474,7 +503,7 @@ QWidget* MainWindow::buildFavorites()
     m_favoriteChartTitle = label(QString(), QStringLiteral("cardCaption"));
     chartHeader->addWidget(m_favoriteChartTitle);
     chartHeader->addStretch();
-    chartHeader->addWidget(label(QStringLiteral("模拟数据"), QStringLiteral("tertiaryLabel")));
+    chartHeader->addWidget(label((m_catalog ? QStringLiteral("暂无价格采样") : QStringLiteral("模拟数据")), QStringLiteral("tertiaryLabel")));
     chartLayout->addLayout(chartHeader);
     m_favoriteChart = new PriceChart;
     m_favoriteChart->setObjectName(QStringLiteral("favoritePriceChart"));
@@ -504,7 +533,7 @@ QWidget* MainWindow::buildFavorites()
     m_favoriteArt = new ArtworkView;
     m_favoriteArt->setObjectName(QStringLiteral("skinPreview"));
     m_favoriteArt->setFixedHeight(148);
-    m_favoriteArt->setToolTip(QStringLiteral("生成的演示插图，不代表游戏中的真实皮肤外观。"));
+    m_favoriteArt->setToolTip((m_catalog ? QStringLiteral("缩略图预留，暂不显示图片。") : QStringLiteral("生成的演示插图，不代表游戏中的真实皮肤外观。")));
     detail->addWidget(m_favoriteArt);
     detail->addSpacing(16);
     m_favoriteTitle = label(QString(), QStringLiteral("detailTitle"));
@@ -522,7 +551,7 @@ QWidget* MainWindow::buildFavorites()
     quote->addWidget(m_favoriteChange, 0, Qt::AlignBottom);
     quote->addStretch();
     detail->addLayout(quote);
-    detail->addWidget(label(QStringLiteral("演示报价 · 非实时行情"), QStringLiteral("tertiaryLabel")));
+    detail->addWidget(label((m_catalog ? QStringLiteral("未采集的市场数据保持空白") : QStringLiteral("演示报价 · 非实时行情")), QStringLiteral("tertiaryLabel")));
     detail->addSpacing(16);
     auto* facts = new QHBoxLayout;
     facts->setSpacing(12);
@@ -535,7 +564,7 @@ QWidget* MainWindow::buildFavorites()
         block->addWidget(value);
         facts->addLayout(block, 1);
     };
-    addFact(QStringLiteral("品级"), m_factRarity);
+    addFact((m_catalog ? QStringLiteral("菜单颜色") : QStringLiteral("品级")), m_factRarity);
     addFact(QStringLiteral("成色"), m_factCondition);
     addFact(QStringLiteral("磨损"), m_factWear);
     detail->addLayout(facts);
@@ -548,6 +577,7 @@ QWidget* MainWindow::buildFavorites()
     m_inspectorPrice->setObjectName(QStringLiteral("inspectorMaxPrice"));
     m_inspectorPrice->setRange(0, 999999999);
     m_inspectorPrice->setDecimals(2);
+    if (m_catalog) m_inspectorPrice->setSpecialValueText(QStringLiteral("请填写"));
     m_inspectorCondition = new FluentComboBox;
     m_inspectorCondition->setObjectName(QStringLiteral("inspectorCondition"));
     m_inspectorCondition->addItems(conditionOptions(m_state));
@@ -590,7 +620,7 @@ QWidget* MainWindow::buildFavorites()
     detail->addLayout(taskRow);
     detail->addStretch();
     detail->addSpacing(12);
-    auto* note = label(QStringLiteral("本地模拟模式：插图与价格均为演示素材，创建任务只保存筛选条件。"), QStringLiteral("inspectorNote"));
+    auto* note = label((m_catalog ? QStringLiteral("皮肤资料来自已核对目录；极品 / 优品与任务成色分别记录。缩略图暂时留空。") : QStringLiteral("本地模拟模式：插图与价格均为演示素材，创建任务只保存筛选条件。")), QStringLiteral("inspectorNote"));
     note->setWordWrap(true);
     detail->addWidget(note);
     body->addWidget(m_inspector);
@@ -606,6 +636,12 @@ QWidget* MainWindow::buildFavorites()
     connect(m_favoriteStateFilter, &QComboBox::currentIndexChanged, this, [this] { if (!m_refreshing) refreshFavorites(); });
     connect(m_favoritesTable, &QTableWidget::itemSelectionChanged, this, [this] { if (!m_refreshing) refreshFavoriteDetail(); });
     connect(m_favoriteCreate, &QPushButton::clicked, this, &MainWindow::createInspectorTask);
+    if (m_catalog) {
+        m_favoriteCreate->setToolTip(QStringLiteral("填写最高价格后创建任务"));
+        connect(m_inspectorPrice, &QDoubleSpinBox::valueChanged, this, [this](double value) {
+            m_favoriteCreate->setEnabled(findSkin(m_state, selectedFavoriteId()) && value > 0);
+        });
+    }
     connect(manage, &QPushButton::clicked, this, [this] { setPage(2); });
     return page;
 }
@@ -635,9 +671,9 @@ QWidget* MainWindow::buildPrices()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("当前演示报价"), QStringLiteral("样本最低报价"), QStringLiteral("样本最高报价")};
+    const QStringList names = {(m_catalog ? QStringLiteral("当前已知报价") : QStringLiteral("当前演示报价")), QStringLiteral("样本最低报价"), QStringLiteral("样本最高报价")};
     for (int i = 0; i < names.size(); ++i) {
-        auto* metric = new MetricCard(names[i], QStringLiteral("—"), QStringLiteral("演示价格 · 非实时市场数据"));
+        auto* metric = new MetricCard(names[i], QStringLiteral("—"), (m_catalog ? QStringLiteral("未采集的数值不作估算") : QStringLiteral("演示价格 · 非实时市场数据")));
         metric->setObjectName(QStringLiteral("priceMetric%1").arg(i));
         metric->setProperty("separator", i < names.size() - 1);
         m_priceCards.append(metric);
@@ -646,7 +682,7 @@ QWidget* MainWindow::buildPrices()
     layout->addWidget(strip);
     layout->addSpacing(28);
 
-    sectionHeader(layout, QStringLiteral("价格走势"))->addWidget(label(QStringLiteral("24 个样本 · 演示数据"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(layout, QStringLiteral("价格走势"))->addWidget(label((m_catalog ? QStringLiteral("采集后显示历史曲线") : QStringLiteral("24 个样本 · 演示数据")), QStringLiteral("tertiaryLabel")));
     auto* chartPanel = card(QStringLiteral("priceChartPanel"));
     auto* chartLayout = new QVBoxLayout(chartPanel);
     chartLayout->setContentsMargins(20, 16, 20, 12);
@@ -657,11 +693,11 @@ QWidget* MainWindow::buildPrices()
     layout->addWidget(chartPanel, 3);
     layout->addSpacing(28);
 
-    sectionHeader(layout, QStringLiteral("样本记录"))->addWidget(label(QStringLiteral("本地合成数据"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(layout, QStringLiteral("样本记录"))->addWidget(label((m_catalog ? QStringLiteral("暂无历史采样") : QStringLiteral("本地合成数据")), QStringLiteral("tertiaryLabel")));
     auto* historyPanel = card(QStringLiteral("priceHistoryPanel"));
     auto* historyLayout = new QVBoxLayout(historyPanel);
     historyLayout->setContentsMargins(12, 6, 12, 8);
-    m_priceHistory = table({QStringLiteral("样本"), QStringLiteral("商品"), QStringLiteral("演示价格"), QStringLiteral("类型"), QStringLiteral("数据来源")},
+    m_priceHistory = table({QStringLiteral("样本"), QStringLiteral("商品"), (m_catalog ? QStringLiteral("已知价格") : QStringLiteral("演示价格")), QStringLiteral("类型"), QStringLiteral("数据来源")},
                            QStringLiteral("priceHistoryTable"), RowStyle::Lines);
     auto* historyColumns = m_priceHistory->horizontalHeader();
     historyColumns->setStretchLastSection(false);
@@ -693,7 +729,7 @@ QWidget* MainWindow::buildStats()
         ledgerLayout->addWidget(label(QStringLiteral("已提交回放账本"), QStringLiteral("sectionTitle")));
         auto* values = new QHBoxLayout;
         values->setSpacing(0);
-        const QStringList names{QStringLiteral("模拟确认成功"), QStringLiteral("模拟确认失败"),
+        const QStringList names{(m_catalog ? QStringLiteral("确认成功") : QStringLiteral("模拟确认成功")), QStringLiteral("模拟确认失败"),
                                 QStringLiteral("结果未知"), QStringLiteral("仍占用预留")};
         for (int i = 0; i < names.size(); ++i) {
             auto* metric = new MetricCard(names[i], QStringLiteral("0"), QStringLiteral("仅已提交数据"));
@@ -715,8 +751,8 @@ QWidget* MainWindow::buildStats()
     auto* metrics = new QHBoxLayout(strip);
     metrics->setContentsMargins(0, 8, 0, 8);
     metrics->setSpacing(0);
-    const QStringList names = {QStringLiteral("模拟扫描"), QStringLiteral("模拟条件命中"), QStringLiteral("模拟确认成功"), QStringLiteral("实际成交 / 实际支出")};
-    const QStringList details = {QStringLiteral("本次演示扫描条目"), QStringLiteral("模拟筛选符合条件"), QStringLiteral("只计入模拟确认结果"), QStringLiteral("未连接执行模块")};
+    const QStringList names = {(m_catalog ? QStringLiteral("扫描条目") : QStringLiteral("模拟扫描")), (m_catalog ? QStringLiteral("条件命中") : QStringLiteral("模拟条件命中")), (m_catalog ? QStringLiteral("确认成功") : QStringLiteral("模拟确认成功")), QStringLiteral("实际成交 / 实际支出")};
+    const QStringList details = {(m_catalog ? QStringLiteral("尚无运行记录") : QStringLiteral("本次演示扫描条目")), (m_catalog ? QStringLiteral("尚无匹配记录") : QStringLiteral("模拟筛选符合条件")), (m_catalog ? QStringLiteral("仅显示实际回读结果") : QStringLiteral("只计入模拟确认结果")), QStringLiteral("未连接执行模块")};
     for (int i = 0; i < names.size(); ++i) {
         auto* metric = new MetricCard(names[i], i == 3 ? QStringLiteral("—") : QStringLiteral("0"), details[i]);
         metric->setObjectName(QStringLiteral("statsMetric%1").arg(i));
@@ -731,12 +767,12 @@ QWidget* MainWindow::buildStats()
     content->setSpacing(16);
     auto* left = new QVBoxLayout;
     left->setSpacing(0);
-    sectionHeader(left, QStringLiteral("模拟结果分布"))->addWidget(label(QStringLiteral("基于本次演示计数"), QStringLiteral("tertiaryLabel")));
+    sectionHeader(left, (m_catalog ? QStringLiteral("结果分布") : QStringLiteral("模拟结果分布")))->addWidget(label((m_catalog ? QStringLiteral("尚无运行记录") : QStringLiteral("基于本次演示计数")), QStringLiteral("tertiaryLabel")));
     auto* distribution = card(QStringLiteral("distributionPanel"));
     auto* distributionLayout = new QVBoxLayout(distribution);
     distributionLayout->setContentsMargins(24, 22, 24, 20);
     distributionLayout->setSpacing(0);
-    const QStringList reasons = {QStringLiteral("未命中筛选条件"), QStringLiteral("已命中 · 尚未模拟确认"), QStringLiteral("模拟确认成功")};
+    const QStringList reasons = {QStringLiteral("未命中筛选条件"), (m_catalog ? QStringLiteral("已命中 · 待确认") : QStringLiteral("已命中 · 尚未模拟确认")), (m_catalog ? QStringLiteral("确认成功") : QStringLiteral("模拟确认成功"))};
     for (const auto& reason : reasons) {
         auto* row = new QHBoxLayout;
         row->addWidget(label(reason));
@@ -770,8 +806,8 @@ QWidget* MainWindow::buildStats()
     semanticsLayout->setSpacing(0);
     const QVector<QPair<QString, QString>> explanations = {
         {QStringLiteral("扫描 ≠ 命中"), QStringLiteral("扫描记录观察次数；命中记录符合任务条件的次数。")},
-        {QStringLiteral("尝试 ≠ 成交"), QStringLiteral("当前只有本地模拟，不产生实际交易和实际支出。")},
-        {QStringLiteral("未决结果单独记"), QStringLiteral("接入执行模块后，结果未明的动作不计入成功。当前演示未决为 0。")}};
+        {QStringLiteral("尝试 ≠ 成交"), (m_catalog ? QStringLiteral("任务配置不代表成交；成交与支出仅按实际结果记录。") : QStringLiteral("当前只有本地模拟，不产生实际交易和实际支出。"))},
+        {QStringLiteral("未决结果单独记"), (m_catalog ? QStringLiteral("结果未明的动作不计入成功；没有观测时保持空白。") : QStringLiteral("接入执行模块后，结果未明的动作不计入成功。当前演示未决为 0。"))}};
     for (const auto& entry : explanations) {
         semanticsLayout->addWidget(label(entry.first, QStringLiteral("cardTitle")));
         semanticsLayout->addSpacing(4);
@@ -834,7 +870,7 @@ QWidget* MainWindow::buildLogs()
     connect(m_logSearch, &QLineEdit::textChanged, this, [this] { if (!m_refreshing) refreshLogs(); });
     connect(m_logLevel, &QComboBox::currentTextChanged, this, [this] { if (!m_refreshing) refreshLogs(); });
     connect(clear, &QPushButton::clicked, this, [this] {
-        if (confirm(this, QStringLiteral("清空本地日志"), QStringLiteral("只清空当前本地演示日志，任务与配置不变。"), QStringLiteral("清空"))) {
+        if (confirm(this, QStringLiteral("清空本地日志"), (m_catalog ? QStringLiteral("只清空当前本地日志，任务与配置不变。") : QStringLiteral("只清空当前本地演示日志，任务与配置不变。")), QStringLiteral("清空"))) {
             m_state->logs.clear();
             m_state->notifyChanged();
         }
@@ -882,16 +918,16 @@ QWidget* MainWindow::buildSettings()
     layout->addLayout(actionRow);
 
     group(QStringLiteral("运行模式"));
-    row(settingsCard(glyphLabel(Glyph::Pulse), QStringLiteral("前端独立演示"),
-                     QStringLiteral("使用本地演示数据验证关注管理、任务配置、价格展示与统计交互；没有连接游戏进程，不读取实时市场，也不执行实际购买。"),
-                     label(QStringLiteral("本地预览"), QStringLiteral("settingsBadge")), QStringLiteral("runModeCard")));
+    row(settingsCard(glyphLabel(Glyph::Pulse), (m_catalog ? QStringLiteral("真实皮肤目录") : QStringLiteral("前端独立演示")),
+                     (m_catalog ? QStringLiteral("内置 S1–S11 已核对皮肤资料；追加赛季与皮肤独立保存，升级程序后继续保留。市场价格、磨损与历史等待实际采集。") : QStringLiteral("使用本地演示数据验证关注管理、任务配置、价格展示与统计交互；没有连接游戏进程，不读取实时市场，也不执行实际购买。")),
+                     label((m_catalog ? QStringLiteral("真实目录") : QStringLiteral("本地预览")), QStringLiteral("settingsBadge")), QStringLiteral("runModeCard")));
     group(QStringLiteral("数据连接"));
     row(settingsCard(glyphLabel(Glyph::Link), QStringLiteral("游戏页面采集 · 价格识别与校验 · 自动操作与结果确认"),
                      QStringLiteral("界面层与这些模块保持分离；前端完成后可以逐个接入。"),
                      label(QStringLiteral("尚未接入"), QStringLiteral("settingsBadge"))));
     group(QStringLiteral("关于"));
     row(settingsCard(new AppMark(24), QStringLiteral("Relink Studio"),
-                     QStringLiteral("版本 %1 · 本地演示前端 · C++17 / Qt %2 Widgets").arg(QCoreApplication::applicationVersion(), QStringLiteral(QT_VERSION_STR)),
+                     (m_catalog ? QStringLiteral("版本 %1 · 皮肤目录与任务管理 · C++17 / Qt %2 Widgets") : QStringLiteral("版本 %1 · 本地演示前端 · C++17 / Qt %2 Widgets")).arg(QCoreApplication::applicationVersion(), QStringLiteral(QT_VERSION_STR)),
                      nullptr, QStringLiteral("aboutCard")));
     layout->addStretch();
     connect(save, &QPushButton::clicked, this, &MainWindow::saveSettings);
@@ -907,7 +943,9 @@ QWidget* MainWindow::buildRunSettings()
         saveSettings();
         m_runSettingsPage->showSaveResult(m_settingsMessage->text());
     });
-    connect(m_runSettingsPage, &RunSettingsPage::importPreviewRequested, this, &MainWindow::previewImportDemo);
+    connect(m_runSettingsPage, &RunSettingsPage::importPreviewRequested, this, [this] {
+        if (m_catalog) importConfiguration(); else previewImportDemo();
+    });
     connect(m_runSettingsPage, &RunSettingsPage::navigateRequested, this, &MainWindow::setPage);
     connect(m_runSettingsPage, &RunSettingsPage::helpRequested, this, &MainWindow::showHelp);
     return m_runSettingsPage;
@@ -984,12 +1022,16 @@ void MainWindow::refreshAll()
     const bool running = m_state->simulationRunning;
     m_startButton->setEnabled(!running);
     m_pauseButton->setEnabled(running);
-    m_taskPage->setSimulationAvailable(!running);
+    m_taskPage->setSimulationAvailable(!m_catalog && !running);
     m_statusBadge->setText(QStringLiteral("<span style=\"color:%1;\">●</span>&nbsp;&nbsp;%2")
                                .arg((running ? FluentTheme::positive : FluentTheme::muted).name(),
                                     running ? QStringLiteral("模拟运行中") : QStringLiteral("本地演示")));
     m_statusBadge->setToolTip(running ? QStringLiteral("本地模拟正在推进；不连接游戏，不产生订单。")
                                       : QStringLiteral("演示数据 · 未连接游戏"));
+    if (m_catalog) {
+        m_statusBadge->setText(QStringLiteral("真实皮肤目录"));
+        m_statusBadge->setToolTip(QStringLiteral("已核对目录 · 市场数据按需采集"));
+    }
     QString path = m_state->configPath;
     if (path.isEmpty()) path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.json";
     m_configDirectory->setText(QDir::toNativeSeparators(path));
@@ -1008,8 +1050,12 @@ void MainWindow::refreshOverview()
     m_overviewCards[2]->setValue(QString::number(m_state->simulatedScans), QStringLiteral("本次模拟累计"));
     m_overviewCards[3]->setValue(QString::number(m_state->simulatedSuccess), QStringLiteral("仅模拟结果"));
     const double reference = m_state->skins.isEmpty() ? 100 : m_state->skins.first().price;
-    m_overviewChart->setSeries(series(reference));
-    m_overviewChart->setCaption(m_state->skins.isEmpty() ? QStringLiteral("演示价格") : m_state->skins.first().name);
+    m_overviewChart->setSeries(m_catalog ? QVector<double>{} : series(reference));
+    if (m_catalog) {
+        m_overviewCards[2]->setValue(QStringLiteral("—"), QStringLiteral("尚无扫描记录"));
+        m_overviewCards[3]->setValue(QStringLiteral("—"), QStringLiteral("尚无结果回读"));
+    }
+    m_overviewChart->setCaption(m_state->skins.isEmpty() ? (m_catalog ? QStringLiteral("已知价格") : QStringLiteral("演示价格")) : m_state->skins.first().name);
     m_overviewTaskCount->setText(QStringLiteral("%1 条任务").arg(m_state->tasks.size()));
     m_overviewTasks->setRowCount(qMin(4, int(m_state->tasks.size())));
     for (int i = 0; i < m_overviewTasks->rowCount(); ++i) {
@@ -1038,9 +1084,12 @@ void MainWindow::refreshFavorites()
         QSignalBlocker guard(m_rarityFilter);
         const QString rarity = m_rarityFilter->currentText();
         QStringList values;
-        for (const auto& skin : m_state->skins) if (!values.contains(skin.rarity)) values.append(skin.rarity);
+        for (const auto& skin : m_state->skins) {
+            const auto value = m_catalog ? menuColorName(skin.menuColor) : skin.rarity;
+            if (!value.isEmpty() && !values.contains(value)) values.append(value);
+        }
         m_rarityFilter->clear();
-        m_rarityFilter->addItem(QStringLiteral("全部品级"));
+        m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部颜色") : QStringLiteral("全部品级")));
         m_rarityFilter->addItems(values);
         m_rarityFilter->setCurrentIndex(qMax(0, m_rarityFilter->findText(rarity)));
     }
@@ -1064,8 +1113,9 @@ void MainWindow::refreshFavorites()
     const QString query = m_favoriteSearch->text().trimmed();
     for (const auto& skin : m_state->skins) {
         if (!matches(skin, m_catalogFilter)) continue;
-        if (!query.isEmpty() && !skin.name.contains(query, Qt::CaseInsensitive) && !skin.series.contains(query, Qt::CaseInsensitive)) continue;
-        if (m_rarityFilter->currentIndex() > 0 && skin.rarity != m_rarityFilter->currentText()) continue;
+        if (!query.isEmpty() && !skin.name.contains(query, Qt::CaseInsensitive) && !skin.series.contains(query, Qt::CaseInsensitive) && !skin.catalogProductId.contains(query, Qt::CaseInsensitive)
+            && !skin.variant.contains(query, Qt::CaseInsensitive) && !skin.menuColor.contains(query) && !menuColorName(skin.menuColor).contains(query)) continue;
+        if (m_rarityFilter->currentIndex() > 0 && (m_catalog ? menuColorName(skin.menuColor) : skin.rarity) != m_rarityFilter->currentText()) continue;
         const Task* linked = nullptr;
         bool enabled = false;
         for (const auto& task : m_state->tasks) {
@@ -1091,12 +1141,12 @@ void MainWindow::refreshFavorites()
         auto* identity = put(m_favoritesTable, row, 1, skin.name, QColor(), skin.id);
         identity->setData(KindRole, ItemCell);
         identity->setData(SubtitleRole, skin.series);
-        identity->setData(ArtRole, skinArtIndex(skin));
-        identity->setToolTip(skin.name + "\n" + skin.series + QStringLiteral(" · 演示插图"));
-        put(m_favoritesTable, row, 2, QString::number(skin.wear, 'f', 3), FluentTheme::secondary);
-        put(m_favoritesTable, row, 3, amount(skin.price));
+        identity->setData(ArtRole, -1);
+        identity->setToolTip(skin.name + "\n" + skin.series + (m_catalog ? QStringLiteral(" · ") + menuColorName(skin.menuColor) + QStringLiteral(" · ") + skin.variant : QString()));
+        put(m_favoritesTable, row, 2, skin.wearKnown ? QString::number(skin.wear, 'f', 3) : QStringLiteral("—"), FluentTheme::secondary);
+        put(m_favoritesTable, row, 3, skin.priceKnown ? amount(skin.price) : QStringLiteral("—"));
         QVariantList samples;
-        for (double value : series(skin.price)) samples.append(value);
+        if (!m_catalog) for (double value : series(skin.price)) samples.append(value);
         auto* trend = put(m_favoritesTable, row, 4, QString());
         trend->setData(KindRole, SparkCell);
         trend->setData(SamplesRole, samples);
@@ -1132,17 +1182,18 @@ void MainWindow::refreshFavoriteDetail()
         return;
     }
     m_favoriteTitle->setText(skin->name);
-    m_favoriteMetadata->setText(skin->series + QStringLiteral(" · 演示插图"));
-    m_favoriteArt->setArtwork(skinArtwork(skinArtIndex(*skin)));
-    m_favoritePrice->setText(amount(skin->price));
-    m_favoriteChange->setText(changeText(skin->change));
+    m_favoriteMetadata->setText(skin->series + (skin->variant.isEmpty() ? QString() : QStringLiteral(" · ") + skin->variant));
+    m_favoriteArt->setArtwork(QPixmap());
+    m_favoritePrice->setText(skin->priceKnown ? amount(skin->price) : QStringLiteral("—"));
+    m_favoriteChange->setText(skin->changeKnown ? changeText(skin->change) : QString());
     // Falling prices read as favourable for a buyer, rising prices as unfavourable.
     const QColor changeColor = skin->change < 0 ? FluentTheme::positive : (skin->change > 0 ? FluentTheme::negative : FluentTheme::secondary);
     m_favoriteChange->setStyleSheet(QStringLiteral("color:%1;").arg(changeColor.name()));
-    m_factRarity->setText(skin->rarity);
+    m_factRarity->setText(m_catalog ? menuColorName(skin->menuColor) : skin->rarity);
+    m_factRarity->setToolTip(QStringLiteral("正式品质：") + skin->rarity);
     m_factCondition->setText(skin->condition);
-    m_factWear->setText(QString::number(skin->wear, 'f', 3));
-    m_favoriteChart->setSeries(series(skin->price));
+    m_factWear->setText(skin->wearKnown ? QString::number(skin->wear, 'f', 3) : QStringLiteral("—"));
+    m_favoriteChart->setSeries(m_catalog ? QVector<double>{} : series(skin->price));
     m_favoriteChartTitle->setText(skin->name);
     int tasks = 0;
     const Task* existing = nullptr;
@@ -1152,11 +1203,12 @@ void MainWindow::refreshFavoriteDetail()
         m_inspectorPrice->setValue(existing ? existing->maxPrice : skin->price);
         m_inspectorWear->setValue(existing ? existing->maxWear : 5);
         m_inspectorQuantity->setValue(existing ? existing->quantity : 1);
-        const QString condition = existing ? existing->condition : skin->condition;
+        const QString condition = existing ? existing->condition : (m_catalog ? QStringLiteral("不限") : skin->condition);
         if (m_inspectorCondition->findText(condition) < 0) m_inspectorCondition->addItem(condition);
         m_inspectorCondition->setCurrentText(condition);
     }
     m_favoriteTaskInfo->setText(QStringLiteral("已关联 %1 条任务").arg(tasks));
+    if (m_catalog) m_favoriteCreate->setEnabled(m_inspectorPrice->value() > 0);
 }
 
 void MainWindow::createInspectorTask()
@@ -1164,6 +1216,7 @@ void MainWindow::createInspectorTask()
     const auto* skin = findSkin(m_state, selectedFavoriteId());
     if (!skin) return;
     m_inspectorPrice->interpretText();
+    if (m_catalog && m_inspectorPrice->value() <= 0) return;
     m_inspectorWear->interpretText();
     m_inspectorQuantity->interpretText();
     Task task;
@@ -1200,6 +1253,14 @@ void MainWindow::refreshPrices()
         m_priceHistory->setRowCount(0);
         return;
     }
+    if (m_catalog) {
+        m_priceCards[0]->setValue(skin->priceKnown ? amount(skin->price) : QStringLiteral("—"), QStringLiteral("无观测不估算"));
+        for (int i = 1; i < m_priceCards.size(); ++i) m_priceCards[i]->setValue(QStringLiteral("—"), QStringLiteral("暂无历史采样"));
+        m_priceChart->setSeries({});
+        m_priceChart->setCaption(skin->name);
+        m_priceHistory->setRowCount(0);
+        return;
+    }
     const auto values = series(skin->price);
     m_priceCards[0]->setValue(amount(skin->price), QStringLiteral("演示报价 · 非实际成交价"));
     m_priceCards[1]->setValue(amount(*std::min_element(values.begin(), values.end())), QStringLiteral("合成样本范围"));
@@ -1212,7 +1273,7 @@ void MainWindow::refreshPrices()
         put(m_priceHistory, row, 0, QStringLiteral("样本 %1").arg(index + 1), FluentTheme::secondary);
         put(m_priceHistory, row, 1, skin->name);
         put(m_priceHistory, row, 2, amount(values[index]));
-        put(m_priceHistory, row, 3, QStringLiteral("演示报价"), FluentTheme::secondary);
+        put(m_priceHistory, row, 3, (m_catalog ? QStringLiteral("已知报价") : QStringLiteral("演示报价")), FluentTheme::secondary);
         put(m_priceHistory, row, 4, QStringLiteral("本地合成 · 非游戏采集"), FluentTheme::secondary);
     }
 }
@@ -1220,7 +1281,7 @@ void MainWindow::refreshPrices()
 void MainWindow::refreshStats()
 {
     const int scans = m_state->simulatedScans, matches = m_state->simulatedMatches, success = m_state->simulatedSuccess;
-    m_statsCards[0]->setValue(QString::number(scans), QStringLiteral("本次演示扫描条目"));
+    m_statsCards[0]->setValue(QString::number(scans), (m_catalog ? QStringLiteral("尚无运行记录") : QStringLiteral("本次演示扫描条目")));
     m_statsCards[1]->setValue(QString::number(matches), QStringLiteral("符合模拟筛选条件"));
     m_statsCards[2]->setValue(QString::number(success), QStringLiteral("不是实际成交"));
     m_statsCards[3]->setValue(QStringLiteral("—"), QStringLiteral("未连接执行模块"));
@@ -1230,7 +1291,12 @@ void MainWindow::refreshStats()
         m_reasonLabels[i]->setText(QStringLiteral("%1 · %2%").arg(values[i]).arg(fraction, 0, 'f', 1));
         m_reasonBars[i]->setValue(qRound(fraction));
     }
-    m_statsNote->setText(QStringLiteral("模拟未决：0。统计只描述本地模拟引擎，不代表实际游戏结果。"));
+    m_statsNote->setText(m_catalog ? QStringLiteral("尚无实际运行记录；不生成模拟成交或支出。") : QStringLiteral("模拟未决：0。统计只描述本地模拟引擎，不代表实际游戏结果。"));
+    if (m_catalog) {
+        for (auto* metric : m_statsCards) metric->setValue(QStringLiteral("—"), QStringLiteral("暂无实际记录"));
+        for (auto* reason : m_reasonLabels) reason->setText(QStringLiteral("—"));
+        for (auto* bar : m_reasonBars) bar->setValue(0);
+    }
 }
 
 void MainWindow::refreshLogs()
@@ -1280,7 +1346,7 @@ void MainWindow::showHelp()
     }
     body->addWidget(label(QStringLiteral("运行快捷键：%1（接入执行模块后生效）").arg(m_state->run.hotkey), QStringLiteral("cardCaption")));
     body->addSpacing(4);
-    auto* demo = label(QStringLiteral("当前版本是本地演示前端：不连接游戏，不读取实时市场，也不执行点击或购买。"), QStringLiteral("tertiaryLabel"));
+    auto* demo = label((m_catalog ? QStringLiteral("通过“皮肤资料 / 追加赛季”维护目录。菜单颜色、极品 / 优品与任务成色独立保存；未知市场数据保持空白。") : QStringLiteral("当前版本是本地演示前端：不连接游戏，不读取实时市场，也不执行点击或购买。")), QStringLiteral("tertiaryLabel"));
     demo->setWordWrap(true);
     body->addWidget(demo);
     outer->addWidget(content, 1);
@@ -1865,14 +1931,14 @@ void MainWindow::exportConfiguration()
 
 void MainWindow::exportPrices()
 {
-    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出演示报价"), "relink-demo-prices.csv", QStringLiteral("CSV 文件 (*.csv)"));
+    const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("导出已知报价"), "relink-prices.csv", QStringLiteral("CSV 文件 (*.csv)"));
     if (path.isEmpty()) return;
     QString error;
     if (!m_state->exportPricesCsv(path, &error)) {
         QMessageBox::warning(this, QStringLiteral("导出失败"), error);
         return;
     }
-    m_state->addLog("INFO", QStringLiteral("已导出演示报价 CSV（非游戏采集数据）"));
+    m_state->addLog("INFO", QStringLiteral("已导出报价 CSV，未知值留空"));
     m_state->notifyChanged();
 }
 
@@ -1910,3 +1976,20 @@ void MainWindow::applyDensity()
         m_overviewLogs->setFixedHeight(qMax(1, m_overviewLogs->rowCount()) * m_overviewLogs->verticalHeader()->defaultSectionSize() + 2);
 }
 
+
+void MainWindow::manageSkinCatalog()
+{
+    if (!m_catalog) return;
+    auto* dialog = new SkinCatalogDialog(m_catalog, this);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setModal(true);
+    connect(dialog, &SkinCatalogDialog::catalogChanged, this, [this] {
+        QString error;
+        if (!relink::application::applyCatalogConfiguration(*m_state, m_catalog->catalog(), nullptr, &error)) {
+            QMessageBox::warning(this, QStringLiteral("目录同步失败"), error);
+            return;
+        }
+        m_state->notifyChanged();
+    });
+    dialog->open();
+}

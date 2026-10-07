@@ -1,0 +1,40 @@
+{
+  "tests": [
+    {
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\domain_tests.exe"
+      ],
+      "input": "Isolated test-only fixtures and QTemporaryDir; no production writes, no game, offscreen widgets only",
+      "stdout": "PASS temporary_directory\nPASS startup_has_no_synthetic_data\nPASS normal_state_cannot_start_simulation\nPASS explicit_fixture_marker\nPASS synthetic_fixture_counts\nPASS atomic_save\nPASS schema_and_demo_marker\nPASS save_load_roundtrip\nPASS reject_range_transactional\nPASS reject_unknown_skin_transactional\nPASS reject_quantity_zero_transactional\nPASS reject_quantity_fraction_transactional\nPASS reject_quantity_overflow_transactional\nPASS reject_quantity_ui_limit_transactional\nPASS reject_task_name_ui_limit_transactional\nPASS reject_task_name_utf16_units_transactional\nPASS reject_task_price_ui_limit_transactional\nPASS reject_task_min_price_precision_transactional\nPASS reject_task_max_price_precision_transactional\nPASS reject_task_wear_ui_limit_transactional\nPASS reject_task_wear_precision_transactional\nPASS reject_negative_price_transactional\nPASS reject_null_wear_transactional\nPASS reject_string_price_transactional\nPASS reject_invalid_demo_flag_transactional\nPASS reject_price_known_type_transactional\nPASS reject_wear_known_type_transactional\nPASS reject_catalog_product_id_type_transactional\nPASS reject_unknown_schema_transactional\nPASS reject_duplicate_task_id_transactional\nPASS reject_duplicate_skin_id_transactional\nPASS reject_invalid_json_transactional\nPASS reject_non_object_root\nPASS missing_file_error\nPASS reject_nonfinite_save\nPASS restore_valid_fixture\nPASS accept_task_exact_ui_boundaries\nPASS accept_task_float_noise_utf16_boundary_and_unrestricted_skin_precision\nPASS csv_export\nPASS csv_utf8_demo_prices\nPASS csv_formula_escaping\nPASS paused_tick_noop\nPASS start_idempotent\nPASS simulation_local_matching\nPASS pause_idempotent_and_freezes_counts\nPASS simulation_respects_task_quantities\nPASS no_enabled_tasks_no_start\nPASS all_completed_autopause\nPASS reset_task_preserves_aggregate_statistics_and_notifies\nPASS reset_completed_task_allows_new_skin_simulation\nPASS reset_disabled_task_keeps_disabled_status\nPASS reset_unknown_task_noop\nPASS successful_import_resets_runtime\nPASS bounded_log_buffer\nPASS run_settings_original_defaults_saved\nPASS legacy_config_without_run_settings_loads_defaults\nPASS run_settings_custom_roundtrip\nPASS restore_fixture_before_run_rejections\nPASS reject_run_delay_range_transactional\nPASS reject_run_hotkey_transactional\nPASS reject_run_step_precision_transactional\nPASS reject_run_schedule_time_transactional\nPASS reject_run_flag_type_transactional\nPASS reject_run_settings_not_object_transactional\nPASS reject_task_condition_type_transactional\nPASS condition_filter_blocks_mismatched_simulation\nPASS catalog_without_observations_saves\nPASS catalog_config_not_labeled_demo\nPASS catalog_metadata_and_unknown_market_values_roundtrip\nPASS unknown_observations_export_empty_not_fake_zero\nPASS catalog_task_cannot_create_simulated_result\nPASS cleared_fixture_marker_blocks_start_and_ticks\nPASS importing_fixture_does_not_enable_test_execution\nPASS fixture_execution_requires_explicit_opt_in\nPASS legacy_user_observations_preserved\nRESULT PASS failures=0\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\ui_module_tests.exe"
+      ],
+      "input": "Isolated test-only fixtures and QTemporaryDir; no production writes, no game, offscreen widgets only",
+      "stdout": "UI_MODULE_TESTS=PASS; assertions=95; failures=0; mainwindow=false; sqlite=false; offscreen=true\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\business_migration_tests.exe"
+      ],
+      "input": "Isolated test-only fixtures and QTemporaryDir; no production writes, no game, offscreen widgets only",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\build_relocated\\profile_store_tests.exe"
+      ],
+      "input": "Isolated test-only fixtures and QTemporaryDir; no production writes, no game, offscreen widgets only",
+      "stdout": "profile_store_tests: PASS\n",
+      "stderr": "",
+      "exit_status": 0
+    }
+  ]
+}

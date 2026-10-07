@@ -1,0 +1,11 @@
+{
+  "replaced_checks": [
+    "ART_RESOURCE",
+    "ART_TRANSPARENCY"
+  ],
+  "new_checks": [
+    "ART_RESOURCE_REMOVED",
+    "NO_DEMO_THUMBNAILS"
+  ],
+  "reason": "User requested blank thumbnails; full real UI has 149 catalogue rows and no synthetic market data. Pixel equality to old demo is not an acceptance criterion."
+}

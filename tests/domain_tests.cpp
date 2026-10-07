@@ -37,6 +37,13 @@ int main(int argc, char** argv) {
     const QString snapshot = directory.filePath(QStringLiteral("snapshot.json"));
     QString error;
     AppState state;
+    check(state.skins.isEmpty() && state.tasks.isEmpty() && state.logs.isEmpty()
+          && !state.property("testFixture").toBool(), "startup_has_no_synthetic_data");
+    state.startSimulation(); state.simulateTick();
+    check(!state.simulationRunning && state.simulatedScans == 0 && state.logs.isEmpty(),
+          "normal_state_cannot_start_simulation");
+    state.loadTestFixture();
+    check(state.property("testFixture").toBool(), "explicit_fixture_marker");
     check(state.skins.size() == 12 && state.tasks.size() == 5, "synthetic_fixture_counts");
     check(state.saveTo(baseline, &error), "atomic_save");
     const QByteArray original = read(baseline);
@@ -87,7 +94,10 @@ int main(int argc, char** argv) {
     rejection("reject_negative_price_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("price"), -1); });
     rejection("reject_null_wear_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("wear"), QJsonValue()); });
     rejection("reject_string_price_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("price"), QStringLiteral("628")); });
-    rejection("reject_non_demo_transactional", [&](QJsonObject& root) { root.insert(QStringLiteral("demo"), false); });
+    rejection("reject_invalid_demo_flag_transactional", [&](QJsonObject& root) { root.insert(QStringLiteral("demo"), "false"); });
+    rejection("reject_price_known_type_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("priceKnown"), 1); });
+    rejection("reject_wear_known_type_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("wearKnown"), "true"); });
+    rejection("reject_catalog_product_id_type_transactional", [&](QJsonObject& root) { changeSkin(root, QStringLiteral("catalogProductId"), 10602); });
     rejection("reject_unknown_schema_transactional", [&](QJsonObject& root) { root.insert(QStringLiteral("schema_version"), 2); });
     rejection("reject_duplicate_task_id_transactional", [&](QJsonObject& root) {
         auto array = root.value(QStringLiteral("tasks")).toArray(); array.append(array.at(0)); root.insert(QStringLiteral("tasks"), array);
@@ -137,7 +147,7 @@ int main(int argc, char** argv) {
     imported.skins[0].name = QStringLiteral("=HYPERLINK(\"demo\")");
     check(imported.exportPricesCsv(csvPath, &error) && read(csvPath).contains("'=HYPERLINK(\"\"demo\"\")"),
           "csv_formula_escaping");
-    imported.loadDemo();
+    imported.loadTestFixture();
     int changedCount = 0;
     QObject::connect(&imported, &AppState::changed, [&]() { ++changedCount; });
     imported.simulateTick();
@@ -163,7 +173,7 @@ int main(int argc, char** argv) {
     check(imported.simulatedSuccess == 9, "simulation_respects_task_quantities");
     imported.pauseSimulation();
 
-    imported.loadDemo();
+    imported.loadTestFixture();
     for (auto& task : imported.tasks) task.enabled = false;
     imported.startSimulation();
     check(!imported.simulationRunning && imported.simulatedScans == 0, "no_enabled_tasks_no_start");
@@ -259,11 +269,73 @@ int main(int argc, char** argv) {
     rejection("reject_run_settings_not_object_transactional", [&](QJsonObject& root) { root.insert(QStringLiteral("run_settings"), 5); });
     rejection("reject_task_condition_type_transactional", [&](QJsonObject& root) { changeTask(root, QStringLiteral("condition"), 3); });
     AppState conditionState;
+    conditionState.loadTestFixture();
     conditionState.tasks[0].condition = QStringLiteral("成色A");
     conditionState.startSimulation();
     conditionState.simulateTick();
     check(conditionState.tasks[0].status == QStringLiteral("演示等待条件")
           && conditionState.simulatedMatches == 2, "condition_filter_blocks_mismatched_simulation");
+    // A verified product definition has no implied live listing, follow or price.
+    AppState catalogState;
+    Skin catalogSkin;
+    catalogSkin.id = QStringLiteral("catalog-10602");
+    catalogSkin.name = QStringLiteral("AUG突击步枪-天命");
+    catalogSkin.series = QStringLiteral("S6");
+    catalogSkin.condition = QStringLiteral("未采集");
+    catalogSkin.rarity = QStringLiteral("紫色");
+    catalogSkin.catalogProductId = QStringLiteral("10602");
+    catalogSkin.menuColor = QStringLiteral("purple");
+    catalogSkin.variant = QStringLiteral("standard");
+    catalogSkin.skinSeries = QStringLiteral("天命");
+    catalogState.skins.append(catalogSkin);
+    check(catalogState.saveTo(candidate, &error), "catalog_without_observations_saves");
+    auto catalogRoot = QJsonDocument::fromJson(read(candidate)).object();
+    check(!catalogRoot.value(QStringLiteral("demo")).toBool()
+          && catalogRoot.value(QStringLiteral("source")).toString() == QStringLiteral("catalog_configuration"),
+          "catalog_config_not_labeled_demo");
+    AppState catalogReloaded;
+    check(catalogReloaded.loadFrom(candidate, &error) && catalogReloaded.skins.size() == 1
+          && catalogReloaded.skins[0].catalogProductId == QStringLiteral("10602")
+          && catalogReloaded.skins[0].menuColor == QStringLiteral("purple")
+          && catalogReloaded.skins[0].variant == QStringLiteral("standard")
+          && catalogReloaded.skins[0].skinSeries == QStringLiteral("天命")
+          && !catalogReloaded.skins[0].priceKnown && !catalogReloaded.skins[0].wearKnown
+          && !catalogReloaded.skins[0].changeKnown && !catalogReloaded.skins[0].followed,
+          "catalog_metadata_and_unknown_market_values_roundtrip");
+    check(catalogReloaded.exportPricesCsv(csvPath, &error)
+          && !read(csvPath).contains("DEMO_SYNTHETIC")
+          && !read(csvPath).contains("0.000000") && !read(csvPath).contains("0.00"),
+          "unknown_observations_export_empty_not_fake_zero");
+    catalogReloaded.tasks.append(Task{QStringLiteral("real-task"), QStringLiteral("保留任务"), catalogSkin.id});
+    catalogReloaded.startSimulation(); catalogReloaded.simulateTick();
+    check(!catalogReloaded.simulationRunning && catalogReloaded.simulatedScans == 0,
+          "catalog_task_cannot_create_simulated_result");
+    AppState migratedFixture;
+    migratedFixture.loadTestFixture();
+    migratedFixture.setProperty("testFixture", false);
+    migratedFixture.startSimulation();
+    migratedFixture.simulationRunning = true;
+    migratedFixture.simulateTick();
+    check(migratedFixture.simulatedScans == 0 && migratedFixture.simulatedSuccess == 0,
+          "cleared_fixture_marker_blocks_start_and_ticks");
+    AppState fixtureImported;
+    check(fixtureImported.loadFrom(baseline, &error) && !fixtureImported.property("testFixture").toBool(),
+          "importing_fixture_does_not_enable_test_execution");
+    fixtureImported.startSimulation();
+    check(!fixtureImported.simulationRunning, "fixture_execution_requires_explicit_opt_in");
+    // Retain legacy saved market numbers; absence of new flags is not deletion.
+    auto legacySkins = catalogRoot.value(QStringLiteral("skins")).toArray();
+    auto legacySkin = legacySkins[0].toObject();
+    for (const char* key : {"priceKnown", "wearKnown", "changeKnown", "dataSource"})
+        legacySkin.remove(QLatin1String(key));
+    legacySkin.insert(QStringLiteral("price"), 230);
+    legacySkin.insert(QStringLiteral("wear"), 0.187079);
+    legacySkins[0] = legacySkin; catalogRoot.insert(QStringLiteral("skins"), legacySkins);
+    check(write(candidate, QJsonDocument(catalogRoot).toJson())
+          && catalogReloaded.loadFrom(candidate, &error)
+          && catalogReloaded.skins[0].priceKnown && catalogReloaded.skins[0].wearKnown
+          && catalogReloaded.skins[0].price == 230 && catalogReloaded.skins[0].wear == 0.187079,
+          "legacy_user_observations_preserved");
     std::cout << "RESULT " << (failures == 0 ? "PASS" : "FAIL") << " failures=" << failures << '\n';
     return failures == 0 ? 0 : 1;
 }

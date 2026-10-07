@@ -254,45 +254,59 @@ QVector<double> series(double price)
 }
 QString skinCategory(const QString& name)
 {
-    const QString base = name.section(' ', 0, 0);
-    if (base == "AWM" || base == "M700") return "sniper";
-    if (base == "M249") return "lmg";
+    // Verified display labels include a season prefix and sometimes omit the
+    // space between the weapon model and its Chinese category.
+    const QString weapon = name.section(QLatin1Char('|'), -1).trimmed();
+    if (weapon.contains(QStringLiteral("狙击步枪")) || weapon.contains(QStringLiteral("狙击枪"))) return "sniper";
+    if (weapon.contains(QStringLiteral("冲锋枪"))) return "smg";
+    if (weapon.contains(QStringLiteral("轻机枪")) || weapon.contains(QStringLiteral("通用机枪"))) return "lmg";
+    if (weapon.contains(QStringLiteral("霰弹枪")) || weapon.contains(QStringLiteral("双管霰弹枪"))) return "shotgun";
+    if (weapon.contains(QStringLiteral("手枪"))) return "pistol";
+    if (weapon.contains(QStringLiteral("突击步枪")) || weapon.contains(QStringLiteral("战斗步枪"))
+        || weapon.contains(QStringLiteral("射手步枪"))) return "rifle";
+    // Compatibility for explicit historical fixtures and user shorthand names.
+    const QString base = weapon.section(QLatin1Char(' '), 0, 0);
+    if (base == "AWM" || base == "M700" || base == "SVD" || base == "R93" || base == "SV-98") return "sniper";
+    if (base == "M249" || base == "PKM" || base == "M250" || base == "QJB201") return "lmg";
     if (base == "Vector" || base == "MP5" || base == "P90" || base == "SR-3M") return "smg";
+    if (base == "M870" || base == "M1014" || base == "S12K" || base == "725") return "shotgun";
+    if (base == "G18" || base == QStringLiteral("沙漠之鹰")) return "pistol";
     return "rifle";
 }
 int skinArtIndex(const Skin& skin)
 {
-    const QStringList names = {"AUG","M4A1","AKM","AWM","Vector","SCAR-H","MP5","G3","M700","P90","SR-3M","M249"};
-    return names.indexOf(skin.name.section(' ', 0, 0));
+    Q_UNUSED(skin);
+    // Catalogue identity never selects artwork from the old generated atlas.
+    return -1;
 }
 QPixmap skinArtwork(int index)
 {
-    static QVector<QPixmap> sprites;
-    if (sprites.isEmpty()) {
-        const QImage atlas(":/assets/demo_skin_atlas.png");
-        if (atlas.isNull()) return {};
-        for (int i = 0; i < 12; ++i) {
-            const int left = (i % 4) * atlas.width() / 4, right = (i % 4 + 1) * atlas.width() / 4;
-            const int top = (i / 4) * atlas.height() / 3, bottom = (i / 4 + 1) * atlas.height() / 3;
-            const QImage cell = atlas.copy(left, top, right - left, bottom - top);
-            int x0 = cell.width(), y0 = cell.height(), x1 = -1, y1 = -1;
-            for (int y = 0; y < cell.height(); ++y)
-                for (int x = 0; x < cell.width(); ++x)
-                    if (qAlpha(cell.pixel(x, y)) > 64) { x0 = qMin(x0, x); y0 = qMin(y0, y); x1 = qMax(x1, x); y1 = qMax(y1, y); }
-            // Texture coordinates trim transparent padding at render time;
-            // the original generated atlas is preserved byte-for-byte.
-            sprites.append(x1 >= x0 ? QPixmap::fromImage(cell.copy(QRect(QPoint(x0, y0), QPoint(x1, y1)))) : QPixmap());
-        }
-    }
-    return index >= 0 && index < sprites.size() ? sprites[index] : QPixmap();
+    Q_UNUSED(index);
+    // Reserved for future verified per-product assets. No default weapon image.
+    return {};
 }
 // Mirrors the original "S6|AUG 突击步枪 - 天命" skin selector: season, then name.
-QString skinChoice(const Skin& skin) { return skin.series.section(' ', 0, 0) + QStringLiteral(" | ") + skin.name; }
+QString skinChoice(const Skin& skin)
+{
+    const QString season = skin.series.section(QLatin1Char(' '), 0, 0);
+    // Verified menu labels already contain Sx|; do not duplicate that prefix.
+    if (skin.name.contains(QLatin1Char('|'))
+        && skin.name.section(QLatin1Char('|'), 0, 0).trimmed() == season) return skin.name;
+    return season + QStringLiteral(" | ") + skin.name;
+}
 QStringList conditionOptions(const AppState* state)
 {
-    QStringList options = {QStringLiteral("不限"), QStringLiteral("成色S"), QStringLiteral("成色A"), QStringLiteral("成色B")};
-    for (const auto& skin : state->skins)
-        if (!options.contains(skin.condition)) options.append(skin.condition);
+    QStringList options = {QStringLiteral("不限"), QStringLiteral("成色S"), QStringLiteral("成色A"),
+                           QStringLiteral("成色B"), QStringLiteral("成色C")};
+    if (!state) return options;
+    auto append = [&](const QString& value) {
+        const QString condition = value.trimmed();
+        if (!condition.isEmpty() && condition != QStringLiteral("未采集")
+            && condition != QStringLiteral("未知") && condition != QStringLiteral("—")
+            && !options.contains(condition)) options.append(condition);
+    };
+    for (const auto& skin : state->skins) append(skin.condition);
+    for (const auto& task : state->tasks) append(task.condition);
     return options;
 }
 

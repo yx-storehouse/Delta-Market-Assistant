@@ -9,6 +9,10 @@
 using namespace relink::config;
 
 namespace {
+int failures = 0;
+void check(bool passed, const char* label) {
+    if (!passed) { ++failures; qCritical() << "FAIL:" << label; }
+}
 
 bool hasCode(const QJsonArray& values, const QString& code) {
     for (const auto& value : values)
@@ -53,6 +57,63 @@ int main(int argc, char** argv) {
     Q_ASSERT(candidate.value(QStringLiteral("filters")).toObject().value(QStringLiteral("condition")).toObject().value(QStringLiteral("op")).toString() == QStringLiteral("any"));
     Q_ASSERT(candidate.value(QStringLiteral("quantity_candidate")).toInt() == 3);
     Q_ASSERT(candidate.value(QStringLiteral("quantity_semantics")).toString() == QStringLiteral("demo_count_only"));
+
+    // Regular configurations are not demo fixtures and carry verified product
+    // metadata without converting saved numbers into live observations.
+    auto actual = validV1();
+    actual.insert(QStringLiteral("demo"), false);
+    actual.insert(QStringLiteral("source"), QStringLiteral("catalog_configuration"));
+    auto actualSkins = actual.value(QStringLiteral("skins")).toArray();
+    auto actualSkin = actualSkins[0].toObject();
+    actualSkin.insert(QStringLiteral("catalogProductId"), QStringLiteral("10602"));
+    actualSkin.insert(QStringLiteral("name"), QStringLiteral("AUG突击步枪-天命"));
+    actualSkin.insert(QStringLiteral("series"), QStringLiteral("S6 典藏"));
+    actualSkin.insert(QStringLiteral("skinSeries"), QStringLiteral("天命"));
+    actualSkin.insert(QStringLiteral("menuColor"), QStringLiteral("purple"));
+    actualSkin.insert(QStringLiteral("variant"), QStringLiteral("standard"));
+    actualSkin.insert(QStringLiteral("dataSource"), QStringLiteral("catalog"));
+    actualSkin.insert(QStringLiteral("priceKnown"), false);
+    actualSkin.insert(QStringLiteral("wearKnown"), false);
+    actualSkin.insert(QStringLiteral("changeKnown"), false);
+    actualSkins[0] = actualSkin; actual.insert(QStringLiteral("skins"), actualSkins);
+    const auto actualPreview = previewV1(QJsonDocument(actual).toJson(QJsonDocument::Compact));
+    const auto actualExtensions = actualPreview.value(QStringLiteral("extensions")).toObject();
+    check(!previewHasErrors(actualPreview), "non-demo configuration accepted");
+    check(actualExtensions.value(QStringLiteral("x-target_mode")).toString() == QStringLiteral("configuration")
+          && actualExtensions.value(QStringLiteral("x-observation_source")).toString() == QStringLiteral("configuration_metadata")
+          && !actualExtensions.value(QStringLiteral("x-live_market_data")).toBool(),
+          "non-demo source remains configuration not simulated or live market data");
+    const auto actualCatalog = actualExtensions.value(QStringLiteral("x-catalog")).toArray();
+    check(actualCatalog.size() == 1, "actual catalogue preserved");
+    if (actualCatalog.size() == 1) {
+        const auto item = actualCatalog[0].toObject();
+        const auto metadata = item.value(QStringLiteral("extensions")).toObject();
+        check(item.value(QStringLiteral("series")).toString() == QStringLiteral("天命")
+              && item.value(QStringLiteral("season")).toString() == QStringLiteral("S6")
+              && metadata.value(QStringLiteral("x-catalogProductId")).toString() == QStringLiteral("10602")
+              && metadata.value(QStringLiteral("x-menuColor")).toString() == QStringLiteral("purple")
+              && metadata.value(QStringLiteral("x-variant")).toString() == QStringLiteral("standard")
+              && metadata.contains(QStringLiteral("x-priceKnown"))
+              && !metadata.value(QStringLiteral("x-priceKnown")).toBool(),
+              "product identity quality season and availability metadata retained");
+    }
+    const auto actualRows = actualPreview.value(QStringLiteral("rows")).toArray();
+    check(actualRows.size() == 1, "actual task preview retained");
+    if (actualRows.size() == 1) {
+        const auto actualCandidate = actualRows[0].toObject().value(QStringLiteral("candidate")).toObject();
+        check(actualCandidate.value(QStringLiteral("quantity_semantics")).toString() == QStringLiteral("unreviewed")
+              && !actualCandidate.value(QStringLiteral("enabled")).toBool(),
+              "configuration quantities are not demo counts and do not auto-activate");
+    }
+    auto invalidAvailability = actual;
+    actualSkin.insert(QStringLiteral("priceKnown"), QStringLiteral("false"));
+    actualSkins[0] = actualSkin; invalidAvailability.insert(QStringLiteral("skins"), actualSkins);
+    check(previewHasErrors(previewV1(QJsonDocument(invalidAvailability).toJson())), "invalid availability type rejected");
+    auto invalidDemoFlag = actual;
+    invalidDemoFlag.insert(QStringLiteral("demo"), QStringLiteral("false"));
+    check(previewHasErrors(previewV1(QJsonDocument(invalidDemoFlag).toJson())), "invalid demo type rejected");
+    auto fractionalSchema = actual; fractionalSchema.insert(QStringLiteral("schema_version"), 1.5);
+    check(previewHasErrors(previewV1(QJsonDocument(fractionalSchema).toJson())), "fractional schema rejected");
 
     const QByteArray normal = QByteArrayLiteral("AUG Demo|any|unowned|orange|S|none|230|600|0.399|rare|default|7|9\n");
     const auto p13 = preview13Columns(normal);
@@ -106,6 +167,6 @@ int main(int argc, char** argv) {
 
     const auto unsupported = previewV1(QByteArrayLiteral("{\"schema_version\":2,\"demo\":true}"));
     Q_ASSERT(previewHasErrors(unsupported));
-    qInfo() << "business_migration_tests: PASS";
-    return 0;
+    qInfo() << "business_migration_tests:" << (failures == 0 ? "PASS" : "FAIL") << "failures=" << failures;
+    return failures == 0 ? 0 : 1;
 }

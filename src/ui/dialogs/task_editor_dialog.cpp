@@ -22,7 +22,7 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     const bool editing = task != nullptr;
     const Task existing = task ? *task : Task{};
     this->setObjectName(QStringLiteral("taskEditorDialog"));
-    this->setWindowTitle(editing ? QStringLiteral("编辑模拟任务") : QStringLiteral("新增模拟任务"));
+    this->setWindowTitle(editing ? QStringLiteral("编辑任务") : QStringLiteral("新增任务"));
     this->setMinimumWidth(540);
     auto* outer = new QVBoxLayout(this);
     outer->setContentsMargins(0, 0, 0, 0);
@@ -33,9 +33,9 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     auto* body = new QVBoxLayout(content);
     body->setContentsMargins(24, 22, 24, 20);
     body->setSpacing(0);
-    body->addWidget(label(editing ? QStringLiteral("调整任务条件") : QStringLiteral("创建一条模拟任务"), QStringLiteral("dialogTitle")));
+    body->addWidget(label(editing ? QStringLiteral("调整任务条件") : QStringLiteral("创建收藏任务"), QStringLiteral("dialogTitle")));
     body->addSpacing(6);
-    body->addWidget(label(QStringLiteral("这些规则只用于本地演示，不会触发实际购买。"), QStringLiteral("cardCaption")));
+    body->addWidget(label(QStringLiteral("选择真实目录中的皮肤并保存筛选条件。成色、价格和磨损按任务分别设置。"), QStringLiteral("cardCaption")));
     body->addSpacing(20);
     auto* name = new QLineEdit;
     name->setObjectName(QStringLiteral("taskName"));
@@ -51,7 +51,8 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     auto* condition = new FluentComboBox;
     condition->setObjectName(QStringLiteral("taskCondition"));
     condition->addItems(conditionOptions(state));
-    const QString conditionValue = editing ? existing.condition : (defaultSkin ? defaultSkin->condition : QStringLiteral("不限"));
+    const QString conditionValue = editing ? existing.condition
+        : (state->property("testFixture").toBool() && defaultSkin ? defaultSkin->condition : QStringLiteral("不限"));
     if (condition->findText(conditionValue) < 0) condition->addItem(conditionValue);
     condition->setCurrentText(conditionValue);
     auto* min = new FluentDoubleSpinBox;
@@ -63,7 +64,11 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     max->setObjectName(QStringLiteral("taskMaxPrice"));
     max->setRange(0, 999999999);
     max->setDecimals(2);
-    max->setValue(editing ? existing.maxPrice : (defaultSkin ? defaultSkin->price : 800));
+    max->setSpecialValueText(QStringLiteral("请填写"));
+    // A catalogue item has no live quote. The initial value is a configurable
+    // task threshold, never a price inferred from the catalogue.
+    max->setValue(editing ? existing.maxPrice :
+        (state->property("testFixture").toBool() && defaultSkin ? defaultSkin->price : 0));
     auto* wear = new FluentDoubleSpinBox;
     wear->setObjectName(QStringLiteral("taskWear"));
     wear->setRange(0, 100);
@@ -121,10 +126,14 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
     commandRow->addWidget(cancel, 1);
     outer->addWidget(commands);
     connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
+    const bool testFixture = state->property("testFixture").toBool();
     connect(save, &QPushButton::clicked, this,
-        [this, name, skin, min, max, wear, quantity, condition, enabled, validation, editing, existing] {
+        [this, name, skin, min, max, wear, quantity, condition, enabled, validation, editing, existing, testFixture] {
         if (name->text().trimmed().isEmpty()) { validation->setText(QStringLiteral("请输入任务名称。")); name->setFocus(); return; }
         if (skin->currentIndex() < 0) { validation->setText(QStringLiteral("请选择目标皮肤。")); return; }
+        if (!editing && !testFixture && max->value() <= 0) {
+            validation->setText(QStringLiteral("请填写大于 0 的最高价格。")); max->setFocus(); return;
+        }
         if (min->value() > max->value()) { validation->setText(QStringLiteral("最低价格需要小于或等于最高价格。")); return; }
         m_task.id = editing ? existing.id : QUuid::createUuid().toString(QUuid::WithoutBraces);
         m_task.name = name->text().trimmed();
@@ -135,7 +144,8 @@ TaskEditorDialog::TaskEditorDialog(const AppState* state, const Task* task,
         m_task.quantity = quantity->value();
         m_task.condition = condition->currentText();
         m_task.enabled = enabled->isChecked();
-        m_task.status = m_task.enabled ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
+        m_task.status = m_task.enabled ? QStringLiteral("待启动")
+            : (testFixture ? QStringLiteral("演示已暂停") : QStringLiteral("已停用"));
         accept();
     });
 }

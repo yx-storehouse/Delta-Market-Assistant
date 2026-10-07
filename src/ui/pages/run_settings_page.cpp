@@ -31,7 +31,8 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
     header->addSpacing(8);
     header->addWidget(save, 0, Qt::AlignVCenter);
     m_runBinders.append([this, profileCaption] {
-        profileCaption->setText((m_workspacePresent ? QStringLiteral("本地演示参数 %1") : QStringLiteral("方案 %1")).arg(m_state->run.profile));
+        profileCaption->setText((m_workspacePresent && m_state->property("testFixture").toBool()
+            ? QStringLiteral("本地演示参数 %1") : QStringLiteral("方案 %1")).arg(m_state->run.profile));
     });
     connect(save, &QPushButton::clicked, this, &RunSettingsPage::saveRequested);
     if (workspacePanel) {
@@ -46,14 +47,14 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
         layout->addSpacing(8);
     };
     const auto row = [&](QWidget* item) { layout->addWidget(item); layout->addSpacing(4); };
-    // PR07: import is intentionally a preview-only operation.  The button is
-    // deterministic and uses an in-memory fixture so the self-test can verify
-    // the dialog without opening a file chooser or touching the workspace.
-    auto* importPreviewButton = button(QStringLiteral("打开只读预览"), QStringLiteral("runImportPreviewButton"), ButtonKind::Standard, Glyph::Import);
+    // The owning shell opens an actual configuration file in normal mode.
+    // This page only publishes the preview intent; it never imports fixtures.
+    auto* importPreviewButton = button(QStringLiteral("选择配置文件"), QStringLiteral("runImportPreviewButton"), ButtonKind::Standard, Glyph::Import);
     connect(importPreviewButton, &QPushButton::clicked, this, &RunSettingsPage::importPreviewRequested);
-    row(settingsCard(glyphLabel(Glyph::Import), QStringLiteral("导入预览"),
-                     QStringLiteral("先检查行状态与诊断；预览始终只读，完整审定后可另存方案，保存不启用规则。"),
-                     importPreviewButton));
+    auto* importCard = settingsCard(glyphLabel(Glyph::Import), QStringLiteral("导入配置预览"),
+                     QStringLiteral("选择配置文件，检查皮肤与任务条件后再保存。导入配置不会自动执行任务。"),
+                     importPreviewButton);
+    row(importCard);
     const auto text = [](const QString& value) { return label(value); };
     const auto strip = [](std::initializer_list<QWidget*> parts) {
         auto* host = new QWidget;

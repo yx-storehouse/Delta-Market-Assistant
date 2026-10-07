@@ -2,6 +2,10 @@
 #include "mainwindow.h"
 #include "fluenttheme.h"
 #include "application/startup_config.h"
+#include "application/catalog_startup.h"
+#include "catalog/skin_catalog.h"
+#include "diagnostics/catalog_self_test.h"
+#include <QMessageBox>
 #include "application/workspace/workspace_controller.h"
 #include "diagnostics/ui_self_test_runner.h"
 #include "ledger/storage_self_test.h"
@@ -44,7 +48,7 @@ int main(int argc, char** argv) {
     bool headless = false;
     for (int i = 1; i < argc; ++i) {
         const QByteArray a(argv[i]);
-        headless |= a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
+        headless |= a == "--catalog-self-test" || a == "--self-test" || a == "--snapshot-dir" || a == "--write-demo-config" || a == "--validate-config"
             || a == "--export-app-icon" || a == "--storage-self-test";
         headless |= a.startsWith("--snapshot-dir=") || a.startsWith("--write-demo-config=") || a.startsWith("--validate-config=");
     }
@@ -78,15 +82,16 @@ int main(int argc, char** argv) {
     QCommandLineParser parser;
     parser.setApplicationDescription("Relink Studio offline frontend. No input automation. Explicit --live-capture-check provides read-only diagnostics.");
     parser.addHelpOption(); parser.addVersionOption();
+    parser.addOption({"catalog-self-test", "Verify real catalogue startup and maintenance offscreen using temporary data."});
     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
     parser.addOption({"startup-observer-self-test", "Check original startup page/precheck routes using embedded historical OCR fixtures; no game capture."});
     parser.addOption({"storage-self-test", "Verify the packaged SQLite driver, transactions, recovery and backup using temporary data."});
     parser.addOption({"snapshot-dir", "Render seven pages to PNG, offscreen, then exit.", "directory"});
-    parser.addOption({"config", "Local demo configuration JSON path.", "path"});
+    parser.addOption({"config", "Local configuration JSON path.", "path"});
     parser.addOption({"workspace-dir", "Directory for reviewed profiles and the persistent replay ledger.", "directory"});
     parser.addOption({"workspace-read-only", "Open an existing business workspace without changing it."});
     parser.addOption({"write-demo-config", "Write a fresh synthetic configuration and exit offscreen.", "path"});
-    parser.addOption({"validate-config", "Validate a local demo configuration and exit offscreen.", "path"});
+    parser.addOption({"validate-config", "Validate a local configuration and exit offscreen.", "path"});
     parser.addOption({"font-report", "Print the resolved UI and icon fonts, then exit without opening a window."});
     parser.addOption({"export-app-icon", "Render the 256 px application icon to a PNG offscreen, then exit.", "path"});
     parser.process(app);
@@ -135,6 +140,7 @@ int main(int argc, char** argv) {
         return 0;
     }
     if (parser.isSet("write-demo-config")) {
+        state.loadTestFixture();
         const QString path = QFileInfo(parser.value("write-demo-config")).absoluteFilePath();
         QDir().mkpath(QFileInfo(path).absolutePath());
         QString error;
@@ -142,12 +148,28 @@ int main(int argc, char** argv) {
         std::printf("DEMO_CONFIG=%s\n", ok ? "PASS" : "FAIL");
         return ok ? 0 : 1;
     }
+    if (parser.isSet("catalog-self-test"))
+        return relink::diagnostics::runCatalogSelfTest(app, parser.value("snapshot-dir"));
+    const bool fixtureMode = parser.isSet("self-test");
+    if (fixtureMode) state.loadTestFixture();
     QString config = parser.value("config");
     if (config.isEmpty()) {
         config = headless ? QDir::tempPath() + "/RelinkStudioOffscreen/config.json"
                           : QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/config.json";
     }
-    config = relink::application::prepareStartupConfig(state, config, !headless);
+    relink::catalog::CatalogStore catalog;
+    if (fixtureMode) config = relink::application::prepareStartupConfig(state, config, false);
+    else {
+        QFile builtin(":/catalog/skins.json");
+        QString error;
+        if (!builtin.open(QIODevice::ReadOnly)
+            || !relink::application::prepareCatalogStartup(state, catalog, config, !headless || parser.isSet("config"), builtin.readAll(), &error)) {
+            std::fprintf(stderr, "CATALOG_STARTUP_ERROR: %s\n", error.toUtf8().constData());
+            if (!headless) QMessageBox::critical(nullptr, QStringLiteral("皮肤目录加载失败"), error);
+            return 1;
+        }
+        config = state.configPath;
+    }
     // Headless runs get a fresh, temporary workspace unless the caller supplies
     // an explicit test directory; never open the normal user's ledger in tests.
     QTemporaryDir temporaryWorkspace;
@@ -165,9 +187,9 @@ int main(int argc, char** argv) {
         }
     }
     relink::workspace::WorkspaceController workspace;
-    if (!workspace.open(workspacePath, parser.isSet("workspace-read-only")))
+    if (fixtureMode && !workspace.open(workspacePath, parser.isSet("workspace-read-only")))
         std::fprintf(stderr, "WORKSPACE_OPEN_ERROR: %s\n", workspace.lastError().toUtf8().constData());
-    MainWindow window(&state, nullptr, &workspace);
+    MainWindow window(&state, nullptr, fixtureMode ? &workspace : nullptr, fixtureMode ? nullptr : &catalog);
     window.show(); // Offscreen platform renders to memory only when headless=true.
     if (!headless) {
         QObject::connect(&app, &QApplication::aboutToQuit, &state, [&state, &window]() {

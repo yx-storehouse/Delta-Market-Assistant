@@ -55,6 +55,24 @@ int main(int argc, char** argv) {
         ok &= check(!rules.first().toObject().value(QStringLiteral("enabled")).toBool(), "reviewed rule is not auto-enabled");
         ok &= check(!rules.first().toObject().value(QStringLiteral("review_required")).toBool(), "reviewed rule clears review_required");
     }
+    QJsonObject actualPreview = preview;
+    const QJsonObject actualCatalogEntry{
+        {QStringLiteral("product_id"), QStringLiteral("catalog-10602")},
+        {QStringLiteral("extensions"), QJsonObject{{QStringLiteral("x-menuColor"), QStringLiteral("purple")}}}};
+    QJsonObject actualExtensions{
+        {QStringLiteral("x-target_mode"), QStringLiteral("configuration")},
+        {QStringLiteral("x-observation_source"), QStringLiteral("configuration_metadata")},
+        {QStringLiteral("x-catalog"), QJsonArray{actualCatalogEntry}}};
+    actualPreview.insert(QStringLiteral("extensions"), actualExtensions);
+    const auto actualStaged = ProfileStore::materializePreview(actualPreview, choices);
+    ok &= check(std::holds_alternative<ProfileCommitResult>(actualStaged), "non-demo configuration stages");
+    if (const auto* actual = std::get_if<ProfileCommitResult>(&actualStaged)) {
+        const auto ext = actual->document.value(QStringLiteral("extensions")).toObject();
+        ok &= check(ext.value(QStringLiteral("x-target_mode")) == actualExtensions.value(QStringLiteral("x-target_mode"))
+            && ext.value(QStringLiteral("x-observation_source")) == actualExtensions.value(QStringLiteral("x-observation_source"))
+            && ext.value(QStringLiteral("x-catalog")) == actualExtensions.value(QStringLiteral("x-catalog")),
+            "profile export retains real catalogue and configuration source without synthetic relabeling");
+    }
     ReviewChoices incomplete = choices;
     incomplete.confirmTaxonomy = false;
     const auto incompleteResult = ProfileStore::materializePreview(preview, incomplete);

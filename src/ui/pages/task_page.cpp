@@ -31,8 +31,11 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     auto* edit = button(QStringLiteral("编辑"), QStringLiteral("taskEditButton"), ButtonKind::Subtle, Glyph::Edit);
     auto* remove = button(QStringLiteral("删除"), QStringLiteral("taskDeleteButton"), ButtonKind::Subtle, Glyph::Delete);
     auto* enable = button(QStringLiteral("启用选中"), QStringLiteral("enableSelectedTasksButton"), ButtonKind::Subtle, Glyph::CheckMark);
-    auto* disable = button(QStringLiteral("暂停选中"), QStringLiteral("pauseSelectedTasksButton"), ButtonKind::Subtle, Glyph::Pause);
+    auto* disable = button(QStringLiteral("停用选中"), QStringLiteral("pauseSelectedTasksButton"), ButtonKind::Subtle, Glyph::Pause);
     m_taskStart = button(QStringLiteral("运行模拟"), QStringLiteral("tasksSimulationButton"), ButtonKind::Standard, Glyph::Play);
+    const bool testFixture = m_state->property("testFixture").toBool();
+    m_taskStart->setVisible(testFixture);
+    m_taskStart->setEnabled(testFixture);
     commands->addWidget(add);
     commands->addSpacing(8);
     commands->addWidget(edit);
@@ -63,7 +66,7 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     m_tasksTable->setMinimumHeight(330);
     layout->addWidget(m_tasksTable, 1);
     layout->addSpacing(8);
-    auto* note = label(QStringLiteral("Ctrl / Shift 多选 · 双击编辑 · 当前仅模拟运行，不执行购买"), QStringLiteral("tertiaryLabel"));
+    auto* note = label(QStringLiteral("Ctrl / Shift 多选 · 双击编辑 · 参数按商品 ID 关联皮肤目录，保存不自动执行"), QStringLiteral("tertiaryLabel"));
     note->setWordWrap(true);
     layout->addWidget(note);
     connect(add, &QPushButton::clicked, this, [this] { editTask(); });
@@ -74,7 +77,9 @@ TaskPage::TaskPage(AppState* state, QWidget* parent)
     connect(remove, &QPushButton::clicked, this, &TaskPage::deleteSelectedTasks);
     connect(enable, &QPushButton::clicked, this, [this] { setSelectedTasksEnabled(true); });
     connect(disable, &QPushButton::clicked, this, [this] { setSelectedTasksEnabled(false); });
-    connect(m_taskStart, &QPushButton::clicked, m_state, &AppState::startSimulation);
+    connect(m_taskStart, &QPushButton::clicked, this, [this] {
+        if (m_state->property("testFixture").toBool()) m_state->startSimulation();
+    });
 
 }
 
@@ -104,14 +109,15 @@ void TaskPage::refresh()
         auto* toggle = new ToggleSwitch;
         toggle->setObjectName("taskEnabled_" + task.id);
         toggle->setChecked(task.enabled);
-        toggle->setToolTip(task.enabled ? QStringLiteral("暂停任务") : QStringLiteral("启用任务"));
+        toggle->setToolTip(task.enabled ? QStringLiteral("停用任务") : QStringLiteral("启用任务"));
         m_tasksTable->setCellWidget(row, 6, centered(toggle));
         connect(toggle, &QCheckBox::toggled, this, [this, id = task.id](bool checked) {
             if (m_refreshing) return;
             for (auto& value : m_state->tasks) {
                 if (value.id != id) continue;
                 value.enabled = checked;
-                value.status = checked ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
+                value.status = checked ? QStringLiteral("待启动")
+                    : (m_state->property("testFixture").toBool() ? QStringLiteral("演示已暂停") : QStringLiteral("已停用"));
                 break;
             }
             m_state->notifyChanged();
@@ -142,7 +148,8 @@ void TaskPage::editTask(const QString& id, const QString& skinId)
             if (target.id == id) { target = task; break; }
         }
         m_state->addLog("INFO", QStringLiteral("更新本地任务：") + task.name);
-        m_state->resetTaskSimulation(task.id);
+        if (m_state->property("testFixture").toBool()) m_state->resetTaskSimulation(task.id);
+        else m_state->notifyChanged();
     } else {
         m_state->tasks.append(task);
         m_state->addLog("INFO", QStringLiteral("新增本地任务：") + task.name);
@@ -174,7 +181,8 @@ void TaskPage::setSelectedTasksEnabled(bool enabled)
     for (auto& task : m_state->tasks) {
         if (ids.contains(task.id)) {
             task.enabled = enabled;
-            task.status = enabled ? QStringLiteral("待启动") : QStringLiteral("演示已暂停");
+            task.status = enabled ? QStringLiteral("待启动")
+                : (m_state->property("testFixture").toBool() ? QStringLiteral("演示已暂停") : QStringLiteral("已停用"));
         }
     }
     m_state->addLog("INFO", QStringLiteral("%1 %2 条选中任务").arg(enabled ? QStringLiteral("启用") : QStringLiteral("暂停")).arg(ids.size()));
@@ -183,7 +191,9 @@ void TaskPage::setSelectedTasksEnabled(bool enabled)
 
 void TaskPage::setSimulationAvailable(bool available)
 {
-    m_taskStart->setEnabled(available);
+    const bool testFixture = m_state->property("testFixture").toBool();
+    m_taskStart->setVisible(testFixture);
+    m_taskStart->setEnabled(available && testFixture);
 }
 
 void TaskPage::setCompact(bool compact)
