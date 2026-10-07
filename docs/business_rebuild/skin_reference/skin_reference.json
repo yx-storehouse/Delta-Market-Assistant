@@ -1,0 +1,3588 @@
+{
+  "schema": "skin-reference-v1",
+  "created_date": "2026-10-07",
+  "source_catalog_sha256": "d0d3bf268075c166172d62c17fc9aab4b2269aa956a91b737273dbb795d11e52",
+  "text_source": "existing 0925 dropdown dictionary; IDs preserved",
+  "color_source": "user supplied 1003 menu screenshots",
+  "automatic_game_quality_mapping": false,
+  "production_rules_changed": false,
+  "condition_is_product_quality": false,
+  "game_quality_name_status": "not established by menu colors alone",
+  "sources": [
+    {
+      "season": "S1",
+      "image_number": 7,
+      "file": "evidence/S01.png",
+      "sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6"
+    },
+    {
+      "season": "S2",
+      "image_number": 8,
+      "file": "evidence/S02.png",
+      "sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3"
+    },
+    {
+      "season": "S3",
+      "image_number": 9,
+      "file": "evidence/S03.png",
+      "sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a"
+    },
+    {
+      "season": "S4",
+      "image_number": 10,
+      "file": "evidence/S04.png",
+      "sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377"
+    },
+    {
+      "season": "S5",
+      "image_number": 11,
+      "file": "evidence/S05.png",
+      "sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f"
+    },
+    {
+      "season": "S6",
+      "image_number": 1,
+      "file": "evidence/S06.png",
+      "sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06"
+    },
+    {
+      "season": "S7",
+      "image_number": 2,
+      "file": "evidence/S07.png",
+      "sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc"
+    },
+    {
+      "season": "S8",
+      "image_number": 3,
+      "file": "evidence/S08.png",
+      "sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6"
+    },
+    {
+      "season": "S9",
+      "image_number": 4,
+      "file": "evidence/S09.png",
+      "sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6"
+    },
+    {
+      "season": "S10",
+      "image_number": 5,
+      "file": "evidence/S10.png",
+      "sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe"
+    },
+    {
+      "season": "S11",
+      "image_number": 6,
+      "file": "evidence/S11.png",
+      "sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0"
+    }
+  ],
+  "rows": [
+    {
+      "product_id": "10100",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M4A1 突击步枪",
+      "skin_series": null,
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S1|M4A1 突击步枪 - 极品",
+      "source_image_number": 7,
+      "source_menu_row": 1,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        527,
+        774,
+        563
+      ],
+      "color_pixel_counts": {
+        "red": 1144
+      }
+    },
+    {
+      "product_id": "10101",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M4A1 突击步枪",
+      "skin_series": null,
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S1|M4A1 突击步枪 - 优品",
+      "source_image_number": 7,
+      "source_menu_row": 2,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        563,
+        774,
+        599
+      ],
+      "color_pixel_counts": {
+        "orange": 730,
+        "red": 353
+      }
+    },
+    {
+      "product_id": "10102",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "Ash-12 战斗步枪",
+      "skin_series": "飓风行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S1|Ash-12 战斗步枪 - 飓风行动",
+      "source_image_number": 7,
+      "source_menu_row": 3,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        599,
+        774,
+        635
+      ],
+      "color_pixel_counts": {
+        "blue": 323,
+        "purple": 1015,
+        "red": 277
+      }
+    },
+    {
+      "product_id": "10103",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "SMG-45 冲锋枪",
+      "skin_series": "飓风行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S1|SMG-45 冲锋枪 - 飓风行动",
+      "source_image_number": 7,
+      "source_menu_row": 4,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        635,
+        774,
+        671
+      ],
+      "color_pixel_counts": {
+        "blue": 394,
+        "purple": 1022,
+        "red": 255
+      }
+    },
+    {
+      "product_id": "10104",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M870 霰弹枪",
+      "skin_series": "飓风行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S1|M870 霰弹枪 - 飓风行动",
+      "source_image_number": 7,
+      "source_menu_row": 5,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        671,
+        774,
+        707
+      ],
+      "color_pixel_counts": {
+        "blue": 342,
+        "purple": 995,
+        "red": 278
+      }
+    },
+    {
+      "product_id": "10105",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M4A1 突击步枪",
+      "skin_series": "银灰金属",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|M4A1 突击步枪 - 银灰金属",
+      "source_image_number": 7,
+      "source_menu_row": 6,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        707,
+        774,
+        743
+      ],
+      "color_pixel_counts": {
+        "blue": 1362
+      }
+    },
+    {
+      "product_id": "10106",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "AK-12 突击步枪",
+      "skin_series": "阿萨拉卫队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|AK-12 突击步枪 - 阿萨拉卫队",
+      "source_image_number": 7,
+      "source_menu_row": 7,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        743,
+        774,
+        779
+      ],
+      "color_pixel_counts": {
+        "blue": 1377
+      }
+    },
+    {
+      "product_id": "10107",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "AKM 突击步枪",
+      "skin_series": "阿萨拉卫队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|AKM 突击步枪 - 阿萨拉卫队",
+      "source_image_number": 7,
+      "source_menu_row": 8,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        779,
+        774,
+        815
+      ],
+      "color_pixel_counts": {
+        "blue": 1406
+      }
+    },
+    {
+      "product_id": "10108",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "Vector 冲锋枪",
+      "skin_series": "银灰金属",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|Vector 冲锋枪 - 银灰金属",
+      "source_image_number": 7,
+      "source_menu_row": 9,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        815,
+        774,
+        851
+      ],
+      "color_pixel_counts": {
+        "blue": 1322
+      }
+    },
+    {
+      "product_id": "10109",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M870 霰弹枪",
+      "skin_series": "阿萨拉卫队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|M870 霰弹枪 - 阿萨拉卫队",
+      "source_image_number": 7,
+      "source_menu_row": 10,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        851,
+        774,
+        887
+      ],
+      "color_pixel_counts": {
+        "blue": 1444
+      }
+    },
+    {
+      "product_id": "10110",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M1014 霰弹枪",
+      "skin_series": "银灰金属",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|M1014 霰弹枪 - 银灰金属",
+      "source_image_number": 7,
+      "source_menu_row": 11,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        887,
+        774,
+        923
+      ],
+      "color_pixel_counts": {
+        "blue": 1413
+      }
+    },
+    {
+      "product_id": "10111",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "M700 狙击步枪",
+      "skin_series": "阿萨拉卫队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|M700 狙击步枪 - 阿萨拉卫队",
+      "source_image_number": 7,
+      "source_menu_row": 12,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        923,
+        774,
+        959
+      ],
+      "color_pixel_counts": {
+        "blue": 1459
+      }
+    },
+    {
+      "product_id": "10112",
+      "season_id": "S1",
+      "season_label": "棱镜攻势",
+      "weapon": "G18",
+      "skin_series": "银灰金属",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S1|G18 - 银灰金属",
+      "source_image_number": 7,
+      "source_menu_row": 13,
+      "source_image_sha256": "830791e30096e650f02c5b476ac9b07d2ab581b887ebbeb4fe72f3f72a3942f6",
+      "color_sample_box": [
+        466,
+        959,
+        774,
+        995
+      ],
+      "color_pixel_counts": {
+        "blue": 861
+      }
+    },
+    {
+      "product_id": "10200",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "Vector 冲锋枪",
+      "skin_series": "美杜莎",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S2|Vector 冲锋枪 - 美杜莎 - 极品",
+      "source_image_number": 8,
+      "source_menu_row": 1,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        0,
+        309,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1443
+      }
+    },
+    {
+      "product_id": "10201",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "Vector 冲锋枪",
+      "skin_series": "美杜莎",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S2|Vector 冲锋枪 - 美杜莎 - 优品",
+      "source_image_number": 8,
+      "source_menu_row": 2,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        36,
+        309,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 983,
+        "red": 381
+      }
+    },
+    {
+      "product_id": "10202",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "K416 突击步枪",
+      "skin_series": "暗鸦",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S2|K416 突击步枪 - 暗鸦",
+      "source_image_number": 8,
+      "source_menu_row": 3,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        72,
+        309,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 301,
+        "purple": 854,
+        "red": 208
+      }
+    },
+    {
+      "product_id": "10203",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "P90 冲锋枪",
+      "skin_series": "暗鸦",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S2|P90 冲锋枪 - 暗鸦",
+      "source_image_number": 8,
+      "source_menu_row": 4,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        108,
+        309,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 241,
+        "purple": 771,
+        "red": 203
+      }
+    },
+    {
+      "product_id": "10204",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "M1014 霰弹枪",
+      "skin_series": "暗鸦",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S2|M1014 霰弹枪 - 暗鸦",
+      "source_image_number": 8,
+      "source_menu_row": 5,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        144,
+        309,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 313,
+        "purple": 891,
+        "red": 275
+      }
+    },
+    {
+      "product_id": "10205",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "AK-12 突击步枪",
+      "skin_series": "青纹",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|AK-12 突击步枪 - 青纹",
+      "source_image_number": 8,
+      "source_menu_row": 6,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        180,
+        309,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1115
+      }
+    },
+    {
+      "product_id": "10206",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "AKM 突击步枪",
+      "skin_series": "青纹",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|AKM 突击步枪 - 青纹",
+      "source_image_number": 8,
+      "source_menu_row": 7,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        216,
+        309,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1121
+      }
+    },
+    {
+      "product_id": "10207",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|AUG 突击步枪 - 花岗岩",
+      "source_image_number": 8,
+      "source_menu_row": 8,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        252,
+        309,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1204
+      }
+    },
+    {
+      "product_id": "10208",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "QBZ95-1 突击步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|QBZ95-1 突击步枪 - 花岗岩",
+      "source_image_number": 8,
+      "source_menu_row": 9,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        288,
+        309,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1409
+      }
+    },
+    {
+      "product_id": "10209",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "Vector 冲锋枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|Vector 冲锋枪 - 花岗岩",
+      "source_image_number": 8,
+      "source_menu_row": 10,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        324,
+        309,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1192
+      }
+    },
+    {
+      "product_id": "10210",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "M1014 霰弹枪",
+      "skin_series": "青纹",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|M1014 霰弹枪 - 青纹",
+      "source_image_number": 8,
+      "source_menu_row": 11,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        360,
+        309,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1170
+      }
+    },
+    {
+      "product_id": "10211",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "M249 轻机枪",
+      "skin_series": "青纹",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|M249 轻机枪 - 青纹",
+      "source_image_number": 8,
+      "source_menu_row": 12,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        396,
+        309,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1086
+      }
+    },
+    {
+      "product_id": "10212",
+      "season_id": "S2",
+      "season_label": "美杜莎",
+      "weapon": "M14 射手步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S2|M14 射手步枪 - 花岗岩",
+      "source_image_number": 8,
+      "source_menu_row": 13,
+      "source_image_sha256": "ddca5106d48eddcafa3b3144ccb126ed41a2edfe89c1e9785adaf6a15c36c9a3",
+      "color_sample_box": [
+        0,
+        432,
+        309,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1154
+      }
+    },
+    {
+      "product_id": "10300",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "SCAR-H 战斗步枪",
+      "skin_series": "电玩高手",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S3|SCAR-H 战斗步枪 - 电玩高手 - 极品",
+      "source_image_number": 9,
+      "source_menu_row": 1,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        0,
+        363,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1631
+      }
+    },
+    {
+      "product_id": "10301",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "SCAR-H 战斗步枪",
+      "skin_series": "电玩高手",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S3|SCAR-H 战斗步枪 - 电玩高手 - 优品",
+      "source_image_number": 9,
+      "source_menu_row": 2,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        36,
+        363,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1117,
+        "red": 379
+      }
+    },
+    {
+      "product_id": "10302",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "K416 突击步枪",
+      "skin_series": "潜袭者",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S3|K416 突击步枪 - 潜袭者",
+      "source_image_number": 9,
+      "source_menu_row": 3,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        72,
+        363,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 287,
+        "purple": 952,
+        "red": 223
+      }
+    },
+    {
+      "product_id": "10303",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "Vector 冲锋枪",
+      "skin_series": "潜袭者",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S3|Vector 冲锋枪 - 潜袭者",
+      "source_image_number": 9,
+      "source_menu_row": 4,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        108,
+        363,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 296,
+        "purple": 932,
+        "red": 232
+      }
+    },
+    {
+      "product_id": "10304",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "M1014 霰弹枪",
+      "skin_series": "潜袭者",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S3|M1014 霰弹枪 - 潜袭者",
+      "source_image_number": 9,
+      "source_menu_row": 5,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        144,
+        363,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 336,
+        "purple": 983,
+        "red": 280
+      }
+    },
+    {
+      "product_id": "10305",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "AS Val 突击步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|AS Val 突击步枪 - 星之彩",
+      "source_image_number": 9,
+      "source_menu_row": 6,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        180,
+        363,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1236
+      }
+    },
+    {
+      "product_id": "10306",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "PTR-32 突击步枪",
+      "skin_series": "黑潮",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|PTR-32 突击步枪 - 黑潮",
+      "source_image_number": 9,
+      "source_menu_row": 7,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        216,
+        363,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1255
+      }
+    },
+    {
+      "product_id": "10307",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "K416 突击步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|K416 突击步枪 - 星之彩",
+      "source_image_number": 9,
+      "source_menu_row": 8,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        252,
+        363,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1166
+      }
+    },
+    {
+      "product_id": "10308",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "MP5 冲锋枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|MP5 冲锋枪 - 星之彩",
+      "source_image_number": 9,
+      "source_menu_row": 9,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        288,
+        363,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1114
+      }
+    },
+    {
+      "product_id": "10309",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "P90 冲锋枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|P90 冲锋枪 - 星之彩",
+      "source_image_number": 9,
+      "source_menu_row": 10,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        324,
+        363,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1058
+      }
+    },
+    {
+      "product_id": "10310",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "野牛冲锋枪",
+      "skin_series": "黑潮",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3 | 野牛冲锋枪 - 黑潮",
+      "source_image_number": 9,
+      "source_menu_row": 11,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        360,
+        363,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1049
+      }
+    },
+    {
+      "product_id": "10311",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "MP7 冲锋枪",
+      "skin_series": "黑潮",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|MP7 冲锋枪 - 黑潮",
+      "source_image_number": 9,
+      "source_menu_row": 12,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        396,
+        363,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1071
+      }
+    },
+    {
+      "product_id": "10312",
+      "season_id": "S3",
+      "season_label": "电玩高手",
+      "weapon": "PKM 通用机枪",
+      "skin_series": "黑潮",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S3|PKM 通用机枪 - 黑潮",
+      "source_image_number": 9,
+      "source_menu_row": 13,
+      "source_image_sha256": "289acdd93408c06d2bdeadb26846df37df52b681d569416195158c3c0146cd3a",
+      "color_sample_box": [
+        0,
+        432,
+        363,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1239
+      }
+    },
+    {
+      "product_id": "10400",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "QBZ95-1 突击步枪",
+      "skin_series": "王牌之剑",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S4|QBZ95-1 突击步枪 - 王牌之剑 - 极品",
+      "source_image_number": 10,
+      "source_menu_row": 1,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        0,
+        372,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1748
+      }
+    },
+    {
+      "product_id": "10401",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "QBZ95-1 突击步枪",
+      "skin_series": "王牌之剑",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S4|QBZ95-1 突击步枪 - 王牌之剑 - 优品",
+      "source_image_number": 10,
+      "source_menu_row": 2,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        36,
+        372,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1196,
+        "red": 400
+      }
+    },
+    {
+      "product_id": "10402",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "K416 突击步枪",
+      "skin_series": "命运",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S4|K416 突击步枪 - 命运 - 极品",
+      "source_image_number": 10,
+      "source_menu_row": 3,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        72,
+        372,
+        108
+      ],
+      "color_pixel_counts": {
+        "red": 1371
+      }
+    },
+    {
+      "product_id": "10403",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "K416 突击步枪",
+      "skin_series": "命运",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S4|K416 突击步枪 - 命运 - 优品",
+      "source_image_number": 10,
+      "source_menu_row": 4,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        108,
+        372,
+        144
+      ],
+      "color_pixel_counts": {
+        "orange": 893,
+        "red": 402
+      }
+    },
+    {
+      "product_id": "10404",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "AK-12 突击步枪",
+      "skin_series": "原型机",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S4|AK-12 突击步枪 - 原型机",
+      "source_image_number": 10,
+      "source_menu_row": 5,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        144,
+        372,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 325,
+        "purple": 926,
+        "red": 250
+      }
+    },
+    {
+      "product_id": "10405",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "MP7 冲锋枪",
+      "skin_series": "原型机",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S4|MP7 冲锋枪 - 原型机",
+      "source_image_number": 10,
+      "source_menu_row": 6,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        180,
+        372,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 327,
+        "purple": 835,
+        "red": 270
+      }
+    },
+    {
+      "product_id": "10406",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "PSG-1 射手步枪",
+      "skin_series": "原型机",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S4|PSG-1 射手步枪 - 原型机",
+      "source_image_number": 10,
+      "source_menu_row": 7,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        216,
+        372,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 324,
+        "purple": 913,
+        "red": 254
+      }
+    },
+    {
+      "product_id": "10407",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "M7 战斗步枪",
+      "skin_series": "天际线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|M7 战斗步枪 - 天际线",
+      "source_image_number": 10,
+      "source_menu_row": 8,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        252,
+        372,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1093
+      }
+    },
+    {
+      "product_id": "10408",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "SG552 突击步枪",
+      "skin_series": "天际线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|SG552 突击步枪 - 天际线",
+      "source_image_number": 10,
+      "source_menu_row": 9,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        288,
+        372,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1286
+      }
+    },
+    {
+      "product_id": "10409",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "AK-12 突击步枪",
+      "skin_series": "极地勘察队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|AK-12 突击步枪 - 极地勘察队",
+      "source_image_number": 10,
+      "source_menu_row": 10,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        324,
+        372,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1517
+      }
+    },
+    {
+      "product_id": "10410",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "PKM 通用机枪",
+      "skin_series": "极地勘察队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|PKM 通用机枪 - 极地勘察队",
+      "source_image_number": 10,
+      "source_menu_row": 11,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        360,
+        372,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1586
+      }
+    },
+    {
+      "product_id": "10411",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "M14 射手步枪",
+      "skin_series": "天际线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|M14 射手步枪 - 天际线",
+      "source_image_number": 10,
+      "source_menu_row": 12,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        396,
+        372,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1147
+      }
+    },
+    {
+      "product_id": "10412",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "PSG-1 射手步枪",
+      "skin_series": "极地勘察队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|PSG-1 射手步枪 - 极地勘察队",
+      "source_image_number": 10,
+      "source_menu_row": 13,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        432,
+        372,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1502
+      }
+    },
+    {
+      "product_id": "10413",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "M700 狙击步枪",
+      "skin_series": "极地勘察队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4|M700 狙击步枪 - 极地勘察队",
+      "source_image_number": 10,
+      "source_menu_row": 14,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        468,
+        372,
+        504
+      ],
+      "color_pixel_counts": {
+        "blue": 1599
+      }
+    },
+    {
+      "product_id": "10414",
+      "season_id": "S4",
+      "season_label": "命运王牌",
+      "weapon": "沙漠之鹰",
+      "skin_series": "天际线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S4 | 沙漠之鹰 - 天际线",
+      "source_image_number": 10,
+      "source_menu_row": 15,
+      "source_image_sha256": "d8ec913fb95f407e3868ee21fd43ebd881a651aa818110d6c2b0b9c673dc6377",
+      "color_sample_box": [
+        0,
+        504,
+        372,
+        540
+      ],
+      "color_pixel_counts": {
+        "blue": 953
+      }
+    },
+    {
+      "product_id": "10500",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "气象感应",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S5|AUG 突击步枪 - 气象感应 - 极品",
+      "source_image_number": 11,
+      "source_menu_row": 1,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        0,
+        333,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1605
+      }
+    },
+    {
+      "product_id": "10501",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "气象感应",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S5|AUG 突击步枪 - 气象感应 - 优品",
+      "source_image_number": 11,
+      "source_menu_row": 2,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        36,
+        333,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1089,
+        "red": 425
+      }
+    },
+    {
+      "product_id": "10502",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "腾龙突击步枪",
+      "skin_series": "气象感应",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S5 | 腾龙突击步枪 - 气象感应 - 极品",
+      "source_image_number": 11,
+      "source_menu_row": 3,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        72,
+        333,
+        108
+      ],
+      "color_pixel_counts": {
+        "red": 1637
+      }
+    },
+    {
+      "product_id": "10503",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "腾龙突击步枪",
+      "skin_series": "气象感应",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S5 | 腾龙突击步枪 - 气象感应 - 优品",
+      "source_image_number": 11,
+      "source_menu_row": 4,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        108,
+        333,
+        144
+      ],
+      "color_pixel_counts": {
+        "orange": 1121,
+        "red": 409
+      }
+    },
+    {
+      "product_id": "10504",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "K437 突击步枪",
+      "skin_series": "私人定制",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S5|K437 突击步枪 - 私人定制",
+      "source_image_number": 11,
+      "source_menu_row": 5,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        144,
+        333,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 327,
+        "purple": 929,
+        "red": 257
+      }
+    },
+    {
+      "product_id": "10505",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "勇士冲锋枪",
+      "skin_series": "私人定制",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S5 | 勇士冲锋枪 - 私人定制",
+      "source_image_number": 11,
+      "source_menu_row": 6,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        180,
+        333,
+        216
+      ],
+      "color_pixel_counts": {
+        "purple": 876,
+        "blue": 278,
+        "red": 220
+      }
+    },
+    {
+      "product_id": "10506",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "AWM 狙击步枪",
+      "skin_series": "私人定制",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S5|AWM 狙击步枪 - 私人定制",
+      "source_image_number": 11,
+      "source_menu_row": 7,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        216,
+        333,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 319,
+        "purple": 994,
+        "red": 271
+      }
+    },
+    {
+      "product_id": "10507",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "QBZ95-1 突击步枪",
+      "skin_series": "海岸线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|QBZ95-1 突击步枪 - 海岸线",
+      "source_image_number": 11,
+      "source_menu_row": 8,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        252,
+        333,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1446
+      }
+    },
+    {
+      "product_id": "10508",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "QBZ95-1 突击步枪",
+      "skin_series": "精湛工艺",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|QBZ95-1 突击步枪 - 精湛工艺",
+      "source_image_number": 11,
+      "source_menu_row": 9,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        288,
+        333,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1554
+      }
+    },
+    {
+      "product_id": "10509",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "S12K 霰弹枪",
+      "skin_series": "海岸线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|S12K 霰弹枪 - 海岸线",
+      "source_image_number": 11,
+      "source_menu_row": 10,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        324,
+        333,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1207
+      }
+    },
+    {
+      "product_id": "10510",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "PKM 通用机枪",
+      "skin_series": "精湛工艺",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|PKM 通用机枪 - 精湛工艺",
+      "source_image_number": 11,
+      "source_menu_row": 11,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        360,
+        333,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1377
+      }
+    },
+    {
+      "product_id": "10511",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "Mini-14 射手步枪",
+      "skin_series": "精湛工艺",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|Mini-14 射手步枪 - 精湛工艺",
+      "source_image_number": 11,
+      "source_menu_row": 12,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        396,
+        333,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1402
+      }
+    },
+    {
+      "product_id": "10512",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "SKS 射手步枪",
+      "skin_series": "精湛工艺",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|SKS 射手步枪 - 精湛工艺",
+      "source_image_number": 11,
+      "source_menu_row": 13,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        432,
+        333,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1274
+      }
+    },
+    {
+      "product_id": "10513",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "SV-98 狙击步枪",
+      "skin_series": "海岸线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|SV-98 狙击步枪 - 海岸线",
+      "source_image_number": 11,
+      "source_menu_row": 14,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        468,
+        333,
+        504
+      ],
+      "color_pixel_counts": {
+        "blue": 1281
+      }
+    },
+    {
+      "product_id": "10514",
+      "season_id": "S5",
+      "season_label": "气象感应",
+      "weapon": "R93 狙击步枪",
+      "skin_series": "精湛工艺",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S5|R93 狙击步枪 - 精湛工艺",
+      "source_image_number": 11,
+      "source_menu_row": 15,
+      "source_image_sha256": "258964a43d181e5250ea52861aa55c91e69ffac19578378b56366f59aeae6a7f",
+      "color_sample_box": [
+        0,
+        504,
+        333,
+        540
+      ],
+      "color_pixel_counts": {
+        "blue": 1333
+      }
+    },
+    {
+      "product_id": "10600",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "M7 战斗步枪",
+      "skin_series": "棱镜攻势 S2",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S6|M7 战斗步枪 - 棱镜攻势 S2 - 极品",
+      "source_image_number": 1,
+      "source_menu_row": 1,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        0,
+        348,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1684
+      }
+    },
+    {
+      "product_id": "10601",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "M7 战斗步枪",
+      "skin_series": "棱镜攻势 S2",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S6|M7 战斗步枪 - 棱镜攻势 S2 - 优品",
+      "source_image_number": 1,
+      "source_menu_row": 2,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        36,
+        348,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1073,
+        "red": 481
+      }
+    },
+    {
+      "product_id": "10602",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "天命",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S6|AUG 突击步枪 - 天命",
+      "source_image_number": 1,
+      "source_menu_row": 3,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        72,
+        348,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 223,
+        "purple": 883,
+        "red": 164
+      }
+    },
+    {
+      "product_id": "10603",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "P90 冲锋枪",
+      "skin_series": "天命",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S6|P90 冲锋枪 - 天命",
+      "source_image_number": 1,
+      "source_menu_row": 4,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        108,
+        348,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 244,
+        "purple": 710,
+        "red": 189
+      }
+    },
+    {
+      "product_id": "10604",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "SR-25 射手步枪",
+      "skin_series": "天命",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S6|SR-25 射手步枪 - 天命",
+      "source_image_number": 1,
+      "source_menu_row": 5,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        144,
+        348,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 272,
+        "purple": 825,
+        "red": 217
+      }
+    },
+    {
+      "product_id": "10605",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "PTR-32 突击步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|PTR-32 突击步枪 - 花岗岩",
+      "source_image_number": 1,
+      "source_menu_row": 6,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        180,
+        348,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1315
+      }
+    },
+    {
+      "product_id": "10606",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "AS Val 突击步枪",
+      "skin_series": "地平线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|AS Val 突击步枪 - 地平线",
+      "source_image_number": 1,
+      "source_menu_row": 7,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        216,
+        348,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1277
+      }
+    },
+    {
+      "product_id": "10607",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "QCQ171 冲锋枪",
+      "skin_series": "地平线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|QCQ171 冲锋枪 - 地平线",
+      "source_image_number": 1,
+      "source_menu_row": 8,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        252,
+        348,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1283
+      }
+    },
+    {
+      "product_id": "10608",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "SR-3M 紧凑突击步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|SR-3M 紧凑突击步枪 - 花岗岩",
+      "source_image_number": 1,
+      "source_menu_row": 9,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        288,
+        348,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1555
+      }
+    },
+    {
+      "product_id": "10609",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "M870 霰弹枪",
+      "skin_series": "地平线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|M870 霰弹枪 - 地平线",
+      "source_image_number": 1,
+      "source_menu_row": 10,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        324,
+        348,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1242
+      }
+    },
+    {
+      "product_id": "10610",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "M1014 霰弹枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|M1014 霰弹枪 - 花岗岩",
+      "source_image_number": 1,
+      "source_menu_row": 11,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        360,
+        348,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1297
+      }
+    },
+    {
+      "product_id": "10611",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "SV-98 狙击步枪",
+      "skin_series": "花岗岩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|SV-98 狙击步枪 - 花岗岩",
+      "source_image_number": 1,
+      "source_menu_row": 12,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        396,
+        348,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1291
+      }
+    },
+    {
+      "product_id": "10612",
+      "season_id": "S6",
+      "season_label": "棱镜攻势 S2",
+      "weapon": "R93 狙击步枪",
+      "skin_series": "地平线",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S6|R93 狙击步枪 - 地平线",
+      "source_image_number": 1,
+      "source_menu_row": 13,
+      "source_image_sha256": "68147e05506ed0a261939447231717af367889bee2e6cea82e72e6b704d6be06",
+      "color_sample_box": [
+        0,
+        432,
+        348,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1171
+      }
+    },
+    {
+      "product_id": "10700",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "AS Val 突击步枪",
+      "skin_series": "悬赏令",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S7|AS Val 突击步枪 - 悬赏令 - 极品",
+      "source_image_number": 2,
+      "source_menu_row": 1,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        0,
+        327,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1515
+      }
+    },
+    {
+      "product_id": "10701",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "AS Val 突击步枪",
+      "skin_series": "悬赏令",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S7|AS Val 突击步枪 - 悬赏令 - 优品",
+      "source_image_number": 2,
+      "source_menu_row": 2,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        36,
+        327,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1006,
+        "red": 403
+      }
+    },
+    {
+      "product_id": "10702",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "KC17 突击步枪",
+      "skin_series": "碎冰行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S7|KC17 突击步枪 - 碎冰行动",
+      "source_image_number": 2,
+      "source_menu_row": 3,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        72,
+        327,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 367,
+        "purple": 920,
+        "red": 271
+      }
+    },
+    {
+      "product_id": "10703",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "Ash-12 战斗步枪",
+      "skin_series": "碎冰行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S7|Ash-12 战斗步枪 - 碎冰行动",
+      "source_image_number": 2,
+      "source_menu_row": 4,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        108,
+        327,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 333,
+        "purple": 986,
+        "red": 249
+      }
+    },
+    {
+      "product_id": "10704",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "PTR-32 突击步枪",
+      "skin_series": "碎冰行动",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S7|PTR-32 突击步枪 - 碎冰行动",
+      "source_image_number": 2,
+      "source_menu_row": 5,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        144,
+        327,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 379,
+        "purple": 993,
+        "red": 248
+      }
+    },
+    {
+      "product_id": "10705",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "旧梦",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|AUG 突击步枪 - 旧梦",
+      "source_image_number": 2,
+      "source_menu_row": 6,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        180,
+        327,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1021
+      }
+    },
+    {
+      "product_id": "10706",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "K437 突击步枪",
+      "skin_series": "巨兽",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|K437 突击步枪 - 巨兽",
+      "source_image_number": 2,
+      "source_menu_row": 7,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        216,
+        327,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1044
+      }
+    },
+    {
+      "product_id": "10707",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "SG552 突击步枪",
+      "skin_series": "巨兽",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|SG552 突击步枪 - 巨兽",
+      "source_image_number": 2,
+      "source_menu_row": 8,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        252,
+        327,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1179
+      }
+    },
+    {
+      "product_id": "10708",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "SCAR-H 战斗步枪",
+      "skin_series": "旧梦",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|SCAR-H 战斗步枪 - 旧梦",
+      "source_image_number": 2,
+      "source_menu_row": 9,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        288,
+        327,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1183
+      }
+    },
+    {
+      "product_id": "10709",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "SR-3M 紧凑突击步枪",
+      "skin_series": "巨兽",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|SR-3M 紧凑突击步枪 - 巨兽",
+      "source_image_number": 2,
+      "source_menu_row": 10,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        324,
+        327,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1411
+      }
+    },
+    {
+      "product_id": "10710",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "UZI 冲锋枪",
+      "skin_series": "旧梦",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|UZI 冲锋枪 - 旧梦",
+      "source_image_number": 2,
+      "source_menu_row": 11,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        360,
+        327,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 952
+      }
+    },
+    {
+      "product_id": "10711",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "M14 射手步枪",
+      "skin_series": "巨兽",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|M14 射手步枪 - 巨兽",
+      "source_image_number": 2,
+      "source_menu_row": 12,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        396,
+        327,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1024
+      }
+    },
+    {
+      "product_id": "10712",
+      "season_id": "S7",
+      "season_label": "悬赏令",
+      "weapon": "M700 狙击步枪",
+      "skin_series": "旧梦",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S7|M700 狙击步枪 - 旧梦",
+      "source_image_number": 2,
+      "source_menu_row": 13,
+      "source_image_sha256": "bd8575d745bdd611bef2b818adc95210fdaa515afb53aff33d9c237a89b50afc",
+      "color_sample_box": [
+        0,
+        432,
+        327,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1171
+      }
+    },
+    {
+      "product_id": "10800",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "MP7 冲锋枪",
+      "skin_series": "电玩高手 S2",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S8|MP7 冲锋枪 - 电玩高手 S2 - 极品",
+      "source_image_number": 3,
+      "source_menu_row": 1,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        0,
+        371,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1616
+      }
+    },
+    {
+      "product_id": "10801",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "MP7 冲锋枪",
+      "skin_series": "电玩高手 S2",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S8|MP7 冲锋枪 - 电玩高手 S2 - 优品",
+      "source_image_number": 3,
+      "source_menu_row": 2,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        36,
+        371,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1114,
+        "red": 410
+      }
+    },
+    {
+      "product_id": "10802",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "M250 通用机枪",
+      "skin_series": "电玩高手 S2",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S8|M250 通用机枪 - 电玩高手 S2 - 极品",
+      "source_image_number": 3,
+      "source_menu_row": 3,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        72,
+        371,
+        108
+      ],
+      "color_pixel_counts": {
+        "red": 1818
+      }
+    },
+    {
+      "product_id": "10803",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "M250 通用机枪",
+      "skin_series": "电玩高手 S2",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S8|M250 通用机枪 - 电玩高手 S2 - 优品",
+      "source_image_number": 3,
+      "source_menu_row": 4,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        108,
+        371,
+        144
+      ],
+      "color_pixel_counts": {
+        "orange": 1281,
+        "red": 479
+      }
+    },
+    {
+      "product_id": "10804",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "腾龙突击步枪",
+      "skin_series": "檀劫铳影",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S8 | 腾龙突击步枪 - 檀劫铳影",
+      "source_image_number": 3,
+      "source_menu_row": 5,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        144,
+        371,
+        180
+      ],
+      "color_pixel_counts": {
+        "purple": 1138,
+        "blue": 308,
+        "red": 213
+      }
+    },
+    {
+      "product_id": "10805",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "勇士冲锋枪",
+      "skin_series": "檀劫铳影",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S8 | 勇士冲锋枪 - 檀劫铳影",
+      "source_image_number": 3,
+      "source_menu_row": 6,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        180,
+        371,
+        216
+      ],
+      "color_pixel_counts": {
+        "purple": 1020,
+        "blue": 288,
+        "red": 233
+      }
+    },
+    {
+      "product_id": "10806",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "SVD 狙击步枪",
+      "skin_series": "檀劫铳影",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S8|SVD 狙击步枪 - 檀劫铳影",
+      "source_image_number": 3,
+      "source_menu_row": 7,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        216,
+        371,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 366,
+        "purple": 1074,
+        "red": 268
+      }
+    },
+    {
+      "product_id": "10807",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "AS Val 突击步枪",
+      "skin_series": "休闲时光",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|AS Val 突击步枪 - 休闲时光",
+      "source_image_number": 3,
+      "source_menu_row": 8,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        252,
+        371,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1402
+      }
+    },
+    {
+      "product_id": "10808",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "SCAR-H 战斗步枪",
+      "skin_series": "休闲时光",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|SCAR-H 战斗步枪 - 休闲时光",
+      "source_image_number": 3,
+      "source_menu_row": 9,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        288,
+        371,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1456
+      }
+    },
+    {
+      "product_id": "10809",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "千里骏骨",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|AUG 突击步枪 - 千里骏骨",
+      "source_image_number": 3,
+      "source_menu_row": 10,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        324,
+        371,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1325
+      }
+    },
+    {
+      "product_id": "10810",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "M4A1 突击步枪",
+      "skin_series": "千里骏骨",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|M4A1 突击步枪 - 千里骏骨",
+      "source_image_number": 3,
+      "source_menu_row": 11,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        360,
+        371,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1374
+      }
+    },
+    {
+      "product_id": "10811",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "AKS-74U 突击步枪",
+      "skin_series": "休闲时光",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|AKS-74U 突击步枪 - 休闲时光",
+      "source_image_number": 3,
+      "source_menu_row": 12,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        396,
+        371,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1514
+      }
+    },
+    {
+      "product_id": "10812",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "野牛冲锋枪",
+      "skin_series": "千里骏骨",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8 | 野牛冲锋枪 - 千里骏骨",
+      "source_image_number": 3,
+      "source_menu_row": 13,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        432,
+        371,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1215
+      }
+    },
+    {
+      "product_id": "10813",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "QJB201 轻机枪",
+      "skin_series": "千里骏骨",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|QJB201 轻机枪 - 千里骏骨",
+      "source_image_number": 3,
+      "source_menu_row": 14,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        468,
+        371,
+        504
+      ],
+      "color_pixel_counts": {
+        "blue": 1461
+      }
+    },
+    {
+      "product_id": "10814",
+      "season_id": "S8",
+      "season_label": "电玩高手 S2",
+      "weapon": "PSG-1 射手步枪",
+      "skin_series": "休闲时光",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S8|PSG-1 射手步枪 - 休闲时光",
+      "source_image_number": 3,
+      "source_menu_row": 15,
+      "source_image_sha256": "6ce3264bd1ba3e92e163b03fae3513eb95d29412c958aaa482d9d5379aff75e6",
+      "color_sample_box": [
+        0,
+        504,
+        371,
+        540
+      ],
+      "color_pixel_counts": {
+        "blue": 1340
+      }
+    },
+    {
+      "product_id": "10900",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "KC17 突击步枪",
+      "skin_series": "造物纪元",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S9|KC17 突击步枪 - 造物纪元 - 极品",
+      "source_image_number": 4,
+      "source_menu_row": 1,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        0,
+        336,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1540
+      }
+    },
+    {
+      "product_id": "10901",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "KC17 突击步枪",
+      "skin_series": "造物纪元",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S9|KC17 突击步枪 - 造物纪元 - 优品",
+      "source_image_number": 4,
+      "source_menu_row": 2,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        36,
+        336,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1059,
+        "red": 405
+      }
+    },
+    {
+      "product_id": "10902",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "KC17 突击步枪",
+      "skin_series": "益趣游戏",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S9|KC17 突击步枪 - 益趣游戏",
+      "source_image_number": 4,
+      "source_menu_row": 3,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        72,
+        336,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 379,
+        "purple": 1015,
+        "red": 290
+      }
+    },
+    {
+      "product_id": "10903",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "G3 战斗步枪",
+      "skin_series": "益趣游戏",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S9|G3 战斗步枪 - 益趣游戏",
+      "source_image_number": 4,
+      "source_menu_row": 4,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        108,
+        336,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 322,
+        "purple": 988,
+        "red": 233
+      }
+    },
+    {
+      "product_id": "10904",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "725 双管霰弹枪",
+      "skin_series": "益趣游戏",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S9|725 双管霰弹枪 - 益趣游戏",
+      "source_image_number": 4,
+      "source_menu_row": 5,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        144,
+        336,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 366,
+        "purple": 1208,
+        "red": 282
+      }
+    },
+    {
+      "product_id": "10905",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "G3 战斗步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|G3 战斗步枪 - 星之彩",
+      "source_image_number": 4,
+      "source_menu_row": 6,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        180,
+        336,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1099
+      }
+    },
+    {
+      "product_id": "10906",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "K437 突击步枪",
+      "skin_series": "酸蚀",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|K437 突击步枪 - 酸蚀",
+      "source_image_number": 4,
+      "source_menu_row": 7,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        216,
+        336,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1166
+      }
+    },
+    {
+      "product_id": "10907",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|AUG 突击步枪 - 星之彩",
+      "source_image_number": 4,
+      "source_menu_row": 8,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        252,
+        336,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1180
+      }
+    },
+    {
+      "product_id": "10908",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "SR-3M 紧凑突击步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|SR-3M 紧凑突击步枪 - 星之彩",
+      "source_image_number": 4,
+      "source_menu_row": 9,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        288,
+        336,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1543
+      }
+    },
+    {
+      "product_id": "10909",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "P90 冲锋枪",
+      "skin_series": "酸蚀",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|P90 冲锋枪 - 酸蚀",
+      "source_image_number": 4,
+      "source_menu_row": 10,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        324,
+        336,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1061
+      }
+    },
+    {
+      "product_id": "10910",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "M870 霰弹枪",
+      "skin_series": "酸蚀",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|M870 霰弹枪 - 酸蚀",
+      "source_image_number": 4,
+      "source_menu_row": 11,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        360,
+        336,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1195
+      }
+    },
+    {
+      "product_id": "10911",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "SVD 狙击步枪",
+      "skin_series": "酸蚀",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|SVD 狙击步枪 - 酸蚀",
+      "source_image_number": 4,
+      "source_menu_row": 12,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        396,
+        336,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1175
+      }
+    },
+    {
+      "product_id": "10912",
+      "season_id": "S9",
+      "season_label": "造物纪元",
+      "weapon": "R93 狙击步枪",
+      "skin_series": "星之彩",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S9|R93 狙击步枪 - 星之彩",
+      "source_image_number": 4,
+      "source_menu_row": 13,
+      "source_image_sha256": "d63f3bb5a3331fe7e27acc593b4ad9ebee9da1a0c5f0874d0c5b26bfe217b2d6",
+      "color_sample_box": [
+        0,
+        432,
+        336,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 1184
+      }
+    },
+    {
+      "product_id": "11000",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "AKM 突击步枪",
+      "skin_series": "群星",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S10|AKM 突击步枪 - 群星 - 极品",
+      "source_image_number": 5,
+      "source_menu_row": 1,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        0,
+        344,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1462
+      }
+    },
+    {
+      "product_id": "11001",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "AKM 突击步枪",
+      "skin_series": "群星",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S10|AKM 突击步枪 - 群星 - 优品",
+      "source_image_number": 5,
+      "source_menu_row": 2,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        36,
+        344,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 977,
+        "red": 382
+      }
+    },
+    {
+      "product_id": "11002",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "QCQ171 冲锋枪",
+      "skin_series": "海韵之星",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S10|QCQ171 冲锋枪 - 海韵之星",
+      "source_image_number": 5,
+      "source_menu_row": 3,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        72,
+        344,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 349,
+        "purple": 1106,
+        "red": 222
+      }
+    },
+    {
+      "product_id": "11003",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "QJB201 轻机枪",
+      "skin_series": "海韵之星",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S10|QJB201 轻机枪 - 海韵之星",
+      "source_image_number": 5,
+      "source_menu_row": 4,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        108,
+        344,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 345,
+        "purple": 1123,
+        "red": 256
+      }
+    },
+    {
+      "product_id": "11004",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "PSG-1 射手步枪",
+      "skin_series": "海韵之星",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S10|PSG-1 射手步枪 - 海韵之星",
+      "source_image_number": 5,
+      "source_menu_row": 5,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        144,
+        344,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 304,
+        "purple": 1095,
+        "red": 199
+      }
+    },
+    {
+      "product_id": "11005",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "M16A4 突击步枪",
+      "skin_series": "磁暴脉冲",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|M16A4 突击步枪 - 磁暴脉冲",
+      "source_image_number": 5,
+      "source_menu_row": 6,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        180,
+        344,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1607
+      }
+    },
+    {
+      "product_id": "11006",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "AUG 突击步枪",
+      "skin_series": "磁暴脉冲",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|AUG 突击步枪 - 磁暴脉冲",
+      "source_image_number": 5,
+      "source_menu_row": 7,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        216,
+        344,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1469
+      }
+    },
+    {
+      "product_id": "11007",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "KC17 突击步枪",
+      "skin_series": "剑兰",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|KC17 突击步枪 - 剑兰",
+      "source_image_number": 5,
+      "source_menu_row": 8,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        252,
+        344,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1064
+      }
+    },
+    {
+      "product_id": "11008",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "CAR-15 突击步枪",
+      "skin_series": "剑兰",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|CAR-15 突击步枪 - 剑兰",
+      "source_image_number": 5,
+      "source_menu_row": 9,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        288,
+        344,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1196
+      }
+    },
+    {
+      "product_id": "11009",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "QCQ171 冲锋枪",
+      "skin_series": "磁暴脉冲",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|QCQ171 冲锋枪 - 磁暴脉冲",
+      "source_image_number": 5,
+      "source_menu_row": 10,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        324,
+        344,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1550
+      }
+    },
+    {
+      "product_id": "11010",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "SR-3M 紧凑突击步枪",
+      "skin_series": "磁暴脉冲",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|SR-3M 紧凑突击步枪 - 磁暴脉冲",
+      "source_image_number": 5,
+      "source_menu_row": 11,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        360,
+        344,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1777
+      }
+    },
+    {
+      "product_id": "11011",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "SV-98 狙击步枪",
+      "skin_series": "剑兰",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10|SV-98 狙击步枪 - 剑兰",
+      "source_image_number": 5,
+      "source_menu_row": 12,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        396,
+        344,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1164
+      }
+    },
+    {
+      "product_id": "11012",
+      "season_id": "S10",
+      "season_label": "群星",
+      "weapon": "沙漠之鹰",
+      "skin_series": "剑兰",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S10 | 沙漠之鹰 - 剑兰",
+      "source_image_number": 5,
+      "source_menu_row": 13,
+      "source_image_sha256": "acd0c62151683ecb86a073ba774148a6a4d37d9fe1b22efecb422f2664e216fe",
+      "color_sample_box": [
+        0,
+        432,
+        344,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 896
+      }
+    },
+    {
+      "product_id": "11100",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "MK4冲锋枪",
+      "skin_series": "疾风魅影",
+      "variant_label": "极品",
+      "menu_color": "red",
+      "game_quality_name": null,
+      "display_name": "S11|MK4冲锋枪 - 疾风魅影 - 极品",
+      "source_image_number": 6,
+      "source_menu_row": 1,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        0,
+        318,
+        36
+      ],
+      "color_pixel_counts": {
+        "red": 1634
+      }
+    },
+    {
+      "product_id": "11101",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "MK4冲锋枪",
+      "skin_series": "疾风魅影",
+      "variant_label": "优品",
+      "menu_color": "orange",
+      "game_quality_name": null,
+      "display_name": "S11|MK4冲锋枪 - 疾风魅影 - 优品",
+      "source_image_number": 6,
+      "source_menu_row": 2,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        36,
+        318,
+        72
+      ],
+      "color_pixel_counts": {
+        "orange": 1021,
+        "red": 432
+      }
+    },
+    {
+      "product_id": "11102",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "AUG突击步枪",
+      "skin_series": "黑银先锋",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S11|AUG突击步枪 - 黑银先锋",
+      "source_image_number": 6,
+      "source_menu_row": 3,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        72,
+        318,
+        108
+      ],
+      "color_pixel_counts": {
+        "blue": 354,
+        "purple": 1031,
+        "red": 252
+      }
+    },
+    {
+      "product_id": "11103",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "AS Val突击步枪",
+      "skin_series": "黑银先锋",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S11|AS Val突击步枪 - 黑银先锋",
+      "source_image_number": 6,
+      "source_menu_row": 4,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        108,
+        318,
+        144
+      ],
+      "color_pixel_counts": {
+        "blue": 327,
+        "purple": 1122,
+        "red": 233
+      }
+    },
+    {
+      "product_id": "11104",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "P90冲锋枪",
+      "skin_series": "黑银先锋",
+      "variant_label": null,
+      "menu_color": "purple",
+      "game_quality_name": null,
+      "display_name": "S11|P90冲锋枪 - 黑银先锋",
+      "source_image_number": 6,
+      "source_menu_row": 5,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        144,
+        318,
+        180
+      ],
+      "color_pixel_counts": {
+        "blue": 316,
+        "purple": 978,
+        "red": 267
+      }
+    },
+    {
+      "product_id": "11105",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "AS Val突击步枪",
+      "skin_series": "管弦乐队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|AS Val突击步枪 - 管弦乐队",
+      "source_image_number": 6,
+      "source_menu_row": 6,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        180,
+        318,
+        216
+      ],
+      "color_pixel_counts": {
+        "blue": 1410
+      }
+    },
+    {
+      "product_id": "11106",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "M7战斗步枪",
+      "skin_series": "征服者",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|M7战斗步枪 - 征服者",
+      "source_image_number": 6,
+      "source_menu_row": 7,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        216,
+        318,
+        252
+      ],
+      "color_pixel_counts": {
+        "blue": 1139
+      }
+    },
+    {
+      "product_id": "11107",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "M16A4突击步枪",
+      "skin_series": "征服者",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|M16A4突击步枪 - 征服者",
+      "source_image_number": 6,
+      "source_menu_row": 8,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        252,
+        318,
+        288
+      ],
+      "color_pixel_counts": {
+        "blue": 1400
+      }
+    },
+    {
+      "product_id": "11108",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "CAR-15突击步枪",
+      "skin_series": "管弦乐队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|CAR-15突击步枪 - 管弦乐队",
+      "source_image_number": 6,
+      "source_menu_row": 9,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        288,
+        318,
+        324
+      ],
+      "color_pixel_counts": {
+        "blue": 1410
+      }
+    },
+    {
+      "product_id": "11109",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "UZI冲锋枪",
+      "skin_series": "管弦乐队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|UZI冲锋枪 - 管弦乐队",
+      "source_image_number": 6,
+      "source_menu_row": 10,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        324,
+        318,
+        360
+      ],
+      "color_pixel_counts": {
+        "blue": 1228
+      }
+    },
+    {
+      "product_id": "11110",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "S12K霰弹枪",
+      "skin_series": "征服者",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|S12K霰弹枪 - 征服者",
+      "source_image_number": 6,
+      "source_menu_row": 11,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        360,
+        318,
+        396
+      ],
+      "color_pixel_counts": {
+        "blue": 1266
+      }
+    },
+    {
+      "product_id": "11111",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "R93狙击步枪",
+      "skin_series": "管弦乐队",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11|R93狙击步枪 - 管弦乐队",
+      "source_image_number": 6,
+      "source_menu_row": 12,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        396,
+        318,
+        432
+      ],
+      "color_pixel_counts": {
+        "blue": 1338
+      }
+    },
+    {
+      "product_id": "11112",
+      "season_id": "S11",
+      "season_label": "疾风魅影",
+      "weapon": "G18",
+      "skin_series": "征服者",
+      "variant_label": null,
+      "menu_color": "blue",
+      "game_quality_name": null,
+      "display_name": "S11 |G18 - 征服者",
+      "source_image_number": 6,
+      "source_menu_row": 13,
+      "source_image_sha256": "e889ecbfa9bbd0cc0b51f938e302d5ac5ca4f7039bf991f8f2456abc82e614e0",
+      "color_sample_box": [
+        0,
+        432,
+        318,
+        468
+      ],
+      "color_pixel_counts": {
+        "blue": 801
+      }
+    }
+  ]
+}
