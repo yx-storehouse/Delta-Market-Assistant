@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-10-07T17:34:02.244792+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "1",
+    "--ocr",
+    "--expected-page",
+    "lobby",
+    "--ocr-lobby-anchors"
+  ],
+  "binary_sha256": "c4c8b76f93c01b9104e85294fd804c597c4d7ff346eb5e1096a79325612e4f65",
+  "input": "User-prepared page; one full-client in-memory frame; exact expected page; no game input.",
+  "stdout": "{\"adapter_state\":\"Closed\",\"capture_passed\":true,\"diagnostic\":\"live_capture\",\"expected_page\":\"lobby\",\"foreground_hwnd\":\"31592856\",\"frames\":[{\"bytes\":14745600,\"capture_ms\":221,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":255,\"pixel_min\":0,\"sha256\":\"32b17e6533db1cb7b875c14256764674f927c549b13979201aaa2385d4356354\",\"source\":\"dxgi\",\"source_age_ms\":22,\"source_uncertainty_ms\":1,\"width\":2560}],\"game_in_background\":true,\"game_input_sent\":false,\"ide_foreground_restored\":true,\"image_file_writes\":0,\"lobby_anchor_diagnostics\":{\"actions_enabled\":false,\"coverage\":\"anchor_projection\",\"height\":1440,\"regions\":[{\"excluded_tokens\":0,\"id\":\"start_navigation\",\"truncated\":false,\"words\":[{\"height\":18,\"text\":\"开\",\"width\":19,\"x\":215,\"y\":65},{\"height\":20,\"text\":\"始\",\"width\":20,\"x\":235,\"y\":64},{\"height\":20,\"text\":\"游\",\"width\":20,\"x\":257,\"y\":63},{\"height\":20,\"text\":\"戏\",\"width\":19,\"x\":278,\"y\":63}]},{\"excluded_tokens\":0,\"id\":\"warehouse_navigation\",\"truncated\":false,\"words\":[{\"height\":20,\"text\":\"仓\",\"width\":20,\"x\":409,\"y\":63},{\"height\":20,\"text\":\"库\",\"width\":20,\"x\":430,\"y\":63}]},{\"excluded_tokens\":4,\"id\":\"prepare_button\",\"truncated\":false,\"words\":[]}],\"schema\":\"lobby-anchor-diagnostics-v1\",\"valid_input\":true,\"width\":2560},\"ocr\":{\"body_anchors\":[],\"business_fields_validated\":false,\"confidence_available\":false,\"frame_age_at_result_ms\":798,\"frame_sha256\":\"32b17e6533db1cb7b875c14256764674f927c549b13979201aaa2385d4356354\",\"language\":\"zh-Hans-CN\",\"page_hint\":\"unknown\",\"provider\":\"Windows.Media.Ocr\",\"word_count\":197},\"ocr_passed\":true,\"page_error\":\"E_DIAGNOSTIC_PAGE_MISMATCH\",\"page_match_passed\":false,\"recognition_performed\":true,\"resources_drained\":true,\"return_hwnd\":\"31592856\",\"startup_page\":{\"actions_enabled\":false,\"anchors\":[\"warehouse.equipment\",\"warehouse.storage\"],\"calibration\":\"historical_ocr_only\",\"candidate_pages\":[\"warehouse\"],\"live_calibrated\":false,\"low_score_tokens\":0,\"overlay\":\"none\",\"page\":\"warehouse\",\"provider_scores_available\":false,\"reason\":\"MULTI_ANCHOR_MATCH\",\"token_count\":197,\"valid_input\":true}}\r\n",
+  "stderr": "",
+  "exit_status": 1,
+  "foreground_after": 31592856,
+  "outer_ide_restored": true
+}

@@ -1,6 +1,8 @@
 # 下一轮开发交接：M2 真实画面采集与识别边界
 
-> **最新：原启动观察器已经实现。** 阅读 `implementation/runtime/startup_observer_m2.md`，复用 `SkinPageClassifier` / `StartupObserver`，不要重做。27条历史OCR投影、5条包内检查路径；当前23组CTest。本轮无实机捕获，用户准备后才做当前版本锚点/DPI校准。旧页类标签不是视觉真值；观察检查点仍没有连接导航点击。
+> **取代下方旧实机安排：** 先读 `implementation/runtime/foreground_batch_m2.md`。用户要求智能体自行导航，整段操作完成再回IDE，不允许每次动作切屏。使用 `run_foreground_batch.py` 一次执行完整有限计划，子诊断 `--focus-policy caller-owned`；不要循环调用单次探针。当前已到曼德尔砖页（F4市场入口），页类仍Unknown，先后台补锚点诊断再整段验证。25组应用测试及连续两帧焦点实测已通过。
+
+> **最新：大厅实机校准通过。** 阅读 `implementation/runtime/lobby_live_calibration_m2.md`。用户已展示大厅，Windows OCR局部误字修复后，两次独立帧通过；当前24组CTest。已请用户手动点仓库，收到到页消息后重解析窗口身份并执行只读页类校准。复用 `SkinPageClassifier` / `StartupObserver`，不重做原流程；尚未验证其它页和完整导航。CLI `--expected-page` 不把截图成功当页类通过，每轮结束恢复IDE前台。
 
 ## 2026-10-07 用户纠正后的最高优先级
 

@@ -2,6 +2,14 @@
 
 更新时间：2026-10-07（Asia/Shanghai）
 
+## 最新：整段前台批次修复
+
+用户指出逐动作切屏后，已实现调用方持有的前台批次：中间诊断不切换，末尾一次恢复。25/25应用测试，Python批次6项测试；真实连续两帧显示enter=1、leave=1、子诊断切换请求=0。人工导航已观察到曼德尔砖市场页，但该页分类仍Unknown；不能将焦点验证写成业务识别通过。详细见 [整段批次记录](implementation/runtime/foreground_batch_m2.md)。
+
+## 当前新增：大厅实机校准
+
+真实大厅2560×1440/144DPI已用两个独立帧验证；修复Windows OCR将开始按钮读成“开始游观”的局部情况。新诊断 `--expected-page` 区分截图/OCR成功与页面匹配成功，错误预期页实测退出1。游戏截图只在内存，检查后恢复IDE；没有游戏点击。应用CTest24/24、大厅37条断言，原启动250条保持；发布回归及副本回滚通过。详见 [大厅校准记录](implementation/runtime/lobby_live_calibration_m2.md) 和 `artifacts/m2_lobby_calibration/VERIFICATION.txt`。下一步由用户展示仓库，不跳到普通物资交易行。下方是前序阶段历史记录。
+
 ## 当前新增：原启动页面分类与只读观察器
 
 原入口的多锚点页类、关注预检、空关注回首页再筛选、已有列表接续已实现为独立 `relink_startup_observation` 模块。27条历史OCR投影及5条包内分支检查已加入，应用CTest为23组；本轮未采集当前游戏、未切前台、未发输入。下一步用户准备后做当前画面校准。详见 [启动观察器](implementation/runtime/startup_observer_m2.md) 与 `artifacts/m2_startup_observer_transaction/VERIFICATION.txt`。原39步导航/交易整体尚未完成。

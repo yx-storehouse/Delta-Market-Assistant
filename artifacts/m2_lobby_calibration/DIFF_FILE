@@ -1,0 +1,1478 @@
+--- a/.gitignore
++++ b/.gitignore
+@@ -57,6 +57,10 @@
+ artifacts/m2_startup_observer_transaction/*/
+ artifacts/m2_startup_observer_transaction/MODIFIED_FILE.exe
+ artifacts/m2_startup_observer_transaction/*-config.json
++artifacts/m2_lobby_calibration/*/
++artifacts/m2_lobby_calibration/MODIFIED_FILE.exe
++artifacts/m2_lobby_calibration/LOBBY_CALIBRATED_FILE.exe
++artifacts/m2_lobby_calibration/*-config.json
+ *.py[cod]
+ artifacts/business_rebuild_docs/browser-profile-*/
+ artifacts/business_rebuild_docs/shell-profile-*/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -95,6 +95,10 @@
+ target_link_libraries(RelinkStudio PRIVATE relink_startup_observation)
+ add_executable(startup_observer_tests tests/runtime/startup_observer_tests.cpp)
+ target_link_libraries(startup_observer_tests PRIVATE relink_startup_observation)
++add_executable(lobby_calibration_tests tests/runtime/lobby_calibration_tests.cpp)
++target_link_libraries(lobby_calibration_tests PRIVATE relink_startup_observation)
++add_executable(foreground_policy_tests tests/runtime/foreground_policy_tests.cpp)
++target_include_directories(foreground_policy_tests PRIVATE src)
+ 
+ # Opt-in on-demand capture, isolated from UI configuration / replay reducers.
+ add_library(relink_windows_capture STATIC
+@@ -210,6 +214,8 @@
+ add_test(NAME windows_capture_tests COMMAND windows_capture_tests)
+ add_test(NAME startup_observer_tests COMMAND startup_observer_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json")
+ add_test(NAME startup_observer_self_test COMMAND RelinkStudio --startup-observer-self-test)
++add_test(NAME lobby_calibration_tests COMMAND lobby_calibration_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json")
++add_test(NAME foreground_policy_tests COMMAND foreground_policy_tests)
+ set_tests_properties(windows_capture_tests PROPERTIES TIMEOUT 20)
+ add_test(NAME windows_ocr_tests COMMAND windows_ocr_tests "${CMAKE_SOURCE_DIR}/src/vision/windows_ocr_worker.ps1")
+ set_tests_properties(windows_ocr_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 45)
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,8 @@
+ # Delta Market Assistant · 三角洲市场助手
+ 
+-> **最新进展：** 原启动多锚点页面识别、关注预检与已有列表接续已实现为只读观察器；23组应用回归，`--startup-observer-self-test` 可离线检查27页/5分支。此轮没有实机捕获或游戏输入，等待用户准备后校准当前画面。见 `docs/business_rebuild/implementation/runtime/startup_observer_m2.md`。
++> **前台执行方式已修正：** 实机联调以整段任务为单位前置游戏，中间连续操作/识别，结束或异常才统一回IDE；不再逐动作闪屏。25组应用测试和一段真实双帧批次通过。当前市场已进入曼德尔砖页，其页类识别仍待校准；详见 `docs/business_rebuild/implementation/runtime/foreground_batch_m2.md`。
++
++> **最新进展：** 大厅实机2560×1440/144DPI识别已校准：修复Windows OCR“戏→观”的局部误读，两次独立大厅帧通过，错误预期页会明确失败。24组应用回归；27历史页/5分支及1条大厅文字投影可离线自检。运行截图不落盘、无游戏输入、每轮恢复IDE。下一页由用户展示仓库；详见 `docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md`，不把大厅通过写成完整业务已完成。
+ 
+ > **2026-10-07 更新：** 当前优先按BBZPS原业务顺序复刻，详见 `docs/business_rebuild/10_bbzps_first_startup_reconstruction.md`（39个步骤、启动入口分支与逐行证据）。已补入显式只读DXGI内存采集诊断和独立Windows OCR组件；真实采集、合成文字OCR分别验证，完整游戏业务尚未接入。正常桌面UI仍为离线/回放，不执行点击购买。后文PR12B进度为历史阶段记录。
+ 
+--- a/SESSION_START.md
++++ b/SESSION_START.md
+@@ -1,4 +1,24 @@
+ # Relink Studio — new session entry
++
++## 最高优先级纠正：禁止逐动作切屏（2026-10-07）
++
++- 用户明确指出闪屏：一段任务开始才切到游戏，中间连续操作/识别，整段结束或异常时才恢复IDE一次。用户也要求由智能体点击页面导航，不再逐页让用户代点。
++- 已实现 `ForegroundPolicy` 与 `tests/manual/run_foreground_batch.py`；子诊断使用 `--focus-policy caller-owned`，不激活/不恢复。原逐动作脚本已转接批次。25/25 CTest、前台策略测试、Python协调器6项通过；一段真实2帧检查仅1次enter/1次leave，两个子诊断焦点请求均为0。
++- 最新入口 `docs/business_rebuild/implementation/runtime/foreground_batch_m2.md`。游戏目前停在曼德尔砖市场页，已经观察到“典藏外观”页签；从大厅底部F4市场进入，不是顶部普通交易行。分类器对当前曼德尔页仍Unknown，下一步先后台补最小诊断再在一个完整批次校准，不能假报页面通过。
++- 本轮用户授权后有3次人工导航点击，无购买、库存移动、关注修改；初始大厅只读阶段和后来导航阶段分别记账。最后新批次只读检查已恢复Mirasim前台。
++- 交付路径不变，事务 `artifacts/m2_lobby_calibration/VERIFICATION.txt`。大厅实测对应的旧二进制保存在 `LOBBY_CALIBRATED_FILE.exe`，不要把旧实测哈希改标为新焦点修复版。
++
++以下历史记录若说“每次检查都回IDE”或“等待用户逐页点击”，均由上方新约定取代。
++
++## 最新实机节点：大厅校准通过（2026-10-07）
++
++- 用户已准备大厅；本轮实机2560×1440、144DPI。原规则因Windows OCR将“开始游戏”读成“开始游观”而Unknown；已做provider+固定区域+仓库/行前备战独立锚点的局部兼容。
++- 修复发布包两次独立帧均判为lobby；故意expected-page=warehouse时退出1，不把采集成功当页类成功。所有尝试含一次初始前台变化失败均保留，均恢复IDE；游戏图片未落盘，无游戏输入。
++- 应用CTest24/24；大厅专项37、原启动250断言；包内另有1条实机文字投影回放。六张UI基线不变，发布与回滚已验收。
++- 先读 `docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md`。新事务 `artifacts/m2_lobby_calibration/VERIFICATION.txt`；程序固定路径不变。
++- 已请用户手动点顶部“仓库”并回报到页；收到准备消息后用 `tests/manual/live_startup_probe.py --expected-page warehouse --record <新的artifacts内json路径>` 做下一页只读检查。每次重解析PID/HWND，不复用本轮编号；结束检查IDE前台。尚未验证仓库/曼德尔/典藏/商品字段，更没有自动导航。
++
++以下为此前阶段记录。
+ 
+ ## 最新开发节点：原启动只读观察器已接入（2026-10-07）
+ 
+--- a/docs/business_rebuild/09_m1_progress.md
++++ b/docs/business_rebuild/09_m1_progress.md
+@@ -1,6 +1,14 @@
+ # M1 实施进度与分阶段基线
+ 
+ 更新时间：2026-10-07（Asia/Shanghai）
++
++## 最新：整段前台批次修复
++
++用户指出逐动作切屏后，已实现调用方持有的前台批次：中间诊断不切换，末尾一次恢复。25/25应用测试，Python批次6项测试；真实连续两帧显示enter=1、leave=1、子诊断切换请求=0。人工导航已观察到曼德尔砖市场页，但该页分类仍Unknown；不能将焦点验证写成业务识别通过。详细见 [整段批次记录](implementation/runtime/foreground_batch_m2.md)。
++
++## 当前新增：大厅实机校准
++
++真实大厅2560×1440/144DPI已用两个独立帧验证；修复Windows OCR将开始按钮读成“开始游观”的局部情况。新诊断 `--expected-page` 区分截图/OCR成功与页面匹配成功，错误预期页实测退出1。游戏截图只在内存，检查后恢复IDE；没有游戏点击。应用CTest24/24、大厅37条断言，原启动250条保持；发布回归及副本回滚通过。详见 [大厅校准记录](implementation/runtime/lobby_live_calibration_m2.md) 和 `artifacts/m2_lobby_calibration/VERIFICATION.txt`。下一步由用户展示仓库，不跳到普通物资交易行。下方是前序阶段历史记录。
+ 
+ ## 当前新增：原启动页面分类与只读观察器
+ 
+--- a/docs/business_rebuild/NEXT_IMPLEMENTATION.md
++++ b/docs/business_rebuild/NEXT_IMPLEMENTATION.md
+@@ -1,6 +1,8 @@
+ # 下一轮开发交接：M2 真实画面采集与识别边界
+ 
+-> **最新：原启动观察器已经实现。** 阅读 `implementation/runtime/startup_observer_m2.md`，复用 `SkinPageClassifier` / `StartupObserver`，不要重做。27条历史OCR投影、5条包内检查路径；当前23组CTest。本轮无实机捕获，用户准备后才做当前版本锚点/DPI校准。旧页类标签不是视觉真值；观察检查点仍没有连接导航点击。
++> **取代下方旧实机安排：** 先读 `implementation/runtime/foreground_batch_m2.md`。用户要求智能体自行导航，整段操作完成再回IDE，不允许每次动作切屏。使用 `run_foreground_batch.py` 一次执行完整有限计划，子诊断 `--focus-policy caller-owned`；不要循环调用单次探针。当前已到曼德尔砖页（F4市场入口），页类仍Unknown，先后台补锚点诊断再整段验证。25组应用测试及连续两帧焦点实测已通过。
++
++> **最新：大厅实机校准通过。** 阅读 `implementation/runtime/lobby_live_calibration_m2.md`。用户已展示大厅，Windows OCR局部误字修复后，两次独立帧通过；当前24组CTest。已请用户手动点仓库，收到到页消息后重解析窗口身份并执行只读页类校准。复用 `SkinPageClassifier` / `StartupObserver`，不重做原流程；尚未验证其它页和完整导航。CLI `--expected-page` 不把截图成功当页类通过，每轮结束恢复IDE前台。
+ 
+ ## 2026-10-07 用户纠正后的最高优先级
+ 
+--- a/docs/business_rebuild/README.md
++++ b/docs/business_rebuild/README.md
+@@ -1,6 +1,8 @@
+ # Delta Market Assistant · 业务重构开发文档
+ 
+-> **当前实现：** [原启动页面识别与观察器](implementation/runtime/startup_observer_m2.md) 已接入离线诊断，保留关注预检和已有列表接续；当前23组应用测试。本轮无游戏捕获，下一步用户准备后校准当前画面；27条历史OCR投影不标成实机准确率。
++> **最新实机约定及实现：** [整段批次前台控制](implementation/runtime/foreground_batch_m2.md)。已修复逐动作切屏，25组CTest和真实两帧批次通过。页面导航由智能体执行，用户不必逐页代点。曼德尔界面已到达，但当前页类仍Unknown，不能当作完整业务验收。
++
++> **当前实现：** [大厅实机校准](implementation/runtime/lobby_live_calibration_m2.md) 已验证两次独立真实大厅帧；增加局部OCR误字兼容、预期页断言和最小锚点诊断。当前24组应用测试；下一页待用户展示仓库。原关注预检与已有列表接续保留，不将单页通过标成完整原业务完成。
+ 
+ > **2026-10-07 当前优先事项：按 BBZPS 原启动流程复刻，而不是重新设计业务。** 必须先读 [10 · 首次启动与首轮业务逐步复刻](10_bbzps_first_startup_reconstruction.md)。本次全量重查15个日志、100个运行入口，补回“当前页分派→关注预检→空队列再筛选”以及已有列表直接接续的分支。下方PR12历史摘要不覆盖这次修正。独立DXGI采集已有真实游戏帧验证；Windows OCR已有合成图片内存识别验证；完整原业务导航尚未接入游戏。
+ 
+--- a/docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json
++++ b/docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json
+@@ -0,0 +1,91 @@
++{
++  "schema_version": 1,
++  "id": "lobby_windows_ocr_20261007",
++  "source_kind": "live_ocr_anchor_projection",
++  "pixels_included": false,
++  "source_record": "artifacts/m2_lobby_calibration/live_anchor_diagnostics.json",
++  "source_frame_sha256": "31f1b0c01ef113918b849498ab1232886880d2d417522f66259c382c0cd871a7",
++  "source_binary_sha256": "8f3d24202b3d269f67ecfac6bd7e92c07feaa8849aa98b7268085a30b71a1387",
++  "source_dpi": 144,
++  "expected_page": "lobby",
++  "note": "Allowlisted text/geometry projection from a full-client capture; not full OCR. Manual in-memory preview showed 开始游戏; Windows OCR returned 开始游观. Fixture replay is not a new live test.",
++  "observation": {
++    "width": 2560,
++    "height": 1440,
++    "coverage": "full_client",
++    "language": "zh-Hans-CN",
++    "protocol": "windows-ocr-once-v1",
++    "words": [
++      {
++        "height": 18,
++        "text": "开",
++        "width": 21,
++        "x": 214,
++        "y": 65
++      },
++      {
++        "height": 20,
++        "text": "始",
++        "width": 20,
++        "x": 235,
++        "y": 64
++      },
++      {
++        "height": 20,
++        "text": "游",
++        "width": 20,
++        "x": 257,
++        "y": 63
++      },
++      {
++        "height": 21,
++        "text": "观",
++        "width": 20,
++        "x": 278,
++        "y": 63
++      },
++      {
++        "height": 20,
++        "text": "仓",
++        "width": 19,
++        "x": 409,
++        "y": 63
++      },
++      {
++        "height": 20,
++        "text": "库",
++        "width": 20,
++        "x": 430,
++        "y": 63
++      },
++      {
++        "height": 27,
++        "text": "行",
++        "width": 26,
++        "x": 2150,
++        "y": 1274
++      },
++      {
++        "height": 27,
++        "text": "前",
++        "width": 26,
++        "x": 2178,
++        "y": 1274
++      },
++      {
++        "height": 27,
++        "text": "备",
++        "width": 26,
++        "x": 2206,
++        "y": 1274
++      },
++      {
++        "height": 27,
++        "text": "战",
++        "width": 26,
++        "x": 2234,
++        "y": 1274
++      }
++    ]
++  }
++}
+--- a/docs/business_rebuild/implementation/runtime/foreground_batch_m2.md
++++ b/docs/business_rebuild/implementation/runtime/foreground_batch_m2.md
+@@ -0,0 +1,57 @@
++# M2 实机联调：整段操作只切换一次前台
++
++日期：2026-10-07。用户指出原测试脚本每执行一个动作都切回IDE，造成连续闪屏。本轮已修改执行方式，不只是更改口头约定。
++
++## 当前结果
++
++- 发布程序 `dist/RelinkStudio/RelinkStudio.exe` 新增 `--focus-policy caller-owned`：该模式只使用已经由外层批次前置的游戏，**不自行激活游戏，也不自行恢复IDE**。
++- 外层 `tests/manual/run_foreground_batch.py` 负责整段任务：开始前置一次，连续执行观察/导航/回读，结束或出错时统一恢复IDE一次。每个点击后必须有新页面观察，避免旧画面连续驱动点击。
++- 原 `desktop_navigation_probe.py`、`navigate_lobby_to_warehouse.py` 已转接批次入口，不再使用“预检回IDE→点击→回读回IDE”的旧调用链。
++- 独立单次诊断默认 `standalone` 也改为采集、OCR、预览处理全部完成后再恢复IDE，不在OCR前后重复管理焦点。
++- 真实两次连续采集已经验证：外层 `enter_calls=1`、`leave_calls=1`；两个子诊断的激活/恢复请求均为0，期间游戏保持前台，末尾恢复Mirasim。
++
++## 实机证据不是推测
++
++文件：`artifacts/m2_lobby_calibration/foreground_batch_live.json`。
++
++两帧分别具有不同SHA-256；采集和Windows OCR成功，游戏图像不写文件，批次没有按钮点击。10ms周期的前台采样记录在首次观测游戏之后只有“游戏→IDE”，没有中间回IDE；这不是声称采样覆盖了每个微秒。子诊断代码同时报告零切换请求。
++
++本次验证的是**批次焦点控制与连续采集**，不是当前曼德尔页识别成功。该页视觉上已确认进入曼德尔砖界面，但分类器仍返回Unknown，需要后续锚点校准。当前没有自动收藏或购买。
++
++```powershell
++# 离线核验已有实测记录，不切屏。
++python -X utf8 tests\manual\verify_foreground_batch_evidence.py
++
++# 只有执行整段实机检查时使用；记录路径必须是新文件。
++python -X utf8 tests\manual\run_foreground_batch.py `
++  --plan tests/manual/plans/focus_two_observations.json `
++  --record artifacts/m2_lobby_calibration/foreground_batch_next.json
++```
++
++## 组成与异常处理
++
++| 模块 | 职责 |
++|---|---|
++| `diagnostics/foreground_policy.h` | 单次/调用方所有权；结束操作幂等；析构不重复恢复 |
++| `manual/foreground_batch_core.py` | 有界步骤队列；步骤失败、截止耗尽、前台被用户切走时终止剩余步骤；统一finally收尾 |
++| `manual/run_foreground_batch.py` | 重新解析当前PID/HWND；调用零切换子诊断；校验点击前页类与客户区；归还指针和IDE |
++| `manual/desktop_navigation_probe.py` | 兼容旧参数，将预检、单动作、回读放进同一批次；优先直接使用完整计划 |
++
++一个计划最多12个观察/操作步骤、30秒；这一限制用于单个连贯的测试阶段，不是每一步都切屏的理由。下一段开始前先在后台完成必要的分析和修改，再一次性执行整段。
++
++`caller-owned`不是普通双击启动模式。单独调用时若游戏不在前台，诊断报错而不抢回前台；此模式的调用者必须持有批次并负责最终恢复。普通UI依旧只管理配置/回放，测试脚本的导航点击没有接入前端自动业务。
++
++## 本轮前序导航的准确记录
++
++在用户明确要求由智能体点页面后，人工联调脚本执行过3次导航点击：仓库标签、返回大厅标签、大厅底部经悬停确认的“F4 市场”图标。没有点击购买、移动库存或更改关注。
++
++- 仓库页已有真实多锚点匹配；部分早期预览曾带桌面缩略图浮层，不将这些帧称为完整无遮挡业务验收。
++- 进入市场使用的是大厅底部“F4 市场”，不是顶部普通物资“交易行”。最新内存预览显示曼德尔砖/典藏外观/典藏挂饰三个页签。
++- 这是为确认入口做的人工测试导航，不能写成S01–S39自动执行器已完成。
++- 用户指出闪屏后，旧逐动作执行已停止；随后仅用新批次入口做了一段连续两帧只读验证。
++
++## 回归
++
++应用CTest **25/25**；新增前台策略测试验证独立/嵌套、成功/失败、作用域异常恢复、用户切前台后不重抢。Python批次协调器6项测试通过。原大厅37条和启动观察器250条断言、包内历史27页/5路线保持。
++
++发布程序、所需DLL及plugins已更新；六张主要UI离屏图与基线一致。基线、修改后程序以及隔离副本回滚均执行了真实检查。精确命令/输入/输出/退出码与所有实机失败保留在 `artifacts/m2_lobby_calibration/VERIFICATION.txt`。
+--- a/docs/business_rebuild/implementation/runtime/live_capture_m2.md
++++ b/docs/business_rebuild/implementation/runtime/live_capture_m2.md
+@@ -1,4 +1,6 @@
+ # M2：按步骤采集、隐藏OCR诊断与原业务流程对齐
++
++> 下文是首次实现的历史记录。前台所有权现已改为 [整段批次](foreground_batch_m2.md)：独立诊断在OCR结束后只恢复一次，批次子诊断不切换焦点；请勿再按旧描述逐步骤返回IDE。
+ 
+ 日期：2026-10-07。当前业务实施依据为 [BBZPS首次启动逐步复刻](../../10_bbzps_first_startup_reconstruction.md)，不是普通物资交易行。这里仅描述已完成的底层模块，不把采集/OCR测试写成39步业务完成。
+ 
+--- a/docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md
++++ b/docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md
+@@ -0,0 +1,68 @@
++# M2 大厅实机校准：2026-10-07
++
++> 后续用户纠正与实现见 [整段前台批次](foreground_batch_m2.md)：不再逐动作切屏，不再让用户逐页代点。下文为最初大厅只读阶段；之后用户授权了3次人工导航点击，已进入曼德尔砖市场但该页识别仍Unknown。当前应用测试为25组；固定交付是后续焦点修复版，原大厅实测EXE单独保留用于哈希对照。
++
++## 结论与下一步
++
++用户准备游戏主界面后，本轮在 **2560×1440、144 DPI** 的真实游戏客户区完成两次独立的大厅识别，均返回 `lobby`，并验证回到 Mirasim 前台。运行截图不写磁盘，没有游戏点击、收藏变更或购买。
++
++下一页按 [原流程 S04–S06](../../10_bbzps_first_startup_reconstruction.md) 由用户展示仓库，再核对曼德尔/典藏入口。**本轮没有把后续页面、商品字段或完整39步业务标为通过。**
++
++交付程序仍为 `C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe`。主界面的 Win11 白灰样式和配置行为保持不变。
++
++## 证据 → 发现 → 修改
++
++本轮证据目录：`artifacts/m2_lobby_calibration/`。JSON 保存确切命令、EXE哈希、帧哈希、字框/白名单锚点、输出及退出码，不保存游戏图片或全文OCR。
++
++| 证据文件 | 实际结果 | 处理 |
++|---|---|---|
++| `live_baseline.json` | 申请3帧，取到2帧后出现 `E_WINDOW_NOT_FOREGROUND`；退出1，恢复IDE | 保留失败；前台变化立即停止，不继续读取其它窗口 |
++| `live_single_frame.json` | 单帧采集/OCR成功，但页类为Unknown | 采集成功与页类成功分开，不假报大厅通过 |
++| `live_preview_metadata.json` | 明确请求的内存预览显示大厅；页类仍Unknown | 只保存元数据；预览图片没有写文件 |
++| `live_anchor_diagnostics.json` | OCR实际给出“开/始/游/观”“仓/库”“行/前/备/战” | 确定是按钮的局部OCR混淆，不是业务页跳转 |
++| `live_modified_lobby_1.json`、`live_modified_lobby_2.json` | 两个不同帧哈希，均识别Lobby、无覆盖弹窗、退出0 | 验证发布EXE修复，不重用旧帧或只跑fixture |
++| `live_expected_mismatch.json` | 真实仍在大厅，故意要求Warehouse；返回 `E_DIAGNOSTIC_PAGE_MISMATCH`、退出1 | 证明采集/OCR成功不自动满足页面验收 |
++
++内存预览的视觉文字是“开始游戏”；系统Windows OCR将末字“戏”识别为“观”。这是一条当前设备样例，不代表该OCR引擎总有这种错误。
++
++### 局部兼容，而不是全局模糊替换
++
++原来的精确三锚点规则继续保留。仅当以下条件全部成立时，增加大厅候选：
++
++1. 输入协议是 `windows-ocr-once-v1`，语言为 `zh-Hans-CN`。
++2. 左上开始按钮区域内识别到“开始游观”。
++3. 相邻仓库导航区域内独立识别到“仓库”。
++4. 右下准备按钮区域内独立识别到“行前备战”。
++5. 原有输入校验、低分过滤、同行近邻拼接、页类冲突和弹窗检查继续生效。
++
++没有全局将“观”改成“戏”，没有接受任意编辑距离为1的文字，也没有修改仓库、典藏、价格或交易规则。输出 `calibration=lobby_live_sample_20261007` 标记此证据来源；`live_calibrated=false` 保留，表示尚未完成多页面/多显示配置的整体校准，`actions_enabled=false` 保持。
++
++## 新增诊断字段
++
++- `--ocr-lobby-anchors` 必须与 `--ocr` 同用；仅导出三个固定按钮区域中允许字符组成的词框。每区最多32词，截断会显式标记；不导出额外字段、未知文字、账号数值或整页OCR。
++- 投影明确标记 `coverage=anchor_projection`，不能直接作为完整画面送入分类器。
++- `--expected-page PAGE` 必须与 `--ocr` 同用。只有页类匹配且没有阻挡弹窗时，`page_match_passed=true`；否则退出1。错误页名/缺OCR退出2，发生在窗口绑定前。
++- `startup_page` 是当前页类判断；旧 `ocr.page_hint` 只检测特勤处设施，因此大厅时它仍可能为Unknown，不应替代 `startup_page`。
++
++## 离线回归与发布验收
++
++本轮应用CTest **24/24**；新增大厅专项 **37条断言**，覆盖实际分词、缩放、逐字缺失、错误位置、错误provider、其它相似字、低分、跨区域拼接及诊断投影的信息最小化。原启动观察器250条断言和27条历史OCR投影保持通过。
++
++包内 `--startup-observer-self-test` 保留27页/5路径，另新增 `live_projection_checks=1`。它回放的是本轮冻结的文字/坐标fixture，**不是重新采集游戏，也不是实时识别准确率测试**。
++
++发布包及独立副本的UI/工作区/SQLite自检通过；六张主要UI离屏图片与基线逐像素一致。回滚恢复基线文件哈希并保留用户数据哨兵；固定交付目录和 `MODIFIED_FILE.exe` 保留修复版。四份正式交付证据是本目录事务中的 `MODIFIED_FILE.exe`、`DIFF_FILE`、`VERIFICATION.txt`、`ROLLBACK.sh`。
++
++```powershell
++# 只离线验收，不前置游戏。
++python -X utf8 tests\release\verify_lobby_calibration_package.py build
++python -X utf8 tests\release\verify_lobby_calibration_package.py verify
++python -X utf8 tests\manual\verify_lobby_evidence.py
++python -X utf8 tests\release\verify_lobby_calibration_package.py finalize
++
++# 只有用户已展示对应页面时才手动执行。每次重新解析当前窗口身份。
++# record必须是尚不存在的文件，避免覆盖既有实测证据。
++python -X utf8 tests\manual\live_startup_probe.py --expected-page lobby `
++  --lobby-anchors --record artifacts/m2_lobby_calibration/live_manual_next.json
++```
++
++一次大厅样例只能验证当前窗口配置。其它DPI、画幅、弹窗遮挡、仓库/曼德尔/典藏页，以及商品名、价格、成色的绑定仍须逐页实机校准；不会为测试清空原有关注。
+--- a/docs/business_rebuild/implementation/runtime/startup_observer_m2.md
++++ b/docs/business_rebuild/implementation/runtime/startup_observer_m2.md
+@@ -1,4 +1,6 @@
+ # M2 原启动页面识别与只读观察器
++
++> 后续实机更新：见 [大厅校准记录](lobby_live_calibration_m2.md) 及 [整段前台批次](foreground_batch_m2.md)。下文为本模块初次离线验收记录；当前已验证大厅样例、仓库锚点以及连续两帧的批次焦点控制，应用测试为25组。曼德尔页仍Unknown，完整业务尚未通过；不再逐动作切回IDE。
+ 
+ 日期：2026-10-07。对应 [原流程 S01–S39](../../10_bbzps_first_startup_reconstruction.md) 的启动部分，实施 S04–S10 的页面/关注预检与 S32–S33 的已有列表接续检查点，不生成导航点击或购买。
+ 
+--- a/resources.qrc
++++ b/resources.qrc
+@@ -1,6 +1,7 @@
+ <RCC>
+   <qresource prefix="/">
+     <file alias="fixtures/startup_pages.json">docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json</file>
++    <file alias="fixtures/lobby_live_20261007.json">docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json</file>
+     <file alias="theme.qss">src/theme.qss</file>
+     <file alias="assets/demo_skin_atlas.png">src/assets/demo_skin_atlas.png</file>
+     <file alias="icons/check.xpm">src/icons/check.xpm</file>
+--- a/src/application/vision/skin_page_classifier.cpp
++++ b/src/application/vision/skin_page_classifier.cpp
+@@ -109,7 +109,7 @@
+         {"reason", reason}, {"anchors", QJsonArray::fromStringList(anchors)},
+         {"candidate_pages", QJsonArray::fromStringList(candidates)}, {"token_count", tokenCount},
+         {"low_score_tokens", lowScoreTokens}, {"provider_scores_available", providerScoresAvailable},
+-        {"calibration", "historical_ocr_only"}, {"live_calibrated", false}, {"actions_enabled", false}};
++        {"calibration", calibrationEvidence}, {"live_calibrated", false}, {"actions_enabled", false}};
+ }
+ 
+ SkinPageResult classifySkinPage(const QJsonObject& observation) {
+@@ -188,6 +188,17 @@
+         candidate(SkinPage::Warehouse, {"warehouse.equipment", "warehouse.storage"});
+     if (exact(u"开始游戏", top) && exact(u"仓库", top) && exact(u"行前备战", body))
+         candidate(SkinPage::Lobby, {"lobby.start", "lobby.warehouse_nav", "lobby.prepare"});
++    else if (observation.value("protocol") == "windows-ocr-once-v1"
++        && observation.value("language") == "zh-Hans-CN"
++        && exact(u"开始游观", QRectF(.065, .025, .07, .05))
++        && exact(u"仓库", QRectF(.14, .025, .065, .05))
++        && exact(u"行前备战", QRectF(.79, .87, .15, .055))) {
++        // Live 2026-10-07, 2560x1440/144 DPI: Windows OCR read 戏 as 观.
++        // Do not replace characters globally or loosen other page rules. This
++        // one variant requires its provider AND both independent local anchors.
++        candidate(SkinPage::Lobby, {"lobby.start_scoped_ocr_variant", "lobby.warehouse_nav", "lobby.prepare"});
++        result.calibrationEvidence = QStringLiteral("lobby_live_sample_20261007");
++    }
+     int baseAnchors = 0;
+     for (const auto& label : {u"技术中心", u"工作台", u"指挥中心", u"训练中心", u"靶场", u"净水中心", u"收藏室"})
+         if (exact(label, body)) ++baseAnchors;
+@@ -203,4 +214,39 @@
+     result.reason = result.overlay == PageOverlay::None ? QStringLiteral("MULTI_ANCHOR_MATCH") : QStringLiteral("OVERLAY_REQUIRES_RECHECK");
+     return result;
+ }
++QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation) {
++    const auto validated = classifySkinPage(observation);
++    QJsonObject output{{"schema", "lobby-anchor-diagnostics-v1"}, {"coverage", "anchor_projection"},
++        {"valid_input", validated.validInput}, {"actions_enabled", false}};
++    if (!validated.validInput) { output["error"] = validated.reason; return output; }
++    const double width = observation.value("width").toDouble(), height = observation.value("height").toDouble();
++    output["width"] = width; output["height"] = height;
++    struct Region { const char* id; QRectF area; };
++    const Region regions[] = {{"start_navigation", QRectF(.065, .025, .07, .05)},
++        {"warehouse_navigation", QRectF(.14, .025, .065, .05)},
++        {"prepare_button", QRectF(.79, .87, .15, .055)}};
++    QJsonArray projected;
++    for (const auto& region : regions) {
++        QJsonArray words;
++        int excluded = 0;
++        bool truncated = false;
++        for (const auto& value : observation.value("words").toArray()) {
++            const auto word = value.toObject();
++            const QRectF rect(word.value("x").toDouble()/width, word.value("y").toDouble()/height,
++                word.value("width").toDouble()/width, word.value("height").toDouble()/height);
++            if (!region.area.contains(rect)) continue;
++            static const QRegularExpression knownCharacters(QStringLiteral("^[开始游戏观仓库行前备战\\s□■△◇◆]+$"));
++            if (!knownCharacters.match(word.value("text").toString()).hasMatch()) { ++excluded; continue; }
++            if (words.size() == 32) { truncated = true; continue; }
++            QJsonObject minimal;
++            for (const auto* field : {"text", "x", "y", "width", "height", "score"})
++                if (word.contains(field)) minimal[field] = word.value(field);
++            words.append(minimal);
++        }
++        projected.append(QJsonObject{{"id", region.id}, {"words", words},
++            {"excluded_tokens", excluded}, {"truncated", truncated}});
++    }
++    output["regions"] = projected;
++    return output;
++}
+ } // namespace relink::vision
+--- a/src/application/vision/skin_page_classifier.h
++++ b/src/application/vision/skin_page_classifier.h
+@@ -21,11 +21,16 @@
+     int tokenCount = 0;
+     int lowScoreTokens = 0;
+     bool providerScoresAvailable = false;
++    QString calibrationEvidence = QStringLiteral("historical_ocr_only");
+     QJsonObject toJson() const;
+ };
+ 
+ // Pure text/geometry boundary. Explicit full-client coverage is mandatory;
+ // partial OCR, legacy labels and navigation text alone are not page proof.
+-// These rules are calibrated to historical OCR records, not yet current live UI.
++// Historical rules plus one narrowly scoped live Windows OCR lobby variant.
++// A matching sample never enables actions or certifies all current game pages.
+ SkinPageResult classifySkinPage(const QJsonObject& observation);
++// Opt-in calibration aid: only three fixed, non-personal lobby button regions.
++// This is a partial projection, not a page classification or action target.
++QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation);
+ } // namespace relink::vision
+--- a/src/diagnostics/foreground_policy.h
++++ b/src/diagnostics/foreground_policy.h
+@@ -0,0 +1,45 @@
++#pragma once
++#include <cstdint>
++#include <functional>
++#include <utility>
++
++namespace relink::diagnostics {
++// A probe never owns foreground transitions inside an enclosing batch.
++// Standalone probes retain the game through OCR and restore only at the end.
++class ForegroundPolicy final {
++public:
++    using Handle = std::uintptr_t;
++    using Current = std::function<Handle()>;
++    using Switch = std::function<bool()>;
++    ForegroundPolicy(bool callerOwned, Handle target, Handle ide, Current current, Switch activate, Switch restore)
++        : m_callerOwned(callerOwned), m_target(target), m_ide(ide), m_current(std::move(current)),
++          m_activate(std::move(activate)), m_restore(std::move(restore)) {}
++    ForegroundPolicy(const ForegroundPolicy&) = delete;
++    ForegroundPolicy& operator=(const ForegroundPolicy&) = delete;
++    ~ForegroundPolicy() { if (m_started && !m_finished) finish(); }
++    bool begin() {
++        if (m_started) return false;
++        m_started = true;
++        if (m_callerOwned) return m_current() == m_target;
++        if (m_current() == m_target) return true;
++        ++activationRequests;
++        return m_activate() && m_current() == m_target;
++    }
++    bool finish() {
++        if (m_finished) return m_finishResult;
++        m_finished = true;
++        if (!m_started) return m_finishResult = false;
++        if (m_callerOwned) return m_finishResult = m_current() == m_target;
++        if (m_current() == m_ide) return m_finishResult = true;
++        ++restoreRequests;
++        return m_finishResult = m_restore() && m_current() == m_ide;
++    }
++    int activationRequests = 0;
++    int restoreRequests = 0;
++private:
++    bool m_callerOwned, m_started = false, m_finished = false, m_finishResult = false;
++    Handle m_target, m_ide;
++    Current m_current;
++    Switch m_activate, m_restore;
++};
++}
+--- a/src/diagnostics/live_capture_check.cpp
++++ b/src/diagnostics/live_capture_check.cpp
+@@ -1,4 +1,5 @@
+ #include "live_capture_check.h"
++#include "foreground_policy.h"
+ #include "application/vision/dxgi_observation_source.h"
+ #include "application/vision/windows_ocr.h"
+ #include "application/vision/skin_page_classifier.h"
+@@ -37,14 +38,17 @@
+     QCoreApplication app(argc, argv);
+     QCommandLineParser parser;
+     parser.addHelpOption();
+-    parser.addOption({"live-capture-check", "Explicit read-only foreground game capture; always return to the specified IDE."});
++    parser.addOption({"live-capture-check", "Explicit read-only capture; standalone returns IDE once, caller-owned batch never switches focus."});
++    parser.addOption({"focus-policy", "standalone (default) or caller-owned for an enclosing foreground batch.", "policy", "standalone"});
+     parser.addOption({"target-hwnd", "Exact target window handle (decimal).", "hwnd"});
+     parser.addOption({"target-pid", "Exact target process ID (decimal).", "pid"});
+     parser.addOption({"return-hwnd", "Exact IDE window to restore (decimal).", "hwnd"});
+     parser.addOption({"return-pid", "Exact IDE process ID (decimal).", "pid"});
+     parser.addOption({"frames", "Bounded sample count, 1 to 5; default 1.", "count", "1"});
+     parser.addOption({"preview-stdout", "Explicit final-frame PNG preview over stdout only; no file output."});
+-    parser.addOption({"ocr", "Run Windows OCR on the final in-memory frame after returning the IDE to foreground."});
++    parser.addOption({"ocr", "Run Windows OCR on the final in-memory frame without intermediate foreground switches."});
++    parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
++    parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
+     parser.process(app);
+     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
+     const quint32 targetPid = positive(parser.value("target-pid"), std::numeric_limits<quint32>::max());
+@@ -54,7 +58,22 @@
+     QJsonObject result{{"diagnostic", "live_capture"}, {"capture_passed", false}, {"frames", QJsonArray{}},
+         {"recognition_performed", false}, {"image_file_writes", 0}, {"game_input_sent", false},
+         {"ide_foreground_restored", false}, {"game_in_background", false}};
+-    if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid) {
++    const auto focusPolicy = parser.value("focus-policy");
++    if (focusPolicy != "standalone" && focusPolicy != "caller-owned") {
++        result["error"] = "E_DIAGNOSTIC_FOCUS_POLICY"; return emitResult(result, 2);
++    }
++    const bool callerOwned = focusPolicy == "caller-owned";
++    result["focus_policy"] = focusPolicy;
++    result["foreground_cleanup_owner"] = callerOwned ? "batch_caller" : "diagnostic";
++    const QString expectedPage = parser.value("expected-page");
++    const QStringList pageNames{"lobby", "warehouse", "mandel", "skin_home", "empty_watchlist", "catalog_filter",
++        "skin_listings", "watchlist_listings", "game_settings", "base"};
++    if (parser.isSet("expected-page") && (!parser.isSet("ocr") || !pageNames.contains(expectedPage))) {
++        result["error"] = "E_DIAGNOSTIC_EXPECTED_PAGE"; return emitResult(result, 2);
++    }
++    if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
++    if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
++        || (parser.isSet("ocr-lobby-anchors") && !parser.isSet("ocr"))) {
+         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
+     }
+     QString error;
+@@ -68,16 +87,19 @@
+         || ide.executableName.compare(QStringLiteral("Mirasim.exe"), Qt::CaseInsensitive) != 0) {
+         result["error"] = "E_DIAGNOSTIC_TARGET"; return emitResult(result, 2);
+     }
+-    ForegroundReturnGuard guard(ide);
++    QString restoreError;
++    ForegroundPolicy focus(callerOwned, targetHwnd, returnHwnd, foregroundWindow,
++        [&]() { return activateTargetWindow(target, &error); },
++        [&]() { return activateTargetWindow(ide, &restoreError); });
+     QJsonArray frames;
+     QByteArray finalPixels;
+     FrameEnvelope ocrFrame;
+     int finalWidth = 0, finalHeight = 0, finalStride = 0;
+     try {
+-        if (activateTargetWindow(target, &error)) {
+-            QThread::msleep(350);
++        if (focus.begin()) {
++            if (!callerOwned) QThread::msleep(350);
+             target = bindTargetWindow(targetHwnd, targetPid, &error);
+-        }
++        } else if (error.isEmpty()) error = QStringLiteral("E_BATCH_FOREGROUND_NOT_OWNED");
+         if (error.isEmpty()) error = validateTargetWindow(target);
+         if (error.isEmpty()) {
+             const QString session = QUuid::createUuid().toString(QUuid::WithoutBraces);
+@@ -125,17 +147,11 @@
+             }
+         }
+     } catch (...) { error = QStringLiteral("E_DIAGNOSTIC_EXCEPTION"); }
+-    QString restoreError;
+-    const bool restored = guard.restore(&restoreError);
+-    result["ide_foreground_restored"] = restored;
+-    result["game_in_background"] = restored && foregroundWindow() != targetHwnd;
+-    result["foreground_hwnd"] = QString::number(foregroundWindow());
+     result["return_hwnd"] = QString::number(returnHwnd);
+     result["frames"] = frames;
+     result["capture_passed"] = error.isEmpty() && frames.size() == frameCount;
+     if (!error.isEmpty()) result["error"] = error;
+-    if (!restoreError.isEmpty()) result["restore_error"] = restoreError;
+-    if (restored && error.isEmpty() && parser.isSet("ocr")) {
++    if (error.isEmpty() && parser.isSet("ocr")) {
+         WindowsOcrRecognizer recognizer(QCoreApplication::applicationDirPath() + QStringLiteral("/vision/windows_ocr_worker.ps1"));
+         const auto recognized = recognizer.recognizeFrame(ocrFrame);
+         result["recognition_performed"] = true;
+@@ -144,7 +160,16 @@
+             auto pageObservation = recognized.observation;
+             // This diagnostic requested the entire bound client, not a ROI.
+             pageObservation["coverage"] = "full_client";
+-            result["startup_page"] = classifySkinPage(pageObservation).toJson();
++            const auto classified = classifySkinPage(pageObservation);
++            result["startup_page"] = classified.toJson();
++            if (!expectedPage.isEmpty()) {
++                const bool matched = classified.validInput && toString(classified.page) == expectedPage
++                    && classified.overlay == PageOverlay::None;
++                result["page_match_passed"] = matched;
++                if (!matched) { error = QStringLiteral("E_DIAGNOSTIC_PAGE_MISMATCH"); result["page_error"] = error; }
++            }
++            if (parser.isSet("ocr-lobby-anchors"))
++                result["lobby_anchor_diagnostics"] = projectLobbyAnchorDiagnostics(pageObservation);
+             auto summary = summarizeRecognizedPage(recognized.observation);
+             summary["provider"] = "Windows.Media.Ocr";
+             summary["language"] = recognized.observation.value("language");
+@@ -156,7 +181,7 @@
+             result["ocr_error"] = error;
+         }
+     }
+-    if (restored && error.isEmpty() && !finalPixels.isEmpty()) {
++    if (error.isEmpty() && !finalPixels.isEmpty()) {
+         QImage view(reinterpret_cast<const uchar*>(finalPixels.constData()), finalWidth, finalHeight, finalStride, QImage::Format_RGB32);
+         QByteArray png;
+         QBuffer buffer(&png);
+@@ -165,11 +190,19 @@
+             result["preview_png_base64"] = QString::fromLatin1(png.toBase64());
+         else { result["preview_error"] = "E_PREVIEW_ENCODE"; error = QStringLiteral("E_PREVIEW_ENCODE"); }
+     }
+-    const bool finalRestored = guard.restore(&restoreError);
++    const bool focusFinished = focus.finish();
++    const bool finalRestored = foregroundWindow() == returnHwnd;
+     result["ide_foreground_restored"] = finalRestored;
+-    result["game_in_background"] = finalRestored && foregroundWindow() != targetHwnd;
++    result["game_in_background"] = foregroundWindow() != targetHwnd;
++    result["target_foreground_retained"] = foregroundWindow() == targetHwnd;
++    result["focus_activation_requests"] = focus.activationRequests;
++    result["focus_restore_requests"] = focus.restoreRequests;
+     result["foreground_hwnd"] = QString::number(foregroundWindow());
+     if (!restoreError.isEmpty()) result["restore_error"] = restoreError;
+-    return emitResult(result, !finalRestored ? 3 : error.isEmpty() ? 0 : 1);
++    if (!focusFinished && callerOwned) {
++        if (error.isEmpty()) error = QStringLiteral("E_BATCH_FOREGROUND_LOST");
++        result["error"] = error;
++    }
++    return emitResult(result, !focusFinished && !callerOwned ? 3 : error.isEmpty() ? 0 : 1);
+ }
+ } // namespace relink::diagnostics
+--- a/src/diagnostics/startup_observer_self_test.cpp
++++ b/src/diagnostics/startup_observer_self_test.cpp
+@@ -56,6 +56,22 @@
+         trace(QStringLiteral("filter_without_precheck_does_not_advance"), {"p1_catalog_filter"}, runtime::StartupPhase::Locating);
+         trace(QStringLiteral("listing_overlay_does_not_advance"), {"p3_list_filter_open"}, runtime::StartupPhase::Locating);
+     }
++    int liveProjectionChecks = 0;
++    QFile liveFixture(QStringLiteral(":/fixtures/lobby_live_20261007.json"));
++    bool liveProjectionPass = liveFixture.open(QIODevice::ReadOnly) && liveFixture.size() <= 65536;
++    if (liveProjectionPass) {
++        const auto live = QJsonDocument::fromJson(liveFixture.readAll()).object();
++        const auto actual = vision::classifySkinPage(live.value("observation").toObject());
++        liveProjectionPass = live.value("source_kind") == "live_ocr_anchor_projection"
++            && !live.value("pixels_included").toBool() && actual.validInput
++            && actual.page == vision::SkinPage::Lobby && actual.overlay == vision::PageOverlay::None
++            && actual.calibrationEvidence == "lobby_live_sample_20261007";
++        ++liveProjectionChecks;
++    }
++    if (!liveProjectionPass) ++failed;
++    checks.append(QJsonObject{{"id", "recorded_lobby_anchor_projection"}, {"passed", liveProjectionPass},
++        {"live_capture_performed", false}});
++    report["live_projection_checks"] = liveProjectionChecks;
+     report["page_checks"] = pageChecks; report["trace_checks"] = traceChecks;
+     report["checks"] = checks; report["failures"] = failed; report["passed"] = failed == 0;
+     report["live_calibrated"] = false;
+--- a/tests/manual/desktop_navigation_probe.py
++++ b/tests/manual/desktop_navigation_probe.py
+@@ -0,0 +1,37 @@
++"""Compatibility CLI: preflight + action + readback share ONE foreground batch.
++Prefer run_foreground_batch.py with the entire planned navigation sequence.
++"""
++import argparse
++import json
++from pathlib import Path
++import re
++import subprocess
++import sys
++ROOT = Path(__file__).resolve().parents[2]
++TX = ROOT / 'artifacts/m2_lobby_calibration'
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--key',required=True)
++    parser.add_argument('--from-page',required=True)
++    parser.add_argument('--to-page')
++    parser.add_argument('--x',type=int,required=True)
++    parser.add_argument('--y',type=int,required=True)
++    parser.add_argument('--width',type=int,required=True)
++    parser.add_argument('--height',type=int,required=True)
++    parser.add_argument('--action',choices=['hover','click'],required=True)
++    parser.add_argument('--preview',action='store_true')
++    args=parser.parse_args()
++    assert re.fullmatch('[a-z0-9_]{1,60}',args.key)
++    plan=dict(name=args.key,timeout_seconds=25,steps=[
++        dict(kind='capture',expected_page=args.from_page),
++        dict(kind=args.action,point=[args.x,args.y],viewport=[args.width,args.height],expected_before=args.from_page),
++        dict(kind='capture',expected_page=args.to_page,preview=args.preview)])
++    plan_path=TX/'plans'/(args.key+'.json')
++    plan_path.parent.mkdir(parents=True,exist_ok=True)
++    with plan_path.open('x',encoding='utf-8') as file:json.dump(plan,file,ensure_ascii=False,indent=2)
++    command=[sys.executable,str(ROOT/'tests/manual/run_foreground_batch.py'),'--plan',str(plan_path),
++        '--record',str(TX/('navigation_'+args.key+'.json'))]
++    return subprocess.run(command,creationflags=subprocess.CREATE_NO_WINDOW).returncode
++
++if __name__=='__main__':raise SystemExit(main())
+--- a/tests/manual/foreground_batch_core.py
++++ b/tests/manual/foreground_batch_core.py
+@@ -0,0 +1,35 @@
++"""Pure bounded batch coordinator; OS operations are injected by the manual runner."""
++import time
++
++
++def execute_batch(steps, enter, perform, leave, is_foreground, *, timeout=30, now=time.monotonic):
++    if not isinstance(steps, list) or not 1 <= len(steps) <= 12 or not 1 <= timeout <= 30:
++        raise ValueError('A batch needs 1..12 steps and a 1..30 second bound.')
++    result = dict(passed=False, steps=[], enter_calls=0, leave_calls=0, error=None)
++    deadline = now() + timeout
++    try:
++        result['enter_calls'] += 1
++        enter()
++        for step in steps:
++            if now() >= deadline:
++                raise TimeoutError('BATCH_DEADLINE')
++            if not is_foreground():
++                raise RuntimeError('BATCH_FOREGROUND_LOST')
++            observed = perform(step, deadline - now())
++            result['steps'].append(observed)
++            if not observed.get('passed'):
++                raise RuntimeError('BATCH_STEP_FAILED')
++            if not is_foreground():
++                raise RuntimeError('BATCH_FOREGROUND_LOST')
++        result['passed'] = True
++    except Exception as error:
++        result['error'] = str(error)
++    finally:
++        result['leave_calls'] += 1
++        try:
++            result['ide_restored'] = bool(leave())
++        except Exception as error:
++            result['ide_restored'] = False
++            result['restore_error'] = str(error)
++        result['passed'] = result['passed'] and result['ide_restored']
++    return result
+--- a/tests/manual/live_startup_probe.py
++++ b/tests/manual/live_startup_probe.py
+@@ -0,0 +1,82 @@
++"""Explicit one-shot live probe. Never invoked by CTest or offline package tests.
++
++Requires the user-prepared game and IDE. Re-resolves HWND/PID each invocation,
++records only JSON metadata/button anchors, and checks the restored foreground.
++"""
++import argparse
++import ctypes
++import datetime
++import hashlib
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++
++ROOT = Path(__file__).resolve().parents[2]
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--expected-page', required=True, choices=['lobby', 'warehouse', 'mandel', 'skin_home',
++        'empty_watchlist', 'catalog_filter', 'skin_listings', 'watchlist_listings', 'game_settings', 'base'])
++    parser.add_argument('--record', required=True, help='New JSON metadata file below workspace artifacts/.')
++    parser.add_argument('--lobby-anchors', action='store_true')
++    args = parser.parse_args()
++    output = (ROOT / args.record).resolve()
++    if not output.is_relative_to(ROOT / 'artifacts') or output.suffix != '.json' or output.exists():
++        raise SystemExit('Use a new .json record under artifacts/; existing evidence is immutable.')
++    query = r"""$ErrorActionPreference='Stop';
++    $game=@(Get-Process DeltaForceClient-Win64-Shipping | Where-Object {$_.MainWindowHandle -ne 0});
++    $ide=@(Get-Process Mirasim | Where-Object {$_.MainWindowHandle -ne 0});
++    if ($game.Count -ne 1 -or $ide.Count -ne 1) {throw 'Window identity ambiguous'};
++    @{target_hwnd=[string]$game[0].MainWindowHandle;target_pid=[string]$game[0].Id;
++      return_hwnd=[string]$ide[0].MainWindowHandle;return_pid=[string]$ide[0].Id} | ConvertTo-Json -Compress
++    """
++    discovery = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', query],
++        capture_output=True, timeout=10, creationflags=subprocess.CREATE_NO_WINDOW)
++    if discovery.returncode:
++        raise SystemExit('Current game/IDE identity discovery failed before capture.')
++    handles = json.loads(discovery.stdout)
++    exe = ROOT / 'dist/RelinkStudio/RelinkStudio.exe'
++    command = [str(exe), '--live-capture-check']
++    for key in ['target_hwnd', 'target_pid', 'return_hwnd', 'return_pid']:
++        command += ['--' + key.replace('_', '-'), handles[key]]
++    command += ['--frames', '1', '--ocr', '--expected-page', args.expected_page]
++    if args.lobby_anchors:
++        command += ['--ocr-lobby-anchors']
++    record = dict(timestamp=datetime.datetime.now().astimezone().isoformat(), command=command,
++        binary_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
++        input='User-prepared page; one full-client in-memory frame; exact expected page; no game input.',
++        stdout='', stderr='', exit_status=None)
++    u = ctypes.WinDLL('user32', use_last_error=True)
++    u.GetForegroundWindow.restype = ctypes.c_void_p
++    try:
++        result = subprocess.run(command, cwd=ROOT, capture_output=True, timeout=25,
++            creationflags=subprocess.CREATE_NO_WINDOW)
++        record.update(stdout=result.stdout.decode('utf-8'), stderr=result.stderr.decode('utf-8', errors='replace'),
++            exit_status=result.returncode)
++    except subprocess.TimeoutExpired:
++        record.update(stderr='OUTER_PROBE_TIMEOUT', exit_status=124)
++    finally:
++        # An interrupted child cannot execute its C++ guard. Restore only the
++        # specifically resolved IDE, with the existing identity-checked helper.
++        if u.GetForegroundWindow() != int(handles['return_hwnd']):
++            restore = subprocess.run([sys.executable, str(ROOT / 'artifacts/m2_live_capture_transaction/restore_ide.py'),
++                '--hwnd', handles['return_hwnd'], '--pid', handles['return_pid']],
++                capture_output=True, timeout=10, creationflags=subprocess.CREATE_NO_WINDOW)
++            record['outer_restore'] = dict(exit_status=restore.returncode,
++                stdout=restore.stdout.decode('utf-8', errors='replace'), stderr=restore.stderr.decode('utf-8', errors='replace'))
++        record['foreground_after'] = u.GetForegroundWindow()
++        record['outer_ide_restored'] = record['foreground_after'] == int(handles['return_hwnd'])
++        output.parent.mkdir(parents=True, exist_ok=True)
++        with output.open('x', encoding='utf-8') as file:
++            json.dump(record, file, ensure_ascii=False, indent=2)
++    print(json.dumps(record, ensure_ascii=False, indent=2))
++    if not record['outer_ide_restored']:
++        return 3
++    return record['exit_status']
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/tests/manual/navigate_lobby_to_warehouse.py
++++ b/tests/manual/navigate_lobby_to_warehouse.py
+@@ -0,0 +1,80 @@
++"""User-authorized, one-click manual calibration; not linked to the application.
++
++Resolve current windows, require a freshly recognized lobby and OCR warehouse
++button, click that button once, then read back the page and restore the IDE.
++No inventory, watchlist or purchase actions.
++"""
++import ctypes as c
++from ctypes import wintypes as w
++import datetime
++import json
++from pathlib import Path
++import subprocess
++import sys
++import time
++
++ROOT = Path(__file__).resolve().parents[2]
++TX = ROOT / 'artifacts/m2_lobby_calibration'
++u = c.WinDLL('user32', use_last_error=True)
++k = c.WinDLL('kernel32', use_last_error=True)
++u.GetForegroundWindow.restype = w.HWND
++u.GetWindowThreadProcessId.argtypes = [w.HWND, c.POINTER(w.DWORD)]
++u.GetWindowThreadProcessId.restype = w.DWORD
++u.SetForegroundWindow.argtypes = [w.HWND]
++u.AttachThreadInput.argtypes = [w.DWORD, w.DWORD, w.BOOL]
++u.AttachThreadInput.restype = w.BOOL
++u.PeekMessageW.argtypes = [c.POINTER(w.MSG), w.HWND, w.UINT, w.UINT, w.UINT]
++u.SetThreadDpiAwarenessContext.argtypes = [w.HANDLE]
++u.SetThreadDpiAwarenessContext.restype = w.HANDLE
++u.GetClientRect.argtypes = [w.HWND, c.POINTER(w.RECT)]
++u.ClientToScreen.argtypes = [w.HWND, c.POINTER(w.POINT)]
++u.WindowFromPoint.argtypes = [w.POINT]
++u.WindowFromPoint.restype = w.HWND
++u.GetAncestor.argtypes = [w.HWND, w.UINT]
++u.GetAncestor.restype = w.HWND
++u.GetCursorPos.argtypes = [c.POINTER(w.POINT)]
++u.SetCursorPos.argtypes = [c.c_int, c.c_int]
++u.GetAsyncKeyState.argtypes = [c.c_int]
++u.GetAsyncKeyState.restype = c.c_short
++k.GetCurrentThreadId.restype = w.DWORD
++
++class MouseInput(c.Structure):
++    _fields_ = [('dx', w.LONG), ('dy', w.LONG), ('mouseData', w.DWORD), ('dwFlags', w.DWORD),
++                ('time', w.DWORD), ('dwExtraInfo', c.c_size_t)]
++class InputUnion(c.Union):
++    _fields_ = [('mi', MouseInput)]
++class Input(c.Structure):
++    _fields_ = [('type', w.DWORD), ('data', InputUnion)]
++u.SendInput.argtypes = [w.UINT, c.POINTER(Input), c.c_int]
++u.SendInput.restype = w.UINT
++
++
++def activate(hwnd, pid):
++    actual = w.DWORD()
++    destination = u.GetWindowThreadProcessId(hwnd, c.byref(actual))
++    assert actual.value == pid and destination
++    message = w.MSG(); u.PeekMessageW(c.byref(message), None, 0x400, 0x400, 0)
++    current = k.GetCurrentThreadId()
++    foreground = u.GetWindowThreadProcessId(u.GetForegroundWindow(), None)
++    attached = []
++    try:
++        for tid in dict.fromkeys([foreground, destination]):
++            if tid and tid != current and u.AttachThreadInput(current, tid, True): attached.append(tid)
++        u.SetForegroundWindow(hwnd)
++    finally:
++        for tid in reversed(attached): u.AttachThreadInput(current, tid, False)
++    for _ in range(20):
++        if u.GetForegroundWindow() == hwnd: return
++        time.sleep(.01)
++    raise RuntimeError('Game activation did not stick; no click sent.')
++
++
++def main():
++    # Legacy CLI delegates to the batch wrapper, not per-action restoration.
++    command = [sys.executable, str(ROOT / 'tests/manual/desktop_navigation_probe.py'),
++        '--key', 'lobby_warehouse_batch', '--from-page', 'lobby', '--to-page', 'warehouse',
++        '--x', '430', '--y', '73', '--width', '2560', '--height', '1440', '--action', 'click']
++    return subprocess.run(command, creationflags=subprocess.CREATE_NO_WINDOW).returncode
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/tests/manual/plans/focus_two_observations.json
++++ b/tests/manual/plans/focus_two_observations.json
+@@ -0,0 +1,8 @@
++{
++  "name": "One foreground lease, two read-only captures, one final IDE restore",
++  "timeout_seconds": 15,
++  "steps": [
++    {"kind": "capture"},
++    {"kind": "capture"}
++  ]
++}
+--- a/tests/manual/run_foreground_batch.py
++++ b/tests/manual/run_foreground_batch.py
+@@ -0,0 +1,141 @@
++"""Run a user-authorized finite navigation/observation batch with one focus lease.
++
++No probe in the batch may activate the game or restore the IDE itself.
++The outer finally restores once, including on failure/timeout. Not part of CTest.
++"""
++import argparse
++import base64
++import ctypes as c
++from ctypes import wintypes as w
++import datetime
++import hashlib
++import io
++import json
++from pathlib import Path
++import subprocess
++import sys
++import threading
++import time
++
++from foreground_batch_core import execute_batch
++from navigate_lobby_to_warehouse import u, activate, Input
++
++ROOT = Path(__file__).resolve().parents[2]
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--plan', required=True)
++    parser.add_argument('--record', required=True)
++    args = parser.parse_args()
++    plan = json.loads(Path(args.plan).read_text(encoding='utf-8'))
++    output = (ROOT / args.record).resolve()
++    assert output.is_relative_to(ROOT / 'artifacts') and output.suffix == '.json' and not output.exists()
++    steps = plan['steps']
++    assert isinstance(steps, list) and 1 <= len(steps) <= 12
++    assert all(s.get('kind') in ('capture', 'click', 'hover') for s in steps)
++    assert steps[0]['kind'] == 'capture'
++    timeout = plan.get('timeout_seconds', 25)
++    assert 1 <= timeout <= 30
++    query = r"""$ErrorActionPreference='Stop';
++    $g=@(Get-Process DeltaForceClient-Win64-Shipping|Where-Object {$_.MainWindowHandle -ne 0});
++    $i=@(Get-Process Mirasim|Where-Object {$_.MainWindowHandle -ne 0});
++    if($g.Count -ne 1 -or $i.Count -ne 1){throw 'Window identity ambiguous'};
++    @{target_hwnd=[string]$g[0].MainWindowHandle;target_pid=[string]$g[0].Id;
++      return_hwnd=[string]$i[0].MainWindowHandle;return_pid=[string]$i[0].Id}|ConvertTo-Json -Compress
++    """
++    found = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', query],
++        capture_output=True, timeout=10, creationflags=subprocess.CREATE_NO_WINDOW)
++    assert found.returncode == 0
++    handles = {key: int(value) for key, value in json.loads(found.stdout).items()}
++    exe = ROOT / 'dist/RelinkStudio/RelinkStudio.exe'
++    command = [str(exe), '--live-capture-check', '--focus-policy', 'caller-owned']
++    for key, value in handles.items(): command += ['--' + key.replace('_', '-'), str(value)]
++    command += ['--frames', '1', '--ocr']
++    # Resolve identity in the diagnostic on every capture. This never relaxes
++    # the existing executable allowlist, viewport or occlusion validation.
++    previous = {}; last_preview = None; clicks = 0
++    dpi = u.SetThreadDpiAwarenessContext(c.c_void_p(-4)); assert dpi
++    pointer = w.POINT(); assert u.GetCursorPos(c.byref(pointer))
++    transitions = []
++    halt = threading.Event()
++    def sample():
++        window = u.GetForegroundWindow()
++        if not transitions or transitions[-1]['hwnd'] != window:
++            transitions.append(dict(hwnd=window, monotonic_ms=round(time.monotonic()*1000)))
++    def monitor():
++        while not halt.is_set(): sample(); halt.wait(.01)
++    watcher = threading.Thread(target=monitor, daemon=True); watcher.start()
++    def enter():
++        activate(handles['target_hwnd'], handles['target_pid'])
++        origin = w.POINT(); rect = w.RECT()
++        assert u.ClientToScreen(handles['target_hwnd'], c.byref(origin))
++        assert u.GetClientRect(handles['target_hwnd'], c.byref(rect))
++        neutral = w.POINT(origin.x+rect.right//2, origin.y+rect.bottom//3)
++        if u.GetAncestor(u.WindowFromPoint(neutral),2) == handles['target_hwnd']:
++            u.SetCursorPos(neutral.x, neutral.y)
++        time.sleep(.4)
++    def perform(step, remaining):
++        nonlocal previous, last_preview, clicks
++        if step['kind'] == 'capture':
++            argv = list(command)
++            if step.get('expected_page'): argv += ['--expected-page', step['expected_page']]
++            if step.get('preview'): argv += ['--preview-stdout']
++            p = subprocess.run(argv, capture_output=True, timeout=max(.1,min(20,remaining)),
++                creationflags=subprocess.CREATE_NO_WINDOW)
++            result = json.loads(p.stdout)
++            last_preview = result.pop('preview_png_base64', None)
++            previous = result
++            passed = p.returncode == 0 and result.get('capture_passed') and result.get('ocr_passed')
++            passed = passed and result.get('focus_activation_requests') == 0 and result.get('focus_restore_requests') == 0
++            return dict(kind='capture', passed=bool(passed), command=argv, result=result,
++                stderr=p.stderr.decode('utf-8',errors='replace'), exit_status=p.returncode)
++        assert previous.get('startup_page',{}).get('page') == step['expected_before'] != 'unknown'
++        assert previous['startup_page']['overlay'] == 'none'
++        rect = w.RECT(); origin = w.POINT()
++        assert u.GetClientRect(handles['target_hwnd'],c.byref(rect)) and u.ClientToScreen(handles['target_hwnd'],c.byref(origin))
++        assert (rect.right,rect.bottom) == (previous['frames'][0]['width'],previous['frames'][0]['height'])
++        if step.get('viewport'): assert [rect.right,rect.bottom] == step['viewport']
++        x,y = step['point']; assert isinstance(x,int) and isinstance(y,int) and 0<x<rect.right and 0<y<rect.bottom
++        point = w.POINT(origin.x+x,origin.y+y)
++        assert u.GetAncestor(u.WindowFromPoint(point),2) == handles['target_hwnd']
++        assert not any(u.GetAsyncKeyState(key)&0x8000 for key in [1,2,16,17,18])
++        assert u.SetCursorPos(point.x,point.y)
++        if step['kind'] == 'click':
++            assert u.GetForegroundWindow() == handles['target_hwnd']
++            pair=(Input*2)();pair[0].data.mi.dwFlags=2;pair[1].data.mi.dwFlags=4
++            sent=u.SendInput(2,pair,c.sizeof(Input))
++            if sent==1:
++                release=Input();release.data.mi.dwFlags=4;u.SendInput(1,c.byref(release),c.sizeof(Input))
++            assert sent==2
++            clicks+=1
++            previous={}  # Require a fresh page observation before another click.
++        time.sleep(min(.6,max(.01,remaining/4)))
++        return dict(kind=step['kind'],point=[x,y],passed=True)
++    def leave():
++        activate(handles['return_hwnd'], handles['return_pid'])
++        u.SetCursorPos(pointer.x,pointer.y)
++        sample()
++        return u.GetForegroundWindow()==handles['return_hwnd']
++    try:
++        report = execute_batch(steps, enter, perform, leave,
++            lambda: u.GetForegroundWindow()==handles['target_hwnd'], timeout=timeout)
++    finally:
++        halt.set();watcher.join(timeout=1);u.SetThreadDpiAwarenessContext(dpi)
++    report.update(timestamp=datetime.datetime.now().astimezone().isoformat(),
++        binary_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(), plan=plan, identities=handles,
++        foreground_transitions=transitions, foreground_sampling_interval_ms=10,
++        manual_clicks=clicks, image_file_writes=0)
++    output.parent.mkdir(parents=True,exist_ok=True)
++    with output.open('x',encoding='utf-8') as file: json.dump(report,file,ensure_ascii=False,indent=2)
++    encoded=None
++    if last_preview:
++        from PIL import Image
++        im=Image.open(io.BytesIO(base64.b64decode(last_preview))); buf=io.BytesIO(); im.save(buf,format='JPEG',quality=68)
++        encoded=base64.b64encode(buf.getvalue()).decode('ascii')
++    print(json.dumps(dict(metadata=report,preview_jpeg=encoded),ensure_ascii=False))
++    return 0 if report['passed'] else 1
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/tests/manual/test_foreground_batch_core.py
++++ b/tests/manual/test_foreground_batch_core.py
+@@ -0,0 +1,38 @@
++import unittest
++from foreground_batch_core import execute_batch
++
++
++class BatchTests(unittest.TestCase):
++    def run_case(self, fail_at=None, lose_at=None):
++        events=[]; focus=[False]; index=[0]
++        def enter(): events.append('enter');focus[0]=True
++        def leave(): events.append('leave');focus[0]=False;return True
++        def perform(step, remaining):
++            events.append('step'); index[0]+=1
++            if index[0]==lose_at: focus[0]=False
++            if index[0]==fail_at: raise TimeoutError('worker timeout')
++            return {'passed':True}
++        r=execute_batch([{}, {}, {}],enter,perform,leave,lambda:focus[0])
++        return r,events
++    def test_all_steps_one_lease(self):
++        r,e=self.run_case();self.assertTrue(r['passed']);self.assertEqual(e,['enter','step','step','step','leave'])
++    def test_failure_stops_remaining_and_restores_once(self):
++        r,e=self.run_case(fail_at=2);self.assertFalse(r['passed']);self.assertEqual(e,['enter','step','step','leave']);self.assertTrue(r['ide_restored'])
++    def test_user_focus_change_is_not_reacquired(self):
++        r,e=self.run_case(lose_at=1);self.assertEqual(r['error'],'BATCH_FOREGROUND_LOST');self.assertEqual(e,['enter','step','leave'])
++    def test_invalid_plan_does_not_touch_focus(self):
++        events=[]
++        with self.assertRaises(ValueError): execute_batch([],lambda:events.append(1),lambda s,t:None,lambda:events.append(2),lambda:True)
++        self.assertEqual(events,[])
++    def test_failed_enter_cleanup(self):
++        events=[]
++        def fail(): raise RuntimeError('activation failed')
++        r=execute_batch([{}],fail,lambda s,t:None,lambda:events.append('leave') or True,lambda:True)
++        self.assertFalse(r['passed']);self.assertEqual(events,['leave'])
++    def test_failed_result_does_not_run_next_step(self):
++        events=[]
++        r=execute_batch([{},{}],lambda:None,lambda s,t:events.append('step') or {'passed':False},lambda:True,lambda:True)
++        self.assertFalse(r['passed']);self.assertEqual(events,['step'])
++
++
++if __name__=='__main__': unittest.main(verbosity=2)
+--- a/tests/manual/verify_foreground_batch_evidence.py
++++ b/tests/manual/verify_foreground_batch_evidence.py
+@@ -0,0 +1,28 @@
++"""Validate recorded live batch focus evidence without another foreground switch."""
++import hashlib
++import json
++from pathlib import Path
++
++ROOT=Path(__file__).resolve().parents[2]
++TX=ROOT/'artifacts/m2_lobby_calibration'
++r=json.loads((TX/'foreground_batch_live.json').read_text(encoding='utf-8'))
++assert r['binary_sha256']==hashlib.sha256((ROOT/'dist/RelinkStudio/RelinkStudio.exe').read_bytes()).hexdigest()
++assert r['passed'] and r['ide_restored'] and r['enter_calls']==r['leave_calls']==1
++assert r['manual_clicks']==r['image_file_writes']==0 and len(r['steps'])==2
++for step in r['steps']:
++    p=step['result']
++    assert step['passed'] and step['exit_status']==0 and p['capture_passed'] and p['ocr_passed']
++    assert p['focus_policy']=='caller-owned' and p['foreground_cleanup_owner']=='batch_caller'
++    assert p['focus_activation_requests']==p['focus_restore_requests']==0
++    assert p['target_foreground_retained'] and not p['ide_foreground_restored']
++    assert not p['game_input_sent'] and p['image_file_writes']==0 and p['resources_drained']
++sequence=[item['hwnd'] for item in r['foreground_transitions']]
++target=r['identities']['target_hwnd']; ide=r['identities']['return_hwnd']
++assert sequence[sequence.index(target):]==[target,ide]
++summary=dict(passed=True,enter_calls=1,leave_calls=1,child_focus_switch_requests=0,captures=2,
++    observed_sequence_after_game_entry=[target,ide],sampling_interval_ms=r['foreground_sampling_interval_ms'],
++    business_page_validation_passed=False,new_capture=False,
++    note='The current Mandel page remains unknown; this test validates batch focus/capture only, not that page classifier.')
++p=TX/'foreground_batch_verification.json';p.write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
++assert json.loads(p.read_text(encoding='utf-8'))==summary
++print('FOREGROUND_BATCH_LIVE=PASS; captures=2; enter=1; restore=1; child_focus_switch_requests=0; new_capture=false')
+--- a/tests/manual/verify_lobby_evidence.py
++++ b/tests/manual/verify_lobby_evidence.py
+@@ -0,0 +1,70 @@
++"""Verify saved live evidence without capturing any new game frame."""
++import hashlib
++import json
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[2]
++TX = ROOT / 'artifacts/m2_lobby_calibration'
++
++
++def load(name):
++    record = json.loads((TX / name).read_text(encoding='utf-8'))
++    data = json.loads(record['stdout']) if 'stdout' in record else record['result']
++    assert data['image_file_writes'] == 0 and not data['game_input_sent']
++    assert data['ide_foreground_restored'] and data['game_in_background']
++    assert data['resources_drained'] and 'preview_png_base64' not in data
++    for frame in data['frames']:
++        assert (frame['width'], frame['height'], frame['dpi']) == (2560, 1440, 144)
++        assert not frame['near_black'] and frame['source'] == 'dxgi'
++    return record, data
++
++
++def main():
++    # Later focus-policy fixes produce a newer release. Preserve the exact binary
++    # that produced these lobby results rather than relabeling old runs as new.
++    modified = hashlib.sha256((TX / 'LOBBY_CALIBRATED_FILE.exe').read_bytes()).hexdigest()
++    baseline = hashlib.sha256((TX / 'baseline/release/RelinkStudio.exe').read_bytes()).hexdigest()
++    original, partial = load('live_baseline.json')
++    assert original['binary_sha256'] == baseline
++    assert original['exit_status'] == 1 and partial['error'] == 'E_WINDOW_NOT_FOREGROUND'
++    assert len(partial['frames']) == 2 and not partial['recognition_performed']
++    for name in ['live_single_frame.json', 'live_preview_metadata.json', 'live_anchor_diagnostics.json']:
++        record, result = load(name)
++        assert record['exit_status'] == 0 and result['capture_passed'] and result['ocr_passed']
++        assert result['startup_page']['page'] == 'unknown'
++    frames = set()
++    for name in ['live_modified_lobby_1.json', 'live_modified_lobby_2.json']:
++        record, result = load(name)
++        assert record['binary_sha256'] == modified and record['exit_status'] == 0
++        assert record['outer_ide_restored'] and str(record['foreground_after']) == result['return_hwnd']
++        assert result['capture_passed'] and result['ocr_passed'] and result['page_match_passed']
++        assert result['expected_page'] == result['startup_page']['page'] == 'lobby'
++        assert result['startup_page']['overlay'] == 'none' and not result['startup_page']['actions_enabled']
++        assert result['startup_page']['calibration'] == 'lobby_live_sample_20261007'
++        assert result['frames'][0]['sha256'] == result['ocr']['frame_sha256']
++        frames.add(result['frames'][0]['sha256'])
++    assert len(frames) == 2, 'Independent positive captures must not reuse a recorded frame.'
++    negative, mismatch = load('live_expected_mismatch.json')
++    assert negative['binary_sha256'] == modified and negative['exit_status'] == 1
++    assert negative['outer_ide_restored'] and mismatch['capture_passed'] and mismatch['ocr_passed']
++    assert mismatch['expected_page'] == 'warehouse' and mismatch['startup_page']['page'] == 'lobby'
++    assert mismatch['page_error'] == 'E_DIAGNOSTIC_PAGE_MISMATCH' and not mismatch['page_match_passed']
++    fixture = json.loads((ROOT / 'docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json').read_text(encoding='utf-8'))
++    source, captured = load('live_anchor_diagnostics.json')
++    assert fixture['source_binary_sha256'] == source['binary_sha256']
++    assert fixture['source_frame_sha256'] == captured['frames'][0]['sha256']
++    words = [word for region in captured['lobby_anchor_diagnostics']['regions'] for word in region['words']]
++    assert words == fixture['observation']['words'] and len(words) == 10
++    result = dict(passed=True, positive_live_checks=2, expected_negative_checks=1,
++        initial_foreground_failure_retained=True, initial_unknown_results_retained=True,
++        recorded_frames_independent=True, source_fixture_equal=True,
++        lobby_calibrated_sha256=modified, baseline_sha256=baseline,
++        new_capture_performed=False, image_file_writes=0)
++    output = TX / 'live_evidence_verification.json'
++    output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
++    assert json.loads(output.read_text(encoding='utf-8')) == result
++    print('LOBBY_LIVE_EVIDENCE=PASS; positive=2; expected_mismatch=1; original_failures_retained=true; new_capture=false')
++
++
++if __name__ == '__main__':
++    main()
+--- a/tests/release/verify_lobby_calibration_package.py
++++ b/tests/release/verify_lobby_calibration_package.py
+@@ -0,0 +1,102 @@
++"""Offline release/rollback acceptance for the separately recorded live lobby fix."""
++import argparse
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++
++import verify_m2_capture_package as base
++
++ROOT = Path(__file__).resolve().parents[2]
++base.TX = ROOT / 'artifacts/m2_lobby_calibration'
++base.BASELINE = base.TX / 'baseline/release'
++base.h.TX, base.h.BASELINE = base.TX, base.BASELINE
++base.PHASE_TITLE = 'M2 live lobby OCR calibration'
++base.CHANGED_BOUNDARIES = 'SkinPageClassifier scoped lobby alias; --expected-page; ForegroundPolicy standalone/caller-owned; whole-batch focus ownership; lobby fixture regression.'
++base.PHASE_NOTES = [
++    'Capture diagnostics are read-only; user-authorized manual navigation clicks are recorded separately. Images remain in memory.',
++    'User corrected per-action flashing: a whole batch now owns foreground, child probes never switch, outer cleanup restores once.',
++    'Windows OCR read the visible 开始游戏 label as 开始游观. Alias requires exact provider, bounded button location, warehouse and prepare anchors.',
++    'Only the observed lobby sample is calibrated; no claim that all game pages, navigation or transaction flow passed.',
++    'Initial foreground-loss and unknown-page outcomes are preserved in live records, not relabeled as success.',
++]
++base.EXTRA_REQUIRED_RECORDS = ['LOBBY_CALIBRATION_TESTS', 'STARTUP_OBSERVER_TESTS', 'PACKAGED_STARTUP_SELF_TEST', 'LOBBY_CLI_ARGUMENT_TESTS', 'FOREGROUND_POLICY_TESTS', 'FOREGROUND_BATCH_TESTS']
++
++
++def cli_tests():
++    exe = str(base.RELEASE / 'RelinkStudio.exe')
++    env = base.h.environment(base.RELEASE)
++    checks = [
++        (['--live-capture-check', '--focus-policy', 'invalid'], 'E_DIAGNOSTIC_FOCUS_POLICY'),
++        (['--live-capture-check', '--expected-page', 'lobby'], 'E_DIAGNOSTIC_EXPECTED_PAGE'),
++        (['--live-capture-check', '--ocr', '--expected-page', 'invented'], 'E_DIAGNOSTIC_EXPECTED_PAGE'),
++        (['--live-capture-check', '--ocr', '--expected-page', 'unknown'], 'E_DIAGNOSTIC_EXPECTED_PAGE'),
++        (['--live-capture-check', '--ocr-lobby-anchors', '--target-hwnd', '1', '--target-pid', '1',
++          '--return-hwnd', '2', '--return-pid', '2'], 'E_DIAGNOSTIC_ARGUMENTS'),
++    ]
++    for flags, error in checks:
++        args = [exe, *flags]
++        result = subprocess.run(args, cwd=ROOT, env=env, capture_output=True, text=True, encoding='utf-8',
++                                timeout=10, creationflags=subprocess.CREATE_NO_WINDOW)
++        output = json.loads(result.stdout)
++        assert result.returncode == 2 and output['error'] == error
++        assert output['frames'] == [] and not output['recognition_performed'] and not output['game_input_sent']
++    print('LOBBY_CLI_ARGUMENT_TESTS=PASS; assertions=5; live_capture=false')
++
++
++def verify():
++    base.verify()
++    env = base.h.environment(base.RELEASE); env['QT_PLUGIN_PATH'] = str(base.RELEASE)
++    for name, fixture in [('lobby_calibration_tests', 'lobby_live_20261007.json'), ('startup_observer_tests', 'startup_pages.json')]:
++        base.h.run(name.upper(), [str(base.BUILD / (name + '.exe')),
++            str(ROOT / 'docs/business_rebuild/implementation/runtime/fixtures' / fixture)],
++            'Recorded text projections and synthetic negative cases; no live capture.', name.upper() + '=PASS', env=env)
++    base.h.run('PACKAGED_STARTUP_SELF_TEST', [str(base.RELEASE / 'RelinkStudio.exe'), '--startup-observer-self-test'],
++        'Embedded 27 historical pages, 5 startup routes and 1 recorded live lobby text projection; no game capture.', 'STARTUP_OBSERVER_SELF_TEST=PASS')
++    base.h.run('LOBBY_CLI_ARGUMENT_TESTS', [sys.executable, '-X', 'utf8', str(Path(__file__).resolve()), 'cli-tests'],
++        'Invalid CLI combinations must exit 2 before any window binding or capture.', 'LOBBY_CLI_ARGUMENT_TESTS=PASS', env=os.environ.copy())
++    base.h.run('FOREGROUND_POLICY_TESTS', [str(base.BUILD/'foreground_policy_tests.exe')],
++        'Injected focus callbacks: single final restore, zero child switching, interruption and exception paths.', 'FOREGROUND_POLICY_TESTS=PASS', env=env)
++    base.h.run('FOREGROUND_BATCH_TESTS', [sys.executable,'-X','utf8',str(ROOT/'tests/manual/test_foreground_batch_core.py')],
++        'Pure batch coordinator: multiple actions one lease, stop on failure/user focus loss, one finally cleanup.', env=os.environ.copy())
++
++
++def finalize():
++    base.h.run('LOBBY_LIVE_EVIDENCE', [sys.executable, '-X', 'utf8', str(ROOT / 'tests/manual/verify_lobby_evidence.py')],
++        'Reopen recorded live metadata and the fixed current binary; no new game capture.', 'LOBBY_LIVE_EVIDENCE=PASS', env=os.environ.copy())
++    base.h.run('FOREGROUND_BATCH_LIVE', [sys.executable,'-X','utf8',str(ROOT/'tests/manual/verify_foreground_batch_evidence.py')],
++        'Verify saved two-capture batch, current EXE hash and focus ownership; no new foreground change.', 'FOREGROUND_BATCH_LIVE=PASS', env=os.environ.copy())
++    base.finalize()
++    path = base.TX / 'VERIFICATION.txt'
++    text = path.read_text(encoding='utf-8')
++    # Earlier harness wording implied a newly added helper even for empty manifests.
++    additions = json.loads((base.TX / 'added_release_files.json').read_text(encoding='utf-8'))
++    text = text.replace('user sentinel preserved; new helper removed.',
++        f'user sentinel preserved; actual added managed files removed={len(additions)}.')
++    text += '\nLIVE CAPTURE RECORDS (recorded failures are retained):\n'
++    for record_path in sorted(base.TX.glob('live_*.json')):
++        record = json.loads(record_path.read_text(encoding='utf-8'))
++        if not isinstance(record, dict) or 'command' not in record:
++            continue
++        text += '\n' + record_path.name + '\nCOMMAND: ' + subprocess.list2cmdline(record['command'])
++        text += '\nINPUT: ' + record.get('input', 'Explicit in-memory visual inspection; preview pixels excluded from this record.')
++        text += '\nSTDOUT/RESULT:\n' + record.get('stdout', json.dumps(record.get('result'), ensure_ascii=False))
++        text += '\nSTDERR: ' + (record.get('stderr') or '(empty)') + '\nEXIT_STATUS: ' + str(record['exit_status']) + '\n'
++    text += '\nRollback stdout retains legacy added_helper_removed field; actual additions count is reported above.\n'
++    text += '\nUSER-AUTHORIZED MANUAL NAVIGATION AND BATCH FOCUS RECORDS:\n'
++    for evidence in [*sorted(base.TX.glob('navigation_*.json')), base.TX/'foreground_batch_live.json']:
++        text += '\n' + evidence.name + '\n' + evidence.read_text(encoding='utf-8') + '\n'
++    path.write_text(text, encoding='utf-8')
++    for name in ['MODIFIED_FILE.exe', 'DIFF_FILE', 'VERIFICATION.txt', 'ROLLBACK.sh']:
++        assert (base.TX / name).read_bytes()
++    print('LOBBY_TRANSACTION_REOPEN=PASS')
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('phase', choices=['build', 'verify', 'finalize', 'cli-tests'])
++    phase = parser.parse_args().phase
++    if phase == 'build': base.build()
++    elif phase == 'cli-tests': cli_tests()
++    else: globals()[phase]()
+--- a/tests/runtime/foreground_policy_tests.cpp
++++ b/tests/runtime/foreground_policy_tests.cpp
+@@ -0,0 +1,56 @@
++#include "diagnostics/foreground_policy.h"
++#include <iostream>
++#include <vector>
++using relink::diagnostics::ForegroundPolicy;
++int main() {
++    int count = 0, failed = 0;
++    auto check = [&](bool ok, const char* text) { ++count; failed += !ok; std::cout << (ok ? "PASS " : "FAIL ") << text << '\n'; };
++    using Handle = ForegroundPolicy::Handle;
++    Handle foreground = 2;
++    std::vector<Handle> switches;
++    auto current = [&]() { return foreground; };
++    auto game = [&]() { switches.push_back(1); foreground=1; return true; };
++    auto ide = [&]() { switches.push_back(2); foreground=2; return true; };
++    {
++        ForegroundPolicy once(false, 1, 2, current, game, ide);
++        check(once.begin() && foreground==1, "standalone_activates_once");
++        check(foreground==1 && switches.size()==1, "capture_and_ocr_have_no_intermediate_restore");
++        check(once.finish() && foreground==2, "standalone_restores_at_end");
++        check(once.finish() && once.restoreRequests==1, "finish_is_idempotent");
++        check(!once.begin(), "completed_session_does_not_restart");
++    }
++    check(switches==std::vector<Handle>{1,2}, "destructor_does_not_restore_twice");
++    switches.clear(); game();
++    for (int i=0;i<5;++i) {
++        ForegroundPolicy nested(true,1,2,current,game,ide);
++        check(nested.begin() && foreground==1, "batch_child_requires_existing_game_foreground");
++        check(nested.finish() && nested.activationRequests==0 && nested.restoreRequests==0, "batch_child_never_switches_foreground");
++    }
++    check(switches==std::vector<Handle>{1}, "five_probes_keep_game_front_continuously");
++    ide();check(switches==std::vector<Handle>{1,2}, "outer_batch_restores_only_once");
++    switches.clear();
++    {
++        ForegroundPolicy missing(true,1,2,current,game,ide);
++        check(!missing.begin() && !missing.finish(), "caller_owned_mismatch_does_not_steal_focus");
++    }
++    check(switches.empty(), "failed_child_has_no_hidden_destructor_restore");
++    foreground=1;
++    {
++        ForegroundPolicy interrupted(true,1,2,current,game,ide);
++        check(interrupted.begin(), "child_started_with_valid_owner");
++        foreground=3;
++        check(!interrupted.finish(), "external_focus_loss_ends_batch_child");
++    }
++    check(switches.empty() && foreground==3, "child_does_not_reacquire_after_user_switch");
++    foreground=2;
++    { ForegroundPolicy exceptionPath(false,1,2,current,game,ide); check(exceptionPath.begin(), "exception_path_started"); }
++    check(foreground==2 && switches==std::vector<Handle>{1,2}, "scope_exit_restores_once");
++    switches.clear(); foreground=1;
++    {
++        ForegroundPolicy failure(false,1,2,current,game,[](){return false;});
++        check(failure.begin() && failure.activationRequests==0, "already_game_does_not_activate_again");
++        check(!failure.finish() && !failure.finish() && failure.restoreRequests==1, "restore_failure_not_retried_in_loop");
++    }
++    std::cout << "FOREGROUND_POLICY_TESTS=" << (failed?"FAIL":"PASS") << "; assertions=" << count << "; failures=" << failed << "; real_focus_switches=0\n";
++    return failed?1:0;
++}
+--- a/tests/runtime/lobby_calibration_tests.cpp
++++ b/tests/runtime/lobby_calibration_tests.cpp
+@@ -0,0 +1,90 @@
++#include "application/vision/skin_page_classifier.h"
++#include <QCoreApplication>
++#include <QFile>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <iostream>
++#include <functional>
++
++using namespace relink::vision;
++namespace {
++int assertions = 0, failures = 0;
++void check(bool ok, const char* name) {
++    ++assertions; failures += !ok;
++    std::cout << (ok ? "PASS " : "FAIL ") << name << '\n';
++}
++QJsonObject mutateWords(QJsonObject page, const std::function<void(QJsonArray&)>& mutate) {
++    auto words = page.value("words").toArray(); mutate(words); page["words"] = words; return page;
++}
++}
++int main(int argc, char** argv) {
++    QCoreApplication app(argc, argv);
++    QFile file(argc > 1 ? QString::fromLocal8Bit(argv[1]) : QString());
++    check(file.open(QIODevice::ReadOnly), "live_projection_file_open");
++    const auto root = QJsonDocument::fromJson(file.readAll()).object();
++    const auto page = root.value("observation").toObject();
++    check(!root.value("pixels_included").toBool() && root.value("source_kind") == "live_ocr_anchor_projection",
++        "fixture_is_text_projection_not_live_capture_test");
++    check(page.value("words").toArray().size() == 10, "ten_nonpersonal_button_tokens");
++    const auto result = classifySkinPage(page);
++    check(result.validInput && result.page == SkinPage::Lobby && result.overlay == PageOverlay::None, "observed_windows_ocr_variant_is_lobby");
++    check(result.calibrationEvidence == "lobby_live_sample_20261007", "sample_evidence_explicit");
++    check(!result.toJson().value("actions_enabled").toBool() && !result.toJson().value("live_calibrated").toBool(), "single_sample_not_global_certification");
++    for (double factor : {.5, .75, 1.5, 2.0}) {
++        auto scaled = mutateWords(page, [=](QJsonArray& words) {
++            for (int i = 0; i < words.size(); ++i) { auto word = words[i].toObject();
++                for (const auto* key : {"x", "y", "width", "height"}) word[key] = word.value(key).toDouble()*factor;
++                words[i] = word;
++            }
++        });
++        scaled["width"] = page.value("width").toDouble()*factor;
++        scaled["height"] = page.value("height").toDouble()*factor;
++        check(classifySkinPage(scaled).page == SkinPage::Lobby, "proportional_scaling_preserves_scoped_match");
++    }
++    for (int i = 0; i < 10; ++i) {
++        const auto missing = mutateWords(page, [=](auto& words) { words.removeAt(i); });
++        check(classifySkinPage(missing).page == SkinPage::Unknown, "every_observed_anchor_character_required");
++    }
++    for (int index : {0, 4, 6}) {
++        const auto moved = mutateWords(page, [=](auto& words) { auto w = words[index].toObject(); w["y"] = 600; words[index] = w; });
++        check(classifySkinPage(moved).page == SkinPage::Unknown, "wrong_region_cannot_supply_anchor");
++    }
++    for (const auto* field : {"language", "protocol"}) {
++        auto missing = page; missing.remove(field);
++        check(classifySkinPage(missing).page == SkinPage::Unknown, "variant_requires_observed_provider");
++    }
++    auto wrongLanguage = page; wrongLanguage["language"] = "en-US";
++    check(classifySkinPage(wrongLanguage).page == SkinPage::Unknown, "variant_is_not_global_ocr_alias");
++    auto unrelated = mutateWords(page, [](auto& words) { auto w = words[3].toObject(); w["text"] = QStringLiteral("砚"); words[3] = w; });
++    check(classifySkinPage(unrelated).page == SkinPage::Unknown, "arbitrary_one_character_errors_not_accepted");
++    auto exact = mutateWords(page, [](auto& words) { auto w = words[3].toObject(); w["text"] = QStringLiteral("戏"); words[3] = w; });
++    check(classifySkinPage(exact).page == SkinPage::Lobby && classifySkinPage(exact).calibrationEvidence == "historical_ocr_only", "original_exact_rule_preserved");
++    auto low = mutateWords(page, [](auto& words) { auto w = words[3].toObject(); w["score"] = .69; words[3] = w; });
++    check(classifySkinPage(low).page == SkinPage::Unknown, "variant_does_not_upgrade_low_score");
++    auto distant = mutateWords(page, [](auto& words) { auto w = words[3].toObject(); w["x"] = 320; words[3] = w; });
++    check(classifySkinPage(distant).page == SkinPage::Unknown, "variant_does_not_join_far_tokens");
++    const auto projected = projectLobbyAnchorDiagnostics(page);
++    check(projected.value("valid_input").toBool() && projected.value("coverage") == "anchor_projection", "debug_projection_explicitly_partial");
++    check(!classifySkinPage(projected).validInput, "debug_projection_cannot_be_used_as_full_frame");
++    int count = 0;
++    for (const auto& region : projected.value("regions").toArray()) count += region.toObject().value("words").toArray().size();
++    check(count == 10, "debug_preserves_observed_geometry_tokens");
++    auto privateText = mutateWords(page, [](auto& words) {
++        auto extra = words[0].toObject(); extra["text"] = "ACCOUNT-12345"; extra["unexpected"] = "secret"; words.append(extra);
++        extra["text"] = QStringLiteral("开始游戏"); extra["y"] = 1100; words.append(extra);
++        auto original = words[0].toObject(); original["unexpected"] = "secret"; words[0] = original;
++    });
++    const auto debug = projectLobbyAnchorDiagnostics(privateText);
++    const auto serialized = QJsonDocument(debug).toJson();
++    check(!serialized.contains("ACCOUNT") && !serialized.contains("secret"), "debug_omits_unknown_fields_and_nonanchor_text");
++    count = 0; for (const auto& region : debug.value("regions").toArray()) count += region.toObject().value("words").toArray().size();
++    check(count == 10, "out_of_region_and_unapproved_characters_excluded");
++    auto bad = page; bad["width"] = 0;
++    check(!projectLobbyAnchorDiagnostics(bad).value("valid_input").toBool(), "invalid_input_has_no_projection");
++    auto many = mutateWords(page, [](auto& words) { for (int i = 0; i < 40; ++i) words.append(words[0]); });
++    const auto first = projectLobbyAnchorDiagnostics(many).value("regions").toArray()[0].toObject();
++    check(first.value("words").toArray().size() == 32 && first.value("truncated").toBool(), "projection_cap_is_explicit");
++    std::cout << "LOBBY_CALIBRATION_TESTS=" << (failures ? "FAIL" : "PASS") << "; assertions=" << assertions
++        << "; failures=" << failures << "; live_capture=false; image_file_writes=0\n";
++    return failures ? 1 : 0;
++}

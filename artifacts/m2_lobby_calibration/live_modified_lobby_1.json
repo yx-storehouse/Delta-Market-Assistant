@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-10-07T17:29:59.000488+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "1",
+    "--ocr",
+    "--expected-page",
+    "lobby",
+    "--ocr-lobby-anchors"
+  ],
+  "binary_sha256": "c4c8b76f93c01b9104e85294fd804c597c4d7ff346eb5e1096a79325612e4f65",
+  "input": "User-prepared page; one full-client in-memory frame; exact expected page; no game input.",
+  "stdout": "{\"adapter_state\":\"Closed\",\"capture_passed\":true,\"diagnostic\":\"live_capture\",\"expected_page\":\"lobby\",\"foreground_hwnd\":\"31592856\",\"frames\":[{\"bytes\":14745600,\"capture_ms\":219,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":252,\"pixel_min\":0,\"sha256\":\"f59d80df61fb54e9007c9c15f56c6f03e18b12b3c494c9479dd581039df90bf6\",\"source\":\"dxgi\",\"source_age_ms\":35,\"source_uncertainty_ms\":1,\"width\":2560}],\"game_in_background\":true,\"game_input_sent\":false,\"ide_foreground_restored\":true,\"image_file_writes\":0,\"lobby_anchor_diagnostics\":{\"actions_enabled\":false,\"coverage\":\"anchor_projection\",\"height\":1440,\"regions\":[{\"excluded_tokens\":0,\"id\":\"start_navigation\",\"truncated\":false,\"words\":[{\"height\":18,\"text\":\"开\",\"width\":21,\"x\":214,\"y\":65},{\"height\":20,\"text\":\"始\",\"width\":20,\"x\":235,\"y\":64},{\"height\":20,\"text\":\"游\",\"width\":20,\"x\":257,\"y\":63},{\"height\":21,\"text\":\"观\",\"width\":20,\"x\":278,\"y\":63}]},{\"excluded_tokens\":0,\"id\":\"warehouse_navigation\",\"truncated\":false,\"words\":[{\"height\":20,\"text\":\"仓\",\"width\":19,\"x\":409,\"y\":63},{\"height\":20,\"text\":\"库\",\"width\":20,\"x\":430,\"y\":63}]},{\"excluded_tokens\":0,\"id\":\"prepare_button\",\"truncated\":false,\"words\":[{\"height\":27,\"text\":\"行\",\"width\":26,\"x\":2150,\"y\":1274},{\"height\":27,\"text\":\"前\",\"width\":26,\"x\":2178,\"y\":1274},{\"height\":27,\"text\":\"备\",\"width\":26,\"x\":2206,\"y\":1274},{\"height\":27,\"text\":\"战\",\"width\":26,\"x\":2234,\"y\":1274}]}],\"schema\":\"lobby-anchor-diagnostics-v1\",\"valid_input\":true,\"width\":2560},\"ocr\":{\"body_anchors\":[],\"business_fields_validated\":false,\"confidence_available\":false,\"frame_age_at_result_ms\":791,\"frame_sha256\":\"f59d80df61fb54e9007c9c15f56c6f03e18b12b3c494c9479dd581039df90bf6\",\"language\":\"zh-Hans-CN\",\"page_hint\":\"unknown\",\"provider\":\"Windows.Media.Ocr\",\"word_count\":103},\"ocr_passed\":true,\"page_match_passed\":true,\"recognition_performed\":true,\"resources_drained\":true,\"return_hwnd\":\"31592856\",\"startup_page\":{\"actions_enabled\":false,\"anchors\":[\"lobby.start_scoped_ocr_variant\",\"lobby.warehouse_nav\",\"lobby.prepare\"],\"calibration\":\"lobby_live_sample_20261007\",\"candidate_pages\":[\"lobby\"],\"live_calibrated\":false,\"low_score_tokens\":0,\"overlay\":\"none\",\"page\":\"lobby\",\"provider_scores_available\":false,\"reason\":\"MULTI_ANCHOR_MATCH\",\"token_count\":103,\"valid_input\":true}}\r\n",
+  "stderr": "",
+  "exit_status": 0,
+  "foreground_after": 31592856,
+  "outer_ide_restored": true
+}

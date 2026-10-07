@@ -1,0 +1,104 @@
+{
+  "timestamp": "2026-10-07T17:36:06.302159+08:00",
+  "action": "hover",
+  "point": [
+    2147,
+    1402
+  ],
+  "from_page": "warehouse",
+  "manual_clicks": 0,
+  "mouse_events_sent": 0,
+  "inventory_moves": 0,
+  "purchase_actions": 0,
+  "watchlist_changes": 0,
+  "image_file_writes": 0,
+  "preflight_record": "live_before_warehouse_diamond_hover_retry.json",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "1",
+    "--ocr",
+    "--preview-stdout"
+  ],
+  "result": {
+    "adapter_state": "Closed",
+    "capture_passed": true,
+    "diagnostic": "live_capture",
+    "foreground_hwnd": "31592856",
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_ms": 222,
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "pixel_max": 255,
+        "pixel_min": 0,
+        "sha256": "0e30dfd84a65ce0bef1b1ee519ea901e1cbc10c8eada24c2390b1c8a8a3daf0c",
+        "source": "dxgi",
+        "source_age_ms": 33,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "game_in_background": true,
+    "game_input_sent": false,
+    "ide_foreground_restored": true,
+    "image_file_writes": 0,
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "frame_age_at_result_ms": 847,
+      "frame_sha256": "0e30dfd84a65ce0bef1b1ee519ea901e1cbc10c8eada24c2390b1c8a8a3daf0c",
+      "language": "zh-Hans-CN",
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "word_count": 234
+    },
+    "ocr_passed": true,
+    "recognition_performed": true,
+    "resources_drained": true,
+    "return_hwnd": "31592856",
+    "startup_page": {
+      "actions_enabled": false,
+      "anchors": [
+        "warehouse.equipment",
+        "warehouse.storage"
+      ],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [
+        "warehouse"
+      ],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "warehouse",
+      "provider_scores_available": false,
+      "reason": "MULTI_ANCHOR_MATCH",
+      "token_count": 234,
+      "valid_input": true
+    }
+  },
+  "exit_status": 0,
+  "stderr": "",
+  "binary_sha256": "c4c8b76f93c01b9104e85294fd804c597c4d7ff346eb5e1096a79325612e4f65",
+  "restore": {
+    "ide_foreground_restored": true,
+    "expected_hwnd": 31592856,
+    "foreground_hwnd": 31592856,
+    "game_capture": false,
+    "game_input_sent": false
+  },
+  "cursor_restored": true
+}

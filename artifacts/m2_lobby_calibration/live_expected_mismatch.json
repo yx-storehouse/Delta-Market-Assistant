@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-10-07T17:30:11.310376+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "1",
+    "--ocr",
+    "--expected-page",
+    "warehouse"
+  ],
+  "binary_sha256": "c4c8b76f93c01b9104e85294fd804c597c4d7ff346eb5e1096a79325612e4f65",
+  "input": "User-prepared page; one full-client in-memory frame; exact expected page; no game input.",
+  "stdout": "{\"adapter_state\":\"Closed\",\"capture_passed\":true,\"diagnostic\":\"live_capture\",\"expected_page\":\"warehouse\",\"foreground_hwnd\":\"31592856\",\"frames\":[{\"bytes\":14745600,\"capture_ms\":234,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":246,\"pixel_min\":0,\"sha256\":\"ffb4c0b00bf039dc1c6b11d4d0fa9776d9bbead2d210a3037e251b15b46ce204\",\"source\":\"dxgi\",\"source_age_ms\":36,\"source_uncertainty_ms\":1,\"width\":2560}],\"game_in_background\":true,\"game_input_sent\":false,\"ide_foreground_restored\":true,\"image_file_writes\":0,\"ocr\":{\"body_anchors\":[],\"business_fields_validated\":false,\"confidence_available\":false,\"frame_age_at_result_ms\":807,\"frame_sha256\":\"ffb4c0b00bf039dc1c6b11d4d0fa9776d9bbead2d210a3037e251b15b46ce204\",\"language\":\"zh-Hans-CN\",\"page_hint\":\"unknown\",\"provider\":\"Windows.Media.Ocr\",\"word_count\":102},\"ocr_passed\":true,\"page_error\":\"E_DIAGNOSTIC_PAGE_MISMATCH\",\"page_match_passed\":false,\"recognition_performed\":true,\"resources_drained\":true,\"return_hwnd\":\"31592856\",\"startup_page\":{\"actions_enabled\":false,\"anchors\":[\"lobby.start_scoped_ocr_variant\",\"lobby.warehouse_nav\",\"lobby.prepare\"],\"calibration\":\"lobby_live_sample_20261007\",\"candidate_pages\":[\"lobby\"],\"live_calibrated\":false,\"low_score_tokens\":0,\"overlay\":\"none\",\"page\":\"lobby\",\"provider_scores_available\":false,\"reason\":\"MULTI_ANCHOR_MATCH\",\"token_count\":102,\"valid_input\":true}}\r\n",
+  "stderr": "",
+  "exit_status": 1,
+  "foreground_after": 31592856,
+  "outer_ide_restored": true
+}

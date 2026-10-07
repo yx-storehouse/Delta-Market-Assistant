@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "lobby_windows_ocr_20261007",
+  "source_kind": "live_ocr_anchor_projection",
+  "pixels_included": false,
+  "source_record": "artifacts/m2_lobby_calibration/live_anchor_diagnostics.json",
+  "source_frame_sha256": "31f1b0c01ef113918b849498ab1232886880d2d417522f66259c382c0cd871a7",
+  "source_binary_sha256": "8f3d24202b3d269f67ecfac6bd7e92c07feaa8849aa98b7268085a30b71a1387",
+  "source_dpi": 144,
+  "expected_page": "lobby",
+  "note": "Allowlisted text/geometry projection from a full-client capture; not full OCR. Manual in-memory preview showed 开始游戏; Windows OCR returned 开始游观. Fixture replay is not a new live test.",
+  "observation": {
+    "width": 2560,
+    "height": 1440,
+    "coverage": "full_client",
+    "language": "zh-Hans-CN",
+    "protocol": "windows-ocr-once-v1",
+    "words": [
+      {
+        "height": 18,
+        "text": "开",
+        "width": 21,
+        "x": 214,
+        "y": 65
+      },
+      {
+        "height": 20,
+        "text": "始",
+        "width": 20,
+        "x": 235,
+        "y": 64
+      },
+      {
+        "height": 20,
+        "text": "游",
+        "width": 20,
+        "x": 257,
+        "y": 63
+      },
+      {
+        "height": 21,
+        "text": "观",
+        "width": 20,
+        "x": 278,
+        "y": 63
+      },
+      {
+        "height": 20,
+        "text": "仓",
+        "width": 19,
+        "x": 409,
+        "y": 63
+      },
+      {
+        "height": 20,
+        "text": "库",
+        "width": 20,
+        "x": 430,
+        "y": 63
+      },
+      {
+        "height": 27,
+        "text": "行",
+        "width": 26,
+        "x": 2150,
+        "y": 1274
+      },
+      {
+        "height": 27,
+        "text": "前",
+        "width": 26,
+        "x": 2178,
+        "y": 1274
+      },
+      {
+        "height": 27,
+        "text": "备",
+        "width": 26,
+        "x": 2206,
+        "y": 1274
+      },
+      {
+        "height": 27,
+        "text": "战",
+        "width": 26,
+        "x": 2234,
+        "y": 1274
+      }
+    ]
+  }
+}

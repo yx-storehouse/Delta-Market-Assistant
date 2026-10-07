@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "child_focus_switch_requests": 0,
+  "captures": 2,
+  "observed_sequence_after_game_entry": [
+    35525384,
+    31592856
+  ],
+  "sampling_interval_ms": 10,
+  "business_page_validation_passed": false,
+  "new_capture": false,
+  "note": "The current Mandel page remains unknown; this test validates batch focus/capture only, not that page classifier."
+}

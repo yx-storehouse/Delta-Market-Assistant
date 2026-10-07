@@ -109,7 +109,7 @@ QJsonObject SkinPageResult::toJson() const {
         {"reason", reason}, {"anchors", QJsonArray::fromStringList(anchors)},
         {"candidate_pages", QJsonArray::fromStringList(candidates)}, {"token_count", tokenCount},
         {"low_score_tokens", lowScoreTokens}, {"provider_scores_available", providerScoresAvailable},
-        {"calibration", "historical_ocr_only"}, {"live_calibrated", false}, {"actions_enabled", false}};
+        {"calibration", calibrationEvidence}, {"live_calibrated", false}, {"actions_enabled", false}};
 }
 
 SkinPageResult classifySkinPage(const QJsonObject& observation) {
@@ -188,6 +188,17 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         candidate(SkinPage::Warehouse, {"warehouse.equipment", "warehouse.storage"});
     if (exact(u"开始游戏", top) && exact(u"仓库", top) && exact(u"行前备战", body))
         candidate(SkinPage::Lobby, {"lobby.start", "lobby.warehouse_nav", "lobby.prepare"});
+    else if (observation.value("protocol") == "windows-ocr-once-v1"
+        && observation.value("language") == "zh-Hans-CN"
+        && exact(u"开始游观", QRectF(.065, .025, .07, .05))
+        && exact(u"仓库", QRectF(.14, .025, .065, .05))
+        && exact(u"行前备战", QRectF(.79, .87, .15, .055))) {
+        // Live 2026-10-07, 2560x1440/144 DPI: Windows OCR read 戏 as 观.
+        // Do not replace characters globally or loosen other page rules. This
+        // one variant requires its provider AND both independent local anchors.
+        candidate(SkinPage::Lobby, {"lobby.start_scoped_ocr_variant", "lobby.warehouse_nav", "lobby.prepare"});
+        result.calibrationEvidence = QStringLiteral("lobby_live_sample_20261007");
+    }
     int baseAnchors = 0;
     for (const auto& label : {u"技术中心", u"工作台", u"指挥中心", u"训练中心", u"靶场", u"净水中心", u"收藏室"})
         if (exact(label, body)) ++baseAnchors;
@@ -202,5 +213,40 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         if (toString(page) == result.candidates.first()) result.page = page;
     result.reason = result.overlay == PageOverlay::None ? QStringLiteral("MULTI_ANCHOR_MATCH") : QStringLiteral("OVERLAY_REQUIRES_RECHECK");
     return result;
+}
+QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation) {
+    const auto validated = classifySkinPage(observation);
+    QJsonObject output{{"schema", "lobby-anchor-diagnostics-v1"}, {"coverage", "anchor_projection"},
+        {"valid_input", validated.validInput}, {"actions_enabled", false}};
+    if (!validated.validInput) { output["error"] = validated.reason; return output; }
+    const double width = observation.value("width").toDouble(), height = observation.value("height").toDouble();
+    output["width"] = width; output["height"] = height;
+    struct Region { const char* id; QRectF area; };
+    const Region regions[] = {{"start_navigation", QRectF(.065, .025, .07, .05)},
+        {"warehouse_navigation", QRectF(.14, .025, .065, .05)},
+        {"prepare_button", QRectF(.79, .87, .15, .055)}};
+    QJsonArray projected;
+    for (const auto& region : regions) {
+        QJsonArray words;
+        int excluded = 0;
+        bool truncated = false;
+        for (const auto& value : observation.value("words").toArray()) {
+            const auto word = value.toObject();
+            const QRectF rect(word.value("x").toDouble()/width, word.value("y").toDouble()/height,
+                word.value("width").toDouble()/width, word.value("height").toDouble()/height);
+            if (!region.area.contains(rect)) continue;
+            static const QRegularExpression knownCharacters(QStringLiteral("^[开始游戏观仓库行前备战\\s□■△◇◆]+$"));
+            if (!knownCharacters.match(word.value("text").toString()).hasMatch()) { ++excluded; continue; }
+            if (words.size() == 32) { truncated = true; continue; }
+            QJsonObject minimal;
+            for (const auto* field : {"text", "x", "y", "width", "height", "score"})
+                if (word.contains(field)) minimal[field] = word.value(field);
+            words.append(minimal);
+        }
+        projected.append(QJsonObject{{"id", region.id}, {"words", words},
+            {"excluded_tokens", excluded}, {"truncated", truncated}});
+    }
+    output["regions"] = projected;
+    return output;
 }
 } // namespace relink::vision

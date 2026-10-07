@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-10-07T17:24:33.068801+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "1",
+    "--ocr",
+    "--preview-stdout"
+  ],
+  "binary_sha256": "cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe",
+  "result": {
+    "adapter_state": "Closed",
+    "capture_passed": true,
+    "diagnostic": "live_capture",
+    "foreground_hwnd": "31592856",
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_ms": 220,
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "pixel_max": 240,
+        "pixel_min": 0,
+        "sha256": "465d2a6992007168b8cc829f3b4523fa5ea2f736403a9fa6a9349ecdeff1b8c2",
+        "source": "dxgi",
+        "source_age_ms": 35,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "game_in_background": true,
+    "game_input_sent": false,
+    "ide_foreground_restored": true,
+    "image_file_writes": 0,
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "frame_age_at_result_ms": 788,
+      "frame_sha256": "465d2a6992007168b8cc829f3b4523fa5ea2f736403a9fa6a9349ecdeff1b8c2",
+      "language": "zh-Hans-CN",
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "word_count": 109
+    },
+    "ocr_passed": true,
+    "recognition_performed": true,
+    "resources_drained": true,
+    "return_hwnd": "31592856",
+    "startup_page": {
+      "actions_enabled": false,
+      "anchors": [],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "unknown",
+      "provider_scores_available": false,
+      "reason": "E_PAGE_INSUFFICIENT_ANCHORS",
+      "token_count": 109,
+      "valid_input": true
+    }
+  },
+  "stderr": "",
+  "exit_status": 0,
+  "preview_handling": "In-memory stdout preview only; no image file"
+}

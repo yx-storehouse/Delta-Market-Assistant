@@ -1,6 +1,8 @@
 # Delta Market Assistant · 三角洲市场助手
 
-> **最新进展：** 原启动多锚点页面识别、关注预检与已有列表接续已实现为只读观察器；23组应用回归，`--startup-observer-self-test` 可离线检查27页/5分支。此轮没有实机捕获或游戏输入，等待用户准备后校准当前画面。见 `docs/business_rebuild/implementation/runtime/startup_observer_m2.md`。
+> **前台执行方式已修正：** 实机联调以整段任务为单位前置游戏，中间连续操作/识别，结束或异常才统一回IDE；不再逐动作闪屏。25组应用测试和一段真实双帧批次通过。当前市场已进入曼德尔砖页，其页类识别仍待校准；详见 `docs/business_rebuild/implementation/runtime/foreground_batch_m2.md`。
+
+> **最新进展：** 大厅实机2560×1440/144DPI识别已校准：修复Windows OCR“戏→观”的局部误读，两次独立大厅帧通过，错误预期页会明确失败。24组应用回归；27历史页/5分支及1条大厅文字投影可离线自检。运行截图不落盘、无游戏输入、每轮恢复IDE。下一页由用户展示仓库；详见 `docs/business_rebuild/implementation/runtime/lobby_live_calibration_m2.md`，不把大厅通过写成完整业务已完成。
 
 > **2026-10-07 更新：** 当前优先按BBZPS原业务顺序复刻，详见 `docs/business_rebuild/10_bbzps_first_startup_reconstruction.md`（39个步骤、启动入口分支与逐行证据）。已补入显式只读DXGI内存采集诊断和独立Windows OCR组件；真实采集、合成文字OCR分别验证，完整游戏业务尚未接入。正常桌面UI仍为离线/回放，不执行点击购买。后文PR12B进度为历史阶段记录。
 

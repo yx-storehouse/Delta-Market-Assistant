@@ -1,4 +1,5 @@
 #include "live_capture_check.h"
+#include "foreground_policy.h"
 #include "application/vision/dxgi_observation_source.h"
 #include "application/vision/windows_ocr.h"
 #include "application/vision/skin_page_classifier.h"
@@ -37,14 +38,17 @@ int runLiveCaptureCheck(int argc, char** argv) {
     QCoreApplication app(argc, argv);
     QCommandLineParser parser;
     parser.addHelpOption();
-    parser.addOption({"live-capture-check", "Explicit read-only foreground game capture; always return to the specified IDE."});
+    parser.addOption({"live-capture-check", "Explicit read-only capture; standalone returns IDE once, caller-owned batch never switches focus."});
+    parser.addOption({"focus-policy", "standalone (default) or caller-owned for an enclosing foreground batch.", "policy", "standalone"});
     parser.addOption({"target-hwnd", "Exact target window handle (decimal).", "hwnd"});
     parser.addOption({"target-pid", "Exact target process ID (decimal).", "pid"});
     parser.addOption({"return-hwnd", "Exact IDE window to restore (decimal).", "hwnd"});
     parser.addOption({"return-pid", "Exact IDE process ID (decimal).", "pid"});
     parser.addOption({"frames", "Bounded sample count, 1 to 5; default 1.", "count", "1"});
     parser.addOption({"preview-stdout", "Explicit final-frame PNG preview over stdout only; no file output."});
-    parser.addOption({"ocr", "Run Windows OCR on the final in-memory frame after returning the IDE to foreground."});
+    parser.addOption({"ocr", "Run Windows OCR on the final in-memory frame without intermediate foreground switches."});
+    parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
+    parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
     parser.process(app);
     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
     const quint32 targetPid = positive(parser.value("target-pid"), std::numeric_limits<quint32>::max());
@@ -54,7 +58,22 @@ int runLiveCaptureCheck(int argc, char** argv) {
     QJsonObject result{{"diagnostic", "live_capture"}, {"capture_passed", false}, {"frames", QJsonArray{}},
         {"recognition_performed", false}, {"image_file_writes", 0}, {"game_input_sent", false},
         {"ide_foreground_restored", false}, {"game_in_background", false}};
-    if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid) {
+    const auto focusPolicy = parser.value("focus-policy");
+    if (focusPolicy != "standalone" && focusPolicy != "caller-owned") {
+        result["error"] = "E_DIAGNOSTIC_FOCUS_POLICY"; return emitResult(result, 2);
+    }
+    const bool callerOwned = focusPolicy == "caller-owned";
+    result["focus_policy"] = focusPolicy;
+    result["foreground_cleanup_owner"] = callerOwned ? "batch_caller" : "diagnostic";
+    const QString expectedPage = parser.value("expected-page");
+    const QStringList pageNames{"lobby", "warehouse", "mandel", "skin_home", "empty_watchlist", "catalog_filter",
+        "skin_listings", "watchlist_listings", "game_settings", "base"};
+    if (parser.isSet("expected-page") && (!parser.isSet("ocr") || !pageNames.contains(expectedPage))) {
+        result["error"] = "E_DIAGNOSTIC_EXPECTED_PAGE"; return emitResult(result, 2);
+    }
+    if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
+    if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
+        || (parser.isSet("ocr-lobby-anchors") && !parser.isSet("ocr"))) {
         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
     }
     QString error;
@@ -68,16 +87,19 @@ int runLiveCaptureCheck(int argc, char** argv) {
         || ide.executableName.compare(QStringLiteral("Mirasim.exe"), Qt::CaseInsensitive) != 0) {
         result["error"] = "E_DIAGNOSTIC_TARGET"; return emitResult(result, 2);
     }
-    ForegroundReturnGuard guard(ide);
+    QString restoreError;
+    ForegroundPolicy focus(callerOwned, targetHwnd, returnHwnd, foregroundWindow,
+        [&]() { return activateTargetWindow(target, &error); },
+        [&]() { return activateTargetWindow(ide, &restoreError); });
     QJsonArray frames;
     QByteArray finalPixels;
     FrameEnvelope ocrFrame;
     int finalWidth = 0, finalHeight = 0, finalStride = 0;
     try {
-        if (activateTargetWindow(target, &error)) {
-            QThread::msleep(350);
+        if (focus.begin()) {
+            if (!callerOwned) QThread::msleep(350);
             target = bindTargetWindow(targetHwnd, targetPid, &error);
-        }
+        } else if (error.isEmpty()) error = QStringLiteral("E_BATCH_FOREGROUND_NOT_OWNED");
         if (error.isEmpty()) error = validateTargetWindow(target);
         if (error.isEmpty()) {
             const QString session = QUuid::createUuid().toString(QUuid::WithoutBraces);
@@ -125,17 +147,11 @@ int runLiveCaptureCheck(int argc, char** argv) {
             }
         }
     } catch (...) { error = QStringLiteral("E_DIAGNOSTIC_EXCEPTION"); }
-    QString restoreError;
-    const bool restored = guard.restore(&restoreError);
-    result["ide_foreground_restored"] = restored;
-    result["game_in_background"] = restored && foregroundWindow() != targetHwnd;
-    result["foreground_hwnd"] = QString::number(foregroundWindow());
     result["return_hwnd"] = QString::number(returnHwnd);
     result["frames"] = frames;
     result["capture_passed"] = error.isEmpty() && frames.size() == frameCount;
     if (!error.isEmpty()) result["error"] = error;
-    if (!restoreError.isEmpty()) result["restore_error"] = restoreError;
-    if (restored && error.isEmpty() && parser.isSet("ocr")) {
+    if (error.isEmpty() && parser.isSet("ocr")) {
         WindowsOcrRecognizer recognizer(QCoreApplication::applicationDirPath() + QStringLiteral("/vision/windows_ocr_worker.ps1"));
         const auto recognized = recognizer.recognizeFrame(ocrFrame);
         result["recognition_performed"] = true;
@@ -144,7 +160,16 @@ int runLiveCaptureCheck(int argc, char** argv) {
             auto pageObservation = recognized.observation;
             // This diagnostic requested the entire bound client, not a ROI.
             pageObservation["coverage"] = "full_client";
-            result["startup_page"] = classifySkinPage(pageObservation).toJson();
+            const auto classified = classifySkinPage(pageObservation);
+            result["startup_page"] = classified.toJson();
+            if (!expectedPage.isEmpty()) {
+                const bool matched = classified.validInput && toString(classified.page) == expectedPage
+                    && classified.overlay == PageOverlay::None;
+                result["page_match_passed"] = matched;
+                if (!matched) { error = QStringLiteral("E_DIAGNOSTIC_PAGE_MISMATCH"); result["page_error"] = error; }
+            }
+            if (parser.isSet("ocr-lobby-anchors"))
+                result["lobby_anchor_diagnostics"] = projectLobbyAnchorDiagnostics(pageObservation);
             auto summary = summarizeRecognizedPage(recognized.observation);
             summary["provider"] = "Windows.Media.Ocr";
             summary["language"] = recognized.observation.value("language");
@@ -156,7 +181,7 @@ int runLiveCaptureCheck(int argc, char** argv) {
             result["ocr_error"] = error;
         }
     }
-    if (restored && error.isEmpty() && !finalPixels.isEmpty()) {
+    if (error.isEmpty() && !finalPixels.isEmpty()) {
         QImage view(reinterpret_cast<const uchar*>(finalPixels.constData()), finalWidth, finalHeight, finalStride, QImage::Format_RGB32);
         QByteArray png;
         QBuffer buffer(&png);
@@ -165,11 +190,19 @@ int runLiveCaptureCheck(int argc, char** argv) {
             result["preview_png_base64"] = QString::fromLatin1(png.toBase64());
         else { result["preview_error"] = "E_PREVIEW_ENCODE"; error = QStringLiteral("E_PREVIEW_ENCODE"); }
     }
-    const bool finalRestored = guard.restore(&restoreError);
+    const bool focusFinished = focus.finish();
+    const bool finalRestored = foregroundWindow() == returnHwnd;
     result["ide_foreground_restored"] = finalRestored;
-    result["game_in_background"] = finalRestored && foregroundWindow() != targetHwnd;
+    result["game_in_background"] = foregroundWindow() != targetHwnd;
+    result["target_foreground_retained"] = foregroundWindow() == targetHwnd;
+    result["focus_activation_requests"] = focus.activationRequests;
+    result["focus_restore_requests"] = focus.restoreRequests;
     result["foreground_hwnd"] = QString::number(foregroundWindow());
     if (!restoreError.isEmpty()) result["restore_error"] = restoreError;
-    return emitResult(result, !finalRestored ? 3 : error.isEmpty() ? 0 : 1);
+    if (!focusFinished && callerOwned) {
+        if (error.isEmpty()) error = QStringLiteral("E_BATCH_FOREGROUND_LOST");
+        result["error"] = error;
+    }
+    return emitResult(result, !focusFinished && !callerOwned ? 3 : error.isEmpty() ? 0 : 1);
 }
 } // namespace relink::diagnostics

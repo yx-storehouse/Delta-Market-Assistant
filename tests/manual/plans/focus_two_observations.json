@@ -1,0 +1,8 @@
+{
+  "name": "One foreground lease, two read-only captures, one final IDE restore",
+  "timeout_seconds": 15,
+  "steps": [
+    {"kind": "capture"},
+    {"kind": "capture"}
+  ]
+}

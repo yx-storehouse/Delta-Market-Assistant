@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-07T17:23:54.691686+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+    "--live-capture-check",
+    "--target-hwnd",
+    "35525384",
+    "--target-pid",
+    "291124",
+    "--return-hwnd",
+    "31592856",
+    "--return-pid",
+    "271768",
+    "--frames",
+    "3",
+    "--ocr"
+  ],
+  "binary_sha256": "cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe",
+  "input": "User-prepared game main interface; bounded full-client in-memory frames; no game clicks",
+  "stdout": "{\"adapter_state\":\"Closed\",\"capture_passed\":false,\"diagnostic\":\"live_capture\",\"error\":\"E_WINDOW_NOT_FOREGROUND\",\"foreground_hwnd\":\"31592856\",\"frames\":[{\"bytes\":14745600,\"capture_ms\":251,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":255,\"pixel_min\":0,\"sha256\":\"cc97e95b5e2f0136349bd6c7140c98f1577a079b10a4da1e7683b27a8fbd501a\",\"source\":\"dxgi\",\"source_age_ms\":24,\"source_uncertainty_ms\":1,\"width\":2560},{\"bytes\":14745600,\"capture_ms\":192,\"dpi\":144,\"freshness\":\"source_timestamp\",\"height\":1440,\"near_black\":false,\"pixel_max\":255,\"pixel_min\":0,\"sha256\":\"0f779c5fd101aea47fcb0595ff6166e953f7c03647fbd103546eec095b8b7c19\",\"source\":\"dxgi\",\"source_age_ms\":36,\"source_uncertainty_ms\":1,\"width\":2560}],\"game_in_background\":true,\"game_input_sent\":false,\"ide_foreground_restored\":true,\"image_file_writes\":0,\"recognition_performed\":false,\"resources_drained\":true,\"return_hwnd\":\"31592856\"}\r\n",
+  "stderr": "",
+  "exit_status": 1,
+  "foreground_after": 31592856
+}

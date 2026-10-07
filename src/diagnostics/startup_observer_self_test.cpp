@@ -56,6 +56,22 @@ int runStartupObserverSelfTest(const QString& fixturePath) {
         trace(QStringLiteral("filter_without_precheck_does_not_advance"), {"p1_catalog_filter"}, runtime::StartupPhase::Locating);
         trace(QStringLiteral("listing_overlay_does_not_advance"), {"p3_list_filter_open"}, runtime::StartupPhase::Locating);
     }
+    int liveProjectionChecks = 0;
+    QFile liveFixture(QStringLiteral(":/fixtures/lobby_live_20261007.json"));
+    bool liveProjectionPass = liveFixture.open(QIODevice::ReadOnly) && liveFixture.size() <= 65536;
+    if (liveProjectionPass) {
+        const auto live = QJsonDocument::fromJson(liveFixture.readAll()).object();
+        const auto actual = vision::classifySkinPage(live.value("observation").toObject());
+        liveProjectionPass = live.value("source_kind") == "live_ocr_anchor_projection"
+            && !live.value("pixels_included").toBool() && actual.validInput
+            && actual.page == vision::SkinPage::Lobby && actual.overlay == vision::PageOverlay::None
+            && actual.calibrationEvidence == "lobby_live_sample_20261007";
+        ++liveProjectionChecks;
+    }
+    if (!liveProjectionPass) ++failed;
+    checks.append(QJsonObject{{"id", "recorded_lobby_anchor_projection"}, {"passed", liveProjectionPass},
+        {"live_capture_performed", false}});
+    report["live_projection_checks"] = liveProjectionChecks;
     report["page_checks"] = pageChecks; report["trace_checks"] = traceChecks;
     report["checks"] = checks; report["failures"] = failed; report["passed"] = failed == 0;
     report["live_calibrated"] = false;

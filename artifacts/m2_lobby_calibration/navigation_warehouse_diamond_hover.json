@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-07T17:35:40.572104+08:00",
+  "action": "hover",
+  "point": [
+    2147,
+    1402
+  ],
+  "from_page": "warehouse",
+  "manual_clicks": 0,
+  "mouse_events_sent": 0,
+  "inventory_moves": 0,
+  "purchase_actions": 0,
+  "watchlist_changes": 0,
+  "image_file_writes": 0,
+  "preflight_record": "live_before_warehouse_diamond_hover.json",
+  "restore": {
+    "ide_foreground_restored": true,
+    "expected_hwnd": 31592856,
+    "foreground_hwnd": 31592856,
+    "game_capture": false,
+    "game_input_sent": false
+  },
+  "cursor_restored": true
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "positive_live_checks": 2,
+  "expected_negative_checks": 1,
+  "initial_foreground_failure_retained": true,
+  "initial_unknown_results_retained": true,
+  "recorded_frames_independent": true,
+  "source_fixture_equal": true,
+  "lobby_calibrated_sha256": "c4c8b76f93c01b9104e85294fd804c597c4d7ff346eb5e1096a79325612e4f65",
+  "baseline_sha256": "cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe",
+  "new_capture_performed": false,
+  "image_file_writes": 0
+}
