@@ -1,0 +1,15 @@
+{
+  "reason": "real_task_target_not_selected",
+  "config_sha256": "0c7560566e424d9688c140699252787734a16d1b2ebcd3c6c9171f7c3bfc6937",
+  "schema_version": 1,
+  "demo": true,
+  "task_count": 5,
+  "enabled_tasks": 0,
+  "original_config_modified": false,
+  "requested_input": [
+    "skin_name",
+    "season",
+    "condition"
+  ],
+  "no_purchase_required_for_next_readonly_test": true
+}

@@ -17,7 +17,7 @@ import sys
 import threading
 import time
 
-from foreground_batch_core import execute_batch, stabilize_capture
+from foreground_batch_core import execute_batch, stabilize_capture, filter_expectation_matches
 from navigate_lobby_to_warehouse import u, activate, Input
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -32,7 +32,7 @@ def main():
     output = (ROOT / args.record).resolve()
     assert output.is_relative_to(ROOT / 'artifacts') and output.suffix == '.json' and not output.exists()
     steps = plan['steps']
-    assert isinstance(steps, list) and 1 <= len(steps) <= 12
+    assert isinstance(steps, list) and 1 <= len(steps) <= 20
     assert all(s.get('kind') in ('capture', 'click', 'hover') for s in steps)
     assert steps[0]['kind'] == 'capture'
     timeout = plan.get('timeout_seconds', 25)
@@ -78,20 +78,34 @@ def main():
     def perform(step, remaining):
         nonlocal previous, last_preview, clicks
         if step['kind'] == 'capture':
+            if step.get('neutral_pointer'):
+                rect=w.RECT();origin=w.POINT()
+                assert u.GetForegroundWindow()==handles['target_hwnd']
+                assert u.GetClientRect(handles['target_hwnd'],c.byref(rect))
+                assert u.ClientToScreen(handles['target_hwnd'],c.byref(origin))
+                point=w.POINT(origin.x+rect.right//2,origin.y+rect.bottom//3)
+                assert u.GetAncestor(u.WindowFromPoint(point),2)==handles['target_hwnd']
+                assert u.SetCursorPos(point.x,point.y)
+                time.sleep(.15)
             argv = list(command)
             if step.get('expected_page'): argv += ['--expected-page', step['expected_page']]
             if step.get('preview'): argv += ['--preview-stdout']
             if step.get('market_anchors'): argv += ['--ocr-market-anchors']
             if step.get('ui_regions'): argv += ['--ocr-ui-regions']
+            if step.get('filter_state'): argv += ['--catalog-filter-state']
             def once(budget):
                 nonlocal previous,last_preview
                 p = subprocess.run(argv, capture_output=True, timeout=max(.1,min(20,budget)),
                     creationflags=subprocess.CREATE_NO_WINDOW)
                 result = json.loads(p.stdout)
-                last_preview = result.pop('preview_png_base64', None)
+                preview = result.pop('preview_png_base64', None)
+                if preview: last_preview = preview
                 previous = result
                 passed = p.returncode == 0 and result.get('capture_passed') and result.get('ocr_passed')
                 passed = passed and result.get('focus_activation_requests') == 0 and result.get('focus_restore_requests') == 0
+                if step.get('expected_filter') is not None:
+                    result['filter_expectation_passed']=filter_expectation_matches(result,step['expected_filter'])
+                    passed=passed and result['filter_expectation_passed']
                 return dict(kind='capture', passed=bool(passed), command=argv, result=result,
                     stderr=p.stderr.decode('utf-8',errors='replace'), exit_status=p.returncode)
             return stabilize_capture(once,lambda:u.GetForegroundWindow()==handles['target_hwnd'],

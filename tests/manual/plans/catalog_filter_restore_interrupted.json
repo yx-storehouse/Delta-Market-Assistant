@@ -1,0 +1,75 @@
+{
+  "name": "Reobserve and restore temporary selections after label calibration interruption",
+  "timeout_seconds": 25,
+  "steps": [
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "checked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "checked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1729,
+        648
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "checked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1091,
+        552
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "name": "Verify selected and empty filter states, then restore all original values without confirmation",
+  "timeout_seconds": 30,
+  "steps": [
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        773,
+        552
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "checked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        773,
+        552
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1091,
+        648
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "checked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    },
+    {
+      "kind": "click",
+      "expected_before": "catalog_filter",
+      "point": [
+        1091,
+        648
+      ],
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "kind": "capture",
+      "expected_page": "catalog_filter",
+      "filter_state": true,
+      "neutral_pointer": true,
+      "expected_filter": {
+        "season": "全部赛季",
+        "owned": "unchecked",
+        "unowned": "unchecked",
+        "legendary": "unchecked",
+        "epic": "unchecked",
+        "rare": "unchecked",
+        "common": "unchecked"
+      }
+    }
+  ]
+}

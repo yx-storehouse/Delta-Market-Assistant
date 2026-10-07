@@ -3,6 +3,7 @@
 #include "application/vision/dxgi_observation_source.h"
 #include "application/vision/windows_ocr.h"
 #include "application/vision/skin_page_classifier.h"
+#include "application/vision/catalog_filter_reader.h"
 
 #include <QBuffer>
 #include <QCommandLineParser>
@@ -50,6 +51,7 @@ int runLiveCaptureCheck(int argc, char** argv) {
     parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
     parser.addOption({"ocr-market-anchors", "With --ocr: emit bounded allowlisted market labels, not full OCR or images."});
     parser.addOption({"ocr-ui-regions", "With --ocr: reread three UI-label regions at 2x from the same memory frame; no extra capture."});
+    parser.addOption({"catalog-filter-state", "With --ocr: read season and checkbox states from the same frame; no input or image files."});
     parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
     parser.process(app);
     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
@@ -75,7 +77,7 @@ int runLiveCaptureCheck(int argc, char** argv) {
     }
     if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
     if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
-        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions")) && !parser.isSet("ocr"))) {
+        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions") || parser.isSet("catalog-filter-state")) && !parser.isSet("ocr"))) {
         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
     }
     QString error;
@@ -196,6 +198,56 @@ int runLiveCaptureCheck(int argc, char** argv) {
             pageObservation["coverage"] = "full_client";
             const auto classified = classifySkinPage(pageObservation);
             result["startup_page"] = classified.toJson();
+            if (parser.isSet("catalog-filter-state")) {
+                if (classified.page == SkinPage::CatalogFilter && classified.overlay == PageOverlay::None
+                    && ocrFrame.width == 2560 && ocrFrame.height == 1440 && ocrFrame.dpiX == 144 && ocrFrame.dpiY == 144) {
+                    const QRect region(510,410,1390,435);
+                    const auto labels=recognizer.recognizeRegion(ocrFrame,region,2,true);
+                    result["catalog_filter_roi_ok"]=labels.ok;
+                    result["catalog_filter_roi_error"]=labels.error;
+                    // Never fall back from a failed refinement to apparently
+                    // complete field values. Page evidence is kept separately.
+                    QJsonArray words;
+                    for(const auto& value:pageObservation["words"].toArray()){
+                        const auto w=value.toObject();
+                        if(!QRectF(region).contains(QPointF(w["x"].toDouble()+w["width"].toDouble()/2,
+                            w["y"].toDouble()+w["height"].toDouble()/2))) words.append(value);
+                    }
+                    if(labels.ok) for(const auto& w:labels.observation["words"].toArray())words.append(w);
+                    pageObservation["words"]=words;
+                }
+                pageObservation["frame_id"]=ocrFrame.frameId;
+                pageObservation["frame_sha256"]=QString::fromLatin1(QCryptographicHash::hash(ocrFrame.pixels,QCryptographicHash::Sha256).toHex());
+                auto filter=readCatalogFilter(ocrFrame,pageObservation);
+                QJsonArray fieldRefinements;
+                // A bright selected square can disrupt the adjacent Chinese
+                // label in broad OCR. Retry only affected label boxes from the
+                // very same pixels; never substitute a guessed character.
+                for(const auto& id:QStringList{"owned","unowned","legendary","epic","rare","common"}){
+                    const auto box=filter.boxes.value(id);
+                    if(box.reason!="E_FILTER_LABEL")continue;
+                    const QRect roi(box.bounds.right()+12,box.bounds.top()-2,150,40);
+                    const auto refined=recognizer.recognizeRegion(ocrFrame,roi,3,true);
+                    QJsonArray fieldWords;
+                    for(const auto& w:refined.observation["words"].toArray()){
+                        if(fieldWords.size()>=16)break;
+                        fieldWords.append(w.toObject()["text"].toString().left(64));
+                    }
+                    fieldRefinements.append(QJsonObject{{"field",id},{"ok",refined.ok},{"error",refined.error},{"label_words",fieldWords}});
+                    if(!refined.ok)continue;
+                    QJsonArray words;
+                    for(const auto& value:pageObservation["words"].toArray()){
+                        const auto w=value.toObject();
+                        if(!QRectF(roi).contains(QPointF(w["x"].toDouble()+w["width"].toDouble()/2,
+                            w["y"].toDouble()+w["height"].toDouble()/2)))words.append(value);
+                    }
+                    for(const auto& value:refined.observation["words"].toArray())words.append(value);
+                    pageObservation["words"]=words;
+                    filter=readCatalogFilter(ocrFrame,pageObservation);
+                }
+                result["catalog_filter_label_refinements"]=fieldRefinements;
+                result["catalog_filter_state"]=filter.toJson();
+            }
             if (!expectedPage.isEmpty()) {
                 const bool matched = classified.validInput && toString(classified.page) == expectedPage
                     && classified.overlay == PageOverlay::None;

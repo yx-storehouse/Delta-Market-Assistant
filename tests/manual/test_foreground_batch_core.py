@@ -1,9 +1,28 @@
 import unittest
-from foreground_batch_core import execute_batch, stabilize_capture
+from foreground_batch_core import execute_batch, stabilize_capture, filter_expectation_matches
+import copy
 import time
 
 
 class BatchTests(unittest.TestCase):
+    def test_larger_coherent_calibration_still_one_bounded_lease(self):
+        events=[]
+        r=execute_batch([{}]*20,lambda:events.append('enter'),lambda s,t:{'passed':True},lambda:events.append('leave') or True,lambda:True)
+        self.assertTrue(r['passed']);self.assertEqual(events,['enter','leave'])
+        with self.assertRaises(ValueError):execute_batch([{}]*21,lambda:None,lambda s,t:None,lambda:True,lambda:True)
+        with self.assertRaises(ValueError):execute_batch([{}],lambda:None,lambda s,t:None,lambda:True,lambda:True,timeout=31)
+    def test_filter_expectation_requires_complete_bound_state(self):
+        result={'frames':[{'sha256':'a'*64}],'catalog_filter_state':{'valid_page':True,'complete':True,
+            'same_frame':True,'frame_id':'test:frame','frame_sha256':'a'*64,'season_label':'全部赛季','checkboxes':{'owned':{'state':'unchecked'}}}}
+        expected={'season':'全部赛季','owned':'unchecked'}
+        self.assertTrue(filter_expectation_matches(result,expected))
+        for key,value in [('complete',False),('complete','false'),('valid_page',False),('same_frame',False),('frame_id',''),('frame_sha256','other'),('frame_sha256',None)]:
+            bad=copy.deepcopy(result);bad['catalog_filter_state'][key]=value
+            self.assertFalse(filter_expectation_matches(bad,expected))
+        for expected in [{},{'owned':'unknown'},{'unknown':'unchecked'},{'unowned':'unchecked'},{'season':'different'}]:
+            self.assertFalse(filter_expectation_matches(result,expected))
+        result['catalog_filter_state']['checkboxes']['owned']['state']='unknown'
+        self.assertFalse(filter_expectation_matches(result,{'owned':'unchecked'}))
     def test_unknown_retry_keeps_all_observations(self):
         answers=[{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
             {'passed':True,'exit_status':0,'result':{'startup_page':{'page':'empty_watchlist'}}}]

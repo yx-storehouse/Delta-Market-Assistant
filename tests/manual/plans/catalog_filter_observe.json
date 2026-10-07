@@ -1,0 +1,8 @@
+{
+  "name": "Read current catalog filter without changing selections",
+  "timeout_seconds": 25,
+  "steps": [
+    {"kind":"capture","expected_page":"catalog_filter","market_anchors":true},
+    {"kind":"capture","expected_page":"catalog_filter","market_anchors":true,"preview":true}
+  ]
+}

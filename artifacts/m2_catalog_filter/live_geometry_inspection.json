@@ -1,0 +1,1519 @@
+{
+  "passed": true,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "catalog_filter",
+        "--ocr-market-anchors"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "diagnostic": "live_capture",
+        "expected_page": "catalog_filter",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 217,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 200,
+            "pixel_min": 13,
+            "sha256": "05447697458a2306ca7a2cc61f735b2f0352bbedf76d8f08436fc562842c78f0",
+            "source": "dxgi",
+            "source_age_ms": 32,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "market_anchor_diagnostics": {
+          "actions_enabled": false,
+          "coverage": "anchor_projection",
+          "excluded_tokens": 38,
+          "height": 1440,
+          "schema": "market-anchor-diagnostics-v1",
+          "truncated": false,
+          "valid_input": true,
+          "width": 2560,
+          "words": [
+            {
+              "height": 41,
+              "text": "筛",
+              "width": 41,
+              "x": 546,
+              "y": 317
+            },
+            {
+              "height": 41,
+              "text": "选",
+              "width": 41,
+              "x": 589,
+              "y": 316
+            },
+            {
+              "height": 24,
+              "text": "赛",
+              "width": 23,
+              "x": 540,
+              "y": 434
+            },
+            {
+              "height": 23,
+              "text": "季",
+              "width": 23,
+              "x": 565,
+              "y": 435
+            },
+            {
+              "height": 24,
+              "text": "枪",
+              "width": 23,
+              "x": 540,
+              "y": 734
+            },
+            {
+              "height": 24,
+              "text": "种",
+              "width": 22,
+              "x": 565,
+              "y": 734
+            },
+            {
+              "height": 20,
+              "text": "全",
+              "width": 19,
+              "x": 779,
+              "y": 436
+            },
+            {
+              "height": 19,
+              "text": "部",
+              "width": 19,
+              "x": 800,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "赛",
+              "width": 19,
+              "x": 821,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "季",
+              "width": 19,
+              "x": 842,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "拥",
+              "width": 18,
+              "x": 827,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 848,
+              "y": 543
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 849,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 18,
+              "x": 870,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 827,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 911,
+              "y": 809
+            },
+            {
+              "height": 19,
+              "text": "未",
+              "width": 19,
+              "x": 1124,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "拥",
+              "width": 18,
+              "x": 1145,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 1166,
+              "y": 543
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1167,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 19,
+              "x": 1188,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1166,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1187,
+              "y": 809
+            },
+            {
+              "height": 24,
+              "text": "确",
+              "width": 24,
+              "x": 1255,
+              "y": 993
+            },
+            {
+              "height": 23,
+              "text": "认",
+              "width": 23,
+              "x": 1281,
+              "y": 994
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 1464,
+              "y": 639
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1486,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 18,
+              "x": 1507,
+              "y": 639
+            },
+            {
+              "height": 36,
+              "text": "0",
+              "width": 36,
+              "x": 1392,
+              "y": 726
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1485,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1464,
+              "y": 809
+            },
+            {
+              "height": 18,
+              "text": "通",
+              "width": 19,
+              "x": 1783,
+              "y": 640
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1805,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 19,
+              "x": 1826,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1804,
+              "y": 735
+            }
+          ]
+        },
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 601,
+          "frame_sha256": "05447697458a2306ca7a2cc61f735b2f0352bbedf76d8f08436fc562842c78f0",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 84
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "filter.season",
+            "filter.quality",
+            "filter.weapon_type",
+            "filter.confirm"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "catalog_filter"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "catalog_filter",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 84,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "catalog_filter",
+            "--ocr-market-anchors"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "diagnostic": "live_capture",
+            "expected_page": "catalog_filter",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 217,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 200,
+                "pixel_min": 13,
+                "sha256": "05447697458a2306ca7a2cc61f735b2f0352bbedf76d8f08436fc562842c78f0",
+                "source": "dxgi",
+                "source_age_ms": 32,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "market_anchor_diagnostics": {
+              "actions_enabled": false,
+              "coverage": "anchor_projection",
+              "excluded_tokens": 38,
+              "height": 1440,
+              "schema": "market-anchor-diagnostics-v1",
+              "truncated": false,
+              "valid_input": true,
+              "width": 2560,
+              "words": [
+                {
+                  "height": 41,
+                  "text": "筛",
+                  "width": 41,
+                  "x": 546,
+                  "y": 317
+                },
+                {
+                  "height": 41,
+                  "text": "选",
+                  "width": 41,
+                  "x": 589,
+                  "y": 316
+                },
+                {
+                  "height": 24,
+                  "text": "赛",
+                  "width": 23,
+                  "x": 540,
+                  "y": 434
+                },
+                {
+                  "height": 23,
+                  "text": "季",
+                  "width": 23,
+                  "x": 565,
+                  "y": 435
+                },
+                {
+                  "height": 24,
+                  "text": "枪",
+                  "width": 23,
+                  "x": 540,
+                  "y": 734
+                },
+                {
+                  "height": 24,
+                  "text": "种",
+                  "width": 22,
+                  "x": 565,
+                  "y": 734
+                },
+                {
+                  "height": 20,
+                  "text": "全",
+                  "width": 19,
+                  "x": 779,
+                  "y": 436
+                },
+                {
+                  "height": 19,
+                  "text": "部",
+                  "width": 19,
+                  "x": 800,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "赛",
+                  "width": 19,
+                  "x": 821,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "季",
+                  "width": 19,
+                  "x": 842,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "拥",
+                  "width": 18,
+                  "x": 827,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 848,
+                  "y": 543
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 849,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 18,
+                  "x": 870,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 827,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 911,
+                  "y": 809
+                },
+                {
+                  "height": 19,
+                  "text": "未",
+                  "width": 19,
+                  "x": 1124,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "拥",
+                  "width": 18,
+                  "x": 1145,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1166,
+                  "y": 543
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1167,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 19,
+                  "x": 1188,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1166,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1187,
+                  "y": 809
+                },
+                {
+                  "height": 24,
+                  "text": "确",
+                  "width": 24,
+                  "x": 1255,
+                  "y": 993
+                },
+                {
+                  "height": 23,
+                  "text": "认",
+                  "width": 23,
+                  "x": 1281,
+                  "y": 994
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1464,
+                  "y": 639
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1486,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 18,
+                  "x": 1507,
+                  "y": 639
+                },
+                {
+                  "height": 36,
+                  "text": "0",
+                  "width": 36,
+                  "x": 1392,
+                  "y": 726
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1485,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1464,
+                  "y": 809
+                },
+                {
+                  "height": 18,
+                  "text": "通",
+                  "width": 19,
+                  "x": 1783,
+                  "y": 640
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1805,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 19,
+                  "x": 1826,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1804,
+                  "y": 735
+                }
+              ]
+            },
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 601,
+              "frame_sha256": "05447697458a2306ca7a2cc61f735b2f0352bbedf76d8f08436fc562842c78f0",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 84
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "filter.season",
+                "filter.quality",
+                "filter.weapon_type",
+                "filter.confirm"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "catalog_filter"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "catalog_filter",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 84,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "catalog_filter",
+        "--preview-stdout",
+        "--ocr-market-anchors"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "diagnostic": "live_capture",
+        "expected_page": "catalog_filter",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 224,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 200,
+            "pixel_min": 13,
+            "sha256": "454750119d4435ebfb7bbcb2a9cd3b44b0bfc0399a877b4891723c818b2ae4de",
+            "source": "dxgi",
+            "source_age_ms": 32,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "market_anchor_diagnostics": {
+          "actions_enabled": false,
+          "coverage": "anchor_projection",
+          "excluded_tokens": 28,
+          "height": 1440,
+          "schema": "market-anchor-diagnostics-v1",
+          "truncated": false,
+          "valid_input": true,
+          "width": 2560,
+          "words": [
+            {
+              "height": 41,
+              "text": "筛",
+              "width": 41,
+              "x": 546,
+              "y": 317
+            },
+            {
+              "height": 41,
+              "text": "选",
+              "width": 41,
+              "x": 589,
+              "y": 316
+            },
+            {
+              "height": 24,
+              "text": "赛",
+              "width": 23,
+              "x": 540,
+              "y": 434
+            },
+            {
+              "height": 23,
+              "text": "季",
+              "width": 23,
+              "x": 565,
+              "y": 435
+            },
+            {
+              "height": 24,
+              "text": "枪",
+              "width": 23,
+              "x": 540,
+              "y": 734
+            },
+            {
+              "height": 24,
+              "text": "种",
+              "width": 22,
+              "x": 565,
+              "y": 734
+            },
+            {
+              "height": 20,
+              "text": "全",
+              "width": 19,
+              "x": 779,
+              "y": 436
+            },
+            {
+              "height": 19,
+              "text": "部",
+              "width": 19,
+              "x": 800,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "赛",
+              "width": 19,
+              "x": 821,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "季",
+              "width": 19,
+              "x": 842,
+              "y": 437
+            },
+            {
+              "height": 19,
+              "text": "拥",
+              "width": 18,
+              "x": 827,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 848,
+              "y": 543
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 849,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 18,
+              "x": 870,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 827,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 911,
+              "y": 809
+            },
+            {
+              "height": 19,
+              "text": "未",
+              "width": 19,
+              "x": 1124,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "拥",
+              "width": 18,
+              "x": 1145,
+              "y": 543
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 1166,
+              "y": 543
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1167,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 19,
+              "x": 1188,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1166,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1187,
+              "y": 809
+            },
+            {
+              "height": 24,
+              "text": "确",
+              "width": 24,
+              "x": 1255,
+              "y": 993
+            },
+            {
+              "height": 23,
+              "text": "认",
+              "width": 23,
+              "x": 1281,
+              "y": 994
+            },
+            {
+              "height": 19,
+              "text": "有",
+              "width": 19,
+              "x": 1464,
+              "y": 639
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1486,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 19,
+              "x": 1507,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1485,
+              "y": 735
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1464,
+              "y": 809
+            },
+            {
+              "height": 18,
+              "text": "通",
+              "width": 19,
+              "x": 1783,
+              "y": 640
+            },
+            {
+              "height": 18,
+              "text": "品",
+              "width": 17,
+              "x": 1805,
+              "y": 640
+            },
+            {
+              "height": 19,
+              "text": "阶",
+              "width": 19,
+              "x": 1826,
+              "y": 639
+            },
+            {
+              "height": 19,
+              "text": "枪",
+              "width": 19,
+              "x": 1804,
+              "y": 735
+            }
+          ]
+        },
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 593,
+          "frame_sha256": "454750119d4435ebfb7bbcb2a9cd3b44b0bfc0399a877b4891723c818b2ae4de",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 73
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "filter.season",
+            "filter.quality",
+            "filter.weapon_type",
+            "filter.confirm"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "catalog_filter"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "catalog_filter",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 73,
+          "valid_input": true
+        },
+        "target_foreground_retained": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "catalog_filter",
+            "--preview-stdout",
+            "--ocr-market-anchors"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "diagnostic": "live_capture",
+            "expected_page": "catalog_filter",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 224,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 200,
+                "pixel_min": 13,
+                "sha256": "454750119d4435ebfb7bbcb2a9cd3b44b0bfc0399a877b4891723c818b2ae4de",
+                "source": "dxgi",
+                "source_age_ms": 32,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "market_anchor_diagnostics": {
+              "actions_enabled": false,
+              "coverage": "anchor_projection",
+              "excluded_tokens": 28,
+              "height": 1440,
+              "schema": "market-anchor-diagnostics-v1",
+              "truncated": false,
+              "valid_input": true,
+              "width": 2560,
+              "words": [
+                {
+                  "height": 41,
+                  "text": "筛",
+                  "width": 41,
+                  "x": 546,
+                  "y": 317
+                },
+                {
+                  "height": 41,
+                  "text": "选",
+                  "width": 41,
+                  "x": 589,
+                  "y": 316
+                },
+                {
+                  "height": 24,
+                  "text": "赛",
+                  "width": 23,
+                  "x": 540,
+                  "y": 434
+                },
+                {
+                  "height": 23,
+                  "text": "季",
+                  "width": 23,
+                  "x": 565,
+                  "y": 435
+                },
+                {
+                  "height": 24,
+                  "text": "枪",
+                  "width": 23,
+                  "x": 540,
+                  "y": 734
+                },
+                {
+                  "height": 24,
+                  "text": "种",
+                  "width": 22,
+                  "x": 565,
+                  "y": 734
+                },
+                {
+                  "height": 20,
+                  "text": "全",
+                  "width": 19,
+                  "x": 779,
+                  "y": 436
+                },
+                {
+                  "height": 19,
+                  "text": "部",
+                  "width": 19,
+                  "x": 800,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "赛",
+                  "width": 19,
+                  "x": 821,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "季",
+                  "width": 19,
+                  "x": 842,
+                  "y": 437
+                },
+                {
+                  "height": 19,
+                  "text": "拥",
+                  "width": 18,
+                  "x": 827,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 848,
+                  "y": 543
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 849,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 18,
+                  "x": 870,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 827,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 911,
+                  "y": 809
+                },
+                {
+                  "height": 19,
+                  "text": "未",
+                  "width": 19,
+                  "x": 1124,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "拥",
+                  "width": 18,
+                  "x": 1145,
+                  "y": 543
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1166,
+                  "y": 543
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1167,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 19,
+                  "x": 1188,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1166,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1187,
+                  "y": 809
+                },
+                {
+                  "height": 24,
+                  "text": "确",
+                  "width": 24,
+                  "x": 1255,
+                  "y": 993
+                },
+                {
+                  "height": 23,
+                  "text": "认",
+                  "width": 23,
+                  "x": 1281,
+                  "y": 994
+                },
+                {
+                  "height": 19,
+                  "text": "有",
+                  "width": 19,
+                  "x": 1464,
+                  "y": 639
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1486,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 19,
+                  "x": 1507,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1485,
+                  "y": 735
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1464,
+                  "y": 809
+                },
+                {
+                  "height": 18,
+                  "text": "通",
+                  "width": 19,
+                  "x": 1783,
+                  "y": 640
+                },
+                {
+                  "height": 18,
+                  "text": "品",
+                  "width": 17,
+                  "x": 1805,
+                  "y": 640
+                },
+                {
+                  "height": 19,
+                  "text": "阶",
+                  "width": 19,
+                  "x": 1826,
+                  "y": 639
+                },
+                {
+                  "height": 19,
+                  "text": "枪",
+                  "width": 19,
+                  "x": 1804,
+                  "y": 735
+                }
+              ]
+            },
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 593,
+              "frame_sha256": "454750119d4435ebfb7bbcb2a9cd3b44b0bfc0399a877b4891723c818b2ae4de",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 73
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "filter.season",
+                "filter.quality",
+                "filter.weapon_type",
+                "filter.confirm"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "catalog_filter"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "catalog_filter",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 73,
+              "valid_input": true
+            },
+            "target_foreground_retained": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": null,
+  "ide_restored": true,
+  "timestamp": "2026-10-07T18:25:34.561584+08:00",
+  "binary_sha256": "2115155a8d490ac6ef25c74200f74b130e689b153cc712490aa006306f8cf38b",
+  "plan": {
+    "name": "Read current catalog filter without changing selections",
+    "timeout_seconds": 25,
+    "steps": [
+      {
+        "kind": "capture",
+        "expected_page": "catalog_filter",
+        "market_anchors": true
+      },
+      {
+        "kind": "capture",
+        "expected_page": "catalog_filter",
+        "market_anchors": true,
+        "preview": true
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "ocr_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "runner_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "tests\\manual\\run_foreground_batch.py",
+    "--plan",
+    "tests/manual/plans/catalog_filter_observe.json",
+    "--record",
+    "artifacts/m2_catalog_filter/live_geometry_inspection.json"
+  ],
+  "exit_status": 0,
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1076632531
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1076632531
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1076634921
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 0,
+  "image_file_writes": 0
+}

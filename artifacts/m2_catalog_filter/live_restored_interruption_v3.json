@@ -1,0 +1,1920 @@
+{
+  "passed": true,
+  "steps": [
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "catalog_filter",
+        "--catalog-filter-state"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "catalog_filter_label_refinements": [
+          {
+            "error": "",
+            "field": "common",
+            "label_words": [
+              "普",
+              "通",
+              "品",
+              "阶"
+            ],
+            "ok": true
+          }
+        ],
+        "catalog_filter_roi_error": "",
+        "catalog_filter_roi_ok": true,
+        "catalog_filter_state": {
+          "actions_enabled": false,
+          "all_states_live_validated": false,
+          "calibration_evidence": "catalog_filter_signals_20261007",
+          "checkboxes": {
+            "common": {
+              "bounds": [
+                1711,
+                630,
+                36,
+                36
+              ],
+              "label": "普通品阶",
+              "measurement": {
+                "border_means": [
+                  70.20679012345671,
+                  71.08950617283952,
+                  68.21604938271601,
+                  76.26543209876544
+                ],
+                "bright_fraction": 0.8677685950413223,
+                "center_mean": 193.04947916666686,
+                "center_stddev": 1.0371484040408734,
+                "green_fraction": 0,
+                "interior_mean": 168.7265840220389,
+                "interior_stddev": 44.89728958334419,
+                "sample_count": 484
+              },
+              "observed_label": "普通品阶",
+              "reason": "white_inset_selected_box",
+              "state": "checked"
+            },
+            "epic": {
+              "bounds": [
+                1073,
+                630,
+                36,
+                36
+              ],
+              "label": "史诗品阶",
+              "measurement": {
+                "border_means": [
+                  51.432098765432116,
+                  52.66049382716051,
+                  56.33950617283954,
+                  51.6635802469136
+                ],
+                "bright_fraction": 0,
+                "center_mean": 27.21354166666671,
+                "center_stddev": 0.37322351202346876,
+                "green_fraction": 0,
+                "interior_mean": 27.232093663911797,
+                "interior_stddev": 0.38758076435545924,
+                "sample_count": 484
+              },
+              "observed_label": "史诗品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "legendary": {
+              "bounds": [
+                754,
+                630,
+                36,
+                36
+              ],
+              "label": "传说品阶",
+              "measurement": {
+                "border_means": [
+                  49.29938271604933,
+                  49.8641975308642,
+                  53.83024691358024,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "传说品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "owned": {
+              "bounds": [
+                754,
+                534,
+                36,
+                36
+              ],
+              "label": "已拥有",
+              "measurement": {
+                "border_means": [
+                  49.280864197530775,
+                  49.84876543209879,
+                  53.73148148148148,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "已拥有",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "rare": {
+              "bounds": [
+                1392,
+                630,
+                36,
+                36
+              ],
+              "label": "稀有品阶",
+              "measurement": {
+                "border_means": [
+                  54.055555555555536,
+                  55.44135802469135,
+                  53.07407407407409,
+                  54.996913580246925
+                ],
+                "bright_fraction": 0,
+                "center_mean": 29.88541666666666,
+                "center_stddev": 0.16103775868569692,
+                "green_fraction": 0,
+                "interior_mean": 29.90771349862261,
+                "interior_stddev": 0.1945662374702834,
+                "sample_count": 484
+              },
+              "observed_label": "稀有品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "unowned": {
+              "bounds": [
+                1073,
+                534,
+                36,
+                36
+              ],
+              "label": "未拥有",
+              "measurement": {
+                "border_means": [
+                  68.36111111111117,
+                  68.81790123456791,
+                  74.71913580246911,
+                  65.62037037037037
+                ],
+                "bright_fraction": 0.8677685950413223,
+                "center_mean": 192.75520833333331,
+                "center_stddev": 1.0655465920356462,
+                "green_fraction": 0,
+                "interior_mean": 168.08677685950357,
+                "interior_stddev": 45.43678238361963,
+                "sample_count": 484
+              },
+              "observed_label": "未拥有",
+              "reason": "white_inset_selected_box",
+              "state": "checked"
+            }
+          },
+          "complete": true,
+          "frame_id": "dxgi:e27bc3d4-0280-4665-aa05-2f1e777de865",
+          "frame_sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+          "geometry_profile": "catalog-2560x1440-dpi144-v1",
+          "image_file_writes": 0,
+          "reason": "filter_state_observed",
+          "same_frame": true,
+          "schema": "catalog-filter-state-v1",
+          "season_label": "全部赛季",
+          "valid_page": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "catalog_filter",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 207,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 200,
+            "pixel_min": 14,
+            "sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+            "source": "dxgi",
+            "source_age_ms": 25,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1577,
+          "frame_sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 84
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "filter.season",
+            "filter.quality",
+            "filter.weapon_type",
+            "filter.confirm"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "catalog_filter"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "catalog_filter",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 84,
+          "valid_input": true
+        },
+        "target_foreground_retained": true,
+        "filter_expectation_passed": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "catalog_filter",
+            "--catalog-filter-state"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "catalog_filter_label_refinements": [
+              {
+                "error": "",
+                "field": "common",
+                "label_words": [
+                  "普",
+                  "通",
+                  "品",
+                  "阶"
+                ],
+                "ok": true
+              }
+            ],
+            "catalog_filter_roi_error": "",
+            "catalog_filter_roi_ok": true,
+            "catalog_filter_state": {
+              "actions_enabled": false,
+              "all_states_live_validated": false,
+              "calibration_evidence": "catalog_filter_signals_20261007",
+              "checkboxes": {
+                "common": {
+                  "bounds": [
+                    1711,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "普通品阶",
+                  "measurement": {
+                    "border_means": [
+                      70.20679012345671,
+                      71.08950617283952,
+                      68.21604938271601,
+                      76.26543209876544
+                    ],
+                    "bright_fraction": 0.8677685950413223,
+                    "center_mean": 193.04947916666686,
+                    "center_stddev": 1.0371484040408734,
+                    "green_fraction": 0,
+                    "interior_mean": 168.7265840220389,
+                    "interior_stddev": 44.89728958334419,
+                    "sample_count": 484
+                  },
+                  "observed_label": "普通品阶",
+                  "reason": "white_inset_selected_box",
+                  "state": "checked"
+                },
+                "epic": {
+                  "bounds": [
+                    1073,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "史诗品阶",
+                  "measurement": {
+                    "border_means": [
+                      51.432098765432116,
+                      52.66049382716051,
+                      56.33950617283954,
+                      51.6635802469136
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 27.21354166666671,
+                    "center_stddev": 0.37322351202346876,
+                    "green_fraction": 0,
+                    "interior_mean": 27.232093663911797,
+                    "interior_stddev": 0.38758076435545924,
+                    "sample_count": 484
+                  },
+                  "observed_label": "史诗品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "legendary": {
+                  "bounds": [
+                    754,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "传说品阶",
+                  "measurement": {
+                    "border_means": [
+                      49.29938271604933,
+                      49.8641975308642,
+                      53.83024691358024,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "传说品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "owned": {
+                  "bounds": [
+                    754,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "已拥有",
+                  "measurement": {
+                    "border_means": [
+                      49.280864197530775,
+                      49.84876543209879,
+                      53.73148148148148,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "已拥有",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "rare": {
+                  "bounds": [
+                    1392,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "稀有品阶",
+                  "measurement": {
+                    "border_means": [
+                      54.055555555555536,
+                      55.44135802469135,
+                      53.07407407407409,
+                      54.996913580246925
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 29.88541666666666,
+                    "center_stddev": 0.16103775868569692,
+                    "green_fraction": 0,
+                    "interior_mean": 29.90771349862261,
+                    "interior_stddev": 0.1945662374702834,
+                    "sample_count": 484
+                  },
+                  "observed_label": "稀有品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "unowned": {
+                  "bounds": [
+                    1073,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "未拥有",
+                  "measurement": {
+                    "border_means": [
+                      68.36111111111117,
+                      68.81790123456791,
+                      74.71913580246911,
+                      65.62037037037037
+                    ],
+                    "bright_fraction": 0.8677685950413223,
+                    "center_mean": 192.75520833333331,
+                    "center_stddev": 1.0655465920356462,
+                    "green_fraction": 0,
+                    "interior_mean": 168.08677685950357,
+                    "interior_stddev": 45.43678238361963,
+                    "sample_count": 484
+                  },
+                  "observed_label": "未拥有",
+                  "reason": "white_inset_selected_box",
+                  "state": "checked"
+                }
+              },
+              "complete": true,
+              "frame_id": "dxgi:e27bc3d4-0280-4665-aa05-2f1e777de865",
+              "frame_sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+              "geometry_profile": "catalog-2560x1440-dpi144-v1",
+              "image_file_writes": 0,
+              "reason": "filter_state_observed",
+              "same_frame": true,
+              "schema": "catalog-filter-state-v1",
+              "season_label": "全部赛季",
+              "valid_page": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "catalog_filter",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 207,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 200,
+                "pixel_min": 14,
+                "sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+                "source": "dxgi",
+                "source_age_ms": 25,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 1577,
+              "frame_sha256": "0c8a85e04da77438a6e303c7124931dd6fe4de36a9d132e6a153f96a4c8592ec",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 84
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "filter.season",
+                "filter.quality",
+                "filter.weapon_type",
+                "filter.confirm"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "catalog_filter"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "catalog_filter",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 84,
+              "valid_input": true
+            },
+            "target_foreground_retained": true,
+            "filter_expectation_passed": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "click",
+      "point": [
+        1729,
+        648
+      ],
+      "passed": true
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "catalog_filter",
+        "--catalog-filter-state"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "catalog_filter_label_refinements": [],
+        "catalog_filter_roi_error": "",
+        "catalog_filter_roi_ok": true,
+        "catalog_filter_state": {
+          "actions_enabled": false,
+          "all_states_live_validated": false,
+          "calibration_evidence": "catalog_filter_signals_20261007",
+          "checkboxes": {
+            "common": {
+              "bounds": [
+                1711,
+                630,
+                36,
+                36
+              ],
+              "label": "普通品阶",
+              "measurement": {
+                "border_means": [
+                  52.27777777777782,
+                  54.12962962962962,
+                  51.873456790123434,
+                  57.907407407407426
+                ],
+                "bright_fraction": 0,
+                "center_mean": 28.325520833333357,
+                "center_stddev": 0.3497639177745577,
+                "green_fraction": 0,
+                "interior_mean": 28.3643250688705,
+                "interior_stddev": 0.39707843632563616,
+                "sample_count": 484
+              },
+              "observed_label": "普通品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "epic": {
+              "bounds": [
+                1073,
+                630,
+                36,
+                36
+              ],
+              "label": "史诗品阶",
+              "measurement": {
+                "border_means": [
+                  51.432098765432116,
+                  52.67283950617285,
+                  56.35185185185188,
+                  51.669753086419774
+                ],
+                "bright_fraction": 0,
+                "center_mean": 27.22265625000004,
+                "center_stddev": 0.3672682941506076,
+                "green_fraction": 0,
+                "interior_mean": 27.237603305785083,
+                "interior_stddev": 0.38422777984651196,
+                "sample_count": 484
+              },
+              "observed_label": "史诗品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "legendary": {
+              "bounds": [
+                754,
+                630,
+                36,
+                36
+              ],
+              "label": "传说品阶",
+              "measurement": {
+                "border_means": [
+                  49.29938271604933,
+                  49.8641975308642,
+                  53.8179012345679,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "传说品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "owned": {
+              "bounds": [
+                754,
+                534,
+                36,
+                36
+              ],
+              "label": "已拥有",
+              "measurement": {
+                "border_means": [
+                  49.280864197530775,
+                  49.84876543209879,
+                  53.73148148148148,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "已拥有",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "rare": {
+              "bounds": [
+                1392,
+                630,
+                36,
+                36
+              ],
+              "label": "稀有品阶",
+              "measurement": {
+                "border_means": [
+                  54.12345679012346,
+                  55.503086419753075,
+                  53.17592592592593,
+                  55.06481481481482
+                ],
+                "bright_fraction": 0,
+                "center_mean": 30.001302083333332,
+                "center_stddev": 0.02079260341858171,
+                "green_fraction": 0,
+                "interior_mean": 30.01928374655648,
+                "interior_stddev": 0.13067263058491696,
+                "sample_count": 484
+              },
+              "observed_label": "稀有品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "unowned": {
+              "bounds": [
+                1073,
+                534,
+                36,
+                36
+              ],
+              "label": "未拥有",
+              "measurement": {
+                "border_means": [
+                  68.37037037037042,
+                  68.82407407407409,
+                  74.72530864197529,
+                  65.62037037037037
+                ],
+                "bright_fraction": 0.8677685950413223,
+                "center_mean": 192.75520833333331,
+                "center_stddev": 1.0655465920356462,
+                "green_fraction": 0,
+                "interior_mean": 168.08884297520603,
+                "interior_stddev": 45.43278928267481,
+                "sample_count": 484
+              },
+              "observed_label": "未拥有",
+              "reason": "white_inset_selected_box",
+              "state": "checked"
+            }
+          },
+          "complete": true,
+          "frame_id": "dxgi:d2137912-3e5a-491b-9d8c-f397e3d8d186",
+          "frame_sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+          "geometry_profile": "catalog-2560x1440-dpi144-v1",
+          "image_file_writes": 0,
+          "reason": "filter_state_observed",
+          "same_frame": true,
+          "schema": "catalog-filter-state-v1",
+          "season_label": "全部赛季",
+          "valid_page": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "catalog_filter",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 207,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 200,
+            "pixel_min": 14,
+            "sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+            "source": "dxgi",
+            "source_age_ms": 24,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1111,
+          "frame_sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 84
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "filter.season",
+            "filter.quality",
+            "filter.weapon_type",
+            "filter.confirm"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "catalog_filter"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "catalog_filter",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 84,
+          "valid_input": true
+        },
+        "target_foreground_retained": true,
+        "filter_expectation_passed": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "catalog_filter",
+            "--catalog-filter-state"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "catalog_filter_label_refinements": [],
+            "catalog_filter_roi_error": "",
+            "catalog_filter_roi_ok": true,
+            "catalog_filter_state": {
+              "actions_enabled": false,
+              "all_states_live_validated": false,
+              "calibration_evidence": "catalog_filter_signals_20261007",
+              "checkboxes": {
+                "common": {
+                  "bounds": [
+                    1711,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "普通品阶",
+                  "measurement": {
+                    "border_means": [
+                      52.27777777777782,
+                      54.12962962962962,
+                      51.873456790123434,
+                      57.907407407407426
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 28.325520833333357,
+                    "center_stddev": 0.3497639177745577,
+                    "green_fraction": 0,
+                    "interior_mean": 28.3643250688705,
+                    "interior_stddev": 0.39707843632563616,
+                    "sample_count": 484
+                  },
+                  "observed_label": "普通品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "epic": {
+                  "bounds": [
+                    1073,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "史诗品阶",
+                  "measurement": {
+                    "border_means": [
+                      51.432098765432116,
+                      52.67283950617285,
+                      56.35185185185188,
+                      51.669753086419774
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 27.22265625000004,
+                    "center_stddev": 0.3672682941506076,
+                    "green_fraction": 0,
+                    "interior_mean": 27.237603305785083,
+                    "interior_stddev": 0.38422777984651196,
+                    "sample_count": 484
+                  },
+                  "observed_label": "史诗品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "legendary": {
+                  "bounds": [
+                    754,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "传说品阶",
+                  "measurement": {
+                    "border_means": [
+                      49.29938271604933,
+                      49.8641975308642,
+                      53.8179012345679,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "传说品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "owned": {
+                  "bounds": [
+                    754,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "已拥有",
+                  "measurement": {
+                    "border_means": [
+                      49.280864197530775,
+                      49.84876543209879,
+                      53.73148148148148,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "已拥有",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "rare": {
+                  "bounds": [
+                    1392,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "稀有品阶",
+                  "measurement": {
+                    "border_means": [
+                      54.12345679012346,
+                      55.503086419753075,
+                      53.17592592592593,
+                      55.06481481481482
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 30.001302083333332,
+                    "center_stddev": 0.02079260341858171,
+                    "green_fraction": 0,
+                    "interior_mean": 30.01928374655648,
+                    "interior_stddev": 0.13067263058491696,
+                    "sample_count": 484
+                  },
+                  "observed_label": "稀有品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "unowned": {
+                  "bounds": [
+                    1073,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "未拥有",
+                  "measurement": {
+                    "border_means": [
+                      68.37037037037042,
+                      68.82407407407409,
+                      74.72530864197529,
+                      65.62037037037037
+                    ],
+                    "bright_fraction": 0.8677685950413223,
+                    "center_mean": 192.75520833333331,
+                    "center_stddev": 1.0655465920356462,
+                    "green_fraction": 0,
+                    "interior_mean": 168.08884297520603,
+                    "interior_stddev": 45.43278928267481,
+                    "sample_count": 484
+                  },
+                  "observed_label": "未拥有",
+                  "reason": "white_inset_selected_box",
+                  "state": "checked"
+                }
+              },
+              "complete": true,
+              "frame_id": "dxgi:d2137912-3e5a-491b-9d8c-f397e3d8d186",
+              "frame_sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+              "geometry_profile": "catalog-2560x1440-dpi144-v1",
+              "image_file_writes": 0,
+              "reason": "filter_state_observed",
+              "same_frame": true,
+              "schema": "catalog-filter-state-v1",
+              "season_label": "全部赛季",
+              "valid_page": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "catalog_filter",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 207,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 200,
+                "pixel_min": 14,
+                "sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+                "source": "dxgi",
+                "source_age_ms": 24,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 1111,
+              "frame_sha256": "5407361908ac4e1724f2bec9c7068205543593d0615081074f4f410b974decbc",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 84
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "filter.season",
+                "filter.quality",
+                "filter.weapon_type",
+                "filter.confirm"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "catalog_filter"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "catalog_filter",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 84,
+              "valid_input": true
+            },
+            "target_foreground_retained": true,
+            "filter_expectation_passed": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    },
+    {
+      "kind": "click",
+      "point": [
+        1091,
+        552
+      ],
+      "passed": true
+    },
+    {
+      "kind": "capture",
+      "passed": true,
+      "command": [
+        "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+        "--live-capture-check",
+        "--focus-policy",
+        "caller-owned",
+        "--return-pid",
+        "271768",
+        "--target-pid",
+        "291124",
+        "--target-hwnd",
+        "35525384",
+        "--return-hwnd",
+        "31592856",
+        "--frames",
+        "1",
+        "--ocr",
+        "--expected-page",
+        "catalog_filter",
+        "--catalog-filter-state"
+      ],
+      "result": {
+        "adapter_state": "Closed",
+        "capture_passed": true,
+        "catalog_filter_label_refinements": [],
+        "catalog_filter_roi_error": "",
+        "catalog_filter_roi_ok": true,
+        "catalog_filter_state": {
+          "actions_enabled": false,
+          "all_states_live_validated": false,
+          "calibration_evidence": "catalog_filter_signals_20261007",
+          "checkboxes": {
+            "common": {
+              "bounds": [
+                1711,
+                630,
+                36,
+                36
+              ],
+              "label": "普通品阶",
+              "measurement": {
+                "border_means": [
+                  52.22530864197535,
+                  53.76543209876544,
+                  51.51851851851853,
+                  57.669753086419725
+                ],
+                "bright_fraction": 0,
+                "center_mean": 28.058593749999993,
+                "center_stddev": 0.2052795389918419,
+                "green_fraction": 0,
+                "interior_mean": 28.089531680440743,
+                "interior_stddev": 0.3003986655574858,
+                "sample_count": 484
+              },
+              "observed_label": "普通品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "epic": {
+              "bounds": [
+                1073,
+                630,
+                36,
+                36
+              ],
+              "label": "史诗品阶",
+              "measurement": {
+                "border_means": [
+                  51.44135802469137,
+                  52.71913580246915,
+                  56.35802469135806,
+                  51.71296296296297
+                ],
+                "bright_fraction": 0,
+                "center_mean": 27.238281250000036,
+                "center_stddev": 0.36215476480808073,
+                "green_fraction": 0,
+                "interior_mean": 27.256198347107397,
+                "interior_stddev": 0.3845270205484861,
+                "sample_count": 484
+              },
+              "observed_label": "史诗品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "legendary": {
+              "bounds": [
+                754,
+                630,
+                36,
+                36
+              ],
+              "label": "传说品阶",
+              "measurement": {
+                "border_means": [
+                  49.29938271604933,
+                  49.8641975308642,
+                  53.842592592592595,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "传说品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "owned": {
+              "bounds": [
+                754,
+                534,
+                36,
+                36
+              ],
+              "label": "已拥有",
+              "measurement": {
+                "border_means": [
+                  49.280864197530775,
+                  49.84876543209879,
+                  53.73148148148148,
+                  49.03395061728397
+                ],
+                "bright_fraction": 0,
+                "center_mean": 25,
+                "center_stddev": 0,
+                "green_fraction": 0,
+                "interior_mean": 25,
+                "interior_stddev": 0,
+                "sample_count": 484
+              },
+              "observed_label": "已拥有",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "rare": {
+              "bounds": [
+                1392,
+                630,
+                36,
+                36
+              ],
+              "label": "稀有品阶",
+              "measurement": {
+                "border_means": [
+                  54.13580246913581,
+                  55.5216049382716,
+                  53.191358024691354,
+                  55.077160493827165
+                ],
+                "bright_fraction": 0,
+                "center_mean": 30.001302083333332,
+                "center_stddev": 0.02079260341858171,
+                "green_fraction": 0,
+                "interior_mean": 30.025482093663918,
+                "interior_stddev": 0.12510004041085443,
+                "sample_count": 484
+              },
+              "observed_label": "稀有品阶",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            },
+            "unowned": {
+              "bounds": [
+                1073,
+                534,
+                36,
+                36
+              ],
+              "label": "未拥有",
+              "measurement": {
+                "border_means": [
+                  50.500000000000036,
+                  51.64814814814816,
+                  56.34567901234569,
+                  50.290123456790134
+                ],
+                "bright_fraction": 0,
+                "center_mean": 26.143229166666675,
+                "center_stddev": 0.2831604673336413,
+                "green_fraction": 0,
+                "interior_mean": 26.18732782369143,
+                "interior_stddev": 0.33165572883613903,
+                "sample_count": 484
+              },
+              "observed_label": "未拥有",
+              "reason": "closed_dark_empty_box",
+              "state": "unchecked"
+            }
+          },
+          "complete": true,
+          "frame_id": "dxgi:6b3e61e7-5faf-4180-82d4-68328f3ef12b",
+          "frame_sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+          "geometry_profile": "catalog-2560x1440-dpi144-v1",
+          "image_file_writes": 0,
+          "reason": "filter_state_observed",
+          "same_frame": true,
+          "schema": "catalog-filter-state-v1",
+          "season_label": "全部赛季",
+          "valid_page": true
+        },
+        "diagnostic": "live_capture",
+        "expected_page": "catalog_filter",
+        "focus_activation_requests": 0,
+        "focus_policy": "caller-owned",
+        "focus_restore_requests": 0,
+        "foreground_cleanup_owner": "batch_caller",
+        "foreground_hwnd": "35525384",
+        "frames": [
+          {
+            "bytes": 14745600,
+            "capture_ms": 224,
+            "dpi": 144,
+            "freshness": "source_timestamp",
+            "height": 1440,
+            "near_black": false,
+            "pixel_max": 200,
+            "pixel_min": 14,
+            "sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+            "source": "dxgi",
+            "source_age_ms": 37,
+            "source_uncertainty_ms": 1,
+            "width": 2560
+          }
+        ],
+        "game_in_background": false,
+        "game_input_sent": false,
+        "ide_foreground_restored": false,
+        "image_file_writes": 0,
+        "ocr": {
+          "body_anchors": [],
+          "business_fields_validated": false,
+          "confidence_available": false,
+          "coordinate_space": "client_physical_px",
+          "coordinate_transform": "clockwise_about_image_center",
+          "frame_age_at_result_ms": 1119,
+          "frame_sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+          "language": "zh-Hans-CN",
+          "outside_frame_tokens_dropped": 0,
+          "page_hint": "unknown",
+          "provider": "Windows.Media.Ocr",
+          "source_text_angle_degrees": 0,
+          "word_count": 73
+        },
+        "ocr_passed": true,
+        "page_match_passed": true,
+        "recognition_performed": true,
+        "resources_drained": true,
+        "return_hwnd": "31592856",
+        "startup_page": {
+          "actions_enabled": false,
+          "anchor_checks": {
+            "catalog.circulation": false,
+            "catalog.rows": false,
+            "catalog.skin_tab": false,
+            "catalog.watch": false,
+            "mandel.current": false,
+            "mandel.past": false,
+            "mandel.tab": false
+          },
+          "anchors": [
+            "filter.season",
+            "filter.quality",
+            "filter.weapon_type",
+            "filter.confirm"
+          ],
+          "calibration": "historical_ocr_only",
+          "candidate_pages": [
+            "catalog_filter"
+          ],
+          "live_calibrated": false,
+          "low_score_tokens": 0,
+          "overlay": "none",
+          "page": "catalog_filter",
+          "provider_scores_available": false,
+          "reason": "MULTI_ANCHOR_MATCH",
+          "token_count": 73,
+          "valid_input": true
+        },
+        "target_foreground_retained": true,
+        "filter_expectation_passed": true
+      },
+      "stderr": "",
+      "exit_status": 0,
+      "attempts": [
+        {
+          "kind": "capture",
+          "passed": true,
+          "command": [
+            "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+            "--live-capture-check",
+            "--focus-policy",
+            "caller-owned",
+            "--return-pid",
+            "271768",
+            "--target-pid",
+            "291124",
+            "--target-hwnd",
+            "35525384",
+            "--return-hwnd",
+            "31592856",
+            "--frames",
+            "1",
+            "--ocr",
+            "--expected-page",
+            "catalog_filter",
+            "--catalog-filter-state"
+          ],
+          "result": {
+            "adapter_state": "Closed",
+            "capture_passed": true,
+            "catalog_filter_label_refinements": [],
+            "catalog_filter_roi_error": "",
+            "catalog_filter_roi_ok": true,
+            "catalog_filter_state": {
+              "actions_enabled": false,
+              "all_states_live_validated": false,
+              "calibration_evidence": "catalog_filter_signals_20261007",
+              "checkboxes": {
+                "common": {
+                  "bounds": [
+                    1711,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "普通品阶",
+                  "measurement": {
+                    "border_means": [
+                      52.22530864197535,
+                      53.76543209876544,
+                      51.51851851851853,
+                      57.669753086419725
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 28.058593749999993,
+                    "center_stddev": 0.2052795389918419,
+                    "green_fraction": 0,
+                    "interior_mean": 28.089531680440743,
+                    "interior_stddev": 0.3003986655574858,
+                    "sample_count": 484
+                  },
+                  "observed_label": "普通品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "epic": {
+                  "bounds": [
+                    1073,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "史诗品阶",
+                  "measurement": {
+                    "border_means": [
+                      51.44135802469137,
+                      52.71913580246915,
+                      56.35802469135806,
+                      51.71296296296297
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 27.238281250000036,
+                    "center_stddev": 0.36215476480808073,
+                    "green_fraction": 0,
+                    "interior_mean": 27.256198347107397,
+                    "interior_stddev": 0.3845270205484861,
+                    "sample_count": 484
+                  },
+                  "observed_label": "史诗品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "legendary": {
+                  "bounds": [
+                    754,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "传说品阶",
+                  "measurement": {
+                    "border_means": [
+                      49.29938271604933,
+                      49.8641975308642,
+                      53.842592592592595,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "传说品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "owned": {
+                  "bounds": [
+                    754,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "已拥有",
+                  "measurement": {
+                    "border_means": [
+                      49.280864197530775,
+                      49.84876543209879,
+                      53.73148148148148,
+                      49.03395061728397
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 25,
+                    "center_stddev": 0,
+                    "green_fraction": 0,
+                    "interior_mean": 25,
+                    "interior_stddev": 0,
+                    "sample_count": 484
+                  },
+                  "observed_label": "已拥有",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "rare": {
+                  "bounds": [
+                    1392,
+                    630,
+                    36,
+                    36
+                  ],
+                  "label": "稀有品阶",
+                  "measurement": {
+                    "border_means": [
+                      54.13580246913581,
+                      55.5216049382716,
+                      53.191358024691354,
+                      55.077160493827165
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 30.001302083333332,
+                    "center_stddev": 0.02079260341858171,
+                    "green_fraction": 0,
+                    "interior_mean": 30.025482093663918,
+                    "interior_stddev": 0.12510004041085443,
+                    "sample_count": 484
+                  },
+                  "observed_label": "稀有品阶",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                },
+                "unowned": {
+                  "bounds": [
+                    1073,
+                    534,
+                    36,
+                    36
+                  ],
+                  "label": "未拥有",
+                  "measurement": {
+                    "border_means": [
+                      50.500000000000036,
+                      51.64814814814816,
+                      56.34567901234569,
+                      50.290123456790134
+                    ],
+                    "bright_fraction": 0,
+                    "center_mean": 26.143229166666675,
+                    "center_stddev": 0.2831604673336413,
+                    "green_fraction": 0,
+                    "interior_mean": 26.18732782369143,
+                    "interior_stddev": 0.33165572883613903,
+                    "sample_count": 484
+                  },
+                  "observed_label": "未拥有",
+                  "reason": "closed_dark_empty_box",
+                  "state": "unchecked"
+                }
+              },
+              "complete": true,
+              "frame_id": "dxgi:6b3e61e7-5faf-4180-82d4-68328f3ef12b",
+              "frame_sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+              "geometry_profile": "catalog-2560x1440-dpi144-v1",
+              "image_file_writes": 0,
+              "reason": "filter_state_observed",
+              "same_frame": true,
+              "schema": "catalog-filter-state-v1",
+              "season_label": "全部赛季",
+              "valid_page": true
+            },
+            "diagnostic": "live_capture",
+            "expected_page": "catalog_filter",
+            "focus_activation_requests": 0,
+            "focus_policy": "caller-owned",
+            "focus_restore_requests": 0,
+            "foreground_cleanup_owner": "batch_caller",
+            "foreground_hwnd": "35525384",
+            "frames": [
+              {
+                "bytes": 14745600,
+                "capture_ms": 224,
+                "dpi": 144,
+                "freshness": "source_timestamp",
+                "height": 1440,
+                "near_black": false,
+                "pixel_max": 200,
+                "pixel_min": 14,
+                "sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+                "source": "dxgi",
+                "source_age_ms": 37,
+                "source_uncertainty_ms": 1,
+                "width": 2560
+              }
+            ],
+            "game_in_background": false,
+            "game_input_sent": false,
+            "ide_foreground_restored": false,
+            "image_file_writes": 0,
+            "ocr": {
+              "body_anchors": [],
+              "business_fields_validated": false,
+              "confidence_available": false,
+              "coordinate_space": "client_physical_px",
+              "coordinate_transform": "clockwise_about_image_center",
+              "frame_age_at_result_ms": 1119,
+              "frame_sha256": "492f6d4bbb874dd15f1b103e16fceb43c6d5c3d09d9b9e65543ca1fe7f6e498e",
+              "language": "zh-Hans-CN",
+              "outside_frame_tokens_dropped": 0,
+              "page_hint": "unknown",
+              "provider": "Windows.Media.Ocr",
+              "source_text_angle_degrees": 0,
+              "word_count": 73
+            },
+            "ocr_passed": true,
+            "page_match_passed": true,
+            "recognition_performed": true,
+            "resources_drained": true,
+            "return_hwnd": "31592856",
+            "startup_page": {
+              "actions_enabled": false,
+              "anchor_checks": {
+                "catalog.circulation": false,
+                "catalog.rows": false,
+                "catalog.skin_tab": false,
+                "catalog.watch": false,
+                "mandel.current": false,
+                "mandel.past": false,
+                "mandel.tab": false
+              },
+              "anchors": [
+                "filter.season",
+                "filter.quality",
+                "filter.weapon_type",
+                "filter.confirm"
+              ],
+              "calibration": "historical_ocr_only",
+              "candidate_pages": [
+                "catalog_filter"
+              ],
+              "live_calibrated": false,
+              "low_score_tokens": 0,
+              "overlay": "none",
+              "page": "catalog_filter",
+              "provider_scores_available": false,
+              "reason": "MULTI_ANCHOR_MATCH",
+              "token_count": 73,
+              "valid_input": true
+            },
+            "target_foreground_retained": true,
+            "filter_expectation_passed": true
+          },
+          "stderr": "",
+          "exit_status": 0
+        }
+      ],
+      "attempt_count": 1
+    }
+  ],
+  "enter_calls": 1,
+  "leave_calls": 1,
+  "error": null,
+  "ide_restored": true,
+  "timestamp": "2026-10-07T18:39:11.667201+08:00",
+  "binary_sha256": "058ed8e1475da2d811645c8d1611f8ad9e2236c18e9d2580d6dc69055c548bac",
+  "plan": {
+    "name": "Reobserve and restore temporary selections after label calibration interruption",
+    "timeout_seconds": 25,
+    "steps": [
+      {
+        "kind": "capture",
+        "expected_page": "catalog_filter",
+        "filter_state": true,
+        "neutral_pointer": true,
+        "expected_filter": {
+          "season": "全部赛季",
+          "owned": "unchecked",
+          "unowned": "checked",
+          "legendary": "unchecked",
+          "epic": "unchecked",
+          "rare": "unchecked",
+          "common": "checked"
+        }
+      },
+      {
+        "kind": "click",
+        "expected_before": "catalog_filter",
+        "point": [
+          1729,
+          648
+        ],
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "kind": "capture",
+        "expected_page": "catalog_filter",
+        "filter_state": true,
+        "neutral_pointer": true,
+        "expected_filter": {
+          "season": "全部赛季",
+          "owned": "unchecked",
+          "unowned": "checked",
+          "legendary": "unchecked",
+          "epic": "unchecked",
+          "rare": "unchecked",
+          "common": "unchecked"
+        }
+      },
+      {
+        "kind": "click",
+        "expected_before": "catalog_filter",
+        "point": [
+          1091,
+          552
+        ],
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "kind": "capture",
+        "expected_page": "catalog_filter",
+        "filter_state": true,
+        "neutral_pointer": true,
+        "expected_filter": {
+          "season": "全部赛季",
+          "owned": "unchecked",
+          "unowned": "unchecked",
+          "legendary": "unchecked",
+          "epic": "unchecked",
+          "rare": "unchecked",
+          "common": "unchecked"
+        }
+      }
+    ]
+  },
+  "identities": {
+    "return_pid": 271768,
+    "target_pid": 291124,
+    "target_hwnd": 35525384,
+    "return_hwnd": 31592856
+  },
+  "ocr_helper_sha256": "a539dea641427d3326d4e7457aa74166650c6b42d74b8e320f09dbe1b16978a7",
+  "runner_command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "tests\\manual\\run_foreground_batch.py",
+    "--plan",
+    "tests/manual/plans/catalog_filter_restore_interrupted.json",
+    "--record",
+    "artifacts/m2_catalog_filter/live_restored_interruption_v3.json"
+  ],
+  "exit_status": 0,
+  "foreground_transitions": [
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1077445171
+    },
+    {
+      "hwnd": 35525384,
+      "monotonic_ms": 1077445187
+    },
+    {
+      "hwnd": 31592856,
+      "monotonic_ms": 1077452046
+    }
+  ],
+  "foreground_sampling_interval_ms": 10,
+  "manual_clicks": 2,
+  "image_file_writes": 0
+}

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "records": [
+    "live_baseline.json",
+    "live_final_filter_states.json",
+    "live_geometry_inspection.json",
+    "live_remaining_states.json",
+    "live_restored_interruption.json",
+    "live_restored_interruption_v2.json",
+    "live_restored_interruption_v3.json",
+    "live_style_calibration.json",
+    "live_verified_states.json",
+    "live_verified_states_v2.json"
+  ],
+  "actual_captures": 36,
+  "manual_checkbox_clicks": 24,
+  "retained_failed_batches": 4,
+  "final_season_and_checkbox_values_restored": true,
+  "final_binary_verified": true,
+  "six_checkbox_selected_signals_covered": true,
+  "signal_fixture_cases": 84,
+  "image_file_writes": 0
+}

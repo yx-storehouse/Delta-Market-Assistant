@@ -2,6 +2,28 @@
 import time
 
 
+def filter_expectation_matches(result, expected):
+    """Strict diagnostic assertion, never infer missing/Unknown as unchecked."""
+    if not isinstance(expected, dict) or not expected:
+        return False
+    state=result.get('catalog_filter_state',{})
+    frames=result.get('frames',[])
+    digest=state.get('frame_sha256')
+    if (state.get('valid_page') is not True or state.get('complete') is not True or state.get('same_frame') is not True
+        or not isinstance(state.get('frame_id'),str) or not state['frame_id']
+        or not isinstance(digest,str) or len(digest)!=64 or any(c not in '0123456789abcdef' for c in digest)
+        or not frames or digest!=frames[-1].get('sha256')):
+        return False
+    for key,value in expected.items():
+        if key=='season':
+            if not isinstance(value,str) or state.get('season_label')!=value:return False
+        elif key not in ('owned','unowned','legendary','epic','rare','common') or value not in ('checked','unchecked'):
+            return False
+        elif state.get('checkboxes',{}).get(key,{}).get('state')!=value:
+            return False
+    return True
+
+
 def stabilize_capture(capture, is_foreground, *, attempts=3, deadline, now=time.monotonic, wait=time.sleep):
     """Retry only an unknown-page observation, never clicks or window failures."""
     if type(attempts) is not int or not 1 <= attempts <= 3:
@@ -21,8 +43,8 @@ def stabilize_capture(capture, is_foreground, *, attempts=3, deadline, now=time.
 
 
 def execute_batch(steps, enter, perform, leave, is_foreground, *, timeout=30, now=time.monotonic):
-    if not isinstance(steps, list) or not 1 <= len(steps) <= 12 or not 1 <= timeout <= 30:
-        raise ValueError('A batch needs 1..12 steps and a 1..30 second bound.')
+    if not isinstance(steps, list) or not 1 <= len(steps) <= 20 or not 1 <= timeout <= 30:
+        raise ValueError('A batch needs 1..20 steps and a 1..30 second bound.')
     result = dict(passed=False, steps=[], enter_calls=0, leave_calls=0, error=None)
     deadline = now() + timeout
     try:

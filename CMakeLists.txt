@@ -93,6 +93,14 @@ add_library(relink_startup_observation STATIC
 target_include_directories(relink_startup_observation PUBLIC src)
 target_link_libraries(relink_startup_observation PUBLIC Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_startup_observation)
+add_library(relink_catalog_filter STATIC
+  src/application/vision/catalog_filter_reader.cpp src/application/vision/catalog_filter_reader.h
+  src/application/runtime/catalog_filter_plan.cpp src/application/runtime/catalog_filter_plan.h)
+target_include_directories(relink_catalog_filter PUBLIC src)
+target_link_libraries(relink_catalog_filter PUBLIC relink_startup_observation Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_catalog_filter)
+add_executable(catalog_filter_tests tests/runtime/catalog_filter_tests.cpp)
+target_link_libraries(catalog_filter_tests PRIVATE relink_catalog_filter)
 add_executable(startup_observer_tests tests/runtime/startup_observer_tests.cpp)
 target_link_libraries(startup_observer_tests PRIVATE relink_startup_observation)
 add_executable(lobby_calibration_tests tests/runtime/lobby_calibration_tests.cpp)
@@ -205,6 +213,7 @@ target_include_directories(ledger_tests PRIVATE src)
 target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
 
 enable_testing()
+add_test(NAME catalog_filter_tests COMMAND catalog_filter_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json")
 add_test(NAME domain_tests COMMAND domain_tests)
 add_test(NAME business_tests COMMAND business_tests)
 add_test(NAME business_value_tests COMMAND business_value_tests)

@@ -1,0 +1,3485 @@
+--- a/.gitignore
++++ b/.gitignore
+@@ -64,6 +64,9 @@
+ artifacts/m2_market_calibration/*/
+ artifacts/m2_market_calibration/*.exe
+ artifacts/m2_market_calibration/*-config.json
++artifacts/m2_catalog_filter/*/
++artifacts/m2_catalog_filter/*.exe
++artifacts/m2_catalog_filter/*-config.json
+ *.py[cod]
+ artifacts/business_rebuild_docs/browser-profile-*/
+ artifacts/business_rebuild_docs/shell-profile-*/
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -93,6 +93,14 @@
+ target_include_directories(relink_startup_observation PUBLIC src)
+ target_link_libraries(relink_startup_observation PUBLIC Qt6::Core)
+ target_link_libraries(RelinkStudio PRIVATE relink_startup_observation)
++add_library(relink_catalog_filter STATIC
++  src/application/vision/catalog_filter_reader.cpp src/application/vision/catalog_filter_reader.h
++  src/application/runtime/catalog_filter_plan.cpp src/application/runtime/catalog_filter_plan.h)
++target_include_directories(relink_catalog_filter PUBLIC src)
++target_link_libraries(relink_catalog_filter PUBLIC relink_startup_observation Qt6::Core)
++target_link_libraries(RelinkStudio PRIVATE relink_catalog_filter)
++add_executable(catalog_filter_tests tests/runtime/catalog_filter_tests.cpp)
++target_link_libraries(catalog_filter_tests PRIVATE relink_catalog_filter)
+ add_executable(startup_observer_tests tests/runtime/startup_observer_tests.cpp)
+ target_link_libraries(startup_observer_tests PRIVATE relink_startup_observation)
+ add_executable(lobby_calibration_tests tests/runtime/lobby_calibration_tests.cpp)
+@@ -205,6 +213,7 @@
+ target_link_libraries(ledger_tests PRIVATE relink_ledger Qt6::Core)
+ 
+ enable_testing()
++add_test(NAME catalog_filter_tests COMMAND catalog_filter_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json")
+ add_test(NAME domain_tests COMMAND domain_tests)
+ add_test(NAME business_tests COMMAND business_tests)
+ add_test(NAME business_value_tests COMMAND business_value_tests)
+--- a/SESSION_START.md
++++ b/SESSION_START.md
+@@ -1,4 +1,18 @@
+ # Relink Studio — new session entry
++
++## 最新沟通要求（2026-10-07）
++
++用户要求持续推进，不逐阶段暂停，不输出例行进度、改动、测试或思考总结。详细证据留在文件中。只在真实阻塞、业务逻辑冲突或需要用户决策时简短说明问题；不要用一个普通里程碑结束开发。
++
++## 当前：总筛选状态已实测，真实任务目标待指定（2026-10-07）
++
++- 入口 `docs/business_rebuild/implementation/runtime/catalog_filter_state_m2.md`。`CatalogFilterReader` 已读取实际赛季及六个三态框；选中样式为白色内嵌方块。普通品阶选中时需要独立文字区同帧3倍OCR，未替换错字。
++- 实测已覆盖六个框的选中/未选以及品阶多选；最终发布包完成17步连续批次，前置/回IDE各一次。筛选未确认，赛季/六个框已全部恢复。失败、恢复过程均保留，无购买、库存移动或关注更改。当前游戏仍在筛选页。
++- 独立 `CatalogFilterPlan` 处理 S10–S14，先比赛季，再拥有，再品阶残留清理/重选；只产出差异与回读要求，不执行点击。不要从示例任务臆造真实分组。
++- 27组CTest、筛选153断言、84组实测数值信号回放；6张UI与基线逐像素一致，正式解压目录已更新并在隔离副本验证回退。事务 `artifacts/m2_catalog_filter/VERIFICATION.txt`。
++- 本机 `LocalAppData/RelinkStudio/RelinkStudio/config.json` 仍是 `schema_version=1, demo=true`，5条任务全部禁用。按真实任务继续S15查找及S17标题复核之前，需要用户指定测试枪皮及其赛季/成色；不把历史/演示配置当成当前执行目标。获得目标后继续，不重复校准现有六个框。
++- 原StartupObserver默认1秒时效未动；同帧多ROI诊断尚未接进真实异步运行时。当前状态识别不等于完整自动运行按钮已接通。
++- 批次上限现在20步，总时限仍30秒。字段断言失败不重放点击；失败后重新观察再恢复临时状态，最终恢复IDE。用户切走时不得抢回继续操作。
+ 
+ ## 最新：市场页坐标与原关注预检实机通过（2026-10-07）
+ 
+--- a/docs/business_rebuild/NEXT_IMPLEMENTATION.md
++++ b/docs/business_rebuild/NEXT_IMPLEMENTATION.md
+@@ -1,4 +1,6 @@
+ # 下一轮开发交接：M2 真实画面采集与识别边界
++
++> **当前入口：** `implementation/runtime/catalog_filter_state_m2.md`。S10–S14状态读取及原顺序差异计划已实现；六框选中/未选与品阶多选实测，当前仍停筛选页且临时选项已恢复，IDE在前台。27组CTest通过。用户要求不输出例行进度/总结，只在真实阻塞时短问。本机仅有五条禁用演示任务；按真实任务继续 S15/S17 前需指定目标皮肤、赛季与成色，不把演示值或历史配置当作当前执行目标。页观察1秒时效与真实异步接入仍是后续边界，不能宣称完整运行接通。
+ 
+ > **最新入口：** `implementation/runtime/market_page_calibration_m2.md`。曼德尔、典藏、空关注和总筛选已经实测；游戏当前在总筛选页。保持整段前台批次，自行导航，不让用户逐页代点。下一步读取S10–S14的赛季值、拥有/未拥有及品阶勾选状态，再做商品字段关联。不要重做坐标/局部OCR，不把人工测试脚本冒充完整自动执行器；多ROI延迟可能超出原StartupObserver 1秒门槛，接异步运行时前需单独明确页类时效契约。
+ 
+--- a/docs/business_rebuild/implementation/runtime/catalog_filter_state_m2.md
++++ b/docs/business_rebuild/implementation/runtime/catalog_filter_state_m2.md
+@@ -0,0 +1,64 @@
++# M2 总筛选同帧状态读取与原流程差异计划
++
++2026-10-07。沿用原启动 S10–S14，不改变关注预检顺序；本模块不执行输入。
++
++## 已实现
++
++- `CatalogFilterReader` 绑定 `frame_id`、像素 SHA-256 和客户区坐标，读取实际赛季文字及已拥有、未拥有、四个品阶的三态值。缺字、缺框、模糊、不同帧、非当前校准尺寸均保留 Unknown。
++- 当前校准仅覆盖 2560×1440、144 DPI；不把其他分辨率按比例猜成已校准。
++- 空框要求四边包围与低方差暗色内部；选中框是实测的**白色内嵌方块**，不是预设绿色对勾。分类要求白色平坦中心、暗边、过渡区域比例同时成立。
++- 全帧 OCR 后，同一帧的筛选区做 2 倍反色对比度预处理。普通品阶被选中后，明亮方块干扰宽区 OCR，必要时独立裁出文字、3 倍识别；不把错字替换成预期文字。
++- `CatalogFilterPlan` 只接受明确的 UI 状态目标快照：先比较赛季，改变赛季后必须重读；再比较拥有状态，改变后必须重读；品阶是多选集合，匹配则保留，不匹配按 S13 清残留、S14 选目标。每一步有读取回执要求，不包含点击坐标或执行许可。
++- 不从演示任务推断当前真实任务，不把单条 grade 条件擅自合并成原程序的任务分组；品阶和稀有度仍独立。
++
++## 实测与恢复
++
++实机校准仅临时勾选筛选复选框，未按“确认”，未购买、移动物品或修改关注。阶段结束时赛季仍为“全部赛季”，六个复选框全部恢复未选；每个批次前置游戏一次、结束恢复 IDE 一次。
++
++证据分层：
++
++| 证据 | 发现 | 后续实现位置 |
++|---|---|---|
++| `live_style_calibration.json` | 已拥有、史诗选中为白色内嵌方块；旧算法正确保留 Unknown | `classifyFilterCheckboxMeasurement` |
++| `live_verified_states_v2.json` | 已拥有与史诗选中/取消、其他框保持值均通过 | 三态规则及数值信号 fixture |
++| `live_remaining_states.json` | 普通品阶选中导致邻近文字读取失败；停止后有两项临时勾选未恢复 | 不把像素选中绕过标签校验 |
++| `live_restored_interruption.json` | 整行 3 倍识别仍不能重建普通品阶文字 | 改为独立裁出文字区域 |
++| `live_restored_interruption_v2.json` | 初版误用不支持的 4 倍参数，返回 `E_OCR_REGION`；零点击停止 | 改为已支持的 3 倍，不放宽 provider 参数上限 |
++| `live_restored_interruption_v3.json` | 独立文字区识别成功，恢复两项临时勾选 | 同帧按需字段重读 |
++| `live_final_filter_states.json` | 当前发布包验证传说、稀有、未拥有、普通及两品阶同时勾选；最终全部还原 | 最终二进制哈希绑定记录 |
++
++`live_verified_states.json` 的期望赛季因 PowerShell 管道编码变为问号，首帧即拒绝、零点击。修正计划 UTF-8 内容后另存 v2，旧失败不覆盖。
++
++`fixtures/catalog_filter_signals_20261007.json` 保存 84 组数值摘要，预期来自事先声明的联调计划，来源记录/帧/二进制有哈希。它不是游戏图片，不是独立标注的准确率留出集，不代表所有亮度、动画或窗口布局已验证。合成栅格测试另外覆盖白块、无边框、缺字段、非法数值、错帧和错误标签。
++
++## 有界批次
++
++为把四项状态的校准和恢复放在同一段前台，联调计划上限扩展为 20 步，总时限仍为 30 秒。不是每个动作切回 IDE。每次点击后须重新识别页面；期望字段断言绑定对应帧哈希。Unknown 页可有界重读，但字段失败不重放点击。
++
++中途异常可能留下临时筛选勾选：先重新读取当前状态，再恢复有证据的已选框，记录恢复结果。用户切走前台时不强抢回来继续点击。
++
++## 复验
++
++```powershell
++python -X utf8 docs\business_rebuild\scripts\export_catalog_filter_signals.py
++python -X utf8 tests\release\verify_catalog_filter_package.py build
++python -X utf8 tests\release\verify_catalog_filter_package.py verify
++python -X utf8 tests\release\verify_catalog_filter_package.py finalize
++```
++
++固定解压交付为 `C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe`。四个事务产物、完整命令与 literal 输出在 `artifacts/m2_catalog_filter/`。原包保留，回退只在隔离副本验收，正式交付保持新版。
++
++## 剩余接口边界
++
++- 只读筛选差异计划尚未连接正式游戏执行器；未来执行器必须保留品阶计划游标，不能每次勾选后重新生成“先清空”的计划，造成循环。
++- 赛季字符串读取已实现；赛季下拉展开/菜单选项识别、枪种状态仍未实测。
++- 原 `StartupObserver` 默认 1 秒时效没有修改。诊断的同帧多次 OCR 可能超过这一门槛，不能直接冒充异步运行时已经接通，更不能放宽价格、成交类证据时效。
++- 当前本机保存的配置仍是 schema 1、`demo=true`，五条任务禁用。只读页面校准不激活这些演示任务。
++
++继续开发提示词：
++
++```text
++读取 AGENTS.md 与 SESSION_START.md，保持静默连续开发。复用 CatalogFilterReader/Plan；不要重做页面、焦点和 OCR 坐标修复。
++只在真实阻塞时用短句询问。用原 BBZPS 流程证据推进 S15 商品定位及 S17 标题复核，不能把演示任务当成真实执行目标。
++同帧像素只走内存；整段联调结束才恢复 IDE。新批次重解析窗口身份，旧证据不可覆盖。
++```
+--- a/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json
++++ b/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json
+@@ -0,0 +1,1867 @@
++{
++  "schema": "catalog-checkbox-signals-v1",
++  "pixels_included": false,
++  "independent_accuracy_dataset": false,
++  "sources": [
++    {
++      "path": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "sha256": "081579f51b0ec7d9d68208270e65928fa61f558017e14fd758d332cbbe359982",
++      "binary_sha256": "286ddbd3cea4fc60eb38ae7fe379f35c75dc0ba330303acd20a6a15c6ea0eadf"
++    },
++    {
++      "path": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "sha256": "018aec779aed59b539d6139d780e1c716cd1e0fa2bdf7746a1c5a67595d9ae95",
++      "binary_sha256": "058ed8e1475da2d811645c8d1611f8ad9e2236c18e9d2580d6dc69055c548bac"
++    }
++  ],
++  "cases": [
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.26543209876548,
++          54.07098765432097,
++          51.78086419753087,
++          57.90123456790125
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.268229166666693,
++        "center_stddev": 0.3188482793747915,
++        "green_fraction": 0,
++        "interior_mean": 28.31542699724515,
++        "interior_stddev": 0.3719390858776189,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.65740740740742,
++          56.33950617283954,
++          51.66049382716051
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.21354166666671,
++        "center_stddev": 0.37322351202346876,
++        "green_fraction": 0,
++        "interior_mean": 27.232093663911797,
++        "interior_stddev": 0.38758076435545924,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.305555555555515,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.04938271604936,
++          55.41975308641973,
++          53.058641975308646,
++          54.993827160493844
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.87369791666666,
++        "center_stddev": 0.16436707013895435,
++        "green_fraction": 0,
++        "interior_mean": 29.899449035812694,
++        "interior_stddev": 0.19282270703002924,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 0,
++      "frame_sha256": "6c80cdef5611dac3af28c9781b7d81741cd222807ce279f1ee7e360c4050bb14",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.49691358024695,
++          51.635802469135804,
++          56.33333333333334,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.27777777777782,
++          54.14506172839507,
++          51.87962962962962,
++          57.92901234567903
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.332031250000025,
++        "center_stddev": 0.3479828366155153,
++        "green_fraction": 0,
++        "interior_mean": 28.369146005509617,
++        "interior_stddev": 0.39638321907810026,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.66358024691359,
++          56.34567901234572,
++          51.669753086419774
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.221354166666707,
++        "center_stddev": 0.3674644345699653,
++        "green_fraction": 0,
++        "interior_mean": 27.237603305785083,
++        "interior_stddev": 0.38303095587725156,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.29938271604933,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "owned",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          67.3302469135803,
++          67.11419753086422,
++          72.40432098765432,
++          64.53703703703704
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.4648437500001,
++        "center_stddev": 1.1034101857450391,
++        "green_fraction": 0,
++        "interior_mean": 167.5544077134994,
++        "interior_stddev": 45.82701961364352,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.16049382716051,
++          55.50925925925925,
++          53.19444444444444,
++          55.10493827160494
++        ],
++        "bright_fraction": 0,
++        "center_mean": 30.001302083333332,
++        "center_stddev": 0.02079260341858171,
++        "green_fraction": 0,
++        "interior_mean": 30.025482093663918,
++        "interior_stddev": 0.12510004041085443,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 2,
++      "frame_sha256": "1a89f625f03a228c1d9438fc7641c24939a8dee6d6025d6e3b6d2f752f145993",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.635802469135804,
++          56.33950617283952,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.20061728395066,
++          53.771604938271594,
++          51.487654320987666,
++          57.67901234567898
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.035156249999986,
++        "center_stddev": 0.2166589980142973,
++        "green_fraction": 0,
++        "interior_mean": 28.066115702479312,
++        "interior_stddev": 0.30339322119212414,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.44135802469137,
++          52.71913580246915,
++          56.35802469135806,
++          51.71604938271606
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.238281250000036,
++        "center_stddev": 0.36215476480808073,
++        "green_fraction": 0,
++        "interior_mean": 27.25826446280988,
++        "interior_stddev": 0.3822425729922191,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.29938271604933,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.148148148148145,
++          55.53395061728394,
++          53.206790123456784,
++          55.08024691358024
++        ],
++        "bright_fraction": 0,
++        "center_mean": 30.001302083333332,
++        "center_stddev": 0.02079260341858171,
++        "green_fraction": 0,
++        "interior_mean": 30.025482093663918,
++        "interior_stddev": 0.12510004041085443,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 4,
++      "frame_sha256": "b5226e03a31118896326d8fd88d78bce597e27b59dea2ed9f60e19df9f2c0b41",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.64814814814816,
++          56.34567901234569,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.143229166666675,
++        "center_stddev": 0.2831604673336413,
++        "green_fraction": 0,
++        "interior_mean": 26.18732782369143,
++        "interior_stddev": 0.33165572883613903,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.21913580246919,
++          53.74691358024691,
++          51.487654320987666,
++          57.669753086419725
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.026041666666647,
++        "center_stddev": 0.20245616381208492,
++        "green_fraction": 0,
++        "interior_mean": 28.057851239669404,
++        "interior_stddev": 0.29822765707273224,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "epic",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          69.3333333333333,
++          69.73456790123456,
++          74.70370370370371,
++          66.9537037037037
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.8307291666664,
++        "center_stddev": 1.0627010379590291,
++        "green_fraction": 0,
++        "interior_mean": 168.36983471074342,
++        "interior_stddev": 45.181348686363464,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.31172839506168,
++          49.8641975308642,
++          53.83024691358024,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.058641975308625,
++          55.450617283950606,
++          53.10185185185187,
++          54.996913580246925
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.917968749999996,
++        "center_stddev": 0.14656970894115234,
++        "green_fraction": 0,
++        "interior_mean": 29.928374655647403,
++        "interior_stddev": 0.18535257431250685,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 6,
++      "frame_sha256": "5849c06fded6ec7b3ac5dddcf53e53183071a9bffecac00670bbc54641dd2b09",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.64814814814816,
++          56.34567901234569,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.143229166666675,
++        "center_stddev": 0.2831604673336413,
++        "green_fraction": 0,
++        "interior_mean": 26.18732782369143,
++        "interior_stddev": 0.33165572883613903,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.24074074074078,
++          53.81172839506172,
++          51.52160493827163,
++          57.731481481481445
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.088541666666664,
++        "center_stddev": 0.2103418802760905,
++        "green_fraction": 0,
++        "interior_mean": 28.12327823691456,
++        "interior_stddev": 0.2964434060897467,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.65432098765433,
++          56.34567901234572,
++          51.657407407407426
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.21354166666671,
++        "center_stddev": 0.37322351202346876,
++        "green_fraction": 0,
++        "interior_mean": 27.231404958677636,
++        "interior_stddev": 0.3876963946368206,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.30246913580241,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.06172839506171,
++          55.450617283950606,
++          53.10185185185187,
++          54.996913580246925
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.93229166666666,
++        "center_stddev": 0.13730652423464468,
++        "green_fraction": 0,
++        "interior_mean": 29.938016528925633,
++        "interior_stddev": 0.185111873210163,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_verified_states_v2.json",
++      "source_step_index": 8,
++      "frame_sha256": "0fb65bd3f28dfe059d96aee71b92e183b1daa34b4a294128748a1193a3d4ce8a",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.49691358024695,
++          51.635802469135804,
++          56.336419753086425,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.140625000000007,
++        "center_stddev": 0.2782927084878667,
++        "green_fraction": 0,
++        "interior_mean": 26.185950413223114,
++        "interior_stddev": 0.3296560821969996,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.24074074074078,
++          53.725308641975296,
++          51.48456790123458,
++          57.682098765432066
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.063802083333314,
++        "center_stddev": 0.17631093035900228,
++        "green_fraction": 0,
++        "interior_mean": 28.092286501377394,
++        "interior_stddev": 0.2722642645659143,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.438271604938286,
++          52.71913580246915,
++          56.36728395061731,
++          51.70370370370371
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.238281250000036,
++        "center_stddev": 0.36215476480808073,
++        "green_fraction": 0,
++        "interior_mean": 27.25757575757572,
++        "interior_stddev": 0.3836057242815912,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.308641975308596,
++          49.8641975308642,
++          53.842592592592595,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.06172839506171,
++          55.450617283950606,
++          53.09876543209879,
++          54.996913580246925
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.923177083333325,
++        "center_stddev": 0.1434361667067832,
++        "green_fraction": 0,
++        "interior_mean": 29.932506887052355,
++        "interior_stddev": 0.1881211930792599,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 0,
++      "frame_sha256": "5fac5d6f8d17478310322bbb35a724bab83d3e404ae498aeab469ee34fb19312",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.65123456790124,
++          56.34567901234569,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.143229166666675,
++        "center_stddev": 0.2831604673336413,
++        "green_fraction": 0,
++        "interior_mean": 26.18732782369143,
++        "interior_stddev": 0.33165572883613903,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.24382716049387,
++          53.833333333333314,
++          51.52469135802471,
++          57.756172839506135
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.105468749999993,
++        "center_stddev": 0.20557665101201747,
++        "green_fraction": 0,
++        "interior_mean": 28.162534435261673,
++        "interior_stddev": 0.2739558270684836,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.66049382716051,
++          56.342592592592624,
++          51.66049382716051
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.21875000000004,
++        "center_stddev": 0.36784257464148273,
++        "green_fraction": 0,
++        "interior_mean": 27.234848484848442,
++        "interior_stddev": 0.38472617956774663,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "legendary",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          67.34259259259262,
++          67.12345679012347,
++          72.45987654320983,
++          64.53703703703704
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.4648437500001,
++        "center_stddev": 1.1034101857450391,
++        "green_fraction": 0,
++        "interior_mean": 167.5557851239677,
++        "interior_stddev": 45.82437789848214,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.06790123456789,
++          55.45679012345678,
++          53.10185185185187,
++          55.000000000000014
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.94270833333333,
++        "center_stddev": 0.12916246633014142,
++        "green_fraction": 0,
++        "interior_mean": 29.951101928374662,
++        "interior_stddev": 0.18218694342925604,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 2,
++      "frame_sha256": "647d422bd77c28067e3042da7495eb45150e00990d5b4db1d7117bb6eba517bf",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.635802469135804,
++          56.33950617283952,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.274691358024725,
++          54.154320987654316,
++          51.83641975308642,
++          57.95370370370374
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.343750000000032,
++        "center_stddev": 0.3459525396955927,
++        "green_fraction": 0,
++        "interior_mean": 28.37396694214873,
++        "interior_stddev": 0.3909583746340833,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.66358024691359,
++          56.34567901234572,
++          51.666666666666686
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.218750000000043,
++        "center_stddev": 0.37019490924386617,
++        "green_fraction": 0,
++        "interior_mean": 27.23484848484844,
++        "interior_stddev": 0.3859177462756103,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "legendary",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          67.33950617283955,
++          67.12345679012347,
++          72.45987654320983,
++          64.53703703703704
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.4648437500001,
++        "center_stddev": 1.1034101857450391,
++        "green_fraction": 0,
++        "interior_mean": 167.5557851239677,
++        "interior_stddev": 45.82437789848214,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "rare",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          72.02160493827157,
++          72.58024691358028,
++          69.65123456790121,
++          70.27160493827154
++        ],
++        "bright_fraction": 0.8264462809917356,
++        "center_mean": 193.2825520833336,
++        "center_stddev": 0.7006503036456546,
++        "green_fraction": 0,
++        "interior_mean": 172.20385674931148,
++        "interior_stddev": 41.81166224762809,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 4,
++      "frame_sha256": "bcd4a69e82f959ea58b2fc517def0a658794b33459e5b0d4f63b01a1ed3c4bda",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.635802469135804,
++          56.336419753086425,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.22530864197537,
++          53.91358024691357,
++          51.589506172839556,
++          57.74691358024687
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.12239583333335,
++        "center_stddev": 0.24780667640615459,
++        "green_fraction": 0,
++        "interior_mean": 28.158402203856706,
++        "interior_stddev": 0.33835829520625715,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.69444444444445,
++          56.35493827160498,
++          51.68518518518519
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.23046875000004,
++        "center_stddev": 0.36717595652216783,
++        "green_fraction": 0,
++        "interior_mean": 27.247245179063313,
++        "interior_stddev": 0.38590791369446414,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.305555555555515,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "rare",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          72.04629629629626,
++          72.65123456790128,
++          69.67592592592592,
++          70.31481481481481
++        ],
++        "bright_fraction": 0.8264462809917356,
++        "center_mean": 193.3033854166668,
++        "center_stddev": 0.7067794211266782,
++        "green_fraction": 0,
++        "interior_mean": 172.23691460055113,
++        "interior_stddev": 41.798467861265244,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 6,
++      "frame_sha256": "88c55597fbb92d5c3ea837233333015766dfde116b44e028ad872e3ad32f8a24",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.64814814814816,
++          56.34567901234569,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.09259259259261,
++          53.6358024691358,
++          51.3858024691358,
++          57.5432098765432
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.8997395833333,
++        "center_stddev": 0.22996059799220064,
++        "green_fraction": 0,
++        "interior_mean": 27.94628099173555,
++        "interior_stddev": 0.3012941751702194,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.44135802469137,
++          52.71913580246915,
++          56.37345679012349,
++          51.71913580246914
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.243489583333368,
++        "center_stddev": 0.36108580932247597,
++        "green_fraction": 0,
++        "interior_mean": 27.26239669421484,
++        "interior_stddev": 0.3800224059788313,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.31172839506168,
++          49.8641975308642,
++          53.83024691358024,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.08024691358024,
++          55.484567901234556,
++          53.13888888888891,
++          55.00617283950619
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.983072916666664,
++        "center_stddev": 0.07889163781230428,
++        "green_fraction": 0,
++        "interior_mean": 29.982093663911847,
++        "interior_stddev": 0.16500779525286655,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 8,
++      "frame_sha256": "cc6418c688831efcd17e60830f2b78446f542706e8225acecad40b098ece518a",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.65123456790124,
++          56.34567901234569,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.14453125000001,
++        "center_stddev": 0.28479333831987624,
++        "green_fraction": 0,
++        "interior_mean": 26.188016528925587,
++        "interior_stddev": 0.3323036654685048,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.10802469135805,
++          53.611111111111114,
++          51.395061728395056,
++          57.48148148148149
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.903645833333304,
++        "center_stddev": 0.2287964576026378,
++        "green_fraction": 0,
++        "interior_mean": 27.95316804407714,
++        "interior_stddev": 0.30319930172693205,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.69135802469137,
++          56.35185185185188,
++          51.666666666666686
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.22395833333337,
++        "center_stddev": 0.3694247005438733,
++        "green_fraction": 0,
++        "interior_mean": 27.240358126721723,
++        "interior_stddev": 0.3843067773446248,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.31172839506168,
++          49.8641975308642,
++          53.842592592592595,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.058641975308625,
++          55.450617283950606,
++          53.09876543209879,
++          54.996913580246925
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.923177083333325,
++        "center_stddev": 0.1434361667067832,
++        "green_fraction": 0,
++        "interior_mean": 29.932506887052355,
++        "interior_stddev": 0.1881211930792599,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 10,
++      "frame_sha256": "6499b9b8d7257fd1500651eca7a96b98794f412fb08c74f9dba719e296adb1a3",
++      "checkbox": "unowned",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          68.37037037037042,
++          68.82407407407409,
++          74.72530864197529,
++          65.62037037037037
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.75520833333331,
++        "center_stddev": 1.0655465920356462,
++        "green_fraction": 0,
++        "interior_mean": 168.08953168044022,
++        "interior_stddev": 45.43311384311482,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "common",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          70.0895061728394,
++          70.9351851851852,
++          68.12037037037034,
++          76.13580246913583
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 193.01041666666663,
++        "center_stddev": 1.0569195773895472,
++        "green_fraction": 0,
++        "interior_mean": 168.6873278236919,
++        "interior_stddev": 44.90562530205391,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.65740740740742,
++          56.342592592592624,
++          51.66049382716051
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.21354166666671,
++        "center_stddev": 0.37322351202346876,
++        "green_fraction": 0,
++        "interior_mean": 27.232093663911797,
++        "interior_stddev": 0.38758076435545924,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.29938271604933,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.08024691358024,
++          55.459876543209866,
++          53.11111111111113,
++          55.01543209876545
++        ],
++        "bright_fraction": 0,
++        "center_mean": 29.977864583333332,
++        "center_stddev": 0.08807128423568272,
++        "green_fraction": 0,
++        "interior_mean": 29.978650137741045,
++        "interior_stddev": 0.17075862628415123,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 12,
++      "frame_sha256": "27804aa9c9f661f3f36a131a610d687ca5957060c5febc2d1f9a1c40748a3749",
++      "checkbox": "unowned",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          68.37037037037042,
++          68.81790123456791,
++          74.72530864197529,
++          65.62037037037037
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 192.75520833333331,
++        "center_stddev": 1.0655465920356462,
++        "green_fraction": 0,
++        "interior_mean": 168.08815426997185,
++        "interior_stddev": 45.4341372083386,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "common",
++      "expected_state": "checked",
++      "measurement": {
++        "border_means": [
++          70.12345679012338,
++          70.8888888888889,
++          68.13580246913577,
++          76.10802469135805
++        ],
++        "bright_fraction": 0.8677685950413223,
++        "center_mean": 193.0091145833333,
++        "center_stddev": 1.0571369126893002,
++        "green_fraction": 0,
++        "interior_mean": 168.6887052341602,
++        "interior_stddev": 44.90107963421339,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.65740740740742,
++          56.34567901234572,
++          51.66049382716051
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.210937500000043,
++        "center_stddev": 0.37585803168118354,
++        "green_fraction": 0,
++        "interior_mean": 27.230716253443482,
++        "interior_stddev": 0.3889928854695467,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.29938271604933,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.117283950617285,
++          55.48765432098764,
++          53.151234567901255,
++          55.07098765432099
++        ],
++        "bright_fraction": 0,
++        "center_mean": 30.001302083333332,
++        "center_stddev": 0.02079260341858171,
++        "green_fraction": 0,
++        "interior_mean": 30.013774104683197,
++        "interior_stddev": 0.1331037570034956,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 14,
++      "frame_sha256": "b5cb2e9789d0e4fa735ad4c376f9f940c54fdfa83f7225f64314fa980a17107e",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.635802469135804,
++          56.33950617283952,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "common",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          52.22530864197535,
++          53.94444444444443,
++          51.71604938271606,
++          57.697530864197496
++        ],
++        "bright_fraction": 0,
++        "center_mean": 28.21093750000002,
++        "center_stddev": 0.2822008425540347,
++        "green_fraction": 0,
++        "interior_mean": 28.241735537190053,
++        "interior_stddev": 0.3606100328686877,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "epic",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          51.432098765432116,
++          52.66666666666668,
++          56.35185185185188,
++          51.66666666666669
++        ],
++        "bright_fraction": 0,
++        "center_mean": 27.221354166666707,
++        "center_stddev": 0.3674644345699653,
++        "green_fraction": 0,
++        "interior_mean": 27.23622589531676,
++        "interior_stddev": 0.38447952778385347,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "legendary",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.305555555555515,
++          49.8641975308642,
++          53.8179012345679,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "owned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          49.280864197530775,
++          49.84876543209879,
++          53.73148148148148,
++          49.03395061728397
++        ],
++        "bright_fraction": 0,
++        "center_mean": 25,
++        "center_stddev": 0,
++        "green_fraction": 0,
++        "interior_mean": 25,
++        "interior_stddev": 0,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "rare",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          54.15432098765434,
++          55.52777777777777,
++          53.191358024691354,
++          55.10802469135802
++        ],
++        "bright_fraction": 0,
++        "center_mean": 30.001302083333332,
++        "center_stddev": 0.02079260341858171,
++        "green_fraction": 0,
++        "interior_mean": 30.025482093663918,
++        "interior_stddev": 0.12510004041085443,
++        "sample_count": 484
++      }
++    },
++    {
++      "source_record": "artifacts/m2_catalog_filter/live_final_filter_states.json",
++      "source_step_index": 16,
++      "frame_sha256": "d65a0e6085a707d65f8c95fd12f1df8d098201946f90d350f4986ce04a889df0",
++      "checkbox": "unowned",
++      "expected_state": "unchecked",
++      "measurement": {
++        "border_means": [
++          50.500000000000036,
++          51.6388888888889,
++          56.33950617283952,
++          50.290123456790134
++        ],
++        "bright_fraction": 0,
++        "center_mean": 26.141927083333343,
++        "center_stddev": 0.2799660846821463,
++        "green_fraction": 0,
++        "interior_mean": 26.186639118457272,
++        "interior_stddev": 0.3303108133308442,
++        "sample_count": 484
++      }
++    }
++  ]
++}
+--- a/docs/business_rebuild/scripts/export_catalog_filter_signals.py
++++ b/docs/business_rebuild/scripts/export_catalog_filter_signals.py
+@@ -0,0 +1,37 @@
++"""Export bounded numeric checkbox signals, never pixels, from recorded batches.
++
++Expected labels come from the predeclared manual test plan, not its classifier.
++This is signal replay evidence, not an independent accuracy/holdout dataset.
++"""
++import hashlib
++import json
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[3]
++TX=ROOT/'artifacts/m2_catalog_filter'
++RECORDS=['live_verified_states_v2.json','live_final_filter_states.json']
++def main():
++ cases=[];sources=[]
++ for name in RECORDS:
++  path=TX/name
++  if not path.exists():continue
++  data=json.loads(path.read_text(encoding='utf-8'))
++  assert data['passed'] and data['ide_restored'] and data['enter_calls']==data['leave_calls']==1
++  source=path.relative_to(ROOT).as_posix();digest=hashlib.sha256(path.read_bytes()).hexdigest()
++  sources.append({'path':source,'sha256':digest,'binary_sha256':data['binary_sha256']})
++  for index,(step,planned) in enumerate(zip(data['steps'],data['plan']['steps'])):
++   if step['kind']!='capture':continue
++   result=step['result'];state=result['catalog_filter_state']
++   assert result['filter_expectation_passed'] and state['complete']
++   assert state['frame_sha256']==result['frames'][0]['sha256']
++   for key,box in state['checkboxes'].items():
++    expected=planned['expected_filter'][key]
++    assert expected==box['state']
++    cases.append(dict(source_record=source,source_step_index=index,frame_sha256=state['frame_sha256'],
++        checkbox=key,expected_state=expected,measurement=box['measurement']))
++ assert cases
++ out=ROOT/'docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json'
++ out.write_text(json.dumps(dict(schema='catalog-checkbox-signals-v1',pixels_included=False,
++     independent_accuracy_dataset=False,sources=sources,cases=cases),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
++ assert json.loads(out.read_text(encoding='utf-8'))['cases']==cases
++ print(f'CATALOG_SIGNAL_EXPORT=PASS; cases={len(cases)}; sources={len(sources)}; pixels_included=false')
++if __name__=='__main__':main()
+--- a/src/application/runtime/catalog_filter_plan.cpp
++++ b/src/application/runtime/catalog_filter_plan.cpp
+@@ -0,0 +1,49 @@
++#include "catalog_filter_plan.h"
++namespace relink::runtime {
++CatalogFilterPlan planCatalogFilter(const vision::CatalogFilterState& o,const CatalogFilterTarget& t) {
++    CatalogFilterPlan p;p.snapshotId=t.snapshotId;p.sourceFrameId=o.frameId;
++    const QStringList grades{"legendary","epic","rare","common"};
++    if(t.snapshotId.trimmed().isEmpty() || t.snapshotId.size()>200 || t.seasonLabel.trimmed().isEmpty()
++       || t.seasonLabel.size()>64 || t.seasonLabel!=t.seasonLabel.trimmed()) {p.reason="E_FILTER_TARGET";return p;}
++    for(const auto& g:t.grades)if(!grades.contains(g)){p.reason="E_FILTER_GRADE_TARGET";return p;}
++    if(!o.validPage || !o.complete || o.frameId.isEmpty() || o.frameSha256.size()!=64 || o.seasonLabel.isEmpty()){
++        p.reason="E_FILTER_OBSERVATION_REQUIRED";return p;
++    }
++    for(const auto& id:QStringList{"owned","unowned","legendary","epic","rare","common"})
++        if(!o.boxes.contains(id) || o.boxes[id].state==vision::CheckState::Unknown){p.reason="E_FILTER_OBSERVATION_REQUIRED";return p;}
++    const auto add=[&](const QString& step,const QString& field,const QJsonValue& before,const QJsonValue& after){
++        p.steps.append(QJsonObject{{"source_step",step},{"field",field},{"observed",before},{"required",after},
++            {"readback_required",true},{"execute",false}});
++    };
++    p.valid=true;
++    if(o.seasonLabel!=t.seasonLabel){
++        add("S10","season",o.seasonLabel,t.seasonLabel);
++        // Season selection can rebuild the other controls. Their old states
++        // must not become future click instructions after this boundary.
++        p.reason="reobserve_after_season_change";return p;
++    }
++    for(const auto& id:QStringList{"owned","unowned"}){
++        const bool before=o.boxes[id].state==vision::CheckState::Checked;
++        const bool after=id=="owned"?t.owned:t.unowned;
++        if(before!=after)add("S12",id,before,after);
++    }
++    // Ownership changes may also rebuild controls. Recompute grades only
++    // after the ownership readbacks, not from pre-change pixel evidence.
++    if(!p.steps.isEmpty()){p.reason="reobserve_after_ownership_change";return p;}
++    QSet<QString> selected;
++    for(const auto& id:grades)if(o.boxes[id].state==vision::CheckState::Checked)selected.insert(id);
++    if(selected!=t.grades){
++        // S13 clears residual selections, then S14 selects the desired set.
++        // A future executor must keep this plan's cursor (not regenerate it
++        // after each toggle, which would repeatedly clear partial selections).
++        for(const auto& id:grades)if(selected.contains(id))add("S13",id,true,false);
++        for(const auto& id:grades)if(t.grades.contains(id))add("S14",id,false,true);
++    }
++    p.alreadyMatches=p.steps.isEmpty();p.reason=p.alreadyMatches?"preserve_matching_filter":"readback_each_grade_step";
++    return p;
++}
++QJsonObject CatalogFilterPlan::toJson() const {
++    return {{"valid",valid},{"already_matches",alreadyMatches},{"reason",reason},{"snapshot_id",snapshotId},
++        {"source_frame_id",sourceFrameId},{"steps",steps},{"actions_enabled",false},{"target_grouping_inferred",false}};
++}
++} // namespace relink::runtime
+--- a/src/application/runtime/catalog_filter_plan.h
++++ b/src/application/runtime/catalog_filter_plan.h
+@@ -0,0 +1,30 @@
++#pragma once
++#include "application/vision/catalog_filter_reader.h"
++#include <QJsonArray>
++#include <QSet>
++
++namespace relink::runtime {
++// Explicit UI-state target, not a task aggregator. Callers must resolve the
++// original batch grouping and dictionary before creating this snapshot.
++// Ownership has two independent boxes; grade is a multi-select set.
++struct CatalogFilterTarget {
++    QString snapshotId;
++    QString seasonLabel;
++    bool owned = false;
++    bool unowned = false;
++    QSet<QString> grades;
++};
++struct CatalogFilterPlan {
++    bool valid = false;
++    bool alreadyMatches = false;
++    QString reason;
++    QString snapshotId;
++    QString sourceFrameId;
++    QJsonArray steps;
++    QJsonObject toJson() const;
++};
++// Declarative read-only difference. Each change requires a fresh readback;
++// this module neither owns coordinates nor executes/authorizes game input.
++CatalogFilterPlan planCatalogFilter(const vision::CatalogFilterState& observed,
++    const CatalogFilterTarget& target);
++} // namespace relink::runtime
+--- a/src/application/vision/catalog_filter_reader.cpp
++++ b/src/application/vision/catalog_filter_reader.cpp
+@@ -0,0 +1,135 @@
++#include "catalog_filter_reader.h"
++#include "skin_page_classifier.h"
++#include <QCryptographicHash>
++#include <QJsonArray>
++#include <QRegularExpression>
++#include <algorithm>
++#include <cmath>
++
++namespace relink::vision {
++namespace {
++using runtime::observation::FrameEnvelope;
++struct Word { QString text; QRectF box; };
++bool pixelsValid(const FrameEnvelope& f) {
++    return f.pixelFormat == "BGRA8" && f.width > 0 && f.width <= 8192 && f.height > 0 && f.height <= 8192
++        && f.strideBytes >= qint64(f.width)*4 && f.strideBytes <= qint64(f.width)*4+65536
++        && f.validBytes == qint64(f.strideBytes)*f.height && f.pixels.size() == f.validBytes;
++}
++QString labelIn(const QJsonObject& o, const QRectF& region) {
++    QVector<Word> words;
++    for (const auto& v : o["words"].toArray()) {
++        const auto w=v.toObject();
++        const QRectF b(w["x"].toDouble(),w["y"].toDouble(),w["width"].toDouble(),w["height"].toDouble());
++        if (!region.contains(b.center())) continue;
++        if (w.contains("score") && (!w["score"].isDouble() || w["score"].toDouble()<.7)) return {};
++        QString t=w["text"].toString().normalized(QString::NormalizationForm_KC);
++        t.remove(QRegularExpression(QStringLiteral("\\s+")));
++        if (t.isEmpty() || t.size()>64 || words.size()>=32) return {};
++        words.append({t,b});
++    }
++    std::sort(words.begin(),words.end(),[](const Word& a,const Word& b){return a.box.left()<b.box.left();});
++    QString result;
++    for (int i=0;i<words.size();++i) {
++        if(i) {
++            const auto& a=words[i-1].box;const auto& b=words[i].box;
++            if (std::abs(a.center().y()-b.center().y())>.5*std::min(a.height(),b.height())
++                || b.left()-a.right() > std::max(a.height(),b.height())
++                || b.left()-a.right() < -.3*std::min(a.height(),b.height())) return {};
++        }
++        result+=words[i].text;
++    }
++    return result.size()<=64 ? result : QString();
++}
++}
++QString toString(CheckState s) {
++    return s==CheckState::Checked ? QStringLiteral("checked") : s==CheckState::Unchecked ? QStringLiteral("unchecked") : QStringLiteral("unknown");
++}
++CheckState classifyFilterCheckboxMeasurement(const QJsonObject& signal) {
++    const char* keys[]={"interior_mean","interior_stddev","center_mean","center_stddev","bright_fraction","green_fraction","sample_count"};
++    for(const auto key:keys)if(!signal[key].isDouble() || !std::isfinite(signal[key].toDouble()) || signal[key].toDouble()<0)return CheckState::Unknown;
++    const auto borders=signal["border_means"].toArray();
++    if(borders.size()!=4 || signal["sample_count"].toDouble()<16 || signal["sample_count"].toDouble()>16384
++       || std::floor(signal["sample_count"].toDouble())!=signal["sample_count"].toDouble())return CheckState::Unknown;
++    double minBorder=255,maxBorder=0;
++    for(const auto v:borders){if(!v.isDouble() || !std::isfinite(v.toDouble()) || v.toDouble()<0 || v.toDouble()>255)return CheckState::Unknown;
++        minBorder=std::min(minBorder,v.toDouble());maxBorder=std::max(maxBorder,v.toDouble());}
++    const double mean=signal["interior_mean"].toDouble(),dev=signal["interior_stddev"].toDouble(),
++        center=signal["center_mean"].toDouble(),centerDev=signal["center_stddev"].toDouble(),
++        bright=signal["bright_fraction"].toDouble(),green=signal["green_fraction"].toDouble();
++    if(mean>255 || center>255 || dev>128 || centerDev>128 || bright>1 || green>1)return CheckState::Unknown;
++    if(mean>=8 && mean<=42 && dev<=5 && minBorder-mean>=7 && bright==0 && green==0
++       && center>=8 && center<=42 && centerDev<=5 && std::abs(center-mean)<=5)return CheckState::Unchecked;
++    // The observed selected style is a WHITE inset square, not a green check.
++    // Require its bright flat center plus dark perimeter and mixed edge band;
++    // a flat bright rectangle, icon speck or a missing border is not selected.
++    if(mean>=120 && mean<=210 && dev>=20 && dev<=70 && center>=160 && center<=225 && centerDev<=6
++       && bright>=.75 && bright<=.97 && green==0 && minBorder>=35 && maxBorder<=100 && center-maxBorder>=80)
++        return CheckState::Checked;
++    return CheckState::Unknown;
++}
++FilterCheckbox measureFilterCheckbox(const FrameEnvelope& frame, const QRect& rect, const QString& label) {
++    FilterCheckbox out;out.label=label;out.bounds=rect;
++    if(!pixelsValid(frame) || rect.width()<16 || rect.height()!=rect.width() || rect.width()>128
++       || !QRect(0,0,frame.width,frame.height).contains(rect)) {out.reason="E_FILTER_PIXELS";return out;}
++    const int margin=std::max(4,rect.width()/5);
++    const QRect core=rect.adjusted(margin,margin,-margin,-margin);
++    const int centerMargin=std::max(margin+2,rect.width()*3/10);
++    const QRect center=rect.adjusted(centerMargin,centerMargin,-centerMargin,-centerMargin);
++    double sum=0,squared=0,centerSum=0,centerSquared=0;int total=0,centerTotal=0,bright=0,green=0;double sides[4]={};int sideCounts[4]={};
++    for(int y=rect.top();y<=rect.bottom();++y)for(int x=rect.left();x<=rect.right();++x){
++        const auto* p=reinterpret_cast<const unsigned char*>(frame.pixels.constData()+qint64(y)*frame.strideBytes+qint64(x)*4);
++        const double l=(int(p[0])+int(p[1])+int(p[2]))/3.0;
++        if(core.contains(x,y)){sum+=l;squared+=l*l;++total;bright+=l>=100;green+=int(p[1])>=70 && int(p[1])-int(p[2])>=25 && int(p[1])-int(p[0])>=8;}
++        if(center.contains(x,y)){centerSum+=l;centerSquared+=l*l;++centerTotal;}
++        const bool edge[]={y<rect.top()+3,y>rect.bottom()-3,x<rect.left()+3,x>rect.right()-3};
++        for(int i=0;i<4;++i)if(edge[i]){sides[i]+=l;++sideCounts[i];}
++    }
++    const double mean=sum/total,deviation=std::sqrt(std::max(0.0,squared/total-mean*mean));
++    QJsonArray borders;
++    for(int i=0;i<4;++i){sides[i]/=sideCounts[i];borders.append(sides[i]);}
++    const double centerMean=centerSum/centerTotal;
++    out.measurement={{"interior_mean",mean},{"interior_stddev",deviation},{"bright_fraction",double(bright)/total},
++        {"green_fraction",double(green)/total},{"border_means",borders},{"sample_count",total},
++        {"center_mean",centerMean},{"center_stddev",std::sqrt(std::max(0.0,centerSquared/centerTotal-centerMean*centerMean))}};
++    out.state=classifyFilterCheckboxMeasurement(out.measurement);
++    out.reason=out.state==CheckState::Unchecked ? "closed_dark_empty_box" : out.state==CheckState::Checked ? "white_inset_selected_box" : "E_FILTER_CHECKBOX_AMBIGUOUS";
++    return out;
++}
++CatalogFilterState readCatalogFilter(const FrameEnvelope& frame, const QJsonObject& o) {
++    CatalogFilterState out;out.frameId=frame.frameId;
++    const auto page=classifySkinPage(o);
++    if(!page.validInput || page.page!=SkinPage::CatalogFilter || page.overlay!=PageOverlay::None){out.reason="E_FILTER_PAGE";return out;}
++    if(!pixelsValid(frame) || frame.frameId.isEmpty() || o["coordinate_space"]!="client_physical_px"
++        || o["width"].toInt()!=frame.width || o["height"].toInt()!=frame.height){out.reason="E_FILTER_FRAME";return out;}
++    out.validPage=true;
++    if(frame.width!=2560 || frame.height!=1440 || frame.dpiX!=144 || frame.dpiY!=144){out.reason="E_FILTER_GEOMETRY_UNCALIBRATED";return out;}
++    out.frameSha256=QString::fromLatin1(QCryptographicHash::hash(frame.pixels,QCryptographicHash::Sha256).toHex());
++    if(o["frame_id"].toString()!=out.frameId || o["frame_sha256"].toString()!=out.frameSha256){out.reason="E_FILTER_FRAME_BINDING";return out;}
++    out.seasonLabel=labelIn(o,QRectF(770,426,270,42));
++    const QStringList ids{"owned","unowned","legendary","epic","rare","common"};
++    const QStringList labels{QStringLiteral("已拥有"),QStringLiteral("未拥有"),QStringLiteral("传说品阶"),QStringLiteral("史诗品阶"),QStringLiteral("稀有品阶"),QStringLiteral("普通品阶")};
++    const QPoint locations[]={{754,534},{1073,534},{754,630},{1073,630},{1392,630},{1711,630}};
++    out.complete=!out.seasonLabel.isEmpty();
++    for(int i=0;i<ids.size();++i){
++        const QRect box(locations[i],QSize(36,36));
++        auto measured=measureFilterCheckbox(frame,box,labels[i]);
++        const auto readLabel=labelIn(o,QRectF(box.right()+8,box.top(),180,36));
++        measured.observedLabel=readLabel;
++        if(readLabel!=labels[i]) {measured.state=CheckState::Unknown;measured.reason="E_FILTER_LABEL";}
++        out.complete=out.complete && measured.state!=CheckState::Unknown;
++        out.boxes.insert(ids[i],measured);
++    }
++    out.reason=out.complete ? "filter_state_observed" : "E_FILTER_INCOMPLETE";
++    return out;
++}
++QJsonObject CatalogFilterState::toJson() const {
++    QJsonObject values;
++    for(auto i=boxes.cbegin();i!=boxes.cend();++i){const auto& b=i.value();values[i.key()]=QJsonObject{
++        {"label",b.label},{"observed_label",b.observedLabel},{"state",toString(b.state)},{"reason",b.reason},{"measurement",b.measurement},
++        {"bounds",QJsonArray{b.bounds.x(),b.bounds.y(),b.bounds.width(),b.bounds.height()}}};}
++    return {{"schema","catalog-filter-state-v1"},{"valid_page",validPage},{"complete",complete},{"reason",reason},
++        {"frame_id",frameId},{"frame_sha256",frameSha256},{"season_label",seasonLabel},{"checkboxes",values},
++        {"geometry_profile","catalog-2560x1440-dpi144-v1"},{"same_frame",true},{"actions_enabled",false},
++        {"image_file_writes",0},{"calibration_evidence","catalog_filter_signals_20261007"},{"all_states_live_validated",false}};
++}
++} // namespace relink::vision
+--- a/src/application/vision/catalog_filter_reader.h
++++ b/src/application/vision/catalog_filter_reader.h
+@@ -0,0 +1,38 @@
++#pragma once
++#include "application/runtime/observation/observation_adapter.h"
++#include <QJsonObject>
++#include <QMap>
++#include <QRect>
++
++namespace relink::vision {
++enum class CheckState { Unknown, Unchecked, Checked };
++QString toString(CheckState value);
++struct FilterCheckbox {
++    QString label;
++    QString observedLabel;
++    CheckState state = CheckState::Unknown;
++    QRect bounds;
++    QString reason;
++    QJsonObject measurement;
++};
++struct CatalogFilterState {
++    bool validPage = false;
++    bool complete = false;
++    QString reason;
++    QString frameId;
++    QString frameSha256;
++    QString seasonLabel;
++    QMap<QString, FilterCheckbox> boxes;
++    QJsonObject toJson() const;
++};
++// Pure, read-only, same-frame extraction. The current geometry profile is
++// deliberately limited to the observed 2560x1440 / 144 DPI client. Unknown
++// geometry or ambiguous pixels stay Unknown; no false/unselected default.
++CatalogFilterState readCatalogFilter(
++    const runtime::observation::FrameEnvelope& frame, const QJsonObject& fullClientOcr);
++// All samples are summarized in memory. No pixel/patch serialization or I/O.
++FilterCheckbox measureFilterCheckbox(const runtime::observation::FrameEnvelope& frame,
++    const QRect& bounds, const QString& label);
++// Numeric signal replay only. This alone is not page/frame/label evidence.
++CheckState classifyFilterCheckboxMeasurement(const QJsonObject& signal);
++} // namespace relink::vision
+--- a/src/diagnostics/live_capture_check.cpp
++++ b/src/diagnostics/live_capture_check.cpp
+@@ -3,6 +3,7 @@
+ #include "application/vision/dxgi_observation_source.h"
+ #include "application/vision/windows_ocr.h"
+ #include "application/vision/skin_page_classifier.h"
++#include "application/vision/catalog_filter_reader.h"
+ 
+ #include <QBuffer>
+ #include <QCommandLineParser>
+@@ -50,6 +51,7 @@
+     parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
+     parser.addOption({"ocr-market-anchors", "With --ocr: emit bounded allowlisted market labels, not full OCR or images."});
+     parser.addOption({"ocr-ui-regions", "With --ocr: reread three UI-label regions at 2x from the same memory frame; no extra capture."});
++    parser.addOption({"catalog-filter-state", "With --ocr: read season and checkbox states from the same frame; no input or image files."});
+     parser.addOption({"expected-page", "With --ocr: require this page and no blocking overlay; mismatch exits 1.", "page"});
+     parser.process(app);
+     const quintptr targetHwnd = positive(parser.value("target-hwnd"), std::numeric_limits<quintptr>::max());
+@@ -75,7 +77,7 @@
+     }
+     if (!expectedPage.isEmpty()) { result["expected_page"] = expectedPage; result["page_match_passed"] = false; }
+     if (!frameCount || !targetHwnd || !returnHwnd || targetHwnd == returnHwnd || targetPid == returnPid
+-        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions")) && !parser.isSet("ocr"))) {
++        || ((parser.isSet("ocr-lobby-anchors") || parser.isSet("ocr-market-anchors") || parser.isSet("ocr-ui-regions") || parser.isSet("catalog-filter-state")) && !parser.isSet("ocr"))) {
+         result["error"] = "E_DIAGNOSTIC_ARGUMENTS"; return emitResult(result, 2);
+     }
+     QString error;
+@@ -196,6 +198,56 @@
+             pageObservation["coverage"] = "full_client";
+             const auto classified = classifySkinPage(pageObservation);
+             result["startup_page"] = classified.toJson();
++            if (parser.isSet("catalog-filter-state")) {
++                if (classified.page == SkinPage::CatalogFilter && classified.overlay == PageOverlay::None
++                    && ocrFrame.width == 2560 && ocrFrame.height == 1440 && ocrFrame.dpiX == 144 && ocrFrame.dpiY == 144) {
++                    const QRect region(510,410,1390,435);
++                    const auto labels=recognizer.recognizeRegion(ocrFrame,region,2,true);
++                    result["catalog_filter_roi_ok"]=labels.ok;
++                    result["catalog_filter_roi_error"]=labels.error;
++                    // Never fall back from a failed refinement to apparently
++                    // complete field values. Page evidence is kept separately.
++                    QJsonArray words;
++                    for(const auto& value:pageObservation["words"].toArray()){
++                        const auto w=value.toObject();
++                        if(!QRectF(region).contains(QPointF(w["x"].toDouble()+w["width"].toDouble()/2,
++                            w["y"].toDouble()+w["height"].toDouble()/2))) words.append(value);
++                    }
++                    if(labels.ok) for(const auto& w:labels.observation["words"].toArray())words.append(w);
++                    pageObservation["words"]=words;
++                }
++                pageObservation["frame_id"]=ocrFrame.frameId;
++                pageObservation["frame_sha256"]=QString::fromLatin1(QCryptographicHash::hash(ocrFrame.pixels,QCryptographicHash::Sha256).toHex());
++                auto filter=readCatalogFilter(ocrFrame,pageObservation);
++                QJsonArray fieldRefinements;
++                // A bright selected square can disrupt the adjacent Chinese
++                // label in broad OCR. Retry only affected label boxes from the
++                // very same pixels; never substitute a guessed character.
++                for(const auto& id:QStringList{"owned","unowned","legendary","epic","rare","common"}){
++                    const auto box=filter.boxes.value(id);
++                    if(box.reason!="E_FILTER_LABEL")continue;
++                    const QRect roi(box.bounds.right()+12,box.bounds.top()-2,150,40);
++                    const auto refined=recognizer.recognizeRegion(ocrFrame,roi,3,true);
++                    QJsonArray fieldWords;
++                    for(const auto& w:refined.observation["words"].toArray()){
++                        if(fieldWords.size()>=16)break;
++                        fieldWords.append(w.toObject()["text"].toString().left(64));
++                    }
++                    fieldRefinements.append(QJsonObject{{"field",id},{"ok",refined.ok},{"error",refined.error},{"label_words",fieldWords}});
++                    if(!refined.ok)continue;
++                    QJsonArray words;
++                    for(const auto& value:pageObservation["words"].toArray()){
++                        const auto w=value.toObject();
++                        if(!QRectF(roi).contains(QPointF(w["x"].toDouble()+w["width"].toDouble()/2,
++                            w["y"].toDouble()+w["height"].toDouble()/2)))words.append(value);
++                    }
++                    for(const auto& value:refined.observation["words"].toArray())words.append(value);
++                    pageObservation["words"]=words;
++                    filter=readCatalogFilter(ocrFrame,pageObservation);
++                }
++                result["catalog_filter_label_refinements"]=fieldRefinements;
++                result["catalog_filter_state"]=filter.toJson();
++            }
+             if (!expectedPage.isEmpty()) {
+                 const bool matched = classified.validInput && toString(classified.page) == expectedPage
+                     && classified.overlay == PageOverlay::None;
+--- a/tests/manual/foreground_batch_core.py
++++ b/tests/manual/foreground_batch_core.py
+@@ -1,5 +1,27 @@
+ """Pure bounded batch coordinator; OS operations are injected by the manual runner."""
+ import time
++
++
++def filter_expectation_matches(result, expected):
++    """Strict diagnostic assertion, never infer missing/Unknown as unchecked."""
++    if not isinstance(expected, dict) or not expected:
++        return False
++    state=result.get('catalog_filter_state',{})
++    frames=result.get('frames',[])
++    digest=state.get('frame_sha256')
++    if (state.get('valid_page') is not True or state.get('complete') is not True or state.get('same_frame') is not True
++        or not isinstance(state.get('frame_id'),str) or not state['frame_id']
++        or not isinstance(digest,str) or len(digest)!=64 or any(c not in '0123456789abcdef' for c in digest)
++        or not frames or digest!=frames[-1].get('sha256')):
++        return False
++    for key,value in expected.items():
++        if key=='season':
++            if not isinstance(value,str) or state.get('season_label')!=value:return False
++        elif key not in ('owned','unowned','legendary','epic','rare','common') or value not in ('checked','unchecked'):
++            return False
++        elif state.get('checkboxes',{}).get(key,{}).get('state')!=value:
++            return False
++    return True
+ 
+ 
+ def stabilize_capture(capture, is_foreground, *, attempts=3, deadline, now=time.monotonic, wait=time.sleep):
+@@ -21,8 +43,8 @@
+ 
+ 
+ def execute_batch(steps, enter, perform, leave, is_foreground, *, timeout=30, now=time.monotonic):
+-    if not isinstance(steps, list) or not 1 <= len(steps) <= 12 or not 1 <= timeout <= 30:
+-        raise ValueError('A batch needs 1..12 steps and a 1..30 second bound.')
++    if not isinstance(steps, list) or not 1 <= len(steps) <= 20 or not 1 <= timeout <= 30:
++        raise ValueError('A batch needs 1..20 steps and a 1..30 second bound.')
+     result = dict(passed=False, steps=[], enter_calls=0, leave_calls=0, error=None)
+     deadline = now() + timeout
+     try:
+--- a/tests/manual/plans/catalog_filter_multi_grade.json
++++ b/tests/manual/plans/catalog_filter_multi_grade.json
+@@ -0,0 +1,129 @@
++{
++  "name": "Verify multi_grade selected/empty signals, restore original states without confirmation",
++  "timeout_seconds": 30,
++  "steps": [
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "checked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1410,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "checked",
++        "epic": "unchecked",
++        "rare": "checked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "checked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1410,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    }
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_observe.json
++++ b/tests/manual/plans/catalog_filter_observe.json
+@@ -0,0 +1,8 @@
++{
++  "name": "Read current catalog filter without changing selections",
++  "timeout_seconds": 25,
++  "steps": [
++    {"kind":"capture","expected_page":"catalog_filter","market_anchors":true},
++    {"kind":"capture","expected_page":"catalog_filter","market_anchors":true,"preview":true}
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_remaining.json
++++ b/tests/manual/plans/catalog_filter_remaining.json
+@@ -0,0 +1,129 @@
++{
++  "name": "Verify remaining selected/empty signals, restore original states without confirmation",
++  "timeout_seconds": 30,
++  "steps": [
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1729,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "checked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "checked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1729,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    }
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_remaining_all.json
++++ b/tests/manual/plans/catalog_filter_remaining_all.json
+@@ -0,0 +1,237 @@
++{
++  "name": "One focus lease: validate remaining four checkbox states and multi-grade combination, restore all values",
++  "timeout_seconds": 30,
++  "steps": [
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "checked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1410,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "checked",
++        "epic": "unchecked",
++        "rare": "checked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "checked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1410,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1729,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "checked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "checked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1729,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    }
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_restore_interrupted.json
++++ b/tests/manual/plans/catalog_filter_restore_interrupted.json
+@@ -0,0 +1,75 @@
++{
++  "name": "Reobserve and restore temporary selections after label calibration interruption",
++  "timeout_seconds": 25,
++  "steps": [
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "checked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1729,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "checked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    }
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_state_roundtrip.json
++++ b/tests/manual/plans/catalog_filter_state_roundtrip.json
+@@ -0,0 +1,129 @@
++{
++  "name": "Verify selected and empty filter states, then restore all original values without confirmation",
++  "timeout_seconds": 30,
++  "steps": [
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "checked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        773,
++        552
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "checked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    },
++    {
++      "kind": "click",
++      "expected_before": "catalog_filter",
++      "point": [
++        1091,
++        648
++      ],
++      "viewport": [
++        2560,
++        1440
++      ]
++    },
++    {
++      "kind": "capture",
++      "expected_page": "catalog_filter",
++      "filter_state": true,
++      "neutral_pointer": true,
++      "expected_filter": {
++        "season": "全部赛季",
++        "owned": "unchecked",
++        "unowned": "unchecked",
++        "legendary": "unchecked",
++        "epic": "unchecked",
++        "rare": "unchecked",
++        "common": "unchecked"
++      }
++    }
++  ]
++}
+--- a/tests/manual/plans/catalog_filter_style_calibration.json
++++ b/tests/manual/plans/catalog_filter_style_calibration.json
+@@ -0,0 +1,15 @@
++{
++  "name":"Temporary checkbox style calibration; restore original unchecked values; never confirm filter",
++  "timeout_seconds":30,
++  "steps":[
++    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true},
++    {"kind":"click","expected_before":"catalog_filter","point":[773,552],"viewport":[2560,1440]},
++    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true,"preview":true},
++    {"kind":"click","expected_before":"catalog_filter","point":[773,552],"viewport":[2560,1440]},
++    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true},
++    {"kind":"click","expected_before":"catalog_filter","point":[1091,648],"viewport":[2560,1440]},
++    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true,"preview":true},
++    {"kind":"click","expected_before":"catalog_filter","point":[1091,648],"viewport":[2560,1440]},
++    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true}
++  ]
++}
+--- a/tests/manual/run_foreground_batch.py
++++ b/tests/manual/run_foreground_batch.py
+@@ -17,7 +17,7 @@
+ import threading
+ import time
+ 
+-from foreground_batch_core import execute_batch, stabilize_capture
++from foreground_batch_core import execute_batch, stabilize_capture, filter_expectation_matches
+ from navigate_lobby_to_warehouse import u, activate, Input
+ 
+ ROOT = Path(__file__).resolve().parents[2]
+@@ -32,7 +32,7 @@
+     output = (ROOT / args.record).resolve()
+     assert output.is_relative_to(ROOT / 'artifacts') and output.suffix == '.json' and not output.exists()
+     steps = plan['steps']
+-    assert isinstance(steps, list) and 1 <= len(steps) <= 12
++    assert isinstance(steps, list) and 1 <= len(steps) <= 20
+     assert all(s.get('kind') in ('capture', 'click', 'hover') for s in steps)
+     assert steps[0]['kind'] == 'capture'
+     timeout = plan.get('timeout_seconds', 25)
+@@ -78,20 +78,34 @@
+     def perform(step, remaining):
+         nonlocal previous, last_preview, clicks
+         if step['kind'] == 'capture':
++            if step.get('neutral_pointer'):
++                rect=w.RECT();origin=w.POINT()
++                assert u.GetForegroundWindow()==handles['target_hwnd']
++                assert u.GetClientRect(handles['target_hwnd'],c.byref(rect))
++                assert u.ClientToScreen(handles['target_hwnd'],c.byref(origin))
++                point=w.POINT(origin.x+rect.right//2,origin.y+rect.bottom//3)
++                assert u.GetAncestor(u.WindowFromPoint(point),2)==handles['target_hwnd']
++                assert u.SetCursorPos(point.x,point.y)
++                time.sleep(.15)
+             argv = list(command)
+             if step.get('expected_page'): argv += ['--expected-page', step['expected_page']]
+             if step.get('preview'): argv += ['--preview-stdout']
+             if step.get('market_anchors'): argv += ['--ocr-market-anchors']
+             if step.get('ui_regions'): argv += ['--ocr-ui-regions']
++            if step.get('filter_state'): argv += ['--catalog-filter-state']
+             def once(budget):
+                 nonlocal previous,last_preview
+                 p = subprocess.run(argv, capture_output=True, timeout=max(.1,min(20,budget)),
+                     creationflags=subprocess.CREATE_NO_WINDOW)
+                 result = json.loads(p.stdout)
+-                last_preview = result.pop('preview_png_base64', None)
++                preview = result.pop('preview_png_base64', None)
++                if preview: last_preview = preview
+                 previous = result
+                 passed = p.returncode == 0 and result.get('capture_passed') and result.get('ocr_passed')
+                 passed = passed and result.get('focus_activation_requests') == 0 and result.get('focus_restore_requests') == 0
++                if step.get('expected_filter') is not None:
++                    result['filter_expectation_passed']=filter_expectation_matches(result,step['expected_filter'])
++                    passed=passed and result['filter_expectation_passed']
+                 return dict(kind='capture', passed=bool(passed), command=argv, result=result,
+                     stderr=p.stderr.decode('utf-8',errors='replace'), exit_status=p.returncode)
+             return stabilize_capture(once,lambda:u.GetForegroundWindow()==handles['target_hwnd'],
+--- a/tests/manual/test_foreground_batch_core.py
++++ b/tests/manual/test_foreground_batch_core.py
+@@ -1,9 +1,28 @@
+ import unittest
+-from foreground_batch_core import execute_batch, stabilize_capture
++from foreground_batch_core import execute_batch, stabilize_capture, filter_expectation_matches
++import copy
+ import time
+ 
+ 
+ class BatchTests(unittest.TestCase):
++    def test_larger_coherent_calibration_still_one_bounded_lease(self):
++        events=[]
++        r=execute_batch([{}]*20,lambda:events.append('enter'),lambda s,t:{'passed':True},lambda:events.append('leave') or True,lambda:True)
++        self.assertTrue(r['passed']);self.assertEqual(events,['enter','leave'])
++        with self.assertRaises(ValueError):execute_batch([{}]*21,lambda:None,lambda s,t:None,lambda:True,lambda:True)
++        with self.assertRaises(ValueError):execute_batch([{}],lambda:None,lambda s,t:None,lambda:True,lambda:True,timeout=31)
++    def test_filter_expectation_requires_complete_bound_state(self):
++        result={'frames':[{'sha256':'a'*64}],'catalog_filter_state':{'valid_page':True,'complete':True,
++            'same_frame':True,'frame_id':'test:frame','frame_sha256':'a'*64,'season_label':'全部赛季','checkboxes':{'owned':{'state':'unchecked'}}}}
++        expected={'season':'全部赛季','owned':'unchecked'}
++        self.assertTrue(filter_expectation_matches(result,expected))
++        for key,value in [('complete',False),('complete','false'),('valid_page',False),('same_frame',False),('frame_id',''),('frame_sha256','other'),('frame_sha256',None)]:
++            bad=copy.deepcopy(result);bad['catalog_filter_state'][key]=value
++            self.assertFalse(filter_expectation_matches(bad,expected))
++        for expected in [{},{'owned':'unknown'},{'unknown':'unchecked'},{'unowned':'unchecked'},{'season':'different'}]:
++            self.assertFalse(filter_expectation_matches(result,expected))
++        result['catalog_filter_state']['checkboxes']['owned']['state']='unknown'
++        self.assertFalse(filter_expectation_matches(result,{'owned':'unchecked'}))
+     def test_unknown_retry_keeps_all_observations(self):
+         answers=[{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
+             {'passed':True,'exit_status':0,'result':{'startup_page':{'page':'empty_watchlist'}}}]
+--- a/tests/manual/verify_catalog_filter_evidence.py
++++ b/tests/manual/verify_catalog_filter_evidence.py
+@@ -0,0 +1,42 @@
++"""Reopen recorded calibration evidence; never capture or drive the game."""
++import hashlib
++import json
++from pathlib import Path
++from foreground_batch_core import filter_expectation_matches
++ROOT=Path(__file__).resolve().parents[2]
++TX=ROOT/'artifacts/m2_catalog_filter'
++def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
++def main():
++ records=[];clicks=captures=failures=0
++ for path in sorted(TX.glob('live_*.json')):
++  data=json.loads(path.read_text(encoding='utf-8'))
++  if 'steps' not in data or 'plan' not in data:continue
++  assert data['enter_calls']==data['leave_calls']==1 and data['ide_restored'],path.name
++  assert data['image_file_writes']==0
++  assert data['manual_clicks']==sum(s['kind']=='click' for s in data['steps'])
++  for step in data['steps']:
++   if step['kind']!='capture':continue
++   for attempt in step.get('attempts',[step]):
++    result=attempt['result'];assert result['focus_activation_requests']==result['focus_restore_requests']==0
++    assert result['image_file_writes']==0 and not result['game_input_sent']
++    assert 'preview_png_base64' not in result
++    captures+=1
++  failures+=not data['passed'];clicks+=data['manual_clicks'];records.append(path.name)
++ final=json.loads((TX/'live_final_filter_states.json').read_text(encoding='utf-8'))
++ assert final['passed'] and final['binary_sha256']==sha(ROOT/'dist/RelinkStudio/RelinkStudio.exe')
++ assert final['ocr_helper_sha256']==sha(ROOT/'dist/RelinkStudio/vision/windows_ocr_worker.ps1')
++ for planned,step in zip(final['plan']['steps'],final['steps']):
++  if step['kind']=='capture':assert filter_expectation_matches(step['result'],planned['expected_filter'])
++ first=final['steps'][0]['result']['catalog_filter_state'];last=final['steps'][-1]['result']['catalog_filter_state']
++ assert first['season_label']==last['season_label']
++ assert {k:v['state'] for k,v in first['checkboxes'].items()}=={k:v['state'] for k,v in last['checkboxes'].items()}
++ fixture=json.loads((ROOT/'docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json').read_text(encoding='utf-8'))
++ for source in fixture['sources']:assert sha(ROOT/source['path'])==source['sha256']
++ assert {c['checkbox'] for c in fixture['cases'] if c['expected_state']=='checked'}=={'owned','unowned','legendary','epic','rare','common'}
++ assert not fixture['pixels_included'] and not fixture['independent_accuracy_dataset']
++ result=dict(passed=True,records=records,actual_captures=captures,manual_checkbox_clicks=clicks,
++  retained_failed_batches=failures,final_season_and_checkbox_values_restored=True,final_binary_verified=True,
++  six_checkbox_selected_signals_covered=True,signal_fixture_cases=len(fixture['cases']),image_file_writes=0)
++ (TX/'live_evidence_verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
++ print('CATALOG_FILTER_LIVE_EVIDENCE=PASS; '+json.dumps(result))
++if __name__=='__main__':main()
+--- a/tests/release/verify_catalog_filter_package.py
++++ b/tests/release/verify_catalog_filter_package.py
+@@ -0,0 +1,48 @@
++"""Catalog filter observation transaction; no live input from this verifier."""
++import argparse
++import json
++import os
++import sys
++from pathlib import Path
++import verify_m2_capture_package as base
++ROOT=Path(__file__).resolve().parents[2]
++base.TX=ROOT/'artifacts/m2_catalog_filter'
++base.BASELINE=base.TX/'baseline/release'
++base.h.TX,base.h.BASELINE=base.TX,base.BASELINE
++base.PHASE_TITLE='M2 same-frame catalog filter state and original ordered difference plan'
++base.CHANGED_BOUNDARIES='CatalogFilterReader: season/ownership/grade tri-state; CatalogFilterPlan: S10-S14 readback boundaries; explicit --catalog-filter-state; quiet delivery preference.'
++base.PHASE_NOTES=[
++ 'Current geometry profile is 2560x1440, 144 DPI only. Unsupported geometry stays Unknown.',
++ 'Pixels stay in memory. Filter target snapshot is explicit, never inferred from demonstration tasks.',
++ 'Read-only difference plans are not a game input executor. Normal frontend remains configuration/replay.',
++ 'Real live evidence is recorded separately, including temporary checkbox calibration and restoration if performed.'
++]
++base.EXTRA_REQUIRED_RECORDS=['CATALOG_FILTER_TESTS','FOREGROUND_BATCH_TESTS']
++def verify():
++ base.verify()
++ base.h.run('CATALOG_FILTER_TESTS',[str(base.BUILD/'catalog_filter_tests.exe'),str(ROOT/'docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json')],
++     'Synthetic pixels/OCR and exact explicit target snapshots; no live input.','CATALOG_FILTER_TESTS=PASS')
++ base.h.run('FOREGROUND_BATCH_TESTS',[sys.executable,'-X','utf8',str(ROOT/'tests/manual/test_foreground_batch_core.py')],
++     'Pure foreground batch regression; no OS input.',env=os.environ.copy())
++def finalize():
++ base.h.run('CATALOG_FILTER_LIVE_EVIDENCE',[sys.executable,'-X','utf8',str(ROOT/'tests/manual/verify_catalog_filter_evidence.py')],
++     'Reopen all real batches including failed attempts, numeric signals and current binary hashes; no live input.',
++     'CATALOG_FILTER_LIVE_EVIDENCE=PASS',env=os.environ.copy())
++ base.finalize();p=base.TX/'VERIFICATION.txt';report=p.read_text(encoding='utf-8')
++ additions=json.loads((base.TX/'added_release_files.json').read_text(encoding='utf-8'))
++ report=report.replace('user sentinel preserved; new helper removed.',f'user sentinel preserved; actual added managed files removed={len(additions)}.')
++ for path in sorted(base.TX.glob('live_*.json')):
++  report+='\nLIVE RECORD '+path.name+'\n'+path.read_text(encoding='utf-8')+'\n'
++ p.write_text(report,encoding='utf-8')
++ # Include the current communication preference (the shared base predates it).
++ import difflib,subprocess
++ revision=(base.TX/'baseline/source_revision.txt').read_text(encoding='ascii').strip()
++ old=subprocess.check_output(['git','show',revision+':AGENTS.md'],cwd=ROOT).decode('utf-8')
++ with (base.TX/'DIFF_FILE').open('a',encoding='utf-8') as f:
++  f.write(''.join(difflib.unified_diff(old.splitlines(True),(ROOT/'AGENTS.md').read_text(encoding='utf-8').splitlines(True),fromfile='a/AGENTS.md',tofile='b/AGENTS.md')))
++ for name in ['MODIFIED_FILE.exe','DIFF_FILE','VERIFICATION.txt','ROLLBACK.sh']:
++  assert (base.TX/name).read_bytes()
++ print('CATALOG_FILTER_TRANSACTION_REOPEN=PASS')
++if __name__=='__main__':
++ p=argparse.ArgumentParser(description=__doc__);p.add_argument('phase',choices=['build','verify','finalize']);phase=p.parse_args().phase
++ base.build() if phase=='build' else globals()[phase]()
+--- a/tests/runtime/catalog_filter_tests.cpp
++++ b/tests/runtime/catalog_filter_tests.cpp
+@@ -0,0 +1,113 @@
++#include "application/vision/catalog_filter_reader.h"
++#include "application/runtime/catalog_filter_plan.h"
++#include <QCoreApplication>
++#include <QCryptographicHash>
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QFile>
++#include <limits>
++#include <iostream>
++using namespace relink::vision;
++using namespace relink::runtime;
++using relink::runtime::observation::FrameEnvelope;
++namespace {
++void paint(FrameEnvelope& f,QRect rect,int value){
++ for(int y=rect.top();y<=rect.bottom();++y)for(int x=rect.left();x<=rect.right();++x){
++  auto* p=reinterpret_cast<unsigned char*>(f.pixels.data()+qint64(y)*f.strideBytes+x*4);
++  p[0]=p[1]=p[2]=static_cast<unsigned char>(value);p[3]=255;
++ }
++}
++QJsonObject word(QString text,int x,int y,int width,int height=24){return {{"text",text},{"x",x},{"y",y},{"width",width},{"height",height}};}
++QJsonObject bind(QJsonObject o,const FrameEnvelope& f){
++ o["frame_id"]=f.frameId;o["frame_sha256"]=QString::fromLatin1(QCryptographicHash::hash(f.pixels,QCryptographicHash::Sha256).toHex());return o;
++}
++}
++int main(int argc,char** argv){
++ QCoreApplication app(argc,argv);int count=0,failed=0;
++ auto check=[&](bool ok,const char* name){++count;failed+=!ok;std::cout<<(ok?"PASS ":"FAIL ")<<name<<'\n';};
++ FrameEnvelope f;f.frameId="frame:test";f.width=2560;f.height=1440;f.dpiX=f.dpiY=144;
++ f.strideBytes=f.width*4;f.validBytes=qint64(f.strideBytes)*f.height;f.pixels=QByteArray(f.validBytes,char(20));
++ const QPoint locations[]={{754,534},{1073,534},{754,630},{1073,630},{1392,630},{1711,630}};
++ for(const auto& at:locations){QRect r(at,QSize(36,36));paint(f,r,55);paint(f,r.adjusted(3,3,-3,-3),20);}
++ QJsonArray words{word(QStringLiteral("赛季"),540,434,48),word(QStringLiteral("品阶"),540,638,48),
++  word(QStringLiteral("枪种"),540,734,48),word(QStringLiteral("确认"),1255,993,50),
++  word(QStringLiteral("全部赛季"),779,436,82,20)};
++ const QStringList labels{QStringLiteral("已拥有"),QStringLiteral("未拥有"),QStringLiteral("传说品阶"),QStringLiteral("史诗品阶"),QStringLiteral("稀有品阶"),QStringLiteral("普通品阶")};
++ for(int i=0;i<6;++i)words.append(word(labels[i],locations[i].x()+52,locations[i].y()+8,84,20));
++ QJsonObject o{{"width",2560},{"height",1440},{"coverage","full_client"},{"coordinate_space","client_physical_px"},{"words",words}};o=bind(o,f);
++ const auto initial=readCatalogFilter(f,o);
++ check(initial.complete && initial.validPage,"all_six_boxes_and_season_observed");
++ check(initial.seasonLabel==QStringLiteral("全部赛季"),"season_is_actual_text_not_default");
++ for(const auto& box:initial.boxes)check(box.state==CheckState::Unchecked,"positive_empty_border_evidence");
++ check(initial.toJson()["same_frame"].toBool() && !initial.toJson()["actions_enabled"].toBool(),"pure_same_frame_no_actions");
++ auto invalid=o;invalid["coverage"]="roi";check(!readCatalogFilter(f,invalid).complete,"partial_ocr_is_not_page_evidence");
++ invalid=o;invalid["frame_id"]="different";check(readCatalogFilter(f,invalid).reason=="E_FILTER_FRAME_BINDING","cross_frame_ocr_rejected");
++ invalid=o;invalid["frame_sha256"]="stale";check(readCatalogFilter(f,invalid).reason=="E_FILTER_FRAME_BINDING","pixel_hash_mismatch_rejected");
++ auto pixels=f;pixels.pixels.chop(1);check(!readCatalogFilter(pixels,o).complete,"truncated_pixels_rejected");
++ pixels=f;pixels.validBytes--;check(!readCatalogFilter(pixels,o).complete,"invalid_byte_count_rejected");
++ pixels=f;pixels.pixelFormat="RGBA8";check(!readCatalogFilter(pixels,o).complete,"pixel_format_rejected");
++ pixels=f;pixels.strideBytes=1;check(!readCatalogFilter(pixels,o).complete,"stride_rejected");
++ pixels=f;pixels.dpiX=96;check(readCatalogFilter(pixels,o).reason=="E_FILTER_GEOMETRY_UNCALIBRATED","unsupported_dpi_not_scaled_by_guess");
++ pixels=f;pixels.frameId.clear();check(!readCatalogFilter(pixels,o).complete,"missing_frame_id_rejected");
++ auto without=words;without.removeAt(4);invalid=o;invalid["words"]=without;check(!readCatalogFilter(f,invalid).complete,"missing_season_not_all_seasons");
++ without=words;without.removeAt(5);invalid=o;invalid["words"]=without;check(readCatalogFilter(f,invalid).boxes["owned"].state==CheckState::Unknown,"missing_label_not_unchecked");
++ without=words;auto low=without[5].toObject();low["score"]=.69;without[5]=low;invalid=o;invalid["words"]=without;
++ check(readCatalogFilter(f,invalid).boxes["owned"].state==CheckState::Unknown,"low_score_label_not_upgraded");
++ without=words;without.append(words[5]);invalid=o;invalid["words"]=without;check(!readCatalogFilter(f,invalid).complete,"overlapping_duplicate_label_rejected");
++ without=words;without[5]=word(QStringLiteral("未拥有"),806,542,84,20);invalid=o;invalid["words"]=without;
++ check(readCatalogFilter(f,invalid).boxes["owned"].state==CheckState::Unknown,"owned_not_substring_of_unowned");
++ without=words;without.removeAt(4);for(int i=0;i<4;++i)without.append(word(QStringLiteral("全部赛季").mid(i,1),779+21*i,436,19,20));
++ invalid=o;invalid["words"]=without;check(readCatalogFilter(f,invalid).seasonLabel==QStringLiteral("全部赛季"),"adjacent_split_season_label");
++ without=words;without[4]=word(QStringLiteral("棱镜攻势S2"),779,436,145,20);invalid=o;invalid["words"]=without;
++ check(readCatalogFilter(f,invalid).seasonLabel==QStringLiteral("棱镜攻势S2"),"selected_season_text_preserved");
++ const QRect box(locations[0],QSize(36,36));
++ for(int fill:{0,20,60,120,255}){pixels=f;paint(pixels,box,fill);
++  check(measureFilterCheckbox(pixels,box,"test").state==CheckState::Unknown,"flat_region_not_a_checkbox");}
++ pixels=f;paint(pixels,box.adjusted(6,6,-6,-6),90);check(measureFilterCheckbox(pixels,box,"test").state==CheckState::Unknown,"unexpected_fill_not_selected_by_guess");
++ pixels=f;paint(pixels,QRect(box.x(),box.y(),box.width(),3),20);check(measureFilterCheckbox(pixels,box,"test").state==CheckState::Unknown,"missing_border_rejected");
++ check(measureFilterCheckbox(f,QRect(-1,1,36,36),"test").state==CheckState::Unknown,"out_of_frame_rectangle");
++ check(measureFilterCheckbox(f,QRect(1,1,4,4),"test").state==CheckState::Unknown,"tiny_region_rejected");
++ check(measureFilterCheckbox(f,QRect(1,1,128,16),"test").reason=="E_FILTER_PIXELS","non_square_no_empty_sample_division");
++ invalid=o;invalid["coordinate_space"]="windows_ocr_rotated";check(!readCatalogFilter(f,invalid).complete,"unmapped_coordinates_rejected");
++ auto signal=initial.boxes["owned"].measurement;
++ signal["interior_mean"]=168;signal["interior_stddev"]=45;signal["center_mean"]=193;signal["center_stddev"]=1;
++ signal["bright_fraction"]=.87;signal["border_means"]=QJsonArray{67,67,72,65};
++ check(classifyFilterCheckboxMeasurement(signal)==CheckState::Checked,"white_inset_selected_signal");
++ for(const auto key:{"interior_mean","center_mean","center_stddev","sample_count","border_means"}){
++  auto missing=signal;missing.remove(key);check(classifyFilterCheckboxMeasurement(missing)==CheckState::Unknown,"missing_measurement_rejected");}
++ for(double n:{-1.,256.,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()}){
++  auto bad=signal;bad["center_mean"]=n;check(classifyFilterCheckboxMeasurement(bad)==CheckState::Unknown,"invalid_measurement_number");}
++ for(const auto& mutation:QList<QPair<QString,double>>{{"green_fraction",.1},{"bright_fraction",1.},{"center_stddev",20.},{"interior_stddev",0.},{"sample_count",10.5}}){
++  auto bad=signal;bad[mutation.first]=mutation.second;check(classifyFilterCheckboxMeasurement(bad)==CheckState::Unknown,"unexpected_style_stays_unknown");}
++ auto badBorder=signal;badBorder["border_means"]=QJsonArray{67,67,20,65};check(classifyFilterCheckboxMeasurement(badBorder)==CheckState::Unknown,"selected_requires_all_four_edges");
++ pixels=f;paint(pixels,box,65);paint(pixels,box.adjusted(5,5,-5,-5),25);paint(pixels,box.adjusted(8,8,-8,-8),193);
++ check(measureFilterCheckbox(pixels,box,"selected").state==CheckState::Checked,"synthetic_selected_raster_uses_real_pixel_sampler");
++ check(bind(o,f)["frame_sha256"]==o["frame_sha256"],"reader_never_mutates_original_pixels");
++ CatalogFilterTarget t{"snapshot:test",QStringLiteral("全部赛季"),false,false,{}};
++ auto p=planCatalogFilter(initial,t);check(p.valid && p.alreadyMatches && p.steps.isEmpty(),"S11_preserve_matching_filter");
++ check(!p.toJson()["actions_enabled"].toBool() && !p.toJson()["target_grouping_inferred"].toBool(),"plan_is_not_executor_or_task_grouper");
++ t.seasonLabel=QStringLiteral("棱镜攻势S2");t.unowned=true;t.grades={"epic","rare"};p=planCatalogFilter(initial,t);
++ check(p.steps.size()==1 && p.steps[0].toObject()["source_step"]=="S10","season_first_no_stale_ownership_or_grade_actions");
++ t.seasonLabel=initial.seasonLabel;p=planCatalogFilter(initial,t);
++ check(p.steps.size()==1 && p.steps[0].toObject()["source_step"]=="S12","ownership_before_grades");
++ t.unowned=false;p=planCatalogFilter(initial,t);
++ check(p.steps.size()==2 && p.steps[0].toObject()["field"]=="epic" && p.steps[1].toObject()["field"]=="rare","S14_multiple_grades_ordered");
++ for(const auto& step:p.steps)check(step.toObject()["readback_required"].toBool() && !step.toObject()["execute"].toBool(),"each_step_requires_new_readback");
++ auto observed=initial;observed.boxes["legendary"].state=CheckState::Checked;observed.boxes["epic"].state=CheckState::Checked;
++ p=planCatalogFilter(observed,t);check(p.steps.size()==4 && p.steps[0].toObject()["source_step"]=="S13"
++  && p.steps[1].toObject()["source_step"]=="S13" && p.steps[2].toObject()["source_step"]=="S14","S13_clear_residual_set_before_S14_select");
++ observed.boxes["legendary"].state=CheckState::Unchecked;observed.boxes["rare"].state=CheckState::Checked;
++ check(planCatalogFilter(observed,t).alreadyMatches,"already_correct_multiselect_not_toggled");
++ observed.boxes["rare"].state=CheckState::Unknown;check(!planCatalogFilter(observed,t).valid,"incomplete_pixels_block_difference_plan");
++ t.grades.insert("unknown");check(!planCatalogFilter(initial,t).valid,"unknown_grade_target_rejected");t.grades.clear();
++ t.snapshotId.clear();check(!planCatalogFilter(initial,t).valid,"no_snapshot_no_target_plan");
++ if(argc>1){QFile file(QString::fromLocal8Bit(argv[1]));check(file.open(QIODevice::ReadOnly),"live_signal_fixture_open");
++  const auto cases=QJsonDocument::fromJson(file.readAll()).object()["cases"].toArray();check(!cases.isEmpty(),"live_signal_cases_present");
++  int checked=0,unchecked=0;
++  for(const auto& v:cases){const auto c=v.toObject();const auto actual=classifyFilterCheckboxMeasurement(c["measurement"].toObject());
++   check(toString(actual)==c["expected_state"].toString(),"frozen_live_signal_replay_not_new_pixel_capture");
++   checked+=actual==CheckState::Checked;unchecked+=actual==CheckState::Unchecked;}
++  check(checked>=2 && unchecked>=6,"live_signal_fixture_contains_both_styles");
++ }
++ std::cout<<"CATALOG_FILTER_TESTS="<<(failed?"FAIL":"PASS")<<"; assertions="<<count<<"; failures="<<failed<<"; live_capture=false\n";return failed?1:0;
++}
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,4 +1,6 @@
+ # 本项目的交付约定
++
++- 2026-10-07 最新沟通要求：连续开发、测试和交付，不逐阶段停下，不输出例行进度、改动清单、测试汇报或思考总结。只有实际卡住、业务逻辑冲突或确实需要用户决策时，才用简短直白的话说明阻塞点。详细证据保存在项目文件中；此条取代下面的例行最终汇报要求。
+ 
+ - 用户要求：后续修改完成后，提供已经解压、可以直接打开的程序绝对路径，不要仅提供压缩包。
+ - 固定交付路径：`C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe`。

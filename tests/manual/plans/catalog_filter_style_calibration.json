@@ -1,0 +1,15 @@
+{
+  "name":"Temporary checkbox style calibration; restore original unchecked values; never confirm filter",
+  "timeout_seconds":30,
+  "steps":[
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[773,552],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true,"preview":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[773,552],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[1091,648],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true,"preview":true},
+    {"kind":"click","expected_before":"catalog_filter","point":[1091,648],"viewport":[2560,1440]},
+    {"kind":"capture","expected_page":"catalog_filter","filter_state":true,"neutral_pointer":true}
+  ]
+}
