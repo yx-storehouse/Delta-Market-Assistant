@@ -9,6 +9,9 @@ struct OcrReply {
     bool ok = false;
     QString error;
     QJsonObject observation;
+    int helperUiChecks = 0;
+    bool helperVisibleWindowObserved = false;
+    bool helperForegroundObserved = false;
 };
 
 // Read-only Windows OCR diagnostic provider; each call owns its mapping and

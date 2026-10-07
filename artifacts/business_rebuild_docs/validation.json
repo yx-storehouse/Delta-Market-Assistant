@@ -6,17 +6,17 @@
   "verified_primary_references": 16,
   "evidence_groups": 12,
   "evidence_files_verified": 23,
-  "json_files_parsed": 80,
-  "relative_markdown_links_checked": 184,
+  "json_files_parsed": 81,
+  "relative_markdown_links_checked": 188,
   "html_sections": 11,
   "svg_diagrams": 2,
   "application_baseline_files": 102,
-  "application_baseline_files_unchanged": 90,
+  "application_baseline_files_unchanged": 89,
   "application_baseline_differences": [
     {
       "path": "CMakeLists.txt",
       "expected": "45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c",
-      "actual": "da3157872b78bcef568994a72ca4ece0b4a0a7a2f1974c138b8e8c80c106e751",
+      "actual": "4b7c856615645213f74f558c1fa7755c3fe0fe559eb31ed832dc5ffbcd23b911",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -24,7 +24,7 @@
     {
       "path": "SESSION_START.md",
       "expected": "04e9bff567d18b7544d9d22ec65b8d0ce7beb8efa6f2b83709bf860ad70041a5",
-      "actual": "8bb6b9ee2d3dd4d829612fda2ee363eb86f96d76d7c658d29af7ac71b7728dda",
+      "actual": "0e64d116d605309f37c4b6bf9f542ebba219dbca3c48ce8db5f12158ef0a32bd",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -40,7 +40,7 @@
     {
       "path": "dist/RelinkStudio/README.md",
       "expected": "f4d64adc160f2293887a0e8da405896c2afe3a6c5225f46715d79e1e2a557171",
-      "actual": "6a1c2ac2f19dd8878fb221a5d6fe01ea3bc2df0804d6a90e6ebd446ab3049fe5",
+      "actual": "25366f67e5eb8a10a764fb17f47fe7ed9af52cccdf5e1c52d2a8c8ccba29427d",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -48,7 +48,7 @@
     {
       "path": "dist/RelinkStudio/RelinkStudio.exe",
       "expected": "b2d2e6b5ad2e1e28823bf62e79f839ae1d7379b06af02eb821867b145b91b15d",
-      "actual": "bbf11b9c16d3748fee796f529d2bf09866c9720e370185d4a1bdd3eb104675a7",
+      "actual": "cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -56,7 +56,15 @@
     {
       "path": "dist/RelinkStudio/file_manifest.json",
       "expected": "a5f196bc39ba6a6c9132432b7b4bf0fc5cc2e411d91843d81c975d6c0a203750",
-      "actual": "5329f3fb4c5d275dab790eee41d566982eb78725f584c9c599cd20db5ad6a416",
+      "actual": "3e786145ba75994b801bac27c28fca99a1b9f262e921c7c4c3f1059ccc1b7a6f",
+      "state": "modified",
+      "covered_by_m1": true,
+      "expected_m1_drift": true
+    },
+    {
+      "path": "resources.qrc",
+      "expected": "78d52f4f4acd8b0c700ac718a76c191c4a29f4a79edba20d2134e9c96ebd78bc",
+      "actual": "025d21527264f78f1afde9c3622e81b22cf12404a7b899d09bc6480d989ef5da",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -80,7 +88,7 @@
     {
       "path": "src/main.cpp",
       "expected": "cd210ca6382dbecafcd93a775cd3c3a68a34d2ac9496cfe6051df2c5b3653cd9",
-      "actual": "58481e96ec07cfceec8db1ad578f2d6901e378b38c5b82f9a550c8d30eb28102",
+      "actual": "1e9400b9e28368776cba222d3977024fbf4863458f916e2f290c47aba7f5c30b",
       "state": "modified",
       "covered_by_m1": true,
       "expected_m1_drift": true
@@ -110,9 +118,9 @@
       "expected_m1_drift": true
     }
   ],
-  "m1_baseline_id": "m2_capture_startup_v2",
-  "m1_baseline_files": 358,
-  "m1_baseline_files_unchanged": 358,
+  "m1_baseline_id": "m2_startup_observer",
+  "m1_baseline_files": 369,
+  "m1_baseline_files_unchanged": 369,
   "m1_baseline_differences": [],
   "sample_execution": 0,
   "step_capture_contract": "PASS",

@@ -15,6 +15,7 @@ qt_add_executable(RelinkStudio WIN32
   src/application/startup_config.cpp src/application/startup_config.h
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
   src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
+  src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
@@ -85,6 +86,15 @@ add_library(relink_runtime STATIC
 target_include_directories(relink_runtime PUBLIC src)
 target_link_libraries(relink_runtime PUBLIC Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_runtime)
+
+add_library(relink_startup_observation STATIC
+  src/application/vision/skin_page_classifier.cpp src/application/vision/skin_page_classifier.h
+  src/application/runtime/startup_observer.cpp src/application/runtime/startup_observer.h)
+target_include_directories(relink_startup_observation PUBLIC src)
+target_link_libraries(relink_startup_observation PUBLIC Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_startup_observation)
+add_executable(startup_observer_tests tests/runtime/startup_observer_tests.cpp)
+target_link_libraries(startup_observer_tests PRIVATE relink_startup_observation)
 
 # Opt-in on-demand capture, isolated from UI configuration / replay reducers.
 add_library(relink_windows_capture STATIC
@@ -198,6 +208,8 @@ add_test(NAME profile_store_tests COMMAND profile_store_tests)
 add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/replay_cases.json")
 add_test(NAME observation_adapter_tests COMMAND observation_adapter_tests)
 add_test(NAME windows_capture_tests COMMAND windows_capture_tests)
+add_test(NAME startup_observer_tests COMMAND startup_observer_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json")
+add_test(NAME startup_observer_self_test COMMAND RelinkStudio --startup-observer-self-test)
 set_tests_properties(windows_capture_tests PROPERTIES TIMEOUT 20)
 add_test(NAME windows_ocr_tests COMMAND windows_ocr_tests "${CMAKE_SOURCE_DIR}/src/vision/windows_ocr_worker.ps1")
 set_tests_properties(windows_ocr_tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1" TIMEOUT 45)

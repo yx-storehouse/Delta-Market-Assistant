@@ -1,5 +1,7 @@
 # Delta Market Assistant · 三角洲市场助手
 
+> **最新进展：** 原启动多锚点页面识别、关注预检与已有列表接续已实现为只读观察器；23组应用回归，`--startup-observer-self-test` 可离线检查27页/5分支。此轮没有实机捕获或游戏输入，等待用户准备后校准当前画面。见 `docs/business_rebuild/implementation/runtime/startup_observer_m2.md`。
+
 > **2026-10-07 更新：** 当前优先按BBZPS原业务顺序复刻，详见 `docs/business_rebuild/10_bbzps_first_startup_reconstruction.md`（39个步骤、启动入口分支与逐行证据）。已补入显式只读DXGI内存采集诊断和独立Windows OCR组件；真实采集、合成文字OCR分别验证，完整游戏业务尚未接入。正常桌面UI仍为离线/回放，不执行点击购买。后文PR12B进度为历史阶段记录。
 
 ## 当前开发进度：PR12B 服务整理与 M2 非游戏基础层

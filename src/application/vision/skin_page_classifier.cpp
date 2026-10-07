@@ -1,0 +1,206 @@
+#include "skin_page_classifier.h"
+#include <QJsonArray>
+#include <QRectF>
+#include <QRegularExpression>
+#include <QVector>
+#include <algorithm>
+#include <cmath>
+
+namespace relink::vision {
+namespace {
+struct Token { QString text; QRectF bounds; };
+QString normalized(QString text) {
+    text = text.normalized(QString::NormalizationForm_KC);
+    text.remove(QRegularExpression(QStringLiteral("\\s+")));
+    // Only known checkbox/diamond decorations, not arbitrary Chinese letters.
+    while (!text.isEmpty() && QStringLiteral("□■△◇◆").contains(text.front())) text.remove(0, 1);
+    return text;
+}
+bool inBand(const QRectF& rect, const QRectF& band) { return band.contains(rect.center()); }
+class Anchors {
+public:
+    explicit Anchors(QVector<Token> tokens) : m_tokens(std::move(tokens)) {
+        // Windows OCR can split a Chinese label into adjacent words. Combine
+        // only nearby same-line tokens, never concatenate the entire screen.
+        std::sort(m_tokens.begin(), m_tokens.end(), [](const Token& a, const Token& b) {
+            return a.bounds.top() == b.bounds.top() ? a.bounds.left() < b.bounds.left() : a.bounds.top() < b.bounds.top();
+        });
+        QVector<QVector<Token>> rows;
+        for (const auto& token : m_tokens) {
+            int match = -1;
+            for (int i = rows.size() - 1; i >= 0; --i) {
+                const auto& first = rows[i].first();
+                if (token.bounds.top() - first.bounds.bottom() > 0.05) break;
+                if (std::abs(token.bounds.center().y() - first.bounds.center().y()) <= 0.35 * std::min(token.bounds.height(), first.bounds.height())) {
+                    match = i; break;
+                }
+            }
+            if (match < 0) rows.push_back({token}); else rows[match].push_back(token);
+        }
+        for (auto& row : rows) {
+            std::sort(row.begin(), row.end(), [](const Token& a, const Token& b) { return a.bounds.left() < b.bounds.left(); });
+            for (int i = 0; i < row.size(); ++i) {
+                Token joined = row[i];
+                for (int j = i + 1; j < row.size() && j < i + 8; ++j) {
+                    const double gap = row[j].bounds.left() - row[j-1].bounds.right();
+                    if (gap < -0.002 || gap > std::max(row[j].bounds.height(), row[j-1].bounds.height()) * 0.9) break;
+                    joined.text += row[j].text;
+                    joined.bounds = joined.bounds.united(row[j].bounds);
+                    if (joined.text.size() > 100) break;
+                    m_joined.push_back(joined);
+                }
+            }
+        }
+    }
+    bool exact(const QString& text, const QRectF& band) const {
+        for (const auto& token : m_tokens) if (token.text == text && inBand(token.bounds, band)) return true;
+        for (const auto& token : m_joined) if (token.text == text && inBand(token.bounds, band)) return true;
+        return false;
+    }
+    bool contains(const QString& text, const QRectF& band) const {
+        for (const auto& token : m_tokens) if (token.text.contains(text) && inBand(token.bounds, band)) return true;
+        for (const auto& token : m_joined) if (token.text.contains(text) && inBand(token.bounds, band)) return true;
+        return false;
+    }
+    int countExact(const QString& text, const QRectF& band) const {
+        int count = 0;
+        // Joined windows do not count as extra independent supporting anchors.
+        for (const auto& token : m_tokens) if (token.text == text && inBand(token.bounds, band)) ++count;
+        return count;
+    }
+    bool pageNumber(const QRectF& band) const {
+        static const QRegularExpression expression(QStringLiteral("^第[1-9][0-9]{0,4}页$"));
+        for (const auto& token : m_tokens)
+            if (inBand(token.bounds, band) && expression.match(token.text).hasMatch()) return true;
+        return false;
+    }
+private:
+    QVector<Token> m_tokens;
+    QVector<Token> m_joined;
+};
+}
+
+QString toString(SkinPage page) {
+    switch (page) {
+    case SkinPage::Lobby: return QStringLiteral("lobby");
+    case SkinPage::Warehouse: return QStringLiteral("warehouse");
+    case SkinPage::Mandel: return QStringLiteral("mandel");
+    case SkinPage::SkinHome: return QStringLiteral("skin_home");
+    case SkinPage::EmptyWatchlist: return QStringLiteral("empty_watchlist");
+    case SkinPage::CatalogFilter: return QStringLiteral("catalog_filter");
+    case SkinPage::SkinListings: return QStringLiteral("skin_listings");
+    case SkinPage::WatchlistListings: return QStringLiteral("watchlist_listings");
+    case SkinPage::GameSettings: return QStringLiteral("game_settings");
+    case SkinPage::Base: return QStringLiteral("base");
+    case SkinPage::Unknown: return QStringLiteral("unknown");
+    }
+    return QStringLiteral("unknown");
+}
+QString toString(PageOverlay overlay) {
+    switch (overlay) {
+    case PageOverlay::ListingFilter: return QStringLiteral("listing_filter");
+    case PageOverlay::ResultDialog: return QStringLiteral("result_dialog");
+    case PageOverlay::None: return QStringLiteral("none");
+    }
+    return QStringLiteral("none");
+}
+QJsonObject SkinPageResult::toJson() const {
+    return {{"valid_input", validInput}, {"page", toString(page)}, {"overlay", toString(overlay)},
+        {"reason", reason}, {"anchors", QJsonArray::fromStringList(anchors)},
+        {"candidate_pages", QJsonArray::fromStringList(candidates)}, {"token_count", tokenCount},
+        {"low_score_tokens", lowScoreTokens}, {"provider_scores_available", providerScoresAvailable},
+        {"calibration", "historical_ocr_only"}, {"live_calibrated", false}, {"actions_enabled", false}};
+}
+
+SkinPageResult classifySkinPage(const QJsonObject& observation) {
+    SkinPageResult result;
+    const auto fail = [&](const QString& reason) { result.reason = reason; return result; };
+    const auto width = observation.value("width"), height = observation.value("height");
+    const auto dimension = [](const QJsonValue& value) {
+        return value.isDouble() && std::isfinite(value.toDouble()) && value.toDouble() >= 1
+            && value.toDouble() <= 8192 && std::floor(value.toDouble()) == value.toDouble();
+    };
+    if (!dimension(width) || !dimension(height)) return fail(QStringLiteral("E_PAGE_DIMENSIONS"));
+    if (observation.value("coverage") != "full_client") return fail(QStringLiteral("E_PAGE_COVERAGE"));
+    if (!observation.value("words").isArray() || observation.value("words").toArray().size() > 2000)
+        return fail(QStringLiteral("E_PAGE_TOKENS"));
+    QVector<Token> tokens;
+    int bytes = 0;
+    for (const auto& value : observation.value("words").toArray()) {
+        if (!value.isObject()) return fail(QStringLiteral("E_PAGE_TOKEN"));
+        const auto word = value.toObject();
+        if (!word.value("text").isString() || word.value("text").toString().isEmpty()
+            || word.value("text").toString().size() > 1024) return fail(QStringLiteral("E_PAGE_TEXT"));
+        bytes += word.value("text").toString().toUtf8().size();
+        if (bytes > 65536) return fail(QStringLiteral("E_PAGE_TEXT_LIMIT"));
+        const auto x = word.value("x"), y = word.value("y"), w = word.value("width"), h = word.value("height");
+        for (const auto& number : {x, y, w, h})
+            if (!number.isDouble() || !std::isfinite(number.toDouble())) return fail(QStringLiteral("E_PAGE_BOUNDS"));
+        if (x.toDouble() < 0 || y.toDouble() < 0 || w.toDouble() <= 0 || h.toDouble() <= 0
+            || x.toDouble() + w.toDouble() > width.toDouble() || y.toDouble() + h.toDouble() > height.toDouble())
+            return fail(QStringLiteral("E_PAGE_BOUNDS"));
+        ++result.tokenCount;
+        if (word.contains("score")) {
+            const auto score = word.value("score");
+            if (!score.isDouble() || !std::isfinite(score.toDouble()) || score.toDouble() < 0 || score.toDouble() > 1)
+                return fail(QStringLiteral("E_PAGE_SCORE"));
+            result.providerScoresAvailable = true;
+            if (score.toDouble() < 0.70) { ++result.lowScoreTokens; continue; }
+        }
+        tokens.push_back({normalized(word.value("text").toString()),
+            QRectF(x.toDouble()/width.toDouble(), y.toDouble()/height.toDouble(), w.toDouble()/width.toDouble(), h.toDouble()/height.toDouble())});
+    }
+    result.validInput = true;
+    const Anchors a(std::move(tokens));
+    const QRectF top(0, 0, 1, .25), body(0, .12, 1, .82), leftBody(0, .12, .5, .82);
+    const QRectF bottom(0, .5, 1, .5), center(.1, .12, .8, .7), right(.65, 0, .35, 1);
+    const auto exact = [&](const char16_t* text, const QRectF& band) { return a.exact(QString::fromUtf16(text), band); };
+    const auto has = [&](const char16_t* text, const QRectF& band) { return a.contains(QString::fromUtf16(text), band); };
+    const auto candidate = [&](SkinPage page, const QStringList& anchors) {
+        result.candidates.append(toString(page)); result.anchors.append(anchors);
+    };
+    if (exact(u"分辨率", body) && exact(u"显示模式", body) && exact(u"局内帧数上限", body))
+        candidate(SkinPage::GameSettings, {"settings.resolution", "settings.display_mode", "settings.frame_limit"});
+    if (exact(u"赛季", center) && exact(u"品阶", center) && exact(u"枪种", center) && exact(u"确认", center))
+        candidate(SkinPage::CatalogFilter, {"filter.season", "filter.quality", "filter.weapon_type", "filter.confirm"});
+    const bool sale = exact(u"在售", top);
+    if (sale && has(u"暂未添加任何关注", body)) {
+        QStringList evidence{"list.sale", "watch.empty"};
+        if (has(u"返回", bottom)) evidence.append("navigation.back");
+        candidate(SkinPage::EmptyWatchlist, evidence);
+    }
+    const bool listings = sale && (exact(u"默认排序", top) || has(u"按稀有度", top) || has(u"按价格", top) || has(u"按成色", top))
+        && has(u"成色", body) && (a.pageNumber(bottom) || has(u"相似皮肤", body));
+    if (listings) {
+        const bool watched = has(u"我的关注:", bottom);
+        candidate(watched ? SkinPage::WatchlistListings : SkinPage::SkinListings,
+            watched ? QStringList{"list.sale", "list.sort", "list.condition", "list.layout", "watch.count"}
+                    : QStringList{"list.sale", "list.sort", "list.condition", "list.layout"});
+        if (exact(u"价格区间", right) && exact(u"所有成色", right) && exact(u"确定", right))
+            result.overlay = PageOverlay::ListingFilter;
+    }
+    if (exact(u"典藏外观", top) && has(u"流通量", body)
+        && (exact(u"我的关注", top) || a.countExact(QStringLiteral("典藏"), leftBody) >= 2))
+        candidate(SkinPage::SkinHome, {"catalog.skin_tab", "catalog.circulation", "catalog.watch_or_rows"});
+    if (exact(u"曼德尔砖", top) && exact(u"当季产出", body) && exact(u"往季产出", body))
+        candidate(SkinPage::Mandel, {"mandel.tab", "mandel.current_season", "mandel.past_seasons"});
+    if (exact(u"装备价值", QRectF(0, .08, 1, .85)) && (has(u"口袋", body) || has(u"安全箱", body)))
+        candidate(SkinPage::Warehouse, {"warehouse.equipment", "warehouse.storage"});
+    if (exact(u"开始游戏", top) && exact(u"仓库", top) && exact(u"行前备战", body))
+        candidate(SkinPage::Lobby, {"lobby.start", "lobby.warehouse_nav", "lobby.prepare"});
+    int baseAnchors = 0;
+    for (const auto& label : {u"技术中心", u"工作台", u"指挥中心", u"训练中心", u"靶场", u"净水中心", u"收藏室"})
+        if (exact(label, body)) ++baseAnchors;
+    if (baseAnchors >= 3) candidate(SkinPage::Base, {"base.multiple_facilities"});
+    if ((has(u"获得枪械外观", center) || has(u"该商品已被购买或已下架", center)) && (has(u"确认", body) || has(u"返回", body)))
+        result.overlay = PageOverlay::ResultDialog;
+    if (result.candidates.size() > 1) return fail(QStringLiteral("E_PAGE_AMBIGUOUS"));
+    if (result.candidates.isEmpty()) return fail(QStringLiteral("E_PAGE_INSUFFICIENT_ANCHORS"));
+    for (SkinPage page : {SkinPage::Lobby, SkinPage::Warehouse, SkinPage::Mandel, SkinPage::SkinHome,
+            SkinPage::EmptyWatchlist, SkinPage::CatalogFilter, SkinPage::SkinListings, SkinPage::WatchlistListings,
+            SkinPage::GameSettings, SkinPage::Base})
+        if (toString(page) == result.candidates.first()) result.page = page;
+    result.reason = result.overlay == PageOverlay::None ? QStringLiteral("MULTI_ANCHOR_MATCH") : QStringLiteral("OVERLAY_REQUIRES_RECHECK");
+    return result;
+}
+} // namespace relink::vision

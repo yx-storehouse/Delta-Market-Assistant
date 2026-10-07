@@ -2,6 +2,10 @@
 
 更新时间：2026-10-07（Asia/Shanghai）
 
+## 当前新增：原启动页面分类与只读观察器
+
+原入口的多锚点页类、关注预检、空关注回首页再筛选、已有列表接续已实现为独立 `relink_startup_observation` 模块。27条历史OCR投影及5条包内分支检查已加入，应用CTest为23组；本轮未采集当前游戏、未切前台、未发输入。下一步用户准备后做当前画面校准。详见 [启动观察器](implementation/runtime/startup_observer_m2.md) 与 `artifacts/m2_startup_observer_transaction/VERIFICATION.txt`。原39步导航/交易整体尚未完成。
+
 ## 2026-10-07 新增：真实采集基础层与原启动流程重核
 
 - 最新入口：[10 · BBZPS 首次启动逐步复刻](10_bbzps_first_startup_reconstruction.md)。用户要求按原业务复制，不重写业务路径。原始日志重新全量扫描，100次运行入口（97次全自动皮肤/3次发送测试），1,192条定位证据重新读取验证；不是冷启动100次。

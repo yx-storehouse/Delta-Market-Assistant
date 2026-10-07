@@ -6,6 +6,7 @@
 #include "diagnostics/ui_self_test_runner.h"
 #include "ledger/storage_self_test.h"
 #include "diagnostics/live_capture_check.h"
+#include "diagnostics/startup_observer_self_test.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -21,6 +22,18 @@
 #include <cstdio>
 
 int main(int argc, char** argv) {
+    bool startupCheck = false, liveCheck = false;
+    for (int i = 1; i < argc; ++i) {
+        startupCheck |= QByteArray(argv[i]) == "--startup-observer-self-test";
+        liveCheck |= QByteArray(argv[i]) == "--live-capture-check";
+    }
+    if (startupCheck && liveCheck) {
+        std::fprintf(stderr, "E_DIAGNOSTIC_MODE_CONFLICT\n"); return 2;
+    }
+    if (startupCheck) {
+        QCoreApplication app(argc, argv);
+        return relink::diagnostics::runStartupObserverSelfTest(QStringLiteral(":/fixtures/startup_pages.json"));
+    }
     // Explicit diagnostic uses QCoreApplication and never creates the main UI.
     for (int i = 1; i < argc; ++i)
         if (QByteArray(argv[i]) == "--live-capture-check")
@@ -63,6 +76,7 @@ int main(int argc, char** argv) {
     parser.setApplicationDescription("Relink Studio offline frontend. No input automation. Explicit --live-capture-check provides read-only diagnostics.");
     parser.addHelpOption(); parser.addVersionOption();
     parser.addOption({"self-test", "Run offscreen UI interaction checks and exit."});
+    parser.addOption({"startup-observer-self-test", "Check original startup page/precheck routes using embedded historical OCR fixtures; no game capture."});
     parser.addOption({"storage-self-test", "Verify the packaged SQLite driver, transactions, recovery and backup using temporary data."});
     parser.addOption({"snapshot-dir", "Render seven pages to PNG, offscreen, then exit.", "directory"});
     parser.addOption({"config", "Local demo configuration JSON path.", "path"});

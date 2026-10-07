@@ -1,0 +1,3577 @@
+{
+  "schema_version": 1,
+  "source_kind": "historical_ocr_projection",
+  "pixels_included": false,
+  "live_game_test": false,
+  "expectations": "reviewed_visual_anchors_not_legacy_labels",
+  "cases": [
+    {
+      "id": "p1_lobby",
+      "expected_page": "lobby",
+      "expected_modal": "none",
+      "legacy_page_label": "曼德尔",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 11,
+        "byte_offset": 863,
+        "byte_length": 3059,
+        "line_sha256": "70dc6dc5d3bd0c883a1011a3c5b8557413857f96d3382494b96224d7c984080b",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 12,
+        "normalized_byte_offset": 3922,
+        "normalized_line_sha256": "06fb79499d0b577bb3c0b647d16a9bc4fe91c85daf95fabacd94538932d29af0"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "开始游戏",
+            "x": 154,
+            "y": 39,
+            "width": 78,
+            "height": 32,
+            "score": 0.999974250793457
+          },
+          {
+            "text": "仓库",
+            "x": 302,
+            "y": 41,
+            "width": 40,
+            "height": 28,
+            "score": 0.9999144077301025
+          },
+          {
+            "text": "特战干员",
+            "x": 416,
+            "y": 41,
+            "width": 70,
+            "height": 26,
+            "score": 0.9643950462341309
+          },
+          {
+            "text": "部门",
+            "x": 564,
+            "y": 43,
+            "width": 38,
+            "height": 22,
+            "score": 0.9999701976776123
+          },
+          {
+            "text": "交易行",
+            "x": 684,
+            "y": 41,
+            "width": 58,
+            "height": 28,
+            "score": 0.9999882578849792
+          },
+          {
+            "text": "特勤处",
+            "x": 816,
+            "y": 41,
+            "width": 54,
+            "height": 28,
+            "score": 0.9999473690986633
+          },
+          {
+            "text": "改枪台",
+            "x": 944,
+            "y": 41,
+            "width": 58,
+            "height": 28,
+            "score": 0.9994698166847229
+          },
+          {
+            "text": "开启排",
+            "x": 1498,
+            "y": 750,
+            "width": 50,
+            "height": 20,
+            "score": 0.9996612071990967
+          },
+          {
+            "text": "行前备战",
+            "x": 1606,
+            "y": 950,
+            "width": 96,
+            "height": 32,
+            "score": 0.9999812841415405
+          },
+          {
+            "text": "进入特勤处",
+            "x": 258,
+            "y": 1042,
+            "width": 62,
+            "height": 18,
+            "score": 0.9818212389945984
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_warehouse",
+      "expected_page": "warehouse",
+      "expected_modal": "none",
+      "legacy_page_label": "仓库",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 14,
+        "byte_offset": 7134,
+        "byte_length": 6316,
+        "line_sha256": "25f68037c73cf7c253623518d693567fe7f993d480c0f65656ff5b9c4aead858",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 15,
+        "normalized_byte_offset": 13450,
+        "normalized_line_sha256": "0cf15b9d184d8cb6c8f20892f3de1ecb28fcb1290de25534a2de5b8a0ff4b1ca"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "开始游戏",
+            "x": 154,
+            "y": 39,
+            "width": 78,
+            "height": 32,
+            "score": 0.999970555305481
+          },
+          {
+            "text": "仓库",
+            "x": 302,
+            "y": 41,
+            "width": 42,
+            "height": 28,
+            "score": 0.9998984932899475
+          },
+          {
+            "text": "特战干员",
+            "x": 414,
+            "y": 37,
+            "width": 74,
+            "height": 34,
+            "score": 0.9932889342308044
+          },
+          {
+            "text": "部门",
+            "x": 560,
+            "y": 39,
+            "width": 44,
+            "height": 30,
+            "score": 0.9999213218688965
+          },
+          {
+            "text": "交易行",
+            "x": 682,
+            "y": 37,
+            "width": 62,
+            "height": 34,
+            "score": 0.9999901652336121
+          },
+          {
+            "text": "特勤处",
+            "x": 812,
+            "y": 37,
+            "width": 60,
+            "height": 34,
+            "score": 0.9999307990074158
+          },
+          {
+            "text": "改枪台",
+            "x": 942,
+            "y": 39,
+            "width": 62,
+            "height": 34,
+            "score": 0.9995272755622864
+          },
+          {
+            "text": "装备价值",
+            "x": 674,
+            "y": 107,
+            "width": 126,
+            "height": 31,
+            "score": 0.9983130693435669
+          },
+          {
+            "text": "仓库",
+            "x": 1188,
+            "y": 99,
+            "width": 42,
+            "height": 24,
+            "score": 0.9997806549072266
+          },
+          {
+            "text": "口袋：0/5",
+            "x": 680,
+            "y": 331,
+            "width": 84,
+            "height": 20,
+            "score": 0.9846883416175842
+          },
+          {
+            "text": "背包",
+            "x": 676,
+            "y": 450,
+            "width": 54,
+            "height": 28,
+            "score": 0.9999836087226868
+          },
+          {
+            "text": "龙突击步枪",
+            "x": 1238,
+            "y": 643,
+            "width": 72,
+            "height": 32,
+            "score": 0.7689380645751953
+          },
+          {
+            "text": "安全箱：8/9",
+            "x": 682,
+            "y": 698,
+            "width": 88,
+            "height": 20,
+            "score": 0.9832552075386047
+          },
+          {
+            "text": "全部移出",
+            "x": 1022,
+            "y": 736,
+            "width": 74,
+            "height": 32,
+            "score": 0.9997133612632751
+          },
+          {
+            "text": "Tab进入特勤处",
+            "x": 94,
+            "y": 1036,
+            "width": 106,
+            "height": 32,
+            "score": 0.7410145401954651
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_mandel",
+      "expected_page": "mandel",
+      "expected_modal": "none",
+      "legacy_page_label": "曼德尔",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 20,
+        "byte_offset": 21575,
+        "byte_length": 2557,
+        "line_sha256": "b96cec05c2a01b32df3149f3c2c667e6ab0096afe336a3f7f039451ecb932815",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 21,
+        "normalized_byte_offset": 24132,
+        "normalized_line_sha256": "73714c2959e26016b2eabc7788da5604d7e3f436aeda56b8348c4270ddcfa301"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 154,
+            "y": 61,
+            "width": 78,
+            "height": 32,
+            "score": 0.999901533126831
+          },
+          {
+            "text": "典藏外观",
+            "x": 284,
+            "y": 61,
+            "width": 78,
+            "height": 32,
+            "score": 0.9997395277023315
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 416,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998551607131958
+          },
+          {
+            "text": "当季产出",
+            "x": 84,
+            "y": 180,
+            "width": 86,
+            "height": 32,
+            "score": 0.9999430179595947
+          },
+          {
+            "text": "曼德尔砖-疾光魅影",
+            "x": 468,
+            "y": 186,
+            "width": 280,
+            "height": 32,
+            "score": 0.9972074031829834
+          },
+          {
+            "text": "曼德尔砖-疾光魅影",
+            "x": 90,
+            "y": 216,
+            "width": 140,
+            "height": 24,
+            "score": 0.9996755123138428
+          },
+          {
+            "text": "当前市场流通量：999+个",
+            "x": 462,
+            "y": 230,
+            "width": 198,
+            "height": 34,
+            "score": 0.9901469349861145
+          },
+          {
+            "text": "拥有：0/1000个",
+            "x": 464,
+            "y": 266,
+            "width": 136,
+            "height": 25,
+            "score": 0.9911497235298157
+          },
+          {
+            "text": "开启",
+            "x": 526,
+            "y": 305,
+            "width": 38,
+            "height": 22,
+            "score": 0.999924898147583
+          },
+          {
+            "text": "往季产出",
+            "x": 86,
+            "y": 331,
+            "width": 80,
+            "height": 26,
+            "score": 0.9998894333839417
+          },
+          {
+            "text": "曼德尔砖-群星",
+            "x": 92,
+            "y": 363,
+            "width": 110,
+            "height": 26,
+            "score": 0.9966034293174744
+          },
+          {
+            "text": "成交均价",
+            "x": 464,
+            "y": 359,
+            "width": 70,
+            "height": 26,
+            "score": 0.9999800324440002
+          },
+          {
+            "text": "购买",
+            "x": 1660,
+            "y": 871,
+            "width": 46,
+            "height": 28,
+            "score": 0.9999902844429016
+          },
+          {
+            "text": "售出",
+            "x": 1658,
+            "y": 943,
+            "width": 50,
+            "height": 33,
+            "score": 0.9998802542686462
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_skin_home",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 23,
+        "byte_offset": 26833,
+        "byte_length": 3722,
+        "line_sha256": "2457ad06bb6b568a37bf3755cf07f3f49461c52d2443d4d264695829a07683d6",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 24,
+        "normalized_byte_offset": 30555,
+        "normalized_line_sha256": "29e067b9e6aae420bc094915e5e06fc6d2840f183c863358c6f20943f68c1565"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 156,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998830556869507
+          },
+          {
+            "text": "典藏外观",
+            "x": 284,
+            "y": 61,
+            "width": 78,
+            "height": 32,
+            "score": 0.9998522400856018
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 414,
+            "y": 61,
+            "width": 76,
+            "height": 32,
+            "score": 0.9989056587219238
+          },
+          {
+            "text": "了筛选",
+            "x": 198,
+            "y": 190,
+            "width": 74,
+            "height": 32,
+            "score": 0.8391805291175842
+          },
+          {
+            "text": "MK4冲锋枪-疾光魅影",
+            "x": 464,
+            "y": 176,
+            "width": 358,
+            "height": 46,
+            "score": 0.9993979930877686
+          },
+          {
+            "text": "我的关注",
+            "x": 1714,
+            "y": 198,
+            "width": 62,
+            "height": 18,
+            "score": 0.9998153448104858
+          },
+          {
+            "text": "当前市场流通量：999+个",
+            "x": 466,
+            "y": 234,
+            "width": 202,
+            "height": 30,
+            "score": 0.9942624568939209
+          },
+          {
+            "text": "典藏",
+            "x": 66,
+            "y": 323,
+            "width": 68,
+            "height": 32,
+            "score": 0.9981954097747803
+          },
+          {
+            "text": "AKM突击步枪-群星",
+            "x": 70,
+            "y": 363,
+            "width": 148,
+            "height": 26,
+            "score": 0.9976119995117188
+          },
+          {
+            "text": "典藏",
+            "x": 70,
+            "y": 440,
+            "width": 64,
+            "height": 26,
+            "score": 0.999366283416748
+          },
+          {
+            "text": "KC17突击步枪-造物纪元",
+            "x": 68,
+            "y": 478,
+            "width": 190,
+            "height": 26,
+            "score": 0.9966837763786316
+          },
+          {
+            "text": "典藏",
+            "x": 68,
+            "y": 551,
+            "width": 66,
+            "height": 32,
+            "score": 0.9982242584228516
+          },
+          {
+            "text": "MP7冲锋枪-电玩高手S2",
+            "x": 66,
+            "y": 589,
+            "width": 192,
+            "height": 26,
+            "score": 0.9943768978118896
+          },
+          {
+            "text": "典藏",
+            "x": 68,
+            "y": 669,
+            "width": 66,
+            "height": 25,
+            "score": 0.9993642568588257
+          },
+          {
+            "text": "典藏",
+            "x": 70,
+            "y": 782,
+            "width": 62,
+            "height": 26,
+            "score": 0.9991337060928345
+          },
+          {
+            "text": "|AS Val突击步枪-悬赏令",
+            "x": 70,
+            "y": 819,
+            "width": 184,
+            "height": 26,
+            "score": 0.9622209072113037
+          },
+          {
+            "text": "购买",
+            "x": 1664,
+            "y": 875,
+            "width": 36,
+            "height": 22,
+            "score": 0.9998114705085754
+          },
+          {
+            "text": "典藏",
+            "x": 68,
+            "y": 893,
+            "width": 66,
+            "height": 32,
+            "score": 0.998217761516571
+          },
+          {
+            "text": "M7战斗步枪-棱镜攻势S2",
+            "x": 70,
+            "y": 933,
+            "width": 194,
+            "height": 25,
+            "score": 0.998252809047699
+          },
+          {
+            "text": "售出",
+            "x": 1660,
+            "y": 945,
+            "width": 44,
+            "height": 27,
+            "score": 0.9879730939865112
+          },
+          {
+            "text": "返回",
+            "x": 132,
+            "y": 1044,
+            "width": 28,
+            "height": 14,
+            "score": 0.9996809959411621
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_transition",
+      "expected_page": "unknown",
+      "expected_modal": "none",
+      "legacy_page_label": "None",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 26,
+        "byte_offset": 34461,
+        "byte_length": 1061,
+        "line_sha256": "99260d0994730c2f07449a1508b91c7aac18fc7b2188de8c3a88e3988f3e0753",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 27,
+        "normalized_byte_offset": 35522,
+        "normalized_line_sha256": "44708990bed5fb4a7ad40b59ede84796c67604ca0df97969af8271628e185642"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9996494054794312
+          },
+          {
+            "text": "返回",
+            "x": 128,
+            "y": 1038,
+            "width": 38,
+            "height": 28,
+            "score": 0.985763669013977
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_empty_watchlist_1",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 29,
+        "byte_offset": 36665,
+        "byte_length": 1193,
+        "line_sha256": "0d9d5ded846b822ccfb89708267782f493d4599f03f5ef24ee37b08f9b9dde46",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 30,
+        "normalized_byte_offset": 37858,
+        "normalized_line_sha256": "7a368e2cab938b95d3bf6364cadb8a9b4bc5e99d8fa9e089f9c540a140001f0b"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998534917831421
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 653,
+            "width": 182,
+            "height": 25,
+            "score": 0.9987601637840271
+          },
+          {
+            "text": "返回",
+            "x": 128,
+            "y": 1038,
+            "width": 38,
+            "height": 28,
+            "score": 0.9853754043579102
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_empty_watchlist_2",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 32,
+        "byte_offset": 39140,
+        "byte_length": 980,
+        "line_sha256": "bd9d464f446e929e449ac56b63d1d62ad968f99e3180c6622b0536f9185e82b1",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 33,
+        "normalized_byte_offset": 40120,
+        "normalized_line_sha256": "d535707c4a07706d83b3139e9a39e3b9229d0ba8305a4235e16f8a9e3ec75b3b"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998518228530884
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 653,
+            "width": 182,
+            "height": 25,
+            "score": 0.9987561702728271
+          },
+          {
+            "text": "返回",
+            "x": 128,
+            "y": 1038,
+            "width": 38,
+            "height": 28,
+            "score": 0.9840356707572937
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_home_after_empty",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 35,
+        "byte_offset": 41191,
+        "byte_length": 3459,
+        "line_sha256": "19a7cc2386c5f8fdf453e3f528390fefc24052983b983dc164e76f34df43c414",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 36,
+        "normalized_byte_offset": 44650,
+        "normalized_line_sha256": "23d4f1202cdb806f92de20cbaf50d1df3d11d56a5b068bfba85737cb73fad8c3"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 156,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998809695243835
+          },
+          {
+            "text": "典藏外观",
+            "x": 284,
+            "y": 61,
+            "width": 78,
+            "height": 32,
+            "score": 0.9996885061264038
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 414,
+            "y": 61,
+            "width": 76,
+            "height": 32,
+            "score": 0.9990119338035583
+          },
+          {
+            "text": "筛选",
+            "x": 218,
+            "y": 192,
+            "width": 74,
+            "height": 32,
+            "score": 0.9969291090965271
+          },
+          {
+            "text": "◇MK4冲锋枪-疾光魅影",
+            "x": 466,
+            "y": 182,
+            "width": 354,
+            "height": 38,
+            "score": 0.9927709102630615
+          },
+          {
+            "text": "我的关注",
+            "x": 1710,
+            "y": 198,
+            "width": 66,
+            "height": 18,
+            "score": 0.9997629523277283
+          },
+          {
+            "text": "MK4冲锋枪-疾光魅景",
+            "x": 90,
+            "y": 248,
+            "width": 154,
+            "height": 23,
+            "score": 0.999294638633728
+          },
+          {
+            "text": "当前市场流通量：999+个",
+            "x": 464,
+            "y": 234,
+            "width": 206,
+            "height": 30,
+            "score": 0.9891259074211121
+          },
+          {
+            "text": "典藏",
+            "x": 94,
+            "y": 325,
+            "width": 56,
+            "height": 26,
+            "score": 0.9972405433654785
+          },
+          {
+            "text": "AKM突击步枪-群星",
+            "x": 90,
+            "y": 359,
+            "width": 146,
+            "height": 26,
+            "score": 0.9991992115974426
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 440,
+            "width": 62,
+            "height": 26,
+            "score": 0.9958031177520752
+          },
+          {
+            "text": "KC17突击步枪-造物纪",
+            "x": 90,
+            "y": 476,
+            "width": 172,
+            "height": 26,
+            "score": 0.9934876561164856
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 553,
+            "width": 62,
+            "height": 26,
+            "score": 0.9980355501174927
+          },
+          {
+            "text": "MP7冲锋枪-电玩高手S2",
+            "x": 88,
+            "y": 589,
+            "width": 190,
+            "height": 26,
+            "score": 0.9983254075050354
+          },
+          {
+            "text": "典藏",
+            "x": 88,
+            "y": 669,
+            "width": 64,
+            "height": 25,
+            "score": 0.9980261325836182
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 782,
+            "width": 64,
+            "height": 26,
+            "score": 0.9968118667602539
+          },
+          {
+            "text": "[AS Val突击步枪-悬赏令",
+            "x": 90,
+            "y": 817,
+            "width": 178,
+            "height": 26,
+            "score": 0.9645043611526489
+          },
+          {
+            "text": "购买",
+            "x": 1660,
+            "y": 871,
+            "width": 46,
+            "height": 28,
+            "score": 0.9999803304672241
+          },
+          {
+            "text": "典藏",
+            "x": 92,
+            "y": 895,
+            "width": 60,
+            "height": 26,
+            "score": 0.998857855796814
+          },
+          {
+            "text": "M7战斗步枪-棱镜攻势S2",
+            "x": 90,
+            "y": 933,
+            "width": 194,
+            "height": 23,
+            "score": 0.9986853003501892
+          },
+          {
+            "text": "售出",
+            "x": 1658,
+            "y": 943,
+            "width": 50,
+            "height": 33,
+            "score": 0.9995212554931641
+          },
+          {
+            "text": "返回",
+            "x": 132,
+            "y": 1044,
+            "width": 28,
+            "height": 14,
+            "score": 0.9996776580810547
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_catalog_filter",
+      "expected_page": "catalog_filter",
+      "expected_modal": "none",
+      "legacy_page_label": "筛选",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 38,
+        "byte_offset": 48285,
+        "byte_length": 1814,
+        "line_sha256": "ff802ab5a58928595a239d5c0d4b140e80e339748d7b2492036c12985e7f4ff9",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 39,
+        "normalized_byte_offset": 50099,
+        "normalized_line_sha256": "7fb4ef37da771a90953a2c7adf72ab3ecad53cf0d26134249ae6a599903f93b3"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "△筛选",
+            "x": 360,
+            "y": 230,
+            "width": 116,
+            "height": 45,
+            "score": 0.9867417216300964
+          },
+          {
+            "text": "赛季",
+            "x": 400,
+            "y": 319,
+            "width": 46,
+            "height": 28,
+            "score": 0.9997800588607788
+          },
+          {
+            "text": "全部赛季",
+            "x": 584,
+            "y": 325,
+            "width": 60,
+            "height": 18,
+            "score": 0.9976071715354919
+          },
+          {
+            "text": "品阶",
+            "x": 400,
+            "y": 474,
+            "width": 46,
+            "height": 28,
+            "score": 0.9974181652069092
+          },
+          {
+            "text": "传说品阶",
+            "x": 596,
+            "y": 474,
+            "width": 74,
+            "height": 26,
+            "score": 0.9990400671958923
+          },
+          {
+            "text": "史诗品阶",
+            "x": 840,
+            "y": 474,
+            "width": 70,
+            "height": 26,
+            "score": 0.9997877478599548
+          },
+          {
+            "text": "稀有品阶",
+            "x": 1072,
+            "y": 474,
+            "width": 76,
+            "height": 26,
+            "score": 0.9993948936462402
+          },
+          {
+            "text": "普通品阶",
+            "x": 1318,
+            "y": 472,
+            "width": 68,
+            "height": 26,
+            "score": 0.9996984004974365
+          },
+          {
+            "text": "枪种",
+            "x": 400,
+            "y": 545,
+            "width": 46,
+            "height": 28,
+            "score": 0.9996801018714905
+          },
+          {
+            "text": "步枪",
+            "x": 592,
+            "y": 545,
+            "width": 48,
+            "height": 28,
+            "score": 0.9999186992645264
+          },
+          {
+            "text": "冲锋枪",
+            "x": 840,
+            "y": 545,
+            "width": 54,
+            "height": 28,
+            "score": 0.999917209148407
+          },
+          {
+            "text": "霰弹枪",
+            "x": 1076,
+            "y": 545,
+            "width": 58,
+            "height": 28,
+            "score": 0.999958336353302
+          },
+          {
+            "text": "轻机枪",
+            "x": 1316,
+            "y": 545,
+            "width": 58,
+            "height": 28,
+            "score": 0.9998846054077148
+          },
+          {
+            "text": "精准射手步枪",
+            "x": 598,
+            "y": 601,
+            "width": 104,
+            "height": 26,
+            "score": 0.999974250793457
+          },
+          {
+            "text": "狙击步枪",
+            "x": 840,
+            "y": 603,
+            "width": 70,
+            "height": 26,
+            "score": 0.9999799728393555
+          },
+          {
+            "text": "手枪",
+            "x": 1080,
+            "y": 603,
+            "width": 36,
+            "height": 22,
+            "score": 0.9999696016311646
+          },
+          {
+            "text": "确认",
+            "x": 934,
+            "y": 736,
+            "width": 50,
+            "height": 34,
+            "score": 0.9996475577354431
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_skin_list",
+      "expected_page": "skin_listings",
+      "expected_modal": "none",
+      "legacy_page_label": null,
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 61,
+        "byte_offset": 64681,
+        "byte_length": 4154,
+        "line_sha256": "6c2f780550b98edcb0a91f176361a99e0a723e8589754ecbd34afa261d550af3",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 62,
+        "normalized_byte_offset": 68835,
+        "normalized_line_sha256": "00ff8d64003f78e3929c4f295e839098f5f440b08ea1b4363fbb8c85c547b515"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998105764389038
+          },
+          {
+            "text": "飞筛选",
+            "x": 192,
+            "y": 182,
+            "width": 72,
+            "height": 32,
+            "score": 0.7849550247192383
+          },
+          {
+            "text": "不限公示期",
+            "x": 392,
+            "y": 184,
+            "width": 86,
+            "height": 26,
+            "score": 0.9999863505363464
+          },
+          {
+            "text": "默认排序",
+            "x": 860,
+            "y": 180,
+            "width": 76,
+            "height": 32,
+            "score": 0.9871330261230469
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 1476,
+            "y": 182,
+            "width": 186,
+            "height": 26,
+            "score": 0.9996622800827026
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 90,
+            "y": 230,
+            "width": 150,
+            "height": 26,
+            "score": 0.994843602180481
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 752,
+            "y": 230,
+            "width": 148,
+            "height": 26,
+            "score": 0.9996644258499146
+          },
+          {
+            "text": "成色C",
+            "x": 98,
+            "y": 401,
+            "width": 42,
+            "height": 19,
+            "score": 0.9744541645050049
+          },
+          {
+            "text": "成色A",
+            "x": 748,
+            "y": 397,
+            "width": 52,
+            "height": 25,
+            "score": 0.999431848526001
+          },
+          {
+            "text": "[AUG突击步枪-天命",
+            "x": 92,
+            "y": 436,
+            "width": 150,
+            "height": 26,
+            "score": 0.9526422023773193
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 750,
+            "y": 436,
+            "width": 150,
+            "height": 26,
+            "score": 0.9969955682754517
+          },
+          {
+            "text": "相似皮肤",
+            "x": 1492,
+            "y": 444,
+            "width": 94,
+            "height": 26,
+            "score": 0.9990434646606445
+          },
+          {
+            "text": "成色",
+            "x": 1446,
+            "y": 490,
+            "width": 36,
+            "height": 22,
+            "score": 0.9999281764030457
+          },
+          {
+            "text": "AUG突击步枪的天命典藏外观",
+            "x": 1444,
+            "y": 538,
+            "width": 260,
+            "height": 29,
+            "score": 0.9982833862304688
+          },
+          {
+            "text": "成色C",
+            "x": 90,
+            "y": 603,
+            "width": 52,
+            "height": 28,
+            "score": 0.9914343953132629
+          },
+          {
+            "text": "350成色C",
+            "x": 674,
+            "y": 601,
+            "width": 128,
+            "height": 32,
+            "score": 0.9963431358337402
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 90,
+            "y": 639,
+            "width": 154,
+            "height": 32,
+            "score": 0.9977537989616394
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 746,
+            "y": 639,
+            "width": 156,
+            "height": 32,
+            "score": 0.999252438545227
+          },
+          {
+            "text": "成色C",
+            "x": 90,
+            "y": 810,
+            "width": 52,
+            "height": 25,
+            "score": 0.9948396682739258
+          },
+          {
+            "text": "400成色B",
+            "x": 676,
+            "y": 810,
+            "width": 126,
+            "height": 25,
+            "score": 0.988332211971283
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 90,
+            "y": 845,
+            "width": 154,
+            "height": 32,
+            "score": 0.9972305297851562
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 750,
+            "y": 845,
+            "width": 152,
+            "height": 32,
+            "score": 0.9974231719970703
+          },
+          {
+            "text": "18分23秒后解锁购买",
+            "x": 1542,
+            "y": 873,
+            "width": 182,
+            "height": 26,
+            "score": 0.9997333288192749
+          },
+          {
+            "text": "第1页",
+            "x": 716,
+            "y": 931,
+            "width": 52,
+            "height": 27,
+            "score": 0.9999385476112366
+          },
+          {
+            "text": "公示中",
+            "x": 1596,
+            "y": 913,
+            "width": 68,
+            "height": 39,
+            "score": 0.999923050403595
+          },
+          {
+            "text": "返回",
+            "x": 136,
+            "y": 1042,
+            "width": 28,
+            "height": 20,
+            "score": 0.9756512641906738
+          }
+        ]
+      }
+    },
+    {
+      "id": "p1_watch_list",
+      "expected_page": "watchlist_listings",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_090240.log",
+        "line": 1795,
+        "byte_offset": 832392,
+        "byte_length": 4506,
+        "line_sha256": "3eb9a39de791415d1298513f97caee6096c91daef7c26d821dbeb1a85128e80d",
+        "file_sha256": "81fbbb834ec84761301009754148b8cadbf7d15fbcf1966bd138fd7f91ff7290",
+        "normalized_line": 1796,
+        "normalized_byte_offset": 836898,
+        "normalized_line_sha256": "9dbaae0aaff20eedc291570fc381e641a8f88a77b2349f1c9009b69dc6a407ab"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 170,
+            "y": 63,
+            "width": 44,
+            "height": 30,
+            "score": 0.9999284744262695
+          },
+          {
+            "text": "筛选",
+            "x": 192,
+            "y": 182,
+            "width": 70,
+            "height": 32,
+            "score": 0.9979656934738159
+          },
+          {
+            "text": "不限公示期",
+            "x": 398,
+            "y": 186,
+            "width": 76,
+            "height": 20,
+            "score": 0.9996242523193359
+          },
+          {
+            "text": "默认排序",
+            "x": 864,
+            "y": 184,
+            "width": 68,
+            "height": 26,
+            "score": 0.9998847246170044
+          },
+          {
+            "text": "R93狙击步枪-精湛工艺",
+            "x": 1470,
+            "y": 180,
+            "width": 232,
+            "height": 30,
+            "score": 0.9998822808265686
+          },
+          {
+            "text": "R93狙击步枪-精湛工艺",
+            "x": 90,
+            "y": 230,
+            "width": 180,
+            "height": 26,
+            "score": 0.9592258930206299
+          },
+          {
+            "text": "R93狙击步枪-精湛工艺",
+            "x": 754,
+            "y": 230,
+            "width": 174,
+            "height": 26,
+            "score": 0.9998653531074524
+          },
+          {
+            "text": "成色S",
+            "x": 746,
+            "y": 397,
+            "width": 56,
+            "height": 25,
+            "score": 0.9951584935188293
+          },
+          {
+            "text": "SKS射手步枪-精湛工艺",
+            "x": 94,
+            "y": 436,
+            "width": 178,
+            "height": 26,
+            "score": 0.9997150301933289
+          },
+          {
+            "text": "Mini-14射手步枪-精湛工艺",
+            "x": 748,
+            "y": 434,
+            "width": 212,
+            "height": 30,
+            "score": 0.8744781017303467
+          },
+          {
+            "text": "相似皮肤",
+            "x": 1492,
+            "y": 444,
+            "width": 94,
+            "height": 26,
+            "score": 0.9990437030792236
+          },
+          {
+            "text": "成色",
+            "x": 1446,
+            "y": 490,
+            "width": 36,
+            "height": 22,
+            "score": 0.9999287724494934
+          },
+          {
+            "text": "R93狙击步枪的精湛工艺典藏外观",
+            "x": 1444,
+            "y": 538,
+            "width": 296,
+            "height": 29,
+            "score": 0.999737560749054
+          },
+          {
+            "text": "成色S",
+            "x": 90,
+            "y": 603,
+            "width": 52,
+            "height": 28,
+            "score": 0.9880366921424866
+          },
+          {
+            "text": "成色S",
+            "x": 734,
+            "y": 601,
+            "width": 68,
+            "height": 32,
+            "score": 0.9962446093559265
+          },
+          {
+            "text": "R93狙击步枪-精湛工艺",
+            "x": 94,
+            "y": 643,
+            "width": 176,
+            "height": 26,
+            "score": 0.999875545501709
+          },
+          {
+            "text": "M1014霰弹枪-花岗岩",
+            "x": 750,
+            "y": 643,
+            "width": 172,
+            "height": 26,
+            "score": 0.9984471201896667
+          },
+          {
+            "text": "成色S",
+            "x": 90,
+            "y": 810,
+            "width": 52,
+            "height": 27,
+            "score": 0.9966997504234314
+          },
+          {
+            "text": "10成色A",
+            "x": 688,
+            "y": 810,
+            "width": 112,
+            "height": 25,
+            "score": 0.997022271156311
+          },
+          {
+            "text": "QCQ171冲锋枪-地平线",
+            "x": 92,
+            "y": 845,
+            "width": 182,
+            "height": 32,
+            "score": 0.9996844530105591
+          },
+          {
+            "text": "PTR-32突击步枪-花岗岩",
+            "x": 748,
+            "y": 843,
+            "width": 194,
+            "height": 34,
+            "score": 0.9284433722496033
+          },
+          {
+            "text": "0分43秒后解锁购买",
+            "x": 1548,
+            "y": 873,
+            "width": 170,
+            "height": 26,
+            "score": 0.9997698664665222
+          },
+          {
+            "text": "第1页",
+            "x": 718,
+            "y": 933,
+            "width": 48,
+            "height": 25,
+            "score": 0.9999778270721436
+          },
+          {
+            "text": "公示中",
+            "x": 1596,
+            "y": 913,
+            "width": 68,
+            "height": 39,
+            "score": 0.999924898147583
+          },
+          {
+            "text": "我的关注：48/150",
+            "x": 84,
+            "y": 931,
+            "width": 156,
+            "height": 31,
+            "score": 0.9990673065185547
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1040,
+            "width": 34,
+            "height": 22,
+            "score": 0.9921602606773376
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2_home",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_142356.log",
+        "line": 11,
+        "byte_offset": 892,
+        "byte_length": 3421,
+        "line_sha256": "e8bad3cb41a4e7f318e3b5b04efe5975b50769ad341b99ec743b8217705cece4",
+        "file_sha256": "110d44ca3b1baad2e7409bd605a5ad69a58f0a11a6ea4304d8207f02023ca753",
+        "normalized_line": 12,
+        "normalized_byte_offset": 4313,
+        "normalized_line_sha256": "47b98866f80a3fdde187df9117e66e2f1780d0edcba83fc3a4d317f7de634fe6"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 156,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998823404312134
+          },
+          {
+            "text": "典藏外观",
+            "x": 282,
+            "y": 61,
+            "width": 80,
+            "height": 32,
+            "score": 0.9998753070831299
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 414,
+            "y": 61,
+            "width": 76,
+            "height": 32,
+            "score": 0.9989395141601562
+          },
+          {
+            "text": "筛选中",
+            "x": 214,
+            "y": 194,
+            "width": 84,
+            "height": 26,
+            "score": 0.9985421299934387
+          },
+          {
+            "text": "M870霰弹枪-地平线",
+            "x": 462,
+            "y": 176,
+            "width": 350,
+            "height": 46,
+            "score": 0.9987745881080627
+          },
+          {
+            "text": "我的关注",
+            "x": 1714,
+            "y": 198,
+            "width": 64,
+            "height": 18,
+            "score": 0.9996274709701538
+          },
+          {
+            "text": "当前市场流通量：322个",
+            "x": 466,
+            "y": 236,
+            "width": 188,
+            "height": 26,
+            "score": 0.9957794547080994
+          },
+          {
+            "text": "典藏",
+            "x": 94,
+            "y": 277,
+            "width": 54,
+            "height": 20,
+            "score": 0.9983906745910645
+          },
+          {
+            "text": "突击步枪-花岗岩",
+            "x": 182,
+            "y": 311,
+            "width": 120,
+            "height": 24,
+            "score": 0.9999153017997742
+          },
+          {
+            "text": "QCQ171冲锋枪-地平线",
+            "x": 92,
+            "y": 426,
+            "width": 168,
+            "height": 24,
+            "score": 0.9677380919456482
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 504,
+            "width": 62,
+            "height": 26,
+            "score": 0.9941672682762146
+          },
+          {
+            "text": "M1014霰弹枪-花岗岩",
+            "x": 90,
+            "y": 540,
+            "width": 170,
+            "height": 25,
+            "score": 0.9989579319953918
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 617,
+            "width": 62,
+            "height": 26,
+            "score": 0.996025562286377
+          },
+          {
+            "text": "M870霰弹枪-地平线",
+            "x": 88,
+            "y": 653,
+            "width": 162,
+            "height": 25,
+            "score": 0.9978071451187134
+          },
+          {
+            "text": "典藏",
+            "x": 92,
+            "y": 734,
+            "width": 56,
+            "height": 20,
+            "score": 0.9991005659103394
+          },
+          {
+            "text": "R93狙击步枪-地平线",
+            "x": 90,
+            "y": 768,
+            "width": 160,
+            "height": 26,
+            "score": 0.9996681213378906
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 845,
+            "width": 62,
+            "height": 26,
+            "score": 0.9959512948989868
+          },
+          {
+            "text": "SV-98狙击步枪-花岗岩",
+            "x": 90,
+            "y": 881,
+            "width": 180,
+            "height": 26,
+            "score": 0.999586820602417
+          },
+          {
+            "text": "购买",
+            "x": 1660,
+            "y": 871,
+            "width": 46,
+            "height": 28,
+            "score": 0.9999819397926331
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 958,
+            "width": 60,
+            "height": 26,
+            "score": 0.9951464533805847
+          },
+          {
+            "text": "售出",
+            "x": 1658,
+            "y": 943,
+            "width": 50,
+            "height": 33,
+            "score": 0.9988295435905457
+          },
+          {
+            "text": "返回",
+            "x": 132,
+            "y": 1044,
+            "width": 30,
+            "height": 14,
+            "score": 0.9995900392532349
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2_empty_1",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_142356.log",
+        "line": 17,
+        "byte_offset": 9916,
+        "byte_length": 1284,
+        "line_sha256": "94740194d9aff0e0262ff247a39f8964dc28c6ef88c58f31103ef98a946fe7ef",
+        "file_sha256": "110d44ca3b1baad2e7409bd605a5ad69a58f0a11a6ea4304d8207f02023ca753",
+        "normalized_line": 18,
+        "normalized_byte_offset": 11200,
+        "normalized_line_sha256": "0b894bf5d8545772cfbf723c91501dcb0a04dc235392698f94be194c1786c476"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.999879777431488
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 653,
+            "width": 182,
+            "height": 25,
+            "score": 0.9987415671348572
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1040,
+            "width": 34,
+            "height": 22,
+            "score": 0.9564095139503479
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2_empty_2",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_142356.log",
+        "line": 20,
+        "byte_offset": 12579,
+        "byte_length": 1183,
+        "line_sha256": "a895cadd2854e140f5efbaa628f48acc3d6afad6ad92ccfd91cb9a896210cd89",
+        "file_sha256": "110d44ca3b1baad2e7409bd605a5ad69a58f0a11a6ea4304d8207f02023ca753",
+        "normalized_line": 21,
+        "normalized_byte_offset": 13762,
+        "normalized_line_sha256": "ccdc005f84fffa4f585fd682797a6a8d7d69f3f57cfc6656aed3a3facb4973fe"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998812675476074
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 653,
+            "width": 182,
+            "height": 25,
+            "score": 0.9987340569496155
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1040,
+            "width": 34,
+            "height": 22,
+            "score": 0.9785962104797363
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2_home_after_empty",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_142356.log",
+        "line": 23,
+        "byte_offset": 15039,
+        "byte_length": 3615,
+        "line_sha256": "a1afdd0cbce8db917f7fd5c9aa1ee3e6b0ebff6aebc7bf7c7cb320dd1baf46bf",
+        "file_sha256": "110d44ca3b1baad2e7409bd605a5ad69a58f0a11a6ea4304d8207f02023ca753",
+        "normalized_line": 24,
+        "normalized_byte_offset": 18654,
+        "normalized_line_sha256": "c90ae8c5eeb85555ec72ca287554f0c6827f28a25e83d8c2c0f37daa3a258acd"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 156,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998804330825806
+          },
+          {
+            "text": "典藏外观",
+            "x": 284,
+            "y": 61,
+            "width": 78,
+            "height": 32,
+            "score": 0.9999181032180786
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 414,
+            "y": 61,
+            "width": 76,
+            "height": 32,
+            "score": 0.9990056157112122
+          },
+          {
+            "text": "Y筛选中",
+            "x": 214,
+            "y": 194,
+            "width": 84,
+            "height": 26,
+            "score": 0.8673450946807861
+          },
+          {
+            "text": "M870霰弹枪-地平线",
+            "x": 462,
+            "y": 176,
+            "width": 350,
+            "height": 46,
+            "score": 0.9987086653709412
+          },
+          {
+            "text": "我的关注",
+            "x": 1710,
+            "y": 196,
+            "width": 68,
+            "height": 20,
+            "score": 0.9996833801269531
+          },
+          {
+            "text": "当前市场流通量：322个",
+            "x": 466,
+            "y": 236,
+            "width": 188,
+            "height": 26,
+            "score": 0.9957409501075745
+          },
+          {
+            "text": "典藏",
+            "x": 94,
+            "y": 277,
+            "width": 54,
+            "height": 20,
+            "score": 0.9983682632446289
+          },
+          {
+            "text": "突击步枪-花岗岩",
+            "x": 184,
+            "y": 313,
+            "width": 120,
+            "height": 24,
+            "score": 0.9997708797454834
+          },
+          {
+            "text": "QCQ171冲锋枪-地平线",
+            "x": 92,
+            "y": 426,
+            "width": 168,
+            "height": 24,
+            "score": 0.9674004912376404
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 504,
+            "width": 62,
+            "height": 26,
+            "score": 0.9941370487213135
+          },
+          {
+            "text": "M1014霰弹枪-花岗岩",
+            "x": 90,
+            "y": 540,
+            "width": 170,
+            "height": 25,
+            "score": 0.9989686012268066
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 617,
+            "width": 62,
+            "height": 26,
+            "score": 0.9960482120513916
+          },
+          {
+            "text": "M870霰弹枪-地平线",
+            "x": 88,
+            "y": 653,
+            "width": 162,
+            "height": 25,
+            "score": 0.9978458881378174
+          },
+          {
+            "text": "典藏",
+            "x": 92,
+            "y": 734,
+            "width": 56,
+            "height": 20,
+            "score": 0.9990987181663513
+          },
+          {
+            "text": "R93狙击步枪-地平线",
+            "x": 90,
+            "y": 768,
+            "width": 160,
+            "height": 26,
+            "score": 0.9996688365936279
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 845,
+            "width": 62,
+            "height": 26,
+            "score": 0.995984673500061
+          },
+          {
+            "text": "SV-98狙击步枪-花岗岩",
+            "x": 90,
+            "y": 881,
+            "width": 180,
+            "height": 26,
+            "score": 0.9995899200439453
+          },
+          {
+            "text": "购买",
+            "x": 1660,
+            "y": 871,
+            "width": 46,
+            "height": 28,
+            "score": 0.9999788999557495
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 958,
+            "width": 60,
+            "height": 26,
+            "score": 0.9951754808425903
+          },
+          {
+            "text": "售出",
+            "x": 1658,
+            "y": 943,
+            "width": 50,
+            "height": 33,
+            "score": 0.9994486570358276
+          },
+          {
+            "text": "返回",
+            "x": 132,
+            "y": 1044,
+            "width": 30,
+            "height": 14,
+            "score": 0.9996093511581421
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2_filter",
+      "expected_page": "catalog_filter",
+      "expected_modal": "none",
+      "legacy_page_label": "筛选",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260924_142356.log",
+        "line": 26,
+        "byte_offset": 22455,
+        "byte_length": 1818,
+        "line_sha256": "e9263840d83ab7752f4fe3598f0c91daaecb7bd9b3b8f01f145e401256181414",
+        "file_sha256": "110d44ca3b1baad2e7409bd605a5ad69a58f0a11a6ea4304d8207f02023ca753",
+        "normalized_line": 27,
+        "normalized_byte_offset": 24273,
+        "normalized_line_sha256": "9775ae249cbda8ef4709857771b45bec99dbe2c23b8103d5e47a6ed4f5d54f05"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "△筛选",
+            "x": 360,
+            "y": 230,
+            "width": 114,
+            "height": 45,
+            "score": 0.9935994148254395
+          },
+          {
+            "text": "赛季",
+            "x": 404,
+            "y": 323,
+            "width": 42,
+            "height": 24,
+            "score": 0.9996439218521118
+          },
+          {
+            "text": "品阶",
+            "x": 400,
+            "y": 474,
+            "width": 46,
+            "height": 28,
+            "score": 0.9972139596939087
+          },
+          {
+            "text": "传说品阶",
+            "x": 598,
+            "y": 474,
+            "width": 72,
+            "height": 26,
+            "score": 0.999444842338562
+          },
+          {
+            "text": "史诗品阶",
+            "x": 842,
+            "y": 476,
+            "width": 66,
+            "height": 20,
+            "score": 0.9997234344482422
+          },
+          {
+            "text": "稀有品阶",
+            "x": 1074,
+            "y": 476,
+            "width": 74,
+            "height": 20,
+            "score": 0.9997307062149048
+          },
+          {
+            "text": "普通品阶",
+            "x": 1320,
+            "y": 476,
+            "width": 64,
+            "height": 20,
+            "score": 0.9994102716445923
+          },
+          {
+            "text": "枪种",
+            "x": 400,
+            "y": 545,
+            "width": 46,
+            "height": 28,
+            "score": 0.9996527433395386
+          },
+          {
+            "text": "步枪",
+            "x": 592,
+            "y": 545,
+            "width": 48,
+            "height": 28,
+            "score": 0.9999176263809204
+          },
+          {
+            "text": "冲锋枪",
+            "x": 840,
+            "y": 545,
+            "width": 54,
+            "height": 28,
+            "score": 0.9999144077301025
+          },
+          {
+            "text": "霰弹枪",
+            "x": 1078,
+            "y": 545,
+            "width": 56,
+            "height": 28,
+            "score": 0.9998993277549744
+          },
+          {
+            "text": "轻机枪",
+            "x": 1316,
+            "y": 545,
+            "width": 58,
+            "height": 28,
+            "score": 0.9998834729194641
+          },
+          {
+            "text": "精准射手步枪",
+            "x": 598,
+            "y": 601,
+            "width": 104,
+            "height": 26,
+            "score": 0.9999725222587585
+          },
+          {
+            "text": "狙击步枪",
+            "x": 840,
+            "y": 603,
+            "width": 70,
+            "height": 26,
+            "score": 0.9999805092811584
+          },
+          {
+            "text": "手枪",
+            "x": 1082,
+            "y": 605,
+            "width": 32,
+            "height": 20,
+            "score": 0.9999629259109497
+          },
+          {
+            "text": "确认",
+            "x": 934,
+            "y": 736,
+            "width": 50,
+            "height": 34,
+            "score": 0.9996376037597656
+          }
+        ]
+      }
+    },
+    {
+      "id": "p3_list_filter_open",
+      "expected_page": "skin_listings",
+      "expected_modal": "listing_filter",
+      "legacy_page_label": "皮肤列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_155706.log",
+        "line": 11,
+        "byte_offset": 890,
+        "byte_length": 3584,
+        "line_sha256": "2a75f780da3b9d8a1c1c0b648c9f975c8d863b51c2bea44a8a219ae70243d600",
+        "file_sha256": "431515ab187486080034090658c4d838078999b86395752cff4520e94977352a",
+        "normalized_line": 12,
+        "normalized_byte_offset": 4474,
+        "normalized_line_sha256": "2d56260c1f9284d480d314872b75670a2c768723996e43349941868a0c58b031"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998734593391418
+          },
+          {
+            "text": "筛选",
+            "x": 1376,
+            "y": 47,
+            "width": 66,
+            "height": 42,
+            "score": 0.9999486804008484
+          },
+          {
+            "text": "价格区间",
+            "x": 1376,
+            "y": 101,
+            "width": 88,
+            "height": 35,
+            "score": 0.9997878074645996
+          },
+          {
+            "text": "筛选",
+            "x": 192,
+            "y": 182,
+            "width": 72,
+            "height": 32,
+            "score": 0.8559456467628479
+          },
+          {
+            "text": "不限公示期",
+            "x": 392,
+            "y": 184,
+            "width": 86,
+            "height": 26,
+            "score": 0.9999681711196899
+          },
+          {
+            "text": "默认排序",
+            "x": 860,
+            "y": 180,
+            "width": 76,
+            "height": 32,
+            "score": 0.9811116456985474
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 90,
+            "y": 230,
+            "width": 150,
+            "height": 26,
+            "score": 0.9945208430290222
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 752,
+            "y": 230,
+            "width": 148,
+            "height": 26,
+            "score": 0.9996568560600281
+          },
+          {
+            "text": "成色",
+            "x": 1378,
+            "y": 287,
+            "width": 46,
+            "height": 28,
+            "score": 0.9998106360435486
+          },
+          {
+            "text": "所有成色",
+            "x": 1384,
+            "y": 335,
+            "width": 104,
+            "height": 26,
+            "score": 0.9996493458747864
+          },
+          {
+            "text": "成色C",
+            "x": 94,
+            "y": 399,
+            "width": 44,
+            "height": 21,
+            "score": 0.9829821586608887
+          },
+          {
+            "text": "成色B",
+            "x": 748,
+            "y": 397,
+            "width": 54,
+            "height": 25,
+            "score": 0.9998080134391785
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 94,
+            "y": 436,
+            "width": 148,
+            "height": 26,
+            "score": 0.9996297955513
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 750,
+            "y": 436,
+            "width": 150,
+            "height": 26,
+            "score": 0.9963208436965942
+          },
+          {
+            "text": "成色C",
+            "x": 88,
+            "y": 601,
+            "width": 56,
+            "height": 30,
+            "score": 0.9973170161247253
+          },
+          {
+            "text": "400成色C",
+            "x": 674,
+            "y": 601,
+            "width": 128,
+            "height": 32,
+            "score": 0.9968528151512146
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 92,
+            "y": 643,
+            "width": 150,
+            "height": 26,
+            "score": 0.9990710020065308
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 744,
+            "y": 637,
+            "width": 156,
+            "height": 32,
+            "score": 0.9989103078842163
+          },
+          {
+            "text": "成色C",
+            "x": 92,
+            "y": 810,
+            "width": 50,
+            "height": 25,
+            "score": 0.9925704598426819
+          },
+          {
+            "text": "500成色A",
+            "x": 676,
+            "y": 810,
+            "width": 120,
+            "height": 25,
+            "score": 0.9967162609100342
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 90,
+            "y": 845,
+            "width": 154,
+            "height": 32,
+            "score": 0.9975376129150391
+          },
+          {
+            "text": "AUG突击步枪-天命",
+            "x": 752,
+            "y": 849,
+            "width": 146,
+            "height": 26,
+            "score": 0.9995826482772827
+          },
+          {
+            "text": "第1页",
+            "x": 720,
+            "y": 933,
+            "width": 46,
+            "height": 27,
+            "score": 0.9999749660491943
+          },
+          {
+            "text": "确定",
+            "x": 1732,
+            "y": 1004,
+            "width": 42,
+            "height": 28,
+            "score": 0.9999758005142212
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1042,
+            "width": 34,
+            "height": 20,
+            "score": 0.9885019063949585
+          }
+        ]
+      }
+    },
+    {
+      "id": "p3_home",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_155706.log",
+        "line": 34,
+        "byte_offset": 10352,
+        "byte_length": 3760,
+        "line_sha256": "d4b30c88261b1ba1ddcdada9b6be4b514cfff95875404c09c6c0a3cb6975856a",
+        "file_sha256": "431515ab187486080034090658c4d838078999b86395752cff4520e94977352a",
+        "normalized_line": 35,
+        "normalized_byte_offset": 14112,
+        "normalized_line_sha256": "a9f2a7688f8e61a5b781b3a4ef8c3df61ba2cb324b96e7addcd63eb9609dfdc3"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 156,
+            "y": 65,
+            "width": 74,
+            "height": 26,
+            "score": 0.9998842477798462
+          },
+          {
+            "text": "典藏外观",
+            "x": 282,
+            "y": 61,
+            "width": 82,
+            "height": 32,
+            "score": 0.9996619820594788
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 414,
+            "y": 61,
+            "width": 76,
+            "height": 32,
+            "score": 0.9988199472427368
+          },
+          {
+            "text": "筛选中",
+            "x": 212,
+            "y": 194,
+            "width": 84,
+            "height": 26,
+            "score": 0.9991900324821472
+          },
+          {
+            "text": "◆AUG突击步枪-天命",
+            "x": 466,
+            "y": 178,
+            "width": 320,
+            "height": 44,
+            "score": 0.9607982635498047
+          },
+          {
+            "text": "我的关注",
+            "x": 1702,
+            "y": 190,
+            "width": 80,
+            "height": 30,
+            "score": 0.9999628067016602
+          },
+          {
+            "text": "AS Val突击步枪-黑银先锋",
+            "x": 88,
+            "y": 246,
+            "width": 206,
+            "height": 29,
+            "score": 0.9985158443450928
+          },
+          {
+            "text": "当前市场流通量：669个",
+            "x": 466,
+            "y": 236,
+            "width": 182,
+            "height": 26,
+            "score": 0.9602975845336914
+          },
+          {
+            "text": "典藏工坊",
+            "x": 1686,
+            "y": 254,
+            "width": 94,
+            "height": 19,
+            "score": 0.9986793994903564
+          },
+          {
+            "text": "典藏",
+            "x": 88,
+            "y": 323,
+            "width": 66,
+            "height": 32,
+            "score": 0.9984697103500366
+          },
+          {
+            "text": "AUG突击步枪-黑银先锋",
+            "x": 84,
+            "y": 357,
+            "width": 190,
+            "height": 34,
+            "score": 0.9995821118354797
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 440,
+            "width": 64,
+            "height": 26,
+            "score": 0.9968475103378296
+          },
+          {
+            "text": "P90冲锋枪-黑银先锋",
+            "x": 90,
+            "y": 476,
+            "width": 162,
+            "height": 26,
+            "score": 0.9992010593414307
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 553,
+            "width": 64,
+            "height": 26,
+            "score": 0.9986168146133423
+          },
+          {
+            "text": "QCQ171冲锋枪-海韵之星",
+            "x": 86,
+            "y": 589,
+            "width": 204,
+            "height": 30,
+            "score": 0.9989220499992371
+          },
+          {
+            "text": "典藏",
+            "x": 88,
+            "y": 669,
+            "width": 64,
+            "height": 25,
+            "score": 0.9980372190475464
+          },
+          {
+            "text": "QJB201轻机枪-海韵之星",
+            "x": 90,
+            "y": 704,
+            "width": 194,
+            "height": 26,
+            "score": 0.9981651306152344
+          },
+          {
+            "text": "典藏",
+            "x": 90,
+            "y": 782,
+            "width": 62,
+            "height": 26,
+            "score": 0.9957619309425354
+          },
+          {
+            "text": "PSG-1射手步枪-海韵之星",
+            "x": 92,
+            "y": 817,
+            "width": 198,
+            "height": 28,
+            "score": 0.9988976120948792
+          },
+          {
+            "text": "购买",
+            "x": 1658,
+            "y": 867,
+            "width": 50,
+            "height": 34,
+            "score": 0.9999842047691345
+          },
+          {
+            "text": "典藏",
+            "x": 92,
+            "y": 895,
+            "width": 60,
+            "height": 26,
+            "score": 0.9989073872566223
+          },
+          {
+            "text": "KC17突击步枪-益趣游戏",
+            "x": 90,
+            "y": 933,
+            "width": 188,
+            "height": 25,
+            "score": 0.9997400045394897
+          },
+          {
+            "text": "售出",
+            "x": 1660,
+            "y": 946,
+            "width": 46,
+            "height": 28,
+            "score": 0.9912437200546265
+          },
+          {
+            "text": "返回",
+            "x": 132,
+            "y": 1044,
+            "width": 30,
+            "height": 14,
+            "score": 0.9995734691619873
+          }
+        ]
+      }
+    },
+    {
+      "id": "p3_empty",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_155706.log",
+        "line": 40,
+        "byte_offset": 20247,
+        "byte_length": 1389,
+        "line_sha256": "eed8cb42d28b7423a2a6c3d53baadc10ffbfaf58f8629e91ed6de9fd1a5df687",
+        "file_sha256": "431515ab187486080034090658c4d838078999b86395752cff4520e94977352a",
+        "normalized_line": 41,
+        "normalized_byte_offset": 21636,
+        "normalized_line_sha256": "58470fd1b74c8ed0d825e1265754d5eea1b99a47c8cef2d53db8d848a6e0aeb2"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 166,
+            "y": 61,
+            "width": 50,
+            "height": 34,
+            "score": 0.9999169111251831
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 653,
+            "width": 182,
+            "height": 25,
+            "score": 0.9987491369247437
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1040,
+            "width": 34,
+            "height": 22,
+            "score": 0.9894378185272217
+          }
+        ]
+      }
+    },
+    {
+      "id": "p3_filter",
+      "expected_page": "catalog_filter",
+      "expected_modal": "none",
+      "legacy_page_label": "筛选",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_155706.log",
+        "line": 49,
+        "byte_offset": 33679,
+        "byte_length": 2118,
+        "line_sha256": "3e22c4f24298b2d7187902d94d6961b24bef05de6b7fd4f870de48e6a99ef181",
+        "file_sha256": "431515ab187486080034090658c4d838078999b86395752cff4520e94977352a",
+        "normalized_line": 50,
+        "normalized_byte_offset": 35797,
+        "normalized_line_sha256": "d43fd00423daa4a89fa61c6e7844765ba0a3616c714d5ba7fd2decb1a03bd1a4"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "△筛选",
+            "x": 360,
+            "y": 230,
+            "width": 118,
+            "height": 45,
+            "score": 0.7895138263702393
+          },
+          {
+            "text": "赛季",
+            "x": 398,
+            "y": 317,
+            "width": 50,
+            "height": 34,
+            "score": 0.9998630285263062
+          },
+          {
+            "text": "全部赛季",
+            "x": 580,
+            "y": 321,
+            "width": 70,
+            "height": 26,
+            "score": 0.9998878836631775
+          },
+          {
+            "text": "查看",
+            "x": 400,
+            "y": 401,
+            "width": 46,
+            "height": 27,
+            "score": 0.9998371005058289
+          },
+          {
+            "text": "已拥有",
+            "x": 600,
+            "y": 401,
+            "width": 56,
+            "height": 27,
+            "score": 0.9997218251228333
+          },
+          {
+            "text": "未拥有",
+            "x": 840,
+            "y": 403,
+            "width": 54,
+            "height": 25,
+            "score": 0.9994704723358154
+          },
+          {
+            "text": "品阶",
+            "x": 398,
+            "y": 470,
+            "width": 50,
+            "height": 34,
+            "score": 0.9985054731369019
+          },
+          {
+            "text": "传说品阶",
+            "x": 596,
+            "y": 474,
+            "width": 74,
+            "height": 26,
+            "score": 0.9990208745002747
+          },
+          {
+            "text": "史诗品阶",
+            "x": 830,
+            "y": 470,
+            "width": 82,
+            "height": 32,
+            "score": 0.9989840388298035
+          },
+          {
+            "text": "稀有品阶",
+            "x": 1070,
+            "y": 474,
+            "width": 80,
+            "height": 26,
+            "score": 0.9996170401573181
+          },
+          {
+            "text": "普通品阶",
+            "x": 1314,
+            "y": 470,
+            "width": 76,
+            "height": 32,
+            "score": 0.9993973970413208
+          },
+          {
+            "text": "枪种",
+            "x": 396,
+            "y": 541,
+            "width": 52,
+            "height": 34,
+            "score": 0.9998667240142822
+          },
+          {
+            "text": "步枪",
+            "x": 588,
+            "y": 545,
+            "width": 52,
+            "height": 28,
+            "score": 0.9996273517608643
+          },
+          {
+            "text": "冲锋枪",
+            "x": 836,
+            "y": 545,
+            "width": 58,
+            "height": 28,
+            "score": 0.9999387860298157
+          },
+          {
+            "text": "霰弹枪",
+            "x": 1076,
+            "y": 545,
+            "width": 58,
+            "height": 28,
+            "score": 0.9999620914459229
+          },
+          {
+            "text": "轻机枪",
+            "x": 1310,
+            "y": 543,
+            "width": 66,
+            "height": 32,
+            "score": 0.999957263469696
+          },
+          {
+            "text": "精准射手步枪",
+            "x": 594,
+            "y": 599,
+            "width": 110,
+            "height": 32,
+            "score": 0.999991238117218
+          },
+          {
+            "text": "狙击步枪",
+            "x": 838,
+            "y": 599,
+            "width": 74,
+            "height": 32,
+            "score": 0.9999716281890869
+          },
+          {
+            "text": "手枪",
+            "x": 1072,
+            "y": 601,
+            "width": 46,
+            "height": 28,
+            "score": 0.9999469518661499
+          },
+          {
+            "text": "确认",
+            "x": 934,
+            "y": 736,
+            "width": 50,
+            "height": 34,
+            "score": 0.9996267557144165
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_settings_2880",
+      "expected_page": "game_settings",
+      "expected_modal": "none",
+      "legacy_page_label": "大战场",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 11,
+        "byte_offset": 895,
+        "byte_length": 4367,
+        "line_sha256": "495ac97c916264784d5990a5d12a52a05d352061d26ab23572c47723e8d50075",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 12,
+        "normalized_byte_offset": 5262,
+        "normalized_line_sha256": "d72ddd40141f4f2f436f5f51af28ebf270342607f895acb546e156f6cfd38d41"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "视频",
+            "x": 816,
+            "y": 56,
+            "width": 57,
+            "height": 42,
+            "score": 0.99989914894104
+          },
+          {
+            "text": "显示模式",
+            "x": 99,
+            "y": 270,
+            "width": 81,
+            "height": 51,
+            "score": 0.9960909485816956
+          },
+          {
+            "text": "分辨率",
+            "x": 105,
+            "y": 324,
+            "width": 54,
+            "height": 33,
+            "score": 0.9999749064445496
+          },
+          {
+            "text": "局内帧数上限",
+            "x": 99,
+            "y": 497,
+            "width": 117,
+            "height": 47,
+            "score": 0.999483048915863
+          },
+          {
+            "text": "其他应用：0.61 GB",
+            "x": 1212,
+            "y": 863,
+            "width": 174,
+            "height": 39,
+            "score": 0.7497889399528503
+          },
+          {
+            "text": "返回®重置⑧重新预热着色器",
+            "x": 87,
+            "y": 1030,
+            "width": 339,
+            "height": 48,
+            "score": 0.576237678527832
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_sparse_lobby",
+      "expected_page": "unknown",
+      "expected_modal": "none",
+      "legacy_page_label": "首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 23,
+        "byte_offset": 20572,
+        "byte_length": 478,
+        "line_sha256": "f3101a2bfc9e843894c825c412c150ca9053be43cdd47f967d8bc4a8f15f48ed",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 24,
+        "normalized_byte_offset": 21050,
+        "normalized_line_sha256": "b56cce32e1f16339203f3a6b7ef9a4b50f21af3bb4e91b461d13ddbbb4314dfd"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "行前备战",
+            "x": 1605,
+            "y": 946,
+            "width": 96,
+            "height": 39,
+            "score": 0.9999606609344482
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_mandel_2880",
+      "expected_page": "mandel",
+      "expected_modal": "none",
+      "legacy_page_label": "曼德尔",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 26,
+        "byte_offset": 21600,
+        "byte_length": 2363,
+        "line_sha256": "7acddf645c022e8c894b07cddde806f619ec70e25d3f17b64dfdf7c3f56c4cf6",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 27,
+        "normalized_byte_offset": 23963,
+        "normalized_line_sha256": "a8022631a3899970612d7d9cfe90eb990d29c1c67c726f63f94bdc5039d05229"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "曼德尔砖",
+            "x": 159,
+            "y": 62,
+            "width": 66,
+            "height": 30,
+            "score": 0.9997758865356445
+          },
+          {
+            "text": "典藏外观",
+            "x": 282,
+            "y": 59,
+            "width": 81,
+            "height": 39,
+            "score": 0.998582124710083
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 426,
+            "y": 68,
+            "width": 57,
+            "height": 21,
+            "score": 0.9904824495315552
+          },
+          {
+            "text": "当季产出",
+            "x": 33,
+            "y": 178,
+            "width": 84,
+            "height": 39,
+            "score": 0.999962568283081
+          },
+          {
+            "text": "曼德尔砖-棱镜攻势目",
+            "x": 462,
+            "y": 178,
+            "width": 321,
+            "height": 48,
+            "score": 0.9883021116256714
+          },
+          {
+            "text": "曼德尔砖-疾光魅影",
+            "x": 39,
+            "y": 220,
+            "width": 141,
+            "height": 30,
+            "score": 0.9997170567512512
+          },
+          {
+            "text": "流通量：999+个流通量",
+            "x": 459,
+            "y": 226,
+            "width": 183,
+            "height": 39,
+            "score": 0.991055965423584
+          },
+          {
+            "text": "拥有：0/1000个",
+            "x": 465,
+            "y": 265,
+            "width": 129,
+            "height": 29,
+            "score": 0.9782108068466187
+          },
+          {
+            "text": "开启",
+            "x": 519,
+            "y": 303,
+            "width": 48,
+            "height": 30,
+            "score": 0.9999167323112488
+          },
+          {
+            "text": "往季产出",
+            "x": 27,
+            "y": 327,
+            "width": 90,
+            "height": 39,
+            "score": 0.999955952167511
+          },
+          {
+            "text": "曼德尔砖-群星",
+            "x": 36,
+            "y": 363,
+            "width": 117,
+            "height": 39,
+            "score": 0.997738242149353
+          },
+          {
+            "text": "成交均价",
+            "x": 471,
+            "y": 363,
+            "width": 57,
+            "height": 21,
+            "score": 0.985177755355835
+          },
+          {
+            "text": "曼德尔砖-造物纪元",
+            "x": 39,
+            "y": 482,
+            "width": 138,
+            "height": 30,
+            "score": 0.9998223781585693
+          },
+          {
+            "text": "曼德尔砖-悬赏令",
+            "x": 45,
+            "y": 711,
+            "width": 117,
+            "height": 27,
+            "score": 0.9988731145858765
+          },
+          {
+            "text": "曼德尔砖-棱镜攻势S2",
+            "x": 42,
+            "y": 824,
+            "width": 162,
+            "height": 27,
+            "score": 0.9995101690292358
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_home_2880",
+      "expected_page": "skin_home",
+      "expected_modal": "none",
+      "legacy_page_label": "皮肤首页",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 29,
+        "byte_offset": 26467,
+        "byte_length": 2412,
+        "line_sha256": "2315a9284336facd7612b24fe4c301cd821adefd2a2780b8abb22e79e3b511bb",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 30,
+        "normalized_byte_offset": 28879,
+        "normalized_line_sha256": "f22b83ef8fc3aa856daedd3b4dc81274bb3590697da007120478117e4c444d38"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "典藏外观",
+            "x": 285,
+            "y": 62,
+            "width": 75,
+            "height": 30,
+            "score": 0.9998811483383179
+          },
+          {
+            "text": "典藏挂饰",
+            "x": 423,
+            "y": 62,
+            "width": 57,
+            "height": 30,
+            "score": 0.961415708065033
+          },
+          {
+            "text": "筛选",
+            "x": 198,
+            "y": 190,
+            "width": 75,
+            "height": 39,
+            "score": 0.9994605779647827
+          },
+          {
+            "text": "◇MK4冲锋枪-疾光魅影",
+            "x": 462,
+            "y": 178,
+            "width": 360,
+            "height": 48,
+            "score": 0.9711945056915283
+          },
+          {
+            "text": "当前市场流通量：999+个",
+            "x": 465,
+            "y": 229,
+            "width": 201,
+            "height": 36,
+            "score": 0.9955726265907288
+          },
+          {
+            "text": "典藏",
+            "x": 72,
+            "y": 324,
+            "width": 57,
+            "height": 33,
+            "score": 0.9953807592391968
+          },
+          {
+            "text": "AKM突击步枪-群星",
+            "x": 72,
+            "y": 363,
+            "width": 144,
+            "height": 30,
+            "score": 0.9997164011001587
+          },
+          {
+            "text": "典藏",
+            "x": 72,
+            "y": 440,
+            "width": 57,
+            "height": 30,
+            "score": 0.9984521269798279
+          },
+          {
+            "text": "KC17突击步枪-造物纪元",
+            "x": 72,
+            "y": 473,
+            "width": 186,
+            "height": 36,
+            "score": 0.8459595441818237
+          },
+          {
+            "text": "典藏",
+            "x": 78,
+            "y": 556,
+            "width": 48,
+            "height": 21,
+            "score": 0.9978631734848022
+          },
+          {
+            "text": "MP7冲锋枪-电玩高手S2",
+            "x": 69,
+            "y": 586,
+            "width": 189,
+            "height": 36,
+            "score": 0.9994707107543945
+          },
+          {
+            "text": "典藏",
+            "x": 78,
+            "y": 673,
+            "width": 45,
+            "height": 20,
+            "score": 0.9982491135597229
+          },
+          {
+            "text": "典藏",
+            "x": 75,
+            "y": 786,
+            "width": 51,
+            "height": 21,
+            "score": 0.99665367603302
+          },
+          {
+            "text": "AS Val突击步枪-悬赏令",
+            "x": 69,
+            "y": 815,
+            "width": 189,
+            "height": 36,
+            "score": 0.8552204370498657
+          },
+          {
+            "text": "典藏",
+            "x": 75,
+            "y": 899,
+            "width": 51,
+            "height": 21,
+            "score": 0.9983226656913757
+          },
+          {
+            "text": "M7战斗步枪-棱镜攻势S2",
+            "x": 69,
+            "y": 929,
+            "width": 195,
+            "height": 35,
+            "score": 0.9982880353927612
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_empty_2880",
+      "expected_page": "empty_watchlist",
+      "expected_modal": "none",
+      "legacy_page_label": "关注列表",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 35,
+        "byte_offset": 32818,
+        "byte_length": 678,
+        "line_sha256": "7dc0ca4017faa06b81beb612fa42961be247daf54598d822a113c1681925d61f",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 36,
+        "normalized_byte_offset": 33496,
+        "normalized_line_sha256": "4ba1e563d86f810800e9ba4a92aa2036bbd3f5348f11692582db9f38ca328cbc"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "在售",
+            "x": 174,
+            "y": 65,
+            "width": 33,
+            "height": 24,
+            "score": 0.9999457001686096
+          },
+          {
+            "text": "暂未添加任何关注的皮肤",
+            "x": 870,
+            "y": 646,
+            "width": 183,
+            "height": 38,
+            "score": 0.9935691356658936
+          },
+          {
+            "text": "返回",
+            "x": 90,
+            "y": 1033,
+            "width": 75,
+            "height": 42,
+            "score": 0.5005724430084229
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4_filter_2880",
+      "expected_page": "catalog_filter",
+      "expected_modal": "none",
+      "legacy_page_label": "筛选",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260930_113211.log",
+        "line": 47,
+        "byte_offset": 39750,
+        "byte_length": 2123,
+        "line_sha256": "73875b032b1a428316292a743d200e1d4347a33d36daaacf91bd0855f05293bb",
+        "file_sha256": "1efad192174c20d77bdaa3ec6c466a081fb7649f80d1cd43857fe11d44a7b05d",
+        "normalized_line": 48,
+        "normalized_byte_offset": 41873,
+        "normalized_line_sha256": "5998fdd32a0c5db1c33dfcf1645ca40a9f4eb54e601db940687ce521c2e0d5e5"
+      },
+      "observation": {
+        "width": 2880,
+        "height": 1620,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "筛选",
+            "x": 357,
+            "y": 229,
+            "width": 126,
+            "height": 47,
+            "score": 0.9978188872337341
+          },
+          {
+            "text": "赛季",
+            "x": 399,
+            "y": 318,
+            "width": 45,
+            "height": 33,
+            "score": 0.9998394250869751
+          },
+          {
+            "text": "全部赛季",
+            "x": 564,
+            "y": 315,
+            "width": 93,
+            "height": 39,
+            "score": 0.9983763098716736
+          },
+          {
+            "text": "查看",
+            "x": 402,
+            "y": 399,
+            "width": 45,
+            "height": 35,
+            "score": 0.999294638633728
+          },
+          {
+            "text": "□已拥有",
+            "x": 561,
+            "y": 396,
+            "width": 96,
+            "height": 38,
+            "score": 0.9707704186439514
+          },
+          {
+            "text": "未拥有",
+            "x": 804,
+            "y": 396,
+            "width": 93,
+            "height": 38,
+            "score": 0.9985378384590149
+          },
+          {
+            "text": "品阶",
+            "x": 396,
+            "y": 464,
+            "width": 51,
+            "height": 45,
+            "score": 0.99872225522995
+          },
+          {
+            "text": "传说品阶",
+            "x": 558,
+            "y": 464,
+            "width": 120,
+            "height": 48,
+            "score": 0.9982435703277588
+          },
+          {
+            "text": "□史诗品阶",
+            "x": 804,
+            "y": 467,
+            "width": 108,
+            "height": 39,
+            "score": 0.974793553352356
+          },
+          {
+            "text": "稀有品阶",
+            "x": 1044,
+            "y": 467,
+            "width": 105,
+            "height": 39,
+            "score": 0.9995474815368652
+          },
+          {
+            "text": "普通品阶",
+            "x": 1281,
+            "y": 467,
+            "width": 111,
+            "height": 39,
+            "score": 0.9731186032295227
+          },
+          {
+            "text": "枪种",
+            "x": 396,
+            "y": 536,
+            "width": 54,
+            "height": 41,
+            "score": 0.99971604347229
+          },
+          {
+            "text": "□步枪",
+            "x": 561,
+            "y": 539,
+            "width": 81,
+            "height": 38,
+            "score": 0.9771772027015686
+          },
+          {
+            "text": "□冲锋枪",
+            "x": 804,
+            "y": 539,
+            "width": 93,
+            "height": 38,
+            "score": 0.9623685479164124
+          },
+          {
+            "text": "霰弹枪",
+            "x": 1044,
+            "y": 539,
+            "width": 93,
+            "height": 38,
+            "score": 0.9928905963897705
+          },
+          {
+            "text": "轻机枪",
+            "x": 1281,
+            "y": 539,
+            "width": 96,
+            "height": 38,
+            "score": 0.9991311430931091
+          },
+          {
+            "text": "精准射手步枪",
+            "x": 555,
+            "y": 589,
+            "width": 153,
+            "height": 54,
+            "score": 0.8203761577606201
+          },
+          {
+            "text": "狙击步枪",
+            "x": 804,
+            "y": 595,
+            "width": 108,
+            "height": 39,
+            "score": 0.9906572103500366
+          },
+          {
+            "text": "手枪",
+            "x": 1044,
+            "y": 595,
+            "width": 78,
+            "height": 42,
+            "score": 0.9957526326179504
+          },
+          {
+            "text": "确认",
+            "x": 939,
+            "y": 741,
+            "width": 42,
+            "height": 33,
+            "score": 0.9998648166656494
+          }
+        ]
+      }
+    },
+    {
+      "id": "p6_settings_mislabeled",
+      "expected_page": "game_settings",
+      "expected_modal": "none",
+      "legacy_page_label": "应用外观",
+      "source": {
+        "file": "BBZPS/log/BBZ_20260928_104709.log",
+        "line": 56,
+        "byte_offset": 35830,
+        "byte_length": 5757,
+        "line_sha256": "37202aa3a9fcc5835a7dd1c95f7bb8300915cca38a35765e01807a2dfb53c615",
+        "file_sha256": "dbde3359769564bf9baf218876bfe568c356ce931cd7ed447eab3b19930af7e8",
+        "normalized_line": 57,
+        "normalized_byte_offset": 41587,
+        "normalized_line_sha256": "56f6e902cc723dfaa596a2249d018b92e3e9756b7af0716c661324d10d977ebc"
+      },
+      "observation": {
+        "width": 1920,
+        "height": 1080,
+        "coverage": "full_client",
+        "words": [
+          {
+            "text": "视频",
+            "x": 820,
+            "y": 63,
+            "width": 44,
+            "height": 28,
+            "score": 0.9998620748519897
+          },
+          {
+            "text": "显示模式",
+            "x": 102,
+            "y": 277,
+            "width": 78,
+            "height": 32,
+            "score": 0.9999480247497559
+          },
+          {
+            "text": "分辨率",
+            "x": 104,
+            "y": 325,
+            "width": 54,
+            "height": 28,
+            "score": 0.9999200701713562
+          },
+          {
+            "text": "局内帧数上限",
+            "x": 102,
+            "y": 504,
+            "width": 108,
+            "height": 32,
+            "score": 0.9984843730926514
+          },
+          {
+            "text": "■其他应用：0.73GB",
+            "x": 1210,
+            "y": 867,
+            "width": 172,
+            "height": 26,
+            "score": 0.9955318570137024
+          },
+          {
+            "text": "应用",
+            "x": 1656,
+            "y": 935,
+            "width": 54,
+            "height": 33,
+            "score": 0.9999500513076782
+          },
+          {
+            "text": "返回",
+            "x": 130,
+            "y": 1042,
+            "width": 34,
+            "height": 20,
+            "score": 0.9985967874526978
+          }
+        ]
+      }
+    }
+  ]
+}

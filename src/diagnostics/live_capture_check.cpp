@@ -1,6 +1,7 @@
 #include "live_capture_check.h"
 #include "application/vision/dxgi_observation_source.h"
 #include "application/vision/windows_ocr.h"
+#include "application/vision/skin_page_classifier.h"
 
 #include <QBuffer>
 #include <QCommandLineParser>
@@ -140,6 +141,10 @@ int runLiveCaptureCheck(int argc, char** argv) {
         result["recognition_performed"] = true;
         result["ocr_passed"] = recognized.ok;
         if (recognized.ok) {
+            auto pageObservation = recognized.observation;
+            // This diagnostic requested the entire bound client, not a ROI.
+            pageObservation["coverage"] = "full_client";
+            result["startup_page"] = classifySkinPage(pageObservation).toJson();
             auto summary = summarizeRecognizedPage(recognized.observation);
             summary["provider"] = "Windows.Media.Ocr";
             summary["language"] = recognized.observation.value("language");

@@ -22,6 +22,14 @@ RELEASE = ROOT / 'dist/RelinkStudio'
 BASELINE = TX / 'baseline/release'
 BUILD = ROOT / 'build_relocated'
 h.TX, h.BASELINE = TX, BASELINE
+PHASE_TITLE = 'M2 capture + original startup reconstruction'
+CHANGED_BOUNDARIES = 'DxgiObservationSource; TargetWindow/ForegroundReturnGuard; WindowsOcrRecognizer; opt-in --live-capture-check; startup evidence S01-S39.'
+PHASE_NOTES = [
+    'Business behavior unchanged: normal UI remains replay/configuration; original startup navigation not wired to game.',
+    'Real capture passed; Windows OCR tested with synthetic text only, not validated game prices/wear.',
+    'User correction: use original page dispatch and watchlist precheck; not ordinary material trading page.',
+]
+EXTRA_REQUIRED_RECORDS = []
 
 
 def prepare_rollback():
@@ -97,7 +105,8 @@ def verify():
     sentinel.write_text('retain user data\n', encoding='utf-8')
     sentinel_hash = h.sha(sentinel)
     bash = Path(r'C:\Program Files\Git\bin\bash.exe')
-    command = 'chmod +x artifacts/m2_live_capture_transaction/ROLLBACK.sh && ./artifacts/m2_live_capture_transaction/ROLLBACK.sh "$1"'
+    script = TX.relative_to(ROOT).as_posix() + '/ROLLBACK.sh'
+    command = f'chmod +x "{script}" && "./{script}" "$1"'
     h.run('ROLLBACK', [str(bash), '-c', command, 'rollback', str(rollback)],
           'Isolated copy of modified package; restore baseline files; remove only new hash-matching managed helper; preserve user sentinel.',
           'ROLLBACK_RESTORED=PASS', runtime=bash.parent)
@@ -116,14 +125,14 @@ def finalize():
     latest = {r['label']: r for r in records}
     for label in ['BASELINE', 'BASELINE_STORAGE', 'MODIFIED_BUILD', 'MODIFIED', 'MODIFIED_STORAGE',
                   'WINDOWS_CAPTURE_TESTS', 'WINDOWS_OCR_TESTS', 'STARTUP_CONTRACT', 'STARTUP_LOCATORS',
-                  'ROLLBACK', 'RESTORED', 'RESTORED_STORAGE']:
+                  'ROLLBACK', 'RESTORED', 'RESTORED_STORAGE', *EXTRA_REQUIRED_RECORDS]:
         assert latest[label]['exit_status'] == 0, label
     revision = (TX / 'baseline/source_revision.txt').read_text(encoding='ascii').strip()
     names = set(subprocess.check_output(['git', 'diff', '--name-only', revision], text=True, cwd=ROOT).splitlines())
     names.update(subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True, cwd=ROOT).splitlines())
     patch = []
     for name in sorted(names):
-        if not (name.startswith(('src/', 'tests/', 'docs/')) or name in {'.gitignore', 'CMakeLists.txt', 'build.ps1', 'README.md'}):
+        if not (name.startswith(('src/', 'tests/', 'docs/')) or name in {'.gitignore', 'CMakeLists.txt', 'build.ps1', 'resources.qrc', 'SESSION_START.md', 'README.md'}):
             continue
         before = subprocess.run(['git', 'show', f'{revision}:{name}'], cwd=ROOT, capture_output=True)
         old = before.stdout.decode('utf-8').splitlines(True) if before.returncode == 0 else []
@@ -131,12 +140,10 @@ def finalize():
         patch.extend(difflib.unified_diff(old, new, fromfile='a/' + name, tofile='b/' + name))
     (TX / 'DIFF_FILE').write_text(''.join(patch), encoding='utf-8')
     lines = [
-        'Delta Market Assistant — M2 capture + original startup reconstruction',
+        'Delta Market Assistant — ' + PHASE_TITLE,
         'Date: 2026-10-07 (Asia/Shanghai)', 'Changed branch: main', 'Baseline source revision: ' + revision,
-        'Changed fields/boundaries: DxgiObservationSource; TargetWindow/ForegroundReturnGuard; WindowsOcrRecognizer; opt-in --live-capture-check; startup evidence S01-S39.',
-        'Business behavior unchanged: normal UI remains replay/configuration; original startup navigation not wired to game.',
-        'Real capture passed; Windows OCR tested with synthetic text only, not validated game prices/wear.',
-        'User correction: use original page dispatch and watchlist precheck; not ordinary material trading page.',
+        'Changed fields/boundaries: ' + CHANGED_BOUNDARIES,
+        *PHASE_NOTES,
         'Original sample was never run, imported, patched or packaged.',
         'DELIVERY: ' + str(RELEASE / 'RelinkStudio.exe'),
         'MODIFIED_FILE: ' + str(TX / 'MODIFIED_FILE.exe'),
@@ -148,10 +155,10 @@ def finalize():
         'ROLLBACK_SHA256: ' + h.sha(TX / 'rollback_test/RelinkStudio.exe'),
         'Restored behavior/status: isolated original UI/workspace/SQLite checks pass; user sentinel preserved; new helper removed.',
         'Fixed delivery and MODIFIED_FILE remain changed. Runtime image-file writes=0; UI test snapshots are explicitly requested diagnostics.',
-        'Live round metadata is in live_capture_1.json; original failed focus and successful retry metadata remain separate.',
         'Exact command records (including all recorded attempts):',
     ]
-    records.append(json.loads((TX / 'live_capture_1.json').read_text(encoding='utf-8')))
+    if (TX / 'live_capture_1.json').exists():
+        records.append(json.loads((TX / 'live_capture_1.json').read_text(encoding='utf-8')))
     for record in records:
         lines += ['', record['label'], 'COMMAND: ' + record['command'], 'INPUT: ' + record['input'],
                   'STDOUT:', record['stdout'].rstrip(), 'STDERR:', record['stderr'].rstrip() or '(empty)',

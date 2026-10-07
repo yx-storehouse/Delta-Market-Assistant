@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file alias="fixtures/startup_pages.json">docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json</file>
     <file alias="theme.qss">src/theme.qss</file>
     <file alias="assets/demo_skin_atlas.png">src/assets/demo_skin_atlas.png</file>
     <file alias="icons/check.xpm">src/icons/check.xpm</file>

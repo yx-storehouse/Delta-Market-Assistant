@@ -1,5 +1,16 @@
 # Relink Studio — new session entry
 
+## 最新开发节点：原启动只读观察器已接入（2026-10-07）
+
+- 用户问实机何时需要：本轮先完成离线开发与回归，没有切换游戏前台或采集游戏画面；下一步需要用户准备后做当前版本页面校准。
+- 已有 `SkinPageClassifier` / `StartupObserver` 独立QtCore模块；按原顺序处理关注预检、返回首页再筛选、已有列表接续。只有检查点输出，无采集/导航/购买命令。
+- 27条历史OCR锚点投影已嵌入发布程序，`--startup-observer-self-test` 离线检查27页/5分支；不是当前游戏图片识别准确率。应用CTest现为23组。
+- 原日志“大战场/应用外观”在部分记录里实际为视频设置页；已保留旧标签但不将其作为页类真值。
+- 先读 `docs/business_rebuild/implementation/runtime/startup_observer_m2.md`；本轮事务 `artifacts/m2_startup_observer_transaction/VERIFICATION.txt`。
+- 实机准备：游戏停大厅，保留现有分辨率/DPI及关注条目；用户准备后逐页只读校准，结束后恢复IDE前台。不要擅自去普通物资交易行或清空关注。
+
+下方保留前一阶段记录。
+
 ## 当前入口：先复刻 BBZPS 原启动流程（2026-10-07）
 
 用户最新纠正：仔细拆解BBZPS首次启动全部流程，按原业务直接复刻，不自行重写业务路径。

@@ -1,0 +1,2028 @@
+Delta Market Assistant — M2 original startup page classification and read-only observer
+Date: 2026-10-07 (Asia/Shanghai)
+Changed branch: main
+Baseline source revision: 7bbe28ff93e78f2bf696582342e6b247e6a72b64
+Changed fields/boundaries: SkinPageClassifier; StartupObserver S04-S10/S32-S33; --startup-observer-self-test; live OCR diagnostic page summary; helper-PID UI checks.
+This phase performed NO live game capture, focus switching or game input; current-version live calibration awaits user preparation.
+27 historical OCR projections are text/geometry fixtures, not image recognition accuracy measurements.
+Original watchlist precheck and existing-list continuation are implemented as read-only observation checkpoints; no navigation executor or purchase authorization.
+Windows OCR helper focus validation is PID-scoped so user app switching is not misattributed to the helper.
+Original sample was never run, imported, patched or packaged.
+DELIVERY: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe
+MODIFIED_FILE: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\MODIFIED_FILE.exe
+DIFF_FILE: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\DIFF_FILE
+VERIFICATION: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\VERIFICATION.txt
+ROLLBACK: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\ROLLBACK.sh
+BASELINE_SHA256: bbf11b9c16d3748fee796f529d2bf09866c9720e370185d4a1bdd3eb104675a7
+MODIFIED_SHA256: cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe
+ROLLBACK_SHA256: bbf11b9c16d3748fee796f529d2bf09866c9720e370185d4a1bdd3eb104675a7
+Restored behavior/status: isolated original UI/workspace/SQLite checks pass; user sentinel preserved; new helper removed.
+Fixed delivery and MODIFIED_FILE remain changed. Runtime image-file writes=0; UI test snapshots are explicitly requested diagnostics.
+Exact command records (including all recorded attempts):
+
+BASELINE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\baseline\release\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\baseline\ui_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\baseline-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+BASELINE_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\baseline\release\RelinkStudio.exe --storage-self-test
+INPUT: Original extracted PR11; temporary SQLite database and recovery/backup checks.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_BUILD
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\Desktop\price\build.ps1 -Test -Package
+INPUT: Current source; actual build directory selected by build.ps1; CTest then extracted deployment.
+STDOUT:
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (0.2s)
+-- Generating done (0.4s)
+-- Build files have been written to: C:/Users/Administrator/Desktop/price/build_relocated
+ninja: no work to do.
+Test project C:/Users/Administrator/Desktop/price/build_relocated
+      Start  1: domain_tests
+ 1/23 Test  #1: domain_tests .....................   Passed    0.09 sec
+      Start  2: business_tests
+ 2/23 Test  #2: business_tests ...................   Passed    0.03 sec
+      Start  3: business_value_tests
+ 3/23 Test  #3: business_value_tests .............   Passed    0.03 sec
+      Start  4: business_rule_tests
+ 4/23 Test  #4: business_rule_tests ..............   Passed    0.03 sec
+      Start  5: business_migration_tests
+ 5/23 Test  #5: business_migration_tests .........   Passed    0.03 sec
+      Start  6: profile_store_tests
+ 6/23 Test  #6: profile_store_tests ..............   Passed    0.03 sec
+      Start  7: runtime_tests
+ 7/23 Test  #7: runtime_tests ....................   Passed    0.03 sec
+      Start  8: observation_adapter_tests
+ 8/23 Test  #8: observation_adapter_tests ........   Passed    0.02 sec
+      Start  9: windows_capture_tests
+ 9/23 Test  #9: windows_capture_tests ............   Passed    0.03 sec
+      Start 10: startup_observer_tests
+10/23 Test #10: startup_observer_tests ...........   Passed    0.06 sec
+      Start 11: startup_observer_self_test
+11/23 Test #11: startup_observer_self_test .......   Passed    0.06 sec
+      Start 12: windows_ocr_tests
+12/23 Test #12: windows_ocr_tests ................   Passed    0.89 sec
+      Start 13: worker_protocol_tests
+13/23 Test #13: worker_protocol_tests ............   Passed    0.04 sec
+      Start 14: vision_pipeline_tests
+14/23 Test #14: vision_pipeline_tests ............   Passed    0.03 sec
+      Start 15: shared_frame_memory_tests
+15/23 Test #15: shared_frame_memory_tests ........   Passed    0.03 sec
+      Start 16: worker_process_tests
+16/23 Test #16: worker_process_tests .............   Passed    1.50 sec
+      Start 17: ui_projection_tests
+17/23 Test #17: ui_projection_tests ..............   Passed    0.03 sec
+      Start 18: ledger_tests
+18/23 Test #18: ledger_tests .....................   Passed    0.03 sec
+      Start 19: sqlite_ledger_tests
+19/23 Test #19: sqlite_ledger_tests ..............   Passed    0.83 sec
+      Start 20: workspace_tests
+20/23 Test #20: workspace_tests ..................   Passed    0.98 sec
+      Start 21: ui_module_tests
+21/23 Test #21: ui_module_tests ..................   Passed    0.06 sec
+      Start 22: storage_self_test
+22/23 Test #22: storage_self_test ................   Passed    0.10 sec
+      Start 23: ui_offscreen
+23/23 Test #23: ui_offscreen .....................   Passed    2.80 sec
+
+100% tests passed out of 23
+
+Total Test time (real) =   7.81 sec
+C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Skipping plugin qtuiotouchplugin.dll due to skipped plugin type generic
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type sqldrivers for module: Qt6Sql
+Adding in plugin type styles for module: Qt6Widgets
+Direct dependencies: Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Sql Qt6Widgets
+Qt6Core.dll is up to date.
+Qt6Gui.dll is up to date.
+Qt6Sql.dll is up to date.
+Qt6Widgets.dll is up to date.
+libgcc_s_seh-1.dll is up to date.
+libstdc++-6.dll is up to date.
+libwinpthread-1.dll is up to date.
+qgif.dll is up to date.
+qico.dll is up to date.
+qjpeg.dll is up to date.
+qwindows.dll is up to date.
+qsqlite.dll is up to date.
+qsqlmimer.dll is up to date.
+qsqlodbc.dll is up to date.
+qsqlpsql.dll is up to date.
+qmodernwindowsstyle.dll is up to date.
+PACKAGE=PASS; path=C:\Users\Administrator\Desktop\price\dist\RelinkStudio
+STDERR:
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll.
+Warning: Runtime libraries not found in Qt binary folder, defaulting to looking in path
+EXIT_STATUS: 0
+
+MODIFIED
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\modified-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+MODIFIED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --storage-self-test
+INPUT: Packaged Qt/SQLite only; temporary database; no game.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+WINDOWS_CAPTURE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\windows_capture_tests.exe
+INPUT: Hidden/offscreen synthetic input, packaged dependencies; no game capture.
+STDOUT:
+PASS qpc_zero
+PASS qpc_floor
+PASS qpc_fraction_floor
+PASS qpc_negative_rejected
+PASS qpc_zero_frequency_rejected
+PASS qpc_negative_frequency_rejected
+PASS qpc_excessive_frequency_rejected
+PASS qpc_result_overflow_rejected
+PASS qpc_no_intermediate_overflow
+PASS qpc_safe_integer_boundary
+PASS qpc_fraction_cannot_exceed_safe_integer
+PASS native_qpc_clock_monotonic
+PASS black_frame_classified
+PASS alpha_ignored_for_black_check
+PASS color_detected
+PASS zero_width_rejected
+PASS negative_height_rejected
+PASS short_stride_rejected
+PASS oversized_width_rejected
+PASS oversized_height_rejected
+PASS oversized_stride_rejected
+PASS truncated_pixels_rejected
+PASS extra_pixels_rejected
+PASS stride_padding_not_pixels
+PASS black_threshold_boundary
+PASS demand_identity_equal
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS immutable_demand_field_change_rejected
+PASS source_rejects_mutated_demand_before_capture
+PASS cancel_before_first_capture
+PASS cancelled_has_no_pixels
+PASS failure_preserves_correlation
+PASS cancel_is_sticky
+PASS unrelated_cancellation_ignored
+PASS duplicate_request_rejected
+PASS request_number_budget_enforced
+PASS request_number_budget_enforced
+PASS request_number_budget_enforced
+PASS request_number_budget_enforced
+PASS missing_request_id
+PASS long_request_id
+PASS pre_barrier_request
+PASS post_deadline_request
+PASS clock_domains_not_interchangeable
+PASS expired_request_no_native_capture
+PASS null_window_rejected
+PASS invalid_window_validation
+PASS invalid_focus_target_rejected
+PASS invalid_restore_reports_failure
+PASS negative_tests_do_not_change_foreground
+PASS create_hidden_native_fixture
+PASS bind_hidden_window_identity
+PASS only_executable_basename_retained
+PASS hidden_window_not_capture_ready
+PASS wrong_pid_rejected
+PASS process_timestamp_mismatch_rejected
+PASS window_class_mismatch_rejected
+PASS destroyed_window_rejected
+PASS hidden_fixture_never_claims_foreground
+WINDOWS_CAPTURE_TESTS=PASS; assertions=104; failures=0; live_capture=false; image_file_writes=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+WINDOWS_OCR_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\windows_ocr_tests.exe C:\Users\Administrator\Desktop\price\dist\RelinkStudio\vision\windows_ocr_worker.ps1
+INPUT: Hidden/offscreen synthetic input, packaged dependencies; no game capture.
+STDOUT:
+PASS valid_result_accepted
+PASS empty_result_rejected
+PASS oversized_result_rejected
+PASS malformed_json_rejected
+PASS non_object_rejected
+PASS wrong_request_rejected
+PASS wrong_width_rejected
+PASS wrong_height_rejected
+PASS empty_request_id_rejected
+PASS wrong_protocol_rejected
+PASS string_boolean_rejected
+PASS non_array_words_rejected
+PASS non_object_word_rejected
+PASS word_budget_enforced
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_bounds_rejected
+PASS invalid_token_text_rejected
+PASS invalid_token_text_rejected
+PASS missing_language_preserved
+PASS arbitrary_worker_exception_not_echoed
+PASS navigation_text_is_not_market_page_proof
+PASS three_body_anchors_identify_base_hint
+PASS page_hint_not_business_verification
+PASS header_anchors_excluded
+PASS actual_windows_ocr_on_synthetic_memory_frame
+PASS synthetic_ocr_text_verified_not_hash_token
+PASS exact_recognizer_language
+PASS actual_helper_has_no_observed_visible_window_or_foreground_ownership
+PASS pixel_format_rejected
+PASS invalid_bytes_rejected
+PASS black_frame_not_ocr_success
+PASS relative_helper_rejected
+PASS unknown_language_not_silently_replaced
+PASS zero_timeout_rejected
+PASS excessive_timeout_rejected
+PASS slow_helper_deadline_enforced
+PASS slow_helper_terminated_and_reaped
+PASS no_test_image_files
+WINDOWS_OCR_TESTS=PASS; assertions=52; failures=0; image_file_writes=0; real_ocr=true; synthetic_input=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+WORKSPACE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\workspace_tests.exe
+INPUT: Hidden/offscreen synthetic input, packaged dependencies; no game capture.
+STDOUT:
+PASS temporary_workspace_root
+PASS profiles_open
+PASS profiles_opened_projection
+PASS unreviewed_preview_cannot_save
+PASS unreviewed_failure_retains_selection
+PASS unreviewed_failure_does_not_publish_profile
+PASS reviewed_profile_atomic_save
+PASS saved_profile_file_exists
+PASS profile_revision_one_and_source_hash
+PASS save_does_not_implicitly_select
+PASS save_keeps_preview_read_only
+PASS saved_profile_loads_as_config_v2
+PASS reviewed_profile_contains_rule_snapshot
+PASS reviewed_rule_stays_disabled
+PASS explicit_review_is_recorded
+PASS profile_activation_stays_required
+PASS explicit_profile_selection
+PASS selected_document_matches_profile
+PASS incomplete_second_review_rejected
+PASS failed_review_keeps_file_and_selection
+PASS failed_review_keeps_business_projection
+PASS committable_preview_marker_rejected
+PASS malformed_preview_keeps_file_and_selection
+PASS same_profile_second_save
+PASS same_identity_increments_revision
+PASS revision_preserves_original_source_hash
+PASS invalid_target_fixture_open
+PASS invalid_existing_target_save_rejected
+PASS failed_disk_target_keeps_bytes_and_current_selection
+PASS profiles_close
+PASS guards_open
+PASS guards_seed_profile
+PASS guards_select_fixture
+PASS dirty_blocks_profile_change
+PASS dirty_blocks_mode_change
+PASS dirty_blocks_start
+PASS dirty_failures_preserve_draft_and_selection
+PASS discard_explicitly_clears_review_draft
+PASS stopped_mode_demo
+PASS demo_cannot_start_persisted_replay
+PASS demo_start_rejection_creates_no_run_or_projection
+PASS stopped_mode_replay
+PASS live_observe_mode_rejected
+PASS replay_start
+PASS running_capability_projection
+PASS active_blocks_profile_switch
+PASS active_blocks_mode_switch
+PASS active_blocks_history_selection
+PASS active_blocks_profile_save
+PASS active_guard_failures_preserve_run
+PASS replay_pause
+PASS paused_capability_projection
+PASS paused_run_still_guards_selection_and_mode
+PASS paused_replay_single_step
+PASS single_step_advances_while_remaining_paused
+PASS replay_resume
+PASS replay_dispatch_step
+PASS dispatch_reservation_visible_after_commit
+PASS replay_stop
+PASS stop_does_not_resume_automatically
+PASS stop_retains_possibly_dispatched_as_unknown
+PASS stopped_run_cannot_step
+PASS replay_controls_write_no_image_files
+PASS pause_unknown_new_run
+PASS pause_unknown_observe
+PASS pause_unknown_dispatch
+PASS pause_after_possible_dispatch
+PASS pause_keeps_possible_dispatch_unknown
+PASS resume_keeps_unknown_fact
+PASS unknown_receipt_fixture_does_not_reconcile
+PASS resume_does_not_promote_unknown_to_success
+PASS pause_unknown_final_stop
+PASS replay_open
+PASS replay_select_fixture
+PASS full_replay_start
+PASS new_run_has_no_uncommitted_success
+PASS full_replay_coalesced_advance
+PASS fast_replay_coalesces_projection_notification
+PASS full_replay_completed
+PASS full_fixture_success_unknown_and_reservation
+PASS failed_no_match_and_review_categories_visible
+PASS fixture_does_not_invent_collection_success
+PASS same_product_six_listings_preserved
+PASS listing_keeps_observation_source_and_clock_listing-A
+PASS listing_time_and_reason_listing-A
+PASS listing_keeps_observation_source_and_clock_listing-B
+PASS listing_time_and_reason_listing-B
+PASS listing_keeps_observation_source_and_clock_listing-C
+PASS listing_time_and_reason_listing-C
+PASS listing_keeps_observation_source_and_clock_listing-D
+PASS listing_time_and_reason_listing-D
+PASS listing_keeps_observation_source_and_clock_listing-E
+PASS listing_time_and_reason_listing-E
+PASS listing_keeps_observation_source_and_clock_listing-F
+PASS listing_time_and_reason_listing-F
+PASS listing_identity_is_not_product_identity
+PASS stale_and_missing_fields_are_explicit
+PASS observed_and_confirmed_price_are_distinct
+PASS projection_oracle_readonly_db
+PASS success_projection_matches_committed_ledger
+PASS failure_projection_matches_committed_ledger
+PASS unknown_projection_matches_committed_attempts
+PASS reservation_projection_matches_committed_attempts
+PASS record_count_matches_committed_events
+PASS record_provenance_and_monotonic_order_event-c8fda92f-4ed4-4da6-8028-39846502ae68
+PASS record_provenance_and_monotonic_order_event-7d40cbf0-55b0-4ed1-9885-14a04ac10315
+PASS record_provenance_and_monotonic_order_event-cc74f4c2-6e61-455d-bc68-dd5ddb3adddf
+PASS record_provenance_and_monotonic_order_event-39816df6-6c35-4ca0-a2b5-529c38b18e06
+PASS record_provenance_and_monotonic_order_event-36114b04-d077-4e02-9993-a46c5b8537e6
+PASS record_provenance_and_monotonic_order_event-ef88c801-8238-44ca-8048-34d9b5c71279
+PASS record_provenance_and_monotonic_order_event-49af4864-02b6-4120-a83a-722bc03d54ec
+PASS record_provenance_and_monotonic_order_event-23a9a3b7-acf1-4bf3-b4e5-e7c7e3114b86
+PASS record_provenance_and_monotonic_order_event-c1119df3-8dbb-42c3-a93f-5d29c7e61c1e
+PASS record_provenance_and_monotonic_order_event-4d13305c-9cb3-4b6f-8166-b047cab44b32
+PASS record_provenance_and_monotonic_order_event-d0f6f360-bd8d-4e11-b21d-16a33832462d
+PASS record_provenance_and_monotonic_order_event-be98bf4e-81de-4a59-87f2-d11a5f277564
+PASS record_provenance_and_monotonic_order_event-0f184499-d166-4ff2-b76b-9d2889876943
+PASS record_provenance_and_monotonic_order_event-12e56202-c3a6-437f-be76-70ce12a7ed65
+PASS record_provenance_and_monotonic_order_event-647d6e3e-b461-481f-8470-185fb5501e7b
+PASS record_provenance_and_monotonic_order_event-a41a1429-0f8f-4a84-ae70-3a4b5cd4dfc4
+PASS record_provenance_and_monotonic_order_event-50a77e37-287d-400e-a2bf-bc7cdf03007c
+PASS record_provenance_and_monotonic_order_event-ad3204dd-917e-4cf9-9be0-4c80f2325b4c
+PASS record_provenance_and_monotonic_order_event-2ff39357-4598-4d39-8dbd-599bab04ec89
+PASS record_provenance_and_monotonic_order_event-2920c2ba-062e-463d-95ba-9ea6339cdd87
+PASS full_replay_has_no_image_file_transport
+PASS committed_records_csv_export
+PASS csv_contains_selected_run_history
+PASS completed_replay_switches_to_demo
+PASS mode_change_clears_current_projection_not_history
+PASS mode_change_retains_committed_run_catalogue
+PASS demo_can_inspect_existing_replay_history
+PASS mode_change_history_selection_restores_committed_facts
+PASS storage_failures_open
+PASS storage_failures_select
+PASS storage_failures_start
+PASS storage_failures_observe
+PASS storage_failures_dispatch
+PASS real_external_write_lock_acquired
+PASS busy_write_reports_storage_error
+PASS busy_keeps_old_committed_projection
+PASS busy_never_publishes_success
+PASS external_write_lock_released
+PASS real_external_read_lock_acquired
+PASS real_commit_failure_reports_error
+PASS failed_commit_keeps_old_projection
+PASS failed_commit_does_not_publish_partial_success_or_record
+PASS external_read_lock_released
+PASS same_step_retries_after_storage_rollback
+PASS retry_commits_once_without_skipping_fixture_step
+PASS retry_creates_exactly_one_terminal_ledger_record
+PASS recovery_open
+PASS recovery_select
+PASS recovery_start
+PASS recovery_observe
+PASS recovery_dispatch
+PASS close_committed_inflight_workspace
+PASS workspace_reopen_recovers
+PASS select_recovered_history
+PASS reopen_is_readonly_history_not_active_run
+PASS reopen_preserves_unknown_and_quota
+PASS history_cannot_resume_or_redispatch
+PASS recovery_actions_do_not_change_history
+PASS recovered_workspace_close
+PASS readonly_workspace_open
+PASS readonly_history_selection
+PASS readonly_disables_start
+PASS readonly_start_rejected
+PASS readonly_profile_write_rejected
+PASS readonly_failures_preserve_projection
+PASS readonly_save_produces_no_profile_file
+PASS readonly_workspace_close
+PASS readonly_workspace_keeps_database_bytes
+PASS revision_history_open
+PASS revision_history_save_v1
+PASS revision_history_select_v1
+PASS revision_history_start_disabled_profile
+PASS run_captures_profile_identity_and_revision
+PASS disabled_profile_evaluation_finishes
+PASS saved_disabled_profile_never_dispatches_or_reserves
+PASS disabled_rules_have_no_attempt_rows
+PASS revision_history_save_v2
+PASS catalog_now_has_revision_two
+PASS revision_history_switch_to_fixture
+PASS revision_history_second_run
+PASS revision_history_second_run_finishes
+PASS revision_history_reselect_old_run
+PASS history_retains_original_profile_revision
+PASS history_retains_original_profile_document
+PASS old_run_records_remain_available
+PASS historical_record_source_event-29d999ba-c7d4-4ede-978d-21ce8a29ad3d
+PASS historical_record_source_event-2ad97891-b04f-4066-a6f4-17f2856d2d9a
+PASS historical_record_source_event-83451d7a-35c7-4d5e-ac6a-0bbb2d1d6753
+PASS historical_record_source_event-ee899bb6-47f9-4e86-952d-87ca3404f9be
+PASS historical_record_source_event-202b40ba-1f43-41d9-b3f3-b86ba2245378
+PASS historical_record_source_event-2a47be74-3acc-4f09-a082-fce700058e2a
+PASS historical_record_source_event-c40ef12f-e763-467b-bdec-c85c1238b4b8
+PASS historical_record_source_event-3e8323c1-8547-4d73-888c-2c623a468258
+PASS historical_record_source_event-75ccdedc-ebfe-4e96-acb5-b6bdbddd81e7
+PASS historical_record_source_event-0dc8feee-5e0b-47a8-9000-d9e0b585eb32
+PASS historical_record_source_event-65971835-f877-42e6-8455-83c7e3ecf937
+PASS historical_record_source_event-d7795864-1123-4542-b061-4684d0a157d8
+PASS historical_record_source_event-db590a60-8c4c-4f0e-88a2-9e8e46cfbdda
+PASS historical_record_source_event-94702227-98df-4773-926d-0eb606a6dec5
+PASS historical_record_source_event-bd63d570-c9c6-456a-baf8-62e7f3c2a573
+PASS historical_csv_demo_view_mode
+PASS historical_csv_select_old_replay
+PASS historical_csv_export
+PASS csv_uses_historical_run_mode_and_revision_not_current_selection
+PASS revision_history_close
+PASS revision_history_reopen
+PASS revision_history_reopen_select
+PASS profile_revision_snapshot_survives_process_lifetime
+PASS validation_open
+PASS validation_seed_profile
+PASS validation_select_profile
+PASS invalid_quantum_rejected_0
+PASS invalid_quantum_preserves_profile_and_dirty_draft_0
+PASS invalid_quantum_rejected_1
+PASS invalid_quantum_preserves_profile_and_dirty_draft_1
+PASS invalid_quantum_rejected_2
+PASS invalid_quantum_preserves_profile_and_dirty_draft_2
+PASS invalid_quantum_rejected_3
+PASS invalid_quantum_preserves_profile_and_dirty_draft_3
+PASS invalid_quantum_rejected_4
+PASS invalid_quantum_preserves_profile_and_dirty_draft_4
+PASS invalid_quantum_rejected_5
+PASS invalid_quantum_preserves_profile_and_dirty_draft_5
+PASS invalid_quantum_rejected_6
+PASS invalid_quantum_preserves_profile_and_dirty_draft_6
+PASS invalid_quantum_rejected_7
+PASS invalid_quantum_preserves_profile_and_dirty_draft_7
+PASS invalid_quantum_rejected_8
+PASS invalid_quantum_preserves_profile_and_dirty_draft_8
+PASS invalid_quantum_rejected_9
+PASS invalid_quantum_preserves_profile_and_dirty_draft_9
+PASS invalid_quantum_rejected_10
+PASS invalid_quantum_preserves_profile_and_dirty_draft_10
+PASS invalid_quantum_rejected_11
+PASS invalid_quantum_preserves_profile_and_dirty_draft_11
+PASS invalid_quantum_rejected_12
+PASS invalid_quantum_preserves_profile_and_dirty_draft_12
+PASS invalid_quantum_rejected_13
+PASS invalid_quantum_preserves_profile_and_dirty_draft_13
+PASS invalid_quantum_rejected_14
+PASS invalid_quantum_preserves_profile_and_dirty_draft_14
+PASS invalid_profile_fixture_missing_hash
+PASS invalid_saved_profile_refresh_rejected_missing_hash
+PASS invalid_saved_profile_cannot_start_missing_hash
+PASS invalid_saved_profile_not_overwritten_missing_hash
+PASS invalid_saved_profile_preserves_bytes_and_projection_missing_hash
+PASS restore_valid_profile_fixture_missing_hash
+PASS invalid_profile_fixture_invalid_hash
+PASS invalid_saved_profile_refresh_rejected_invalid_hash
+PASS invalid_saved_profile_cannot_start_invalid_hash
+PASS invalid_saved_profile_not_overwritten_invalid_hash
+PASS invalid_saved_profile_preserves_bytes_and_projection_invalid_hash
+PASS restore_valid_profile_fixture_invalid_hash
+PASS invalid_profile_fixture_identity_mismatch
+PASS invalid_saved_profile_refresh_rejected_identity_mismatch
+PASS invalid_saved_profile_cannot_start_identity_mismatch
+PASS invalid_saved_profile_not_overwritten_identity_mismatch
+PASS invalid_saved_profile_preserves_bytes_and_projection_identity_mismatch
+PASS restore_valid_profile_fixture_identity_mismatch
+PASS invalid_profile_fixture_missing_format
+PASS invalid_saved_profile_refresh_rejected_missing_format
+PASS invalid_saved_profile_cannot_start_missing_format
+PASS invalid_saved_profile_not_overwritten_missing_format
+PASS invalid_saved_profile_preserves_bytes_and_projection_missing_format
+PASS restore_valid_profile_fixture_missing_format
+PASS invalid_profile_fixture_unsupported_format
+PASS invalid_saved_profile_refresh_rejected_unsupported_format
+PASS invalid_saved_profile_cannot_start_unsupported_format
+PASS invalid_saved_profile_not_overwritten_unsupported_format
+PASS invalid_saved_profile_preserves_bytes_and_projection_unsupported_format
+PASS restore_valid_profile_fixture_unsupported_format
+PASS invalid_profile_fixture_missing_encoding
+PASS invalid_saved_profile_refresh_rejected_missing_encoding
+PASS invalid_saved_profile_cannot_start_missing_encoding
+PASS invalid_saved_profile_not_overwritten_missing_encoding
+PASS invalid_saved_profile_preserves_bytes_and_projection_missing_encoding
+PASS restore_valid_profile_fixture_missing_encoding
+PASS invalid_profile_fixture_unsupported_encoding
+PASS invalid_saved_profile_refresh_rejected_unsupported_encoding
+PASS invalid_saved_profile_cannot_start_unsupported_encoding
+PASS invalid_saved_profile_not_overwritten_unsupported_encoding
+PASS invalid_saved_profile_preserves_bytes_and_projection_unsupported_encoding
+PASS restore_valid_profile_fixture_unsupported_encoding
+PASS invalid_profile_fixture_missing_source
+PASS invalid_saved_profile_refresh_rejected_missing_source
+PASS invalid_saved_profile_cannot_start_missing_source
+PASS invalid_saved_profile_not_overwritten_missing_source
+PASS invalid_saved_profile_preserves_bytes_and_projection_missing_source
+PASS restore_valid_profile_fixture_missing_source
+PASS invalid_profile_fixture_invalid_rules_type
+PASS invalid_saved_profile_refresh_rejected_invalid_rules_type
+PASS invalid_saved_profile_cannot_start_invalid_rules_type
+PASS invalid_saved_profile_not_overwritten_invalid_rules_type
+PASS invalid_saved_profile_preserves_bytes_and_projection_invalid_rules_type
+PASS restore_valid_profile_fixture_invalid_rules_type
+PASS invalid_profile_fixture_live_source_claim
+PASS invalid_saved_profile_refresh_rejected_live_source_claim
+PASS invalid_saved_profile_cannot_start_live_source_claim
+PASS invalid_saved_profile_not_overwritten_live_source_claim
+PASS invalid_saved_profile_preserves_bytes_and_projection_live_source_claim
+PASS restore_valid_profile_fixture_live_source_claim
+PASS invalid_profile_fixture_missing_activation_review
+PASS invalid_saved_profile_refresh_rejected_missing_activation_review
+PASS invalid_saved_profile_cannot_start_missing_activation_review
+PASS invalid_saved_profile_not_overwritten_missing_activation_review
+PASS invalid_saved_profile_preserves_bytes_and_projection_missing_activation_review
+PASS restore_valid_profile_fixture_missing_activation_review
+PASS invalid_profile_fixture_zero_saved_quantum
+PASS invalid_saved_profile_refresh_rejected_zero_saved_quantum
+PASS invalid_saved_profile_cannot_start_zero_saved_quantum
+PASS invalid_saved_profile_not_overwritten_zero_saved_quantum
+PASS invalid_saved_profile_preserves_bytes_and_projection_zero_saved_quantum
+PASS restore_valid_profile_fixture_zero_saved_quantum
+PASS invalid_preview_source_rejected_source_format
+PASS invalid_preview_source_writes_no_file_source_format
+PASS invalid_preview_source_rejected_encoding
+PASS invalid_preview_source_writes_no_file_encoding
+PASS validation_restored_profile_refresh
+PASS selected_profile_removed_fixture
+PASS deleted_selected_profile_cannot_start_empty_snapshot
+PASS deleted_profile_disables_start_without_creating_run
+PASS removed_selected_profile_restored
+PASS restored_selected_profile_refresh
+PASS restored_selected_profile_start_available
+PASS receipt_projection_open
+PASS receipt_projection_select
+PASS receipt_projection_start
+PASS receipt_projection_complete_fixture
+PASS receipt_projection_raw_fixture_connection
+PASS receipt_shape_without_success_ledger_insert_0
+PASS receipt_shape_without_success_ledger_insert_1
+PASS receipt_shape_without_success_ledger_insert_2
+PASS receipt_shape_without_success_ledger_insert_3
+PASS receipt_shape_without_success_ledger_insert_4
+PASS receipt_shape_without_success_ledger_insert_5
+PASS receipt_shape_without_success_ledger_insert_6
+PASS receipt_projection_refresh
+PASS receipt_only_events_do_not_increment_committed_success
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-0
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-1
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-2
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-3
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-4
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-5
+PASS unconfirmed_receipt_record_has_no_confirmed_price_forged-receipt-6
+PASS all_forged_receipts_remain_auditable
+PASS unconfirmed_event_never_sets_listing_confirmed_price
+PASS legitimate_committed_receipt_price_retained
+PASS receipt_projection_csv
+PASS csv_exposes_only_ledger_confirmed_price
+PASS export_protection_open
+PASS export_protection_seed_profile
+PASS export_protection_select
+PASS export_protection_start
+PASS export_protection_finish
+PASS csv_protected_destination_rejected_0
+PASS csv_protected_destination_preserves_data_0
+PASS csv_protected_destination_rejected_1
+PASS csv_protected_destination_preserves_data_1
+PASS csv_protected_destination_rejected_2
+PASS csv_protected_destination_preserves_data_2
+PASS csv_protected_destination_rejected_3
+PASS csv_protected_destination_preserves_data_3
+PASS csv_protected_destination_rejected_4
+PASS csv_protected_destination_preserves_data_4
+PASS csv_protected_destination_rejected_5
+PASS csv_protected_destination_preserves_data_5
+PASS csv_protected_destination_rejected_6
+PASS csv_protected_destination_preserves_data_6
+PASS csv_protected_destination_rejected_7
+PASS csv_protected_destination_preserves_data_7
+PASS csv_protected_destination_rejected_8
+PASS csv_protected_destination_preserves_data_8
+PASS database_remains_readable_after_rejected_csv_overwrite
+PASS csv_does_not_create_files_in_profile_catalogue
+PASS ordinary_record_export_still_succeeds
+PASS csv_neutralizes_formula_and_control_prefix_0
+PASS csv_neutralizes_formula_and_control_prefix_1
+PASS csv_neutralizes_formula_and_control_prefix_2
+PASS csv_neutralizes_formula_and_control_prefix_3
+PASS csv_neutralizes_formula_and_control_prefix_4
+PASS csv_neutralizes_formula_and_control_prefix_5
+PASS csv_neutralizes_formula_and_control_prefix_6
+PASS csv_neutralizes_formula_and_control_prefix_7
+PASS csv_neutralizes_formula_and_control_prefix_8
+PASS csv_neutralizes_formula_and_control_prefix_9
+PASS csv_neutralizes_formula_and_control_prefix_10
+PASS csv_preserves_normal_field_0
+PASS csv_preserves_normal_field_1
+PASS csv_preserves_normal_field_2
+PASS csv_quotes_separator_quote_or_newline_2
+PASS csv_preserves_normal_field_3
+PASS csv_quotes_separator_quote_or_newline_3
+PASS csv_preserves_normal_field_4
+PASS csv_quotes_separator_quote_or_newline_4
+PASS csv_preserves_normal_field_5
+PASS profile_catalog_scans_builtin_only
+PASS profile_catalog_publishes_builtin_document
+PASS controller_uses_profile_catalog_identity
+PASS history_service_store_open
+PASS history_summary_does_not_load_detail_for_empty_workspace
+PASS history_service_store_close
+PASS records_exporter_preserves_formula_guard
+PASS summary_open
+PASS summary_select_fixture
+PASS summary_first_start
+PASS summary_first_complete
+PASS summary_second_start
+PASS summary_second_complete
+PASS summary_contains_two_runs
+PASS summary_preserves_metadata_without_detail_run-804b4117-687a-49f4-8370-a9b44cdd8bf2
+PASS summary_preserves_ledger_counts_without_detail_run-804b4117-687a-49f4-8370-a9b44cdd8bf2
+PASS summary_preserves_metadata_without_detail_run-1df4d9f5-fc82-4363-b3f4-4a9c35fb3ac0
+PASS summary_preserves_ledger_counts_without_detail_run-1df4d9f5-fc82-4363-b3f4-4a9c35fb3ac0
+PASS summary_raw_connection
+PASS summary_unselected_observation_located
+PASS summary_corrupt_unselected_detail
+PASS summary_refresh_does_not_parse_unselected_event_detail
+PASS selected_corrupt_detail_rejected_without_projection_mutation
+PASS summary_restore_unselected_detail
+PASS summary_restored_detail_selectable
+PASS summary_controller_close
+PASS summary_direct_store_open
+PASS summary_quantity_greater_than_one_fixture
+PASS summary_forged_receipt_without_run_state
+PASS summary_and_snapshot_read_succeed
+PASS summary_quantity_and_reservation_semantics_match_snapshot
+PASS summary_direct_store_close
+WORKSPACE_TESTS=PASS; assertions=432; failures=0; real_database=true; real_lock_failures=true; external_actions=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+UI_MODULE_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\ui_module_tests.exe
+INPUT: Hidden/offscreen synthetic input, packaged dependencies; no game capture.
+STDOUT:
+UI_MODULE_TESTS=PASS; assertions=90; failures=0; mainwindow=false; sqlite=false; offscreen=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+STARTUP_CONTRACT
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe -X utf8 C:\Users\Administrator\Desktop\price\tests\business\startup_flow_contract_tests.py
+INPUT: Static historical evidence contract: 12 tests, not live business execution.
+STDOUT:
+
+STDERR:
+test_all_historical_log_files_accounted_for (__main__.StartupEvidenceContract.test_all_historical_log_files_accounted_for) ... ok
+test_analysis_never_claims_sample_execution (__main__.StartupEvidenceContract.test_analysis_never_claims_sample_execution) ... ok
+test_existing_list_resumes_before_filtering (__main__.StartupEvidenceContract.test_existing_list_resumes_before_filtering) ... ok
+test_initial_watchlist_precedes_filters (__main__.StartupEvidenceContract.test_initial_watchlist_precedes_filters) ... ok
+test_locators_have_exact_integrity_fields (__main__.StartupEvidenceContract.test_locators_have_exact_integrity_fields) ... ok
+test_market_wait_and_failure_witnesses_present (__main__.StartupEvidenceContract.test_market_wait_and_failure_witnesses_present) ... ok
+test_multiple_quality_requirements_are_preserved (__main__.StartupEvidenceContract.test_multiple_quality_requirements_are_preserved) ... ok
+test_noninitial_filter_state_is_not_blindly_toggled (__main__.StartupEvidenceContract.test_noninitial_filter_state_is_not_blindly_toggled) ... ok
+test_ocr_exports_are_explicit_anchors_not_full_frames (__main__.StartupEvidenceContract.test_ocr_exports_are_explicit_anchors_not_full_frames) ... ok
+test_page_dispatch_includes_recovery_entries (__main__.StartupEvidenceContract.test_page_dispatch_includes_recovery_entries) ... ok
+test_report_preserves_all_39_steps (__main__.StartupEvidenceContract.test_report_preserves_all_39_steps) ... ok
+test_run_entries_are_not_cold_starts (__main__.StartupEvidenceContract.test_run_entries_are_not_cold_starts) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.002s
+
+OK
+EXIT_STATUS: 0
+
+STARTUP_LOCATORS
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe -X utf8 C:\Users\Administrator\Desktop\price\docs\business_rebuild\scripts\analyze_startup_flow.py --verify-only
+INPUT: Reopen original historical log locations; compare raw line hashes and message/anchor content.
+STDOUT:
+{"result": "PASS", "locators_checked": 1192, "run_entry_count": 100, "first_page_distribution": {"<no_page_record>": 13, "曼德尔": 23, "皮肤列表": 34, "皮肤首页": 8, "切换界面": 3, "None": 8, "筛选": 4, "应用外观": 2, "首页": 4, "大战场": 1}}
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+ROLLBACK
+COMMAND: "C:\Program Files\Git\bin\bash.exe" -c "chmod +x \"artifacts/m2_startup_observer_transaction/ROLLBACK.sh\" && \"./artifacts/m2_startup_observer_transaction/ROLLBACK.sh\" \"$1\"" rollback C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\rollback_test
+INPUT: Isolated copy of modified package; restore baseline files; remove only new hash-matching managed helper; preserve user sentinel.
+STDOUT:
+ROLLBACK_RESTORED=PASS; new_databases_preserved=true; added_helper_removed=true
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESTORED
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\rollback_test\RelinkStudio.exe --self-test --snapshot-dir C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\restored_snapshots --config C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\restored-config.json
+INPUT: Synthetic UI/config and temporary workspace; Qt offscreen; package-only PATH.
+STDOUT:
+UI_NAVIGATION_TEXT_UTF8=PASS
+UI_ACTION_TEXT_UTF8=PASS
+UI_NO_MOJIBAKE_LABELS=PASS
+UI_EIGHT_PAGES=PASS
+UI_DEFAULT_WATCHLIST=PASS
+UI_WATCHLIST_STRUCTURE=PASS
+UI_STORE_SHELL=PASS
+UI_ART_RESOURCE=PASS
+UI_ART_TRANSPARENCY=PASS
+UI_ICON_FONT_AVAILABLE=PASS
+UI_LIGHT_PALETTE=PASS
+UI_PREVIEW_FITS=PASS
+UI_SEPARATE_SURFACES=PASS
+UI_CARD_ROWS_AND_SELECTION_RENDER=PASS
+UI_CONTENT_LAYER_ROUNDED_CORNER=PASS
+UI_RAIL_SELECTION_RENDER=PASS
+UI_FILTER_TEXT_FITS=PASS
+UI_MAIN_TEXT_CONTRAST=PASS
+UI_SECONDARY_TEXT_CONTRAST=PASS
+UI_TERTIARY_TEXT_CONTRAST=PASS
+UI_SELECTED_TEXT_CONTRAST=PASS
+UI_PRIMARY_TEXT_CONTRAST=PASS
+UI_STANDARD_NAVIGATION_FITS=PASS
+UI_STANDARD_SEARCH_CENTERED=PASS
+UI_STANDARD_INSPECTOR_NO_OVERLAP=PASS
+UI_LIGHT_CHART_RENDER=PASS
+UI_LIGHT_CONTENT_SURFACES_RENDER=PASS
+UI_INPUT_FOCUS_UNDERLINE=PASS
+UI_DROPDOWN_RENDER=PASS
+UI_DISABLED_CONTROL_DISTINCT=PASS
+UI_NAV_OVERVIEW=PASS
+UI_LIGHT_PAGE_OVERVIEW=PASS
+UI_SNAPSHOT_OVERVIEW=PASS
+UI_STANDARD_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_STANDARD_OVERVIEW_TABLE_COLUMNS=PASS
+UI_STANDARD_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_NAV_FAVORITES=PASS
+UI_LIGHT_PAGE_FAVORITES=PASS
+UI_SNAPSHOT_FAVORITES=PASS
+UI_STANDARD_FAVORITES_HORIZONTAL_FIT=PASS
+UI_STANDARD_FAVORITES_TABLE_COLUMNS=PASS
+UI_STANDARD_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_NAV_TASKS=PASS
+UI_LIGHT_PAGE_TASKS=PASS
+UI_SNAPSHOT_TASKS=PASS
+UI_NO_BLUE_TASKS=PASS
+UI_STANDARD_TASKS_HORIZONTAL_FIT=PASS
+UI_STANDARD_TASKS_TABLE_COLUMNS=PASS
+UI_STANDARD_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_TASKS_HEADER_NO_OVERLAP=PASS
+UI_NAV_PRICES=PASS
+UI_LIGHT_PAGE_PRICES=PASS
+UI_SNAPSHOT_PRICES=PASS
+UI_STANDARD_PRICES_HORIZONTAL_FIT=PASS
+UI_STANDARD_PRICES_TABLE_COLUMNS=PASS
+UI_STANDARD_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_PRICES_HEADER_NO_OVERLAP=PASS
+UI_NAV_STATS=PASS
+UI_LIGHT_PAGE_STATS=PASS
+UI_SNAPSHOT_STATS=PASS
+UI_NO_BLUE_STATS=PASS
+UI_STANDARD_STATS_HORIZONTAL_FIT=PASS
+UI_STANDARD_STATS_TABLE_COLUMNS=PASS
+UI_STANDARD_STATS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_STATS_HEADER_NO_OVERLAP=PASS
+UI_NAV_LOGS=PASS
+UI_LIGHT_PAGE_LOGS=PASS
+UI_SNAPSHOT_LOGS=PASS
+UI_NO_BLUE_LOGS=PASS
+UI_STANDARD_LOGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_LOGS_TABLE_COLUMNS=PASS
+UI_STANDARD_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_LOGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_SETTINGS=PASS
+UI_LIGHT_PAGE_SETTINGS=PASS
+UI_SNAPSHOT_SETTINGS=PASS
+UI_NO_BLUE_SETTINGS=PASS
+UI_STANDARD_SETTINGS_HORIZONTAL_FIT=PASS
+UI_STANDARD_SETTINGS_TABLE_COLUMNS=PASS
+UI_STANDARD_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_NAV_RUN=PASS
+UI_LIGHT_PAGE_RUN=PASS
+UI_SNAPSHOT_RUN=PASS
+UI_NO_BLUE_RUN=PASS
+UI_STANDARD_RUN_HORIZONTAL_FIT=PASS
+UI_STANDARD_RUN_TABLE_COLUMNS=PASS
+UI_STANDARD_RUN_TABLE_CELL_CONTROLS=PASS
+UI_STANDARD_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_STANDARD_RUN_HEADER_NO_OVERLAP=PASS
+UI_LEGACY_HERO_REMOVED=PASS
+UI_INITIAL_UI_TEXT_ENCODING=PASS
+UI_REPLAY_UI_INITIAL=PASS
+UI_REPLAY_UI_START=PASS
+UI_REPLAY_UI_PAUSE=PASS
+UI_REPLAY_UI_RESUME=PASS
+UI_REPLAY_UI_STOP=PASS
+UI_WORKSPACE_DEMO_MODE=PASS
+UI_FAVORITE_ROWS=PASS
+UI_FAVORITE_SEARCH=PASS
+UI_FAVORITE_EMPTY_SEARCH=PASS
+UI_TOP_SEARCH_NAVIGATES=PASS
+UI_FOLLOW_TOGGLE=PASS
+UI_TYPE_FILTER=PASS
+UI_FOLLOW_FILTER=PASS
+UI_CLEAR_FILTER=PASS
+UI_RARITY_FILTER=PASS
+UI_LINKED_FILTER=PASS
+UI_UNLINKED_FILTER=PASS
+UI_INSPECTOR_DEFAULTS=PASS
+UI_INSPECTOR_CONDITION_DEFAULT=PASS
+UI_INLINE_CREATE=PASS
+UI_INLINE_VALUES=PASS
+UI_DRAFT_SURVIVES_REFRESH=PASS
+UI_SELECTION_RELOADS_CONDITIONS=PASS
+UI_EMPTY_DISALLOWS_CREATE=PASS
+UI_TASK_CONDITION_COLUMN=PASS
+UI_TASK_EMPTY_NAME_REJECTED=PASS
+UI_TASK_PRICE_RANGE_REJECTED=PASS
+UI_TASK_EDITOR_TEXT_ENCODING=PASS
+UI_LIGHT_TASK_EDITOR_RENDER=PASS
+UI_TASK_CREATE=PASS
+UI_TASK_EDITOR_CONDITION=PASS
+UI_TASK_EDIT=PASS
+UI_CONFIRM_DIALOG_RENDER=PASS
+UI_TASK_DELETE=PASS
+UI_LOCAL_SIMULATION=PASS
+UI_SIMULATION_PAUSE=PASS
+UI_PRICE_ITEM_SELECTION=PASS
+UI_LOG_SEARCH=PASS
+UI_RUN_SETTINGS_DEFAULTS=PASS
+UI_IMPORT_PREVIEW_DIALOG=PASS
+UI_IMPORT_PREVIEW_ROWS=PASS
+UI_IMPORT_PREVIEW_READ_ONLY=PASS
+UI_RUN_SETTINGS_EDIT=PASS
+UI_RUN_SETTINGS_REFRESH=PASS
+UI_RUN_SETTINGS_PERSIST=PASS
+UI_HELP_DIALOG=PASS
+UI_CONFIG_SAVE=PASS
+UI_CONFIG_RELOAD=PASS
+UI_CSV_EXPORT=PASS
+UI_CORRUPT_CONFIG_PRESERVED=PASS
+UI_WORKSPACE_WIDGETS_AND_STORE=PASS
+UI_WORKSPACE_SAVE_LEGACY_TEST_DRAFT=PASS
+UI_WORKSPACE_REPLAY_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_RETURN_PRESERVES_MODE=PASS
+UI_WORKSPACE_DIRTY_MODE_CONTINUE_PRESERVES_DRAFT=PASS
+UI_WORKSPACE_EXPLICIT_FIXTURE_SELECTION=PASS
+UI_WORKSPACE_START_PERSISTENT_RUN=PASS
+UI_WORKSPACE_REAL_WRITE_LOCK_ACQUIRED=PASS
+UI_WORKSPACE_WRITE_FAILURE_PRESERVES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_WRITE_FAILURE_VISIBLE=PASS
+UI_WORKSPACE_RELEASE_WRITE_LOCK=PASS
+UI_WORKSPACE_STEP_AFTER_LOCK_RELEASE=PASS
+UI_WORKSPACE_PERSISTENT_PAUSE=PASS
+UI_WORKSPACE_PERSISTENT_RESUME=PASS
+UI_WORKSPACE_ADVANCE_CONTROL=PASS
+UI_WORKSPACE_COMMITTED_LEDGER_COUNTS=PASS
+UI_WORKSPACE_LISTING_ROWS_FROM_PROJECTION=PASS
+UI_WORKSPACE_SAME_PRODUCT_DISTINCT_LISTINGS=PASS
+UI_WORKSPACE_STALE_AND_MISSING_FIELDS=PASS
+UI_WORKSPACE_OBSERVED_AND_CONFIRMED_PRICE_FIELDS=PASS
+UI_WORKSPACE_RECORDS_FROM_COMMITTED_EVENTS=PASS
+UI_WORKSPACE_CHINESE_STATE_WITH_RAW_STATUS=PASS
+UI_WORKSPACE_CHINESE_EVENT_WITH_RAW_IDENTITY=PASS
+UI_WORKSPACE_EVENT_COLUMN_SHOWS_COMPLETE_NAME=PASS
+UI_WORKSPACE_NO_CAPTURE_IMAGE_WRITES=PASS
+UI_WORKSPACE_RUN_SNAPSHOT=PASS
+UI_WORKSPACE_RECORDS_SNAPSHOT=PASS
+UI_WORKSPACE_CSV_EXPORT_UI_PATH=PASS
+UI_WORKSPACE_CSV_MARKED_REPLAY=PASS
+UI_WORKSPACE_PREVIEW_STAYS_READ_ONLY=PASS
+UI_WORKSPACE_REVIEW_DIALOG=PASS
+UI_WORKSPACE_REVIEW_FIELDS=PASS
+UI_WORKSPACE_EDIT_MARKS_REVIEW_DIRTY=PASS
+UI_WORKSPACE_DIRTY_MODE_SWITCH_REJECTED=PASS
+UI_WORKSPACE_INCOMPLETE_REVIEW_SAVE_DISABLED=PASS
+UI_WORKSPACE_profileReviewProducts=PASS
+UI_WORKSPACE_profileReviewPriceRange=PASS
+UI_WORKSPACE_profileReviewTaxonomy=PASS
+UI_WORKSPACE_profileReviewUnknownColumns=PASS
+UI_WORKSPACE_profileReviewQuantityUnbound=PASS
+UI_WORKSPACE_COMPLETE_REVIEW_SAVE_ENABLED=PASS
+UI_WORKSPACE_REVIEW_SAVED_NOT_ACTIVATED=PASS
+UI_WORKSPACE_SAVED_PROFILE_LISTED=PASS
+UI_WORKSPACE_SELECT_SAVED_PROFILE=PASS
+UI_WORKSPACE_SAVED_RULES_REMAIN_DISABLED=PASS
+UI_WORKSPACE_RECOVERY_SETUP_COMMITTED_SENT=PASS
+UI_WORKSPACE_CLOSE_REOPEN_REAL_WORKSPACE=PASS
+UI_WORKSPACE_SELECT_RECOVERED_RUN=PASS
+UI_WORKSPACE_RESTART_PRESERVES_UNKNOWN_NO_RESUME=PASS
+UI_WORKSPACE_RECOVERY_NOTICE_VISIBLE=PASS
+UI_WORKSPACE_REVIEWED_PROFILE_SURVIVES_RESTART=PASS
+UI_WORKSPACE_HISTORY_SELECTOR_POPULATED=PASS
+UI_WORKSPACE_RECOVERY_SNAPSHOT=PASS
+UI_WORKSPACE_HISTORY_SELECTION_RESTORES_COMMITTED_VIEW=PASS
+UI_WORKSPACE_CLOSE_TEST_BASELINE_SAVED=PASS
+UI_WORKSPACE_CLOSE_CANCEL_KEEPS_WINDOW_AND_SAVE_POLICY=PASS
+UI_WORKSPACE_CLOSE_DISCARD_SKIPS_EXIT_AUTOSAVE=PASS
+UI_WORKSPACE_CLOSE_DISCARD_PRESERVES_ORIGINAL_CONFIG=PASS
+WORKSPACE_UI_SELF_TEST=PASS; assertions=58; failures=0; persistent_store=true
+UI_WORKSPACE_INTEGRATION=PASS
+UI_COMPACT_WINDOW_SIZE=PASS
+UI_COMPACT_NAVIGATION_FITS=PASS
+UI_COMPACT_SEARCH_CENTERED=PASS
+UI_COMPACT_RENDER=PASS
+UI_COMPACT_OVERVIEW_HORIZONTAL_FIT=PASS
+UI_COMPACT_OVERVIEW_TABLE_COLUMNS=PASS
+UI_COMPACT_OVERVIEW_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_OVERVIEW_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_OVERVIEW_HEADER_NO_OVERLAP=PASS
+UI_COMPACT_INSPECTOR_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_FAVORITES=PASS
+UI_COMPACT_FAVORITES_HORIZONTAL_FIT=PASS
+UI_COMPACT_FAVORITES_TABLE_COLUMNS=PASS
+UI_COMPACT_FAVORITES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_FAVORITES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_FAVORITES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_TASKS=PASS
+UI_COMPACT_TASKS_HORIZONTAL_FIT=PASS
+UI_COMPACT_TASKS_TABLE_COLUMNS=PASS
+UI_COMPACT_TASKS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_TASKS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_TASKS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_PRICES=PASS
+UI_COMPACT_PRICES_HORIZONTAL_FIT=PASS
+UI_COMPACT_PRICES_TABLE_COLUMNS=PASS
+UI_COMPACT_PRICES_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_PRICES_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_PRICES_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_STATS=PASS
+UI_COMPACT_STATS_HORIZONTAL_FIT=PASS
+UI_COMPACT_STATS_TABLE_COLUMNS=PASS
+UI_COMPACT_STATS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_STATS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_STATS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_LOGS=PASS
+UI_COMPACT_LOGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_LOGS_TABLE_COLUMNS=PASS
+UI_COMPACT_LOGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_LOGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_LOGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_SETTINGS=PASS
+UI_COMPACT_SETTINGS_HORIZONTAL_FIT=PASS
+UI_COMPACT_SETTINGS_TABLE_COLUMNS=PASS
+UI_COMPACT_SETTINGS_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_SETTINGS_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_SETTINGS_HEADER_NO_OVERLAP=PASS
+UI_SNAPSHOT_COMPACT_RUN=PASS
+UI_COMPACT_RUN_HORIZONTAL_FIT=PASS
+UI_COMPACT_RUN_TABLE_COLUMNS=PASS
+UI_COMPACT_RUN_TABLE_CELL_CONTROLS=PASS
+UI_COMPACT_RUN_CONTROLS_NO_OVERLAP=PASS
+UI_COMPACT_RUN_HEADER_NO_OVERLAP=PASS
+UI_FINAL_UI_TEXT_ENCODING=PASS
+UI_GEOMETRY_REPORT_WRITTEN=PASS
+UI_SELF_TEST=PASS; offscreen=true; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+RESTORED_STORAGE
+COMMAND: C:\Users\Administrator\Desktop\price\artifacts\m2_startup_observer_transaction\rollback_test\RelinkStudio.exe --storage-self-test
+INPUT: Restored original binary/plugins on separate copy; temporary SQLite.
+STDOUT:
+STORAGE_TEMP_DIRECTORY=PASS
+STORAGE_QSQLITE_DRIVER=PASS
+STORAGE_OPEN=PASS
+STORAGE_EVENT=PASS
+STORAGE_RESERVATION=PASS
+STORAGE_COMMIT=PASS
+STORAGE_DISPATCH_FACT=PASS
+STORAGE_DISPATCH_COMMIT=PASS
+STORAGE_CLOSE=PASS
+STORAGE_REOPEN=PASS
+STORAGE_RECOVERY_PRESERVES_UNKNOWN=PASS
+STORAGE_BACKUP=PASS
+STORAGE_BACKUP_EXISTS=PASS
+STORAGE_CLOSE_FOR_BACKUP=PASS
+STORAGE_BACKUP_OPEN=PASS
+STORAGE_BACKUP_RECOVERY=PASS
+STORAGE_LATE_CONFIRMED_RECEIPT=PASS
+STORAGE_LEDGER_STAGE=PASS
+STORAGE_NO_SUCCESS_BEFORE_COMMIT=PASS
+STORAGE_LEDGER_COMMIT=PASS
+STORAGE_COMMITTED_SUCCESS=PASS
+STORAGE_FINAL_CLOSE=PASS
+STORAGE_SELF_TEST=PASS; driver=QSQLITE; temporary_data=true; system_input_sent=false; assertions=22
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+STARTUP_OBSERVER_TESTS
+COMMAND: C:\Users\Administrator\Desktop\price\build_relocated\startup_observer_tests.exe C:\Users\Administrator\Desktop\price\docs\business_rebuild\implementation\runtime\fixtures\startup_pages.json
+INPUT: Historical OCR projections plus synthetic negative cases; no game/image capture.
+STDOUT:
+PASS fixture_file_open
+PASS historical_projection_not_live_accuracy_test
+PASS original_projection_p1_lobby:MULTI_ANCHOR_MATCH:lobby
+PASS scale_invariant_p1_lobby
+PASS scale_invariant_p1_lobby
+PASS scale_invariant_p1_lobby
+PASS scale_invariant_p1_lobby
+PASS scoreless_provider_does_not_fabricate_confidence_p1_lobby
+PASS original_projection_p1_warehouse:MULTI_ANCHOR_MATCH:warehouse
+PASS scale_invariant_p1_warehouse
+PASS scale_invariant_p1_warehouse
+PASS scale_invariant_p1_warehouse
+PASS scale_invariant_p1_warehouse
+PASS scoreless_provider_does_not_fabricate_confidence_p1_warehouse
+PASS original_projection_p1_mandel:MULTI_ANCHOR_MATCH:mandel
+PASS scale_invariant_p1_mandel
+PASS scale_invariant_p1_mandel
+PASS scale_invariant_p1_mandel
+PASS scale_invariant_p1_mandel
+PASS scoreless_provider_does_not_fabricate_confidence_p1_mandel
+PASS original_projection_p1_skin_home:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p1_skin_home
+PASS scale_invariant_p1_skin_home
+PASS scale_invariant_p1_skin_home
+PASS scale_invariant_p1_skin_home
+PASS scoreless_provider_does_not_fabricate_confidence_p1_skin_home
+PASS original_projection_p1_transition:E_PAGE_INSUFFICIENT_ANCHORS:unknown
+PASS scale_invariant_p1_transition
+PASS scale_invariant_p1_transition
+PASS scale_invariant_p1_transition
+PASS scale_invariant_p1_transition
+PASS scoreless_provider_does_not_fabricate_confidence_p1_transition
+PASS original_projection_p1_empty_watchlist_1:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p1_empty_watchlist_1
+PASS scale_invariant_p1_empty_watchlist_1
+PASS scale_invariant_p1_empty_watchlist_1
+PASS scale_invariant_p1_empty_watchlist_1
+PASS scoreless_provider_does_not_fabricate_confidence_p1_empty_watchlist_1
+PASS original_projection_p1_empty_watchlist_2:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p1_empty_watchlist_2
+PASS scale_invariant_p1_empty_watchlist_2
+PASS scale_invariant_p1_empty_watchlist_2
+PASS scale_invariant_p1_empty_watchlist_2
+PASS scoreless_provider_does_not_fabricate_confidence_p1_empty_watchlist_2
+PASS original_projection_p1_home_after_empty:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p1_home_after_empty
+PASS scale_invariant_p1_home_after_empty
+PASS scale_invariant_p1_home_after_empty
+PASS scale_invariant_p1_home_after_empty
+PASS scoreless_provider_does_not_fabricate_confidence_p1_home_after_empty
+PASS original_projection_p1_catalog_filter:MULTI_ANCHOR_MATCH:catalog_filter
+PASS scale_invariant_p1_catalog_filter
+PASS scale_invariant_p1_catalog_filter
+PASS scale_invariant_p1_catalog_filter
+PASS scale_invariant_p1_catalog_filter
+PASS scoreless_provider_does_not_fabricate_confidence_p1_catalog_filter
+PASS original_projection_p1_skin_list:MULTI_ANCHOR_MATCH:skin_listings
+PASS scale_invariant_p1_skin_list
+PASS scale_invariant_p1_skin_list
+PASS scale_invariant_p1_skin_list
+PASS scale_invariant_p1_skin_list
+PASS scoreless_provider_does_not_fabricate_confidence_p1_skin_list
+PASS original_projection_p1_watch_list:MULTI_ANCHOR_MATCH:watchlist_listings
+PASS scale_invariant_p1_watch_list
+PASS scale_invariant_p1_watch_list
+PASS scale_invariant_p1_watch_list
+PASS scale_invariant_p1_watch_list
+PASS scoreless_provider_does_not_fabricate_confidence_p1_watch_list
+PASS original_projection_p2_home:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p2_home
+PASS scale_invariant_p2_home
+PASS scale_invariant_p2_home
+PASS scale_invariant_p2_home
+PASS scoreless_provider_does_not_fabricate_confidence_p2_home
+PASS original_projection_p2_empty_1:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p2_empty_1
+PASS scale_invariant_p2_empty_1
+PASS scale_invariant_p2_empty_1
+PASS scale_invariant_p2_empty_1
+PASS scoreless_provider_does_not_fabricate_confidence_p2_empty_1
+PASS original_projection_p2_empty_2:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p2_empty_2
+PASS scale_invariant_p2_empty_2
+PASS scale_invariant_p2_empty_2
+PASS scale_invariant_p2_empty_2
+PASS scoreless_provider_does_not_fabricate_confidence_p2_empty_2
+PASS original_projection_p2_home_after_empty:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p2_home_after_empty
+PASS scale_invariant_p2_home_after_empty
+PASS scale_invariant_p2_home_after_empty
+PASS scale_invariant_p2_home_after_empty
+PASS scoreless_provider_does_not_fabricate_confidence_p2_home_after_empty
+PASS original_projection_p2_filter:MULTI_ANCHOR_MATCH:catalog_filter
+PASS scale_invariant_p2_filter
+PASS scale_invariant_p2_filter
+PASS scale_invariant_p2_filter
+PASS scale_invariant_p2_filter
+PASS scoreless_provider_does_not_fabricate_confidence_p2_filter
+PASS original_projection_p3_list_filter_open:OVERLAY_REQUIRES_RECHECK:skin_listings
+PASS scale_invariant_p3_list_filter_open
+PASS scale_invariant_p3_list_filter_open
+PASS scale_invariant_p3_list_filter_open
+PASS scale_invariant_p3_list_filter_open
+PASS scoreless_provider_does_not_fabricate_confidence_p3_list_filter_open
+PASS original_projection_p3_home:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p3_home
+PASS scale_invariant_p3_home
+PASS scale_invariant_p3_home
+PASS scale_invariant_p3_home
+PASS scoreless_provider_does_not_fabricate_confidence_p3_home
+PASS original_projection_p3_empty:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p3_empty
+PASS scale_invariant_p3_empty
+PASS scale_invariant_p3_empty
+PASS scale_invariant_p3_empty
+PASS scoreless_provider_does_not_fabricate_confidence_p3_empty
+PASS original_projection_p3_filter:MULTI_ANCHOR_MATCH:catalog_filter
+PASS scale_invariant_p3_filter
+PASS scale_invariant_p3_filter
+PASS scale_invariant_p3_filter
+PASS scale_invariant_p3_filter
+PASS scoreless_provider_does_not_fabricate_confidence_p3_filter
+PASS original_projection_p4_settings_2880:MULTI_ANCHOR_MATCH:game_settings
+PASS scale_invariant_p4_settings_2880
+PASS scale_invariant_p4_settings_2880
+PASS scale_invariant_p4_settings_2880
+PASS scale_invariant_p4_settings_2880
+PASS scoreless_provider_does_not_fabricate_confidence_p4_settings_2880
+PASS original_projection_p4_sparse_lobby:E_PAGE_INSUFFICIENT_ANCHORS:unknown
+PASS scale_invariant_p4_sparse_lobby
+PASS scale_invariant_p4_sparse_lobby
+PASS scale_invariant_p4_sparse_lobby
+PASS scale_invariant_p4_sparse_lobby
+PASS scoreless_provider_does_not_fabricate_confidence_p4_sparse_lobby
+PASS original_projection_p4_mandel_2880:MULTI_ANCHOR_MATCH:mandel
+PASS scale_invariant_p4_mandel_2880
+PASS scale_invariant_p4_mandel_2880
+PASS scale_invariant_p4_mandel_2880
+PASS scale_invariant_p4_mandel_2880
+PASS scoreless_provider_does_not_fabricate_confidence_p4_mandel_2880
+PASS original_projection_p4_home_2880:MULTI_ANCHOR_MATCH:skin_home
+PASS scale_invariant_p4_home_2880
+PASS scale_invariant_p4_home_2880
+PASS scale_invariant_p4_home_2880
+PASS scale_invariant_p4_home_2880
+PASS scoreless_provider_does_not_fabricate_confidence_p4_home_2880
+PASS original_projection_p4_empty_2880:MULTI_ANCHOR_MATCH:empty_watchlist
+PASS scale_invariant_p4_empty_2880
+PASS scale_invariant_p4_empty_2880
+PASS scale_invariant_p4_empty_2880
+PASS scale_invariant_p4_empty_2880
+PASS scoreless_provider_does_not_fabricate_confidence_p4_empty_2880
+PASS original_projection_p4_filter_2880:MULTI_ANCHOR_MATCH:catalog_filter
+PASS scale_invariant_p4_filter_2880
+PASS scale_invariant_p4_filter_2880
+PASS scale_invariant_p4_filter_2880
+PASS scale_invariant_p4_filter_2880
+PASS scoreless_provider_does_not_fabricate_confidence_p4_filter_2880
+PASS original_projection_p6_settings_mislabeled:MULTI_ANCHOR_MATCH:game_settings
+PASS scale_invariant_p6_settings_mislabeled
+PASS scale_invariant_p6_settings_mislabeled
+PASS scale_invariant_p6_settings_mislabeled
+PASS scale_invariant_p6_settings_mislabeled
+PASS scoreless_provider_does_not_fabricate_confidence_p6_settings_mislabeled
+PASS navigation_and_legacy_label_never_supply_page_proof
+PASS legacy_warfare_label_is_actually_settings
+PASS legacy_apply_appearance_label_is_actually_settings
+PASS low_score_labels_do_not_prove_page
+PASS conflicting_pages_fail_closed
+PASS adjacent_same_line_split_chinese_label
+PASS far_apart_text_not_concatenated_into_page_anchor
+PASS page_number_not_hardcoded_to_first_two_pages
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_observation_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS invalid_word_field_rejected
+PASS token_budget_enforced
+PASS text_byte_budget_enforced
+PASS start_original_route
+PASS home_requires_original_watchlist_precheck
+PASS first_empty_observation_not_enough
+PASS same_frame_cannot_confirm_empty_twice
+PASS renamed_cached_presentation_rejected
+PASS second_fresh_empty_confirms
+PASS cannot_skip_return_home_after_empty
+PASS original_return_home_before_filter
+PASS original_precheck_route_complete
+PASS no_action_or_capture_side_effect
+PASS completed_observation_requires_new_context
+PASS same_context_cannot_restart_after_completion
+PASS new_epoch_allows_new_observation
+PASS old_epoch_cannot_drive_restarted_observer
+PASS no_action_or_capture_side_effect
+PASS existing_list_does_not_restart_collection
+PASS existing_list_preserves_original_steps
+PASS no_action_or_capture_side_effect
+PASS existing_list_does_not_restart_collection
+PASS existing_list_preserves_original_steps
+PASS no_action_or_capture_side_effect
+PASS filter_alone_does_not_prove_startup_route
+PASS open_overlay_blocks_list_readiness
+PASS fresh_unobscured_list_resumes_original_branch
+PASS all_context_fields_correlated
+PASS all_context_fields_correlated
+PASS all_context_fields_correlated
+PASS all_context_fields_correlated
+PASS all_context_fields_correlated
+PASS all_context_fields_correlated
+PASS negative_capture_stamp_rejected
+PASS future_capture_rejected
+PASS stale_observation_rejected
+PASS clock_regression_pauses
+PASS no_action_or_capture_side_effect
+PASS timeout_fixture_first_empty
+PASS deadline_at_equality_expires_without_capture
+PASS unknown_page_observation_budget_bounded
+PASS frame_history_bounded
+PASS pause_invalidates_pending_precheck
+PASS stopped_observer_ignores_late_page
+PASS no_action_or_capture_side_effect
+PASS invalid_frame_budget
+PASS invalid_frame_budget
+PASS invalid_timeout
+PASS invalid_timeout
+PASS deadline_integer_overflow_rejected
+PASS confirmation_count_cannot_exceed_budget
+PASS empty_context_id_rejected
+PASS active_start_does_not_replace_context
+STARTUP_OBSERVER_TESTS=PASS; assertions=250; failures=0; historical_cases=27; game_connected=false; system_input_sent=false; image_file_writes=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+PACKAGED_STARTUP_SELF_TEST
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --startup-observer-self-test
+INPUT: Packaged embedded historical fixtures; 27 page checks and 5 original route checks; QCoreApplication only.
+STDOUT:
+{"checks":[{"id":"p1_lobby","page":"lobby","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_warehouse","page":"warehouse","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_mandel","page":"mandel","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_skin_home","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_transition","page":"unknown","passed":true,"reason":"E_PAGE_INSUFFICIENT_ANCHORS"},{"id":"p1_empty_watchlist_1","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_empty_watchlist_2","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_home_after_empty","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_catalog_filter","page":"catalog_filter","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_skin_list","page":"skin_listings","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p1_watch_list","page":"watchlist_listings","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p2_home","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p2_empty_1","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p2_empty_2","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p2_home_after_empty","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p2_filter","page":"catalog_filter","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p3_list_filter_open","page":"skin_listings","passed":true,"reason":"OVERLAY_REQUIRES_RECHECK"},{"id":"p3_home","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p3_empty","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p3_filter","page":"catalog_filter","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p4_settings_2880","page":"game_settings","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p4_sparse_lobby","page":"unknown","passed":true,"reason":"E_PAGE_INSUFFICIENT_ANCHORS"},{"id":"p4_mandel_2880","page":"mandel","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p4_home_2880","page":"skin_home","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p4_empty_2880","page":"empty_watchlist","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p4_filter_2880","page":"catalog_filter","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"p6_settings_mislabeled","page":"game_settings","passed":true,"reason":"MULTI_ANCHOR_MATCH"},{"id":"original_empty_watchlist_route","passed":true,"snapshot":{"accepted":9,"actions_enabled":false,"business_fields_validated":false,"capture_requested":false,"checkpoint":"read_season_ownership_quality","empty_confirmations":0,"empty_watchlist_verified":true,"home_after_empty_verified":true,"observations":9,"overlay":"none","page":"catalog_filter","phase":"FilterObserved","purchase_authorized":false,"reason":"MULTI_ANCHOR_MATCH","rejected":0,"source_steps":["S10","S12","S13"]}},{"id":"existing_list_route","passed":true,"snapshot":{"accepted":1,"actions_enabled":false,"business_fields_validated":false,"capture_requested":false,"checkpoint":"read_existing_list_sort_and_identity","empty_confirmations":0,"empty_watchlist_verified":false,"home_after_empty_verified":false,"observations":1,"overlay":"none","page":"watchlist_listings","phase":"ExistingListObserved","purchase_authorized":false,"reason":"MULTI_ANCHOR_MATCH","rejected":0,"source_steps":["S32","S33"]}},{"id":"ordinary_existing_skin_list_route","passed":true,"snapshot":{"accepted":1,"actions_enabled":false,"business_fields_validated":false,"capture_requested":false,"checkpoint":"read_existing_list_sort_and_identity","empty_confirmations":0,"empty_watchlist_verified":false,"home_after_empty_verified":false,"observations":1,"overlay":"none","page":"skin_listings","phase":"ExistingListObserved","purchase_authorized":false,"reason":"MULTI_ANCHOR_MATCH","rejected":0,"source_steps":["S32","S33"]}},{"id":"filter_without_precheck_does_not_advance","passed":true,"snapshot":{"accepted":1,"actions_enabled":false,"business_fields_validated":false,"capture_requested":false,"checkpoint":"watchlist_precheck_unproven","empty_confirmations":0,"empty_watchlist_verified":false,"home_after_empty_verified":false,"observations":1,"overlay":"none","page":"catalog_filter","phase":"Locating","purchase_authorized":false,"reason":"E_STARTUP_PRECHECK_REQUIRED","rejected":0,"source_steps":["S04","S07","S08"]}},{"id":"listing_overlay_does_not_advance","passed":true,"snapshot":{"accepted":1,"actions_enabled":false,"business_fields_validated":false,"capture_requested":false,"checkpoint":"recheck_after_overlay","empty_confirmations":0,"empty_watchlist_verified":false,"home_after_empty_verified":false,"observations":1,"overlay":"listing_filter","page":"skin_listings","phase":"Locating","purchase_authorized":false,"reason":"OVERLAY_REQUIRES_RECHECK","rejected":0,"source_steps":["S04","S32"]}}],"diagnostic":"startup_observer_self_test","failures":0,"frame_capture_count":0,"game_connected":false,"image_file_writes":0,"live_calibrated":false,"page_checks":27,"passed":true,"system_input_sent":false,"trace_checks":5}
+STARTUP_OBSERVER_SELF_TEST=PASS; page_checks=27; trace_checks=5; failures=0; game_connected=false; system_input_sent=false
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+DIAGNOSTIC_MODE_CONFLICT
+COMMAND: C:\Users\Administrator\Desktop\price\dist\RelinkStudio\RelinkStudio.exe --startup-observer-self-test --live-capture-check
+INPUT: Both offline and live flags; expected early refusal before any window binding/capture.
+STDOUT:
+
+STDERR:
+E_DIAGNOSTIC_MODE_CONFLICT
+EXIT_STATUS: 2
+
+DOCS_CONTRACTS
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe -I -X utf8 C:\Users\Administrator\Desktop\price\docs\business_rebuild\scripts\validate_contracts.py
+INPUT: Frozen schemas and fixtures, no game.
+STDOUT:
+CONTRACT_STRUCTURAL_CHECKS=PASS SCHEMAS=6 RESOLVED_REFS=249 FIXTURES=42
+EXPECTED_ACCEPT=20 EXPECTED_REJECT=22 FAILURES=0 NETWORK_SCHEMA_FETCHES=0
+BUSINESS_ENGINE_TESTS_EXECUTED=0 LIVE_CAPTURE_TESTS_EXECUTED=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+DOCS_READINESS
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe -I -X utf8 C:\Users\Administrator\Desktop\price\docs\business_rebuild\implementation\readiness\validate_readiness.py
+INPUT: Static readiness contracts.
+STDOUT:
+READINESS_DOCS=PASS TICKETS=12 DETAILED_TEST_SPECS=30 DECISIONS=13 LINKS=13 APPLICATION_TESTS_RUN=0 SAMPLE_EXECUTIONS=0
+STDERR:
+(empty)
+EXIT_STATUS: 0
+
+DOCS_BASELINE
+COMMAND: C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe -I -X utf8 C:\Users\Administrator\Desktop\price\docs\business_rebuild\scripts\validate_docs.py
+INPUT: New scoped source/package baseline; historical baselines preserved.
+STDOUT:
+BASELINE_DIFF evidence path=src/domain.h expected=0111009e5c4b044163f8bc674c662626e6702f9970a47b24ec9b568b522173fa actual=c6798d4dbdc8d542a92feb128abc505d9755a37359fca89aeedb7ff5000e89a7 covered_by_m1=True
+BASELINE_DIFF evidence path=src/domain.cpp expected=84fb9f012b1804e120e3d779ef41553072651e7e7e557a0483199dfd20e3ca3f actual=288fd4682b8c037262f1276c017dd78ae616d22fc27137b55777a617b49b3dc5 covered_by_m1=True
+BASELINE_DIFF evidence path=src/mainwindow.cpp expected=26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625 actual=7c82bb39c2509660f089aec748d9e9684b7c4615baa3a88fae5b4893ee34dd3a covered_by_m1=True
+BASELINE_DIFF evidence path=CMakeLists.txt expected=45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c actual=4b7c856615645213f74f558c1fa7755c3fe0fe559eb31ed832dc5ffbcd23b911 covered_by_m1=True
+BASELINE_DIFF evidence path=build.ps1 expected=628530151780997adb90ec7bc2409eb59dfe1ac10f4da7959f32fdf7de5e176d actual=de308c383598e12fb03817faeb5760be36bff135dd68074925580fed2cebd501 covered_by_m1=True
+BASELINE_DIFF project path=CMakeLists.txt state=modified expected=45208e32e1e7da1deba7429fba5161fb6e8f4ae5ce65dcbfb0c0b6c12159c03c actual=4b7c856615645213f74f558c1fa7755c3fe0fe559eb31ed832dc5ffbcd23b911 covered_by_m1=True
+BASELINE_DIFF project path=SESSION_START.md state=modified expected=04e9bff567d18b7544d9d22ec65b8d0ce7beb8efa6f2b83709bf860ad70041a5 actual=0e64d116d605309f37c4b6bf9f542ebba219dbca3c48ce8db5f12158ef0a32bd covered_by_m1=True
+BASELINE_DIFF project path=build.ps1 state=modified expected=628530151780997adb90ec7bc2409eb59dfe1ac10f4da7959f32fdf7de5e176d actual=de308c383598e12fb03817faeb5760be36bff135dd68074925580fed2cebd501 covered_by_m1=True
+BASELINE_DIFF project path=dist/RelinkStudio/README.md state=modified expected=f4d64adc160f2293887a0e8da405896c2afe3a6c5225f46715d79e1e2a557171 actual=25366f67e5eb8a10a764fb17f47fe7ed9af52cccdf5e1c52d2a8c8ccba29427d covered_by_m1=True
+BASELINE_DIFF project path=dist/RelinkStudio/RelinkStudio.exe state=modified expected=b2d2e6b5ad2e1e28823bf62e79f839ae1d7379b06af02eb821867b145b91b15d actual=cfdef04a62f5b5b833e2d0e2f552dca347b45d156fb53cfb7983f483e566d5fe covered_by_m1=True
+BASELINE_DIFF project path=dist/RelinkStudio/file_manifest.json state=modified expected=a5f196bc39ba6a6c9132432b7b4bf0fc5cc2e411d91843d81c975d6c0a203750 actual=3e786145ba75994b801bac27c28fca99a1b9f262e921c7c4c3f1059ccc1b7a6f covered_by_m1=True
+BASELINE_DIFF project path=resources.qrc state=modified expected=78d52f4f4acd8b0c700ac718a76c191c4a29f4a79edba20d2134e9c96ebd78bc actual=025d21527264f78f1afde9c3622e81b22cf12404a7b899d09bc6480d989ef5da covered_by_m1=True
+BASELINE_DIFF project path=src/domain.cpp state=modified expected=84fb9f012b1804e120e3d779ef41553072651e7e7e557a0483199dfd20e3ca3f actual=288fd4682b8c037262f1276c017dd78ae616d22fc27137b55777a617b49b3dc5 covered_by_m1=True
+BASELINE_DIFF project path=src/domain.h state=modified expected=0111009e5c4b044163f8bc674c662626e6702f9970a47b24ec9b568b522173fa actual=c6798d4dbdc8d542a92feb128abc505d9755a37359fca89aeedb7ff5000e89a7 covered_by_m1=True
+BASELINE_DIFF project path=src/main.cpp state=modified expected=cd210ca6382dbecafcd93a775cd3c3a68a34d2ac9496cfe6051df2c5b3653cd9 actual=1e9400b9e28368776cba222d3977024fbf4863458f916e2f290c47aba7f5c30b covered_by_m1=True
+BASELINE_DIFF project path=src/mainwindow.cpp state=modified expected=26fb0cf0c328dad8d62ba0f866832b71163d21f2182014128469538a48d84625 actual=7c82bb39c2509660f089aec748d9e9684b7c4615baa3a88fae5b4893ee34dd3a covered_by_m1=True
+BASELINE_DIFF project path=src/mainwindow.h state=modified expected=be10da55c3471aea472c443a6a33bde35f768492d0bc19c7d80ca5dbf2dacb02 actual=8acb13024a4a7cb6228a79b169ec0a76b2c8ac8c1dcd0228bcbedb1dc35715cd covered_by_m1=True
+BASELINE_DIFF project path=tests/verify_delivery.py state=modified expected=3260cb24c96144e6e59dcbc1871749e88d2b923608440b3d515301b6e7a3f04d actual=e7cfaafea3d47e13b511b6f6549d2543a9cc1f1a38907c9ae1deb71f9ab1d740 covered_by_m1=True
+BASELINE_DIFF m2_startup_observer=NONE
+DOCUMENTATION_CHECKS=PASS
+BUSINESS_ITEMS=44 ACCEPTANCE_SPECIFICATIONS=88 BUSINESS_TESTS_EXECUTED=0
+OFFICIAL_REFERENCES_VERIFIED=16 EVIDENCE_GROUPS=12 EVIDENCE_FILES_HASH_VERIFIED=23
+JSON_FILES_PARSED=81 INTERNAL_MD_LINKS=188 HTML_SECTIONS=11 SVG_DIAGRAMS=2
+APPLICATION_BASELINE_FILES=102 APPLICATION_BASELINE_FILES_UNCHANGED=89 APPLICATION_BASELINE_DIFFS=13
+M1_BASELINE_ID=m2_startup_observer M1_BASELINE_FILES=369 M1_BASELINE_FILES_UNCHANGED=369 M1_BASELINE_DIFFS=0 SAMPLE_EXECUTIONS=0
+STEP_CAPTURE_CONTRACT=PASS LIVE_CAPTURE_TESTS_EXECUTED=0
+DEVELOPMENT_BASELINE_ID=m2_startup_observer; legacy_m1_output_fields_retained=true
+STDERR:
+(empty)
+EXIT_STATUS: 0

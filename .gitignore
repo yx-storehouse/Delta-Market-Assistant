@@ -54,6 +54,9 @@ __pycache__/
 artifacts/m2_live_capture_transaction/*/
 artifacts/m2_live_capture_transaction/MODIFIED_FILE.exe
 artifacts/m2_live_capture_transaction/*-config.json
+artifacts/m2_startup_observer_transaction/*/
+artifacts/m2_startup_observer_transaction/MODIFIED_FILE.exe
+artifacts/m2_startup_observer_transaction/*-config.json
 *.py[cod]
 artifacts/business_rebuild_docs/browser-profile-*/
 artifacts/business_rebuild_docs/shell-profile-*/

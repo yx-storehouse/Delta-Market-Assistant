@@ -1,5 +1,7 @@
 # 下一轮开发交接：M2 真实画面采集与识别边界
 
+> **最新：原启动观察器已经实现。** 阅读 `implementation/runtime/startup_observer_m2.md`，复用 `SkinPageClassifier` / `StartupObserver`，不要重做。27条历史OCR投影、5条包内检查路径；当前23组CTest。本轮无实机捕获，用户准备后才做当前版本锚点/DPI校准。旧页类标签不是视觉真值；观察检查点仍没有连接导航点击。
+
 ## 2026-10-07 用户纠正后的最高优先级
 
 先阅读 `10_bbzps_first_startup_reconstruction.md` 和 `evidence/startup_flow_evidence.json`。

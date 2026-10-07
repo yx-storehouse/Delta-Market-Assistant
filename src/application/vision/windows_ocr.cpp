@@ -22,6 +22,21 @@
 namespace relink::vision {
 namespace {
 OcrReply failure(const QString& code) { return {false, code, {}}; }
+#ifdef Q_OS_WIN
+struct HelperUiState { DWORD pid = 0; int checks = 0; bool visible = false; bool foreground = false; };
+void inspectHelperUi(HelperUiState& state) {
+    ++state.checks;
+    DWORD foregroundPid = 0;
+    GetWindowThreadProcessId(GetForegroundWindow(), &foregroundPid);
+    state.foreground |= foregroundPid == state.pid;
+    EnumWindows([](HWND window, LPARAM param) -> BOOL {
+        auto& s = *reinterpret_cast<HelperUiState*>(param);
+        DWORD pid = 0; GetWindowThreadProcessId(window, &pid);
+        if (pid == s.pid && IsWindowVisible(window)) s.visible = true;
+        return TRUE;
+    }, reinterpret_cast<LPARAM>(&state));
+}
+#endif
 }
 
 OcrReply validateOcrReply(const QByteArray& data, const QString& requestId, int width, int height) {
@@ -123,15 +138,19 @@ OcrReply WindowsOcrRecognizer::recognizeFrame(const runtime::observation::FrameE
     clock.start();
     process.start();
     if (!process.waitForStarted(std::min(2000, m_timeoutMs))) return failure(QStringLiteral("E_OCR_START"));
+    HelperUiState helperUi{static_cast<DWORD>(process.processId()), 0, false, false};
+    inspectHelperUi(helperUi);
     const QByteArray request = QJsonDocument(input).toJson(QJsonDocument::Compact) + '\n';
     if (process.write(request) != request.size()) error = QStringLiteral("E_OCR_WRITE");
     process.closeWriteChannel();
     QByteArray output;
     qint64 stderrBytes = 0;
     auto drain = [&]() {
+        inspectHelperUi(helperUi);
         output += process.readAllStandardOutput();
         stderrBytes += process.readAllStandardError().size();
         if (output.size() > 1048576 || stderrBytes > 65536) error = QStringLiteral("E_OCR_OUTPUT_LIMIT");
+        if (helperUi.visible || helperUi.foreground) error = QStringLiteral("E_OCR_HELPER_VISIBLE");
     };
     while (error.isEmpty() && process.state() != QProcess::NotRunning && clock.elapsed() < m_timeoutMs) {
         process.waitForFinished(20); drain();
@@ -146,9 +165,12 @@ OcrReply WindowsOcrRecognizer::recognizeFrame(const runtime::observation::FrameE
     mapping.close();
     if (!error.isEmpty()) return failure(error);
     if (process.exitStatus() != QProcess::NormalExit) return failure(QStringLiteral("E_OCR_CRASH"));
-    const auto reply = validateOcrReply(output, id, frame.width, frame.height);
+    auto reply = validateOcrReply(output, id, frame.width, frame.height);
     if (process.exitCode() != 0 && reply.ok) return failure(QStringLiteral("E_OCR_EXIT"));
     if (reply.ok && reply.observation.value("language") != m_language) return failure(QStringLiteral("E_OCR_LANGUAGE"));
+    reply.helperUiChecks = helperUi.checks;
+    reply.helperVisibleWindowObserved = helperUi.visible;
+    reply.helperForegroundObserved = helperUi.foreground;
     return reply;
 #else
     return failure(QStringLiteral("E_PLATFORM_UNSUPPORTED"));
