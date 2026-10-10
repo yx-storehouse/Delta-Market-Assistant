@@ -127,7 +127,7 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
     hotkey->setFixedWidth(104);
     connect(hotkey, &QComboBox::currentTextChanged, this, [this](const QString& key) { if (!key.isEmpty()) m_state->run.hotkey = key; });
     m_runBinders.append([this, hotkey] { QSignalBlocker guard(hotkey); hotkey->setCurrentText(m_state->run.hotkey); });
-    row(settingsCard(glyphLabel(Glyph::Keyboard), QStringLiteral("运行快捷键"), QStringLiteral("按下后开始或停止运行；接入执行模块后生效"), hotkey));
+    row(settingsCard(glyphLabel(Glyph::Keyboard), QStringLiteral("运行快捷键"), QStringLiteral("在游戏里按一下开始：我的关注是空的就先收藏，再逐把定时购买（真实购买），顶部显示状态；再按一下停止"), hotkey));
     auto* scheduleStart = new FluentTimeEdit;
     scheduleStart->setObjectName(QStringLiteral("runScheduleStart"));
     auto* scheduleStop = new FluentTimeEdit;
@@ -153,14 +153,16 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
                      strip({text(QStringLiteral("开始")), scheduleStart, text(QStringLiteral("结束")), scheduleStop, schedule})));
 
     group(QStringLiteral("购买延迟"));
-    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("购买延迟"), QStringLiteral("每次购买操作之间的等待时间"),
-                     integer(QStringLiteral("runPurchaseDelay"), &RunSettings::purchaseDelayMs, 0, 60000, QStringLiteral(" ms"), 140)));
-    row(settingsCard(nullptr, QStringLiteral("动态延迟"), QStringLiteral("开启动态延迟调整（跳过抽奖页：开启）。原程序标注为不建议"),
+    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("提前进入"), QStringLiteral("倒计时剩余这么多秒时点开购买小窗，并把鼠标移到购买按钮上（2–5 秒：要留时间校准小窗倒计时）"),
+                     integer(QStringLiteral("runEnterBefore"), &RunSettings::enterBeforeSeconds, 2, 5, QStringLiteral(" 秒"), 140)));
+    row(settingsCard(nullptr, QStringLiteral("购买延迟"), QStringLiteral("购买小窗的倒计时归零后，再等这么久点击购买；会按下面两项自动增减，顶部状态栏显示当前实际用的值，改这里就从新值重新开始"),
+                     integer(QStringLiteral("runPurchaseDelay"), &RunSettings::purchaseDelayMs, 0, 60000, QStringLiteral(" ms"), 140), QString(), true));
+    row(settingsCard(nullptr, QStringLiteral("动态延迟"), QStringLiteral("原程序的动态延迟（跳过抽奖页），本程序暂未使用。下面两项的自动增减不受这个开关控制，步长设 0 即关闭"),
                      toggle(QStringLiteral("runDynamicDelay"), &RunSettings::dynamicDelay), QString(), true));
-    row(settingsCard(nullptr, QStringLiteral("队列已满时减延迟"), QStringLiteral("每触发设定次数，购买延迟减少一次"),
+    row(settingsCard(nullptr, QStringLiteral("队列已满时减延迟"), QStringLiteral("真按后提示“抢购队列已满”，每累计设定次数，购买延迟减少一次（步长 0 即关闭）"),
                      strip({text(QStringLiteral("触发")), integer(QStringLiteral("runQueueTrigger"), &RunSettings::queueFullTrigger, 1, 9999, QStringLiteral(" 次"), 104),
                             text(QStringLiteral("减少")), step(QStringLiteral("runQueueStep"), &RunSettings::queueFullStepMs)}), QString(), true));
-    row(settingsCard(nullptr, QStringLiteral("公示期加延迟"), QStringLiteral("处于公示期时，每触发设定次数，购买延迟增加一次"),
+    row(settingsCard(nullptr, QStringLiteral("公示期加延迟"), QStringLiteral("真按后提示“订单尚未开放购买 / 还在公示期内”（按早了），每累计设定次数，购买延迟增加一次（步长 0 即关闭）"),
                      strip({text(QStringLiteral("触发")), integer(QStringLiteral("runPublicityTrigger"), &RunSettings::publicityTrigger, 1, 9999, QStringLiteral(" 次"), 104),
                             text(QStringLiteral("增加")), step(QStringLiteral("runPublicityStep"), &RunSettings::publicityStepMs)}), QString(), true));
 

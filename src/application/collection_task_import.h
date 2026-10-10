@@ -7,7 +7,7 @@ namespace relink::application {
 
 struct CollectionTaskImportRow {
     Task task;
-    QString productId, seasonId, seasonLabel, displayName, menuColor, variantLabel;
+    QString productId, seasonId, seasonLabel, displayName, grade, variantLabel;
     bool alreadyImported = false;
 };
 

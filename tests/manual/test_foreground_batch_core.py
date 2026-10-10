@@ -37,6 +37,13 @@ class BatchTests(unittest.TestCase):
         r=stabilize_capture(lambda t:{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
             lambda:True,deadline=time.monotonic()+3,wait=lambda t:None)
         self.assertEqual(r['attempt_count'],3);self.assertFalse(r['passed'])
+    def test_optional_retry_shares_three_attempt_budget_with_unknown_page(self):
+        answers=[{'passed':False,'exit_status':1,'result':{'page_error':'E_DIAGNOSTIC_PAGE_MISMATCH','startup_page':{'page':'unknown'}}},
+                 {'passed':False,'exit_status':0,'result':{},'native_retry':True},
+                 {'passed':False,'exit_status':0,'result':{},'native_retry':True}]
+        r=stabilize_capture(lambda t:answers.pop(0),lambda:True,deadline=time.monotonic()+3,wait=lambda t:None,
+                            retry_observation=lambda observed:observed.get('native_retry') is True)
+        self.assertEqual(r['attempt_count'],3);self.assertEqual(answers,[]);self.assertFalse(r['passed'])
     def test_retry_does_not_reclaim_lost_focus(self):
         with self.assertRaisesRegex(RuntimeError,'BATCH_FOREGROUND_LOST'):
             stabilize_capture(lambda t:self.fail('capture must not run'),lambda:False,deadline=time.monotonic()+3)

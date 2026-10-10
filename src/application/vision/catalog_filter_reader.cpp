@@ -62,8 +62,12 @@ CheckState classifyFilterCheckboxMeasurement(const QJsonObject& signal) {
     // The observed selected style is a WHITE inset square, not a green check.
     // Require its bright flat center plus dark perimeter and mixed edge band;
     // a flat bright rectangle, icon speck or a missing border is not selected.
+    // The pointer's hover glow brightens only the border (live 2026-10-09,
+    // hotkey run 20261009-141700: 103..106 against 66..75 unhovered, center
+    // 198.5 against 192.8). The border may glow up to 120; the bright inset
+    // must still stand at least 80 above it (every recorded tick: 191..199).
     if(mean>=120 && mean<=210 && dev>=20 && dev<=70 && center>=160 && center<=225 && centerDev<=6
-       && bright>=.75 && bright<=.97 && green==0 && minBorder>=35 && maxBorder<=100 && center-maxBorder>=80)
+       && bright>=.75 && bright<=.97 && green==0 && minBorder>=35 && maxBorder<=120 && center-maxBorder>=80)
         return CheckState::Checked;
     return CheckState::Unknown;
 }
@@ -92,7 +96,11 @@ FilterCheckbox measureFilterCheckbox(const FrameEnvelope& frame, const QRect& re
         {"green_fraction",double(green)/total},{"border_means",borders},{"sample_count",total},
         {"center_mean",centerMean},{"center_stddev",std::sqrt(std::max(0.0,centerSquared/centerTotal-centerMean*centerMean))}};
     out.state=classifyFilterCheckboxMeasurement(out.measurement);
-    out.reason=out.state==CheckState::Unchecked ? "closed_dark_empty_box" : out.state==CheckState::Checked ? "white_inset_selected_box" : "E_FILTER_CHECKBOX_AMBIGUOUS";
+    double maxBorder=0;
+    for(const auto v:borders)maxBorder=std::max(maxBorder,v.toDouble());
+    out.reason=out.state==CheckState::Unchecked ? (maxBorder>100 ? "closed_dark_empty_box_border_glow" : "closed_dark_empty_box")
+        : out.state==CheckState::Checked ? (maxBorder>100 ? "white_inset_selected_box_border_glow" : "white_inset_selected_box")
+        : "E_FILTER_CHECKBOX_AMBIGUOUS";
     return out;
 }
 CatalogFilterState readCatalogFilter(const FrameEnvelope& frame, const QJsonObject& o) {
@@ -121,6 +129,50 @@ CatalogFilterState readCatalogFilter(const FrameEnvelope& frame, const QJsonObje
     }
     out.reason=out.complete ? "filter_state_observed" : "E_FILTER_INCOMPLETE";
     return out;
+}
+QRect catalogSeasonLabelRefinementRegion(const FrameEnvelope& frame,const QJsonObject& observation){
+    const auto state=readCatalogFilter(frame,observation);
+    if(!state.validPage ||state.reason!="E_FILTER_INCOMPLETE" ||!state.seasonLabel.isEmpty())return {};
+    // This existing reader text box excludes the dropdown arrow on its right.
+    return QRect(770,426,270,42);
+}
+QJsonObject refineCatalogSeasonLabel(const FrameEnvelope& frame,const QJsonObject& observation,
+        const QJsonObject& local,const QRect& region,QJsonObject* evidence){
+    QJsonObject audit{{"schema","catalog-season-label-refinement-v1"},{"field","season_label"},
+        {"bounds",QJsonArray{region.x(),region.y(),region.width(),region.height()}},
+        {"frame_id",observation["frame_id"]},{"frame_sha256",observation["frame_sha256"]},
+        {"same_frame",false},{"words",local["words"]},{"replacement_applied",false},
+        {"expected_text_supplied",false},{"image_file_writes",0},{"actions_enabled",false}};
+    const auto fail=[&](const char* error){audit["error"]=error;if(evidence)*evidence=audit;return observation;};
+    if(region.isEmpty() ||region!=catalogSeasonLabelRefinementRegion(frame,observation))
+        return fail("E_CATALOG_SEASON_REFINEMENT_SCOPE");
+    if(local["frame_id"]!=observation["frame_id"] ||local["frame_sha256"]!=observation["frame_sha256"]
+        ||local["same_frame"]!=true ||local["coverage"]!="roi" ||local["coordinate_space"]!="client_physical_px"
+        ||local["width"]!=observation["width"] ||local["height"]!=observation["height"])
+        return fail("E_CATALOG_SEASON_REFINEMENT_FRAME");
+    audit["same_frame"]=true;
+    if(!local["words"].isArray() ||local["words"].toArray().isEmpty() ||local["words"].toArray().size()>16)
+        return fail("E_CATALOG_SEASON_REFINEMENT_WORDS");
+    auto validated=local;validated["coverage"]="full_client";
+    if(!classifySkinPage(validated).validInput)return fail("E_CATALOG_SEASON_REFINEMENT_WORDS");
+    for(const auto& value:local["words"].toArray()){
+        const auto word=value.toObject();const QRectF bounds(word["x"].toDouble(),word["y"].toDouble(),
+            word["width"].toDouble(),word["height"].toDouble());
+        if(!QRectF(region).contains(bounds))return fail("E_CATALOG_SEASON_REFINEMENT_BOUNDS");
+    }
+    QJsonArray merged;
+    for(const auto& value:observation["words"].toArray()){
+        const auto word=value.toObject();const QRectF bounds(word["x"].toDouble(),word["y"].toDouble(),
+            word["width"].toDouble(),word["height"].toDouble());
+        if(!QRectF(region).contains(bounds.center()))merged.append(value);
+    }
+    for(const auto& value:local["words"].toArray())merged.append(value);
+    auto candidate=observation;candidate["words"]=merged;
+    const auto state=readCatalogFilter(frame,candidate);
+    audit["season_label_after"]=state.seasonLabel;audit["reader_reason_after"]=state.reason;
+    audit["reader_complete_after"]=state.complete;
+    if(!state.validPage ||state.seasonLabel.isEmpty())return fail("E_CATALOG_SEASON_REFINEMENT_LABEL");
+    audit["replacement_applied"]=true;if(evidence)*evidence=audit;return candidate;
 }
 QJsonObject CatalogFilterState::toJson() const {
     QJsonObject values;

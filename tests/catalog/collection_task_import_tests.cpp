@@ -97,8 +97,11 @@ int main(int argc, char** argv) {
           "disabled_row_keeps_all_original_parameters");
     check(preview.rows[0].task.quantity == 0 && preview.rows[1].task.condition == QStringLiteral("仅磨损"),
           "zero_limit_and_wear_only_condition_preserved");
-    check(preview.rows[0].menuColor == "purple" && preview.rows[0].variantLabel.isEmpty()
-          && state.skins[0].rarity == QStringLiteral("待核对"), "menu_color_is_not_guessed_quality_or_condition");
+    const Skin* importedSkin = nullptr;
+    for (const auto& skin : state.skins) if (skin.id == preview.rows[0].task.skinId) importedSkin = &skin;
+    check(preview.rows[0].grade == QStringLiteral("史诗品阶") && preview.rows[0].variantLabel.isEmpty()
+          && importedSkin && importedSkin->rarity == QStringLiteral("史诗品阶")
+          && preview.rows[0].task.condition != importedSkin->rarity, "catalogue_grade_is_shown_not_a_condition");
     check(preview.rows[2].seasonLabel == QStringLiteral("疾风魅影"), "s11_source_spelling_not_renamed");
     check(preview.inactiveSettingsMetadata.contains(QStringLiteral("购买延迟"))
           && state.run.purchaseDelayMs == 1473, "purchase_settings_metadata_only");

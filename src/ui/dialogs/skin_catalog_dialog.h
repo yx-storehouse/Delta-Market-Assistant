@@ -51,7 +51,6 @@ private:
     QLineEdit* m_weapon = nullptr;
     QLineEdit* m_skinSeries = nullptr;
     QComboBox* m_variant = nullptr;
-    QComboBox* m_menuColor = nullptr;
-    QLineEdit* m_quality = nullptr;
+    QComboBox* m_grade = nullptr;
 };
 } // namespace relink::ui

@@ -1,0 +1,843 @@
+{
+ "source": "artifacts/collection_pipeline_speed/run01 steps 000019/000021 (numbers only, no pixels)",
+ "basis": {
+  "frame_id": "dxgi:3f8c6b8b-6bd4-4785-b0a6-d3c708113a6e",
+  "frame_sha256": "0de422aaf7544a2af069e83d3ac083c6de7759e14452ae7a927a205432e5be2d",
+  "viewport": [
+   2560,
+   1440
+  ],
+  "listing_viewport": [
+   108,
+   300,
+   1765,
+   903
+  ],
+  "scrollbar": {
+   "geometry_basis": "observed_centerline_only",
+   "measured_center_x": 1878,
+   "method": "symmetric_contrast_with_independent_left_affine_background",
+   "thumb_bounds": [
+    1878,
+    304,
+    1,
+    62
+   ],
+   "track_bounds": [
+    1878,
+    304,
+    1,
+    899
+   ]
+  },
+  "cards": [
+   {
+    "id": "edge:119:304:984:567",
+    "bounds": [
+     119,
+     304,
+     866,
+     264
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": true,
+    "fields_bounds": [
+     120,
+     525,
+     864,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     120,
+     525,
+     115,
+     42
+    ],
+    "price_bounds": [
+     835,
+     525,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:997:306:1859:565",
+    "bounds": [
+     997,
+     306,
+     863,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     998,
+     523,
+     861,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     998,
+     523,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     523,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:120:580:982:840",
+    "bounds": [
+     120,
+     580,
+     863,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     121,
+     798,
+     861,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     121,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     833,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:580:1859:840",
+    "bounds": [
+     998,
+     580,
+     862,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     798,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:121:855:981:1114",
+    "bounds": [
+     121,
+     855,
+     861,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     122,
+     1072,
+     859,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     122,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     832,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:855:1859:1114",
+    "bounds": [
+     998,
+     855,
+     862,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     1072,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:122:1130:980:1202",
+    "bounds": [
+     122,
+     1130,
+     859,
+     73
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "observed"
+   },
+   {
+    "id": "edge:998:1130:1859:1202",
+    "bounds": [
+     998,
+     1130,
+     862,
+     73
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "observed"
+   }
+  ],
+  "complete": true
+ },
+ "pixel_receipt": {
+  "frame_id": "dxgi:7e8b028e-48f3-4895-a819-c40019c1051e",
+  "frame_sha256": "a36cc37735467693203c11341bd3279d5547e27384477b5d53600f63b5985956",
+  "viewport": [
+   2560,
+   1440
+  ],
+  "listing_viewport": [
+   108,
+   300,
+   1765,
+   903
+  ],
+  "scrollbar": {
+   "geometry_basis": "observed_centerline_only",
+   "measured_center_x": 1878,
+   "method": "symmetric_contrast_with_independent_left_affine_background",
+   "thumb_bounds": [
+    1878,
+    304,
+    1,
+    62
+   ],
+   "track_bounds": [
+    1878,
+    304,
+    1,
+    899
+   ]
+  },
+  "cards": [
+   {
+    "id": "edge:119:304:984:567",
+    "bounds": [
+     119,
+     304,
+     866,
+     264
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": true,
+    "fields_bounds": [
+     120,
+     525,
+     864,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     120,
+     525,
+     115,
+     42
+    ],
+    "price_bounds": [
+     835,
+     525,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:997:306:1859:565",
+    "bounds": [
+     997,
+     306,
+     863,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     998,
+     523,
+     861,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     998,
+     523,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     523,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:120:580:982:840",
+    "bounds": [
+     120,
+     580,
+     863,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     121,
+     798,
+     861,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     121,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     833,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:580:1859:840",
+    "bounds": [
+     998,
+     580,
+     862,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     798,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:121:855:981:1114",
+    "bounds": [
+     121,
+     855,
+     861,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     122,
+     1072,
+     859,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     122,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     832,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:855:1859:1114",
+    "bounds": [
+     998,
+     855,
+     862,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     1072,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:121:1130:990:1202",
+    "bounds": [
+     121,
+     1130,
+     870,
+     73
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": false,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "clipped_search_region"
+   },
+   {
+    "id": "edge:998:1129:1857:1202",
+    "bounds": [
+     998,
+     1129,
+     860,
+     74
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "observed"
+   }
+  ],
+  "complete": true
+ },
+ "recheck": {
+  "frame_id": "dxgi:2b89af29-65f0-4180-b016-aa899a87c2ba",
+  "frame_sha256": "4b4e3c813c074a8438131f42c027f27180abe741a1d0d685ebb8511922ec28d3",
+  "viewport": [
+   2560,
+   1440
+  ],
+  "listing_viewport": [
+   108,
+   300,
+   1765,
+   903
+  ],
+  "scrollbar": {
+   "geometry_basis": "observed_centerline_only",
+   "measured_center_x": 1878,
+   "method": "symmetric_contrast_with_independent_left_affine_background",
+   "thumb_bounds": [
+    1878,
+    304,
+    1,
+    62
+   ],
+   "track_bounds": [
+    1878,
+    304,
+    1,
+    899
+   ]
+  },
+  "cards": [
+   {
+    "id": "edge:119:304:984:567",
+    "bounds": [
+     119,
+     304,
+     866,
+     264
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": true,
+    "fields_bounds": [
+     120,
+     525,
+     864,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     120,
+     525,
+     115,
+     42
+    ],
+    "price_bounds": [
+     835,
+     525,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:996:305:1860:566",
+    "bounds": [
+     996,
+     305,
+     865,
+     262
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     997,
+     524,
+     863,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     997,
+     524,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1711,
+     524,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:120:580:982:840",
+    "bounds": [
+     120,
+     580,
+     863,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     121,
+     798,
+     861,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     121,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     833,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:580:1859:840",
+    "bounds": [
+     998,
+     580,
+     862,
+     261
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     798,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     798,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     798,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:121:855:982:1114",
+    "bounds": [
+     121,
+     855,
+     862,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     122,
+     1072,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     122,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     833,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:998:855:1859:1114",
+    "bounds": [
+     998,
+     855,
+     862,
+     260
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": [
+     999,
+     1072,
+     860,
+     42
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     999,
+     1072,
+     115,
+     42
+    ],
+    "price_bounds": [
+     1710,
+     1072,
+     149,
+     42
+    ]
+   },
+   {
+    "id": "edge:121:1130:980:1202",
+    "bounds": [
+     121,
+     1130,
+     860,
+     73
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "observed"
+   },
+   {
+    "id": "edge:999:1129:1857:1202",
+    "bounds": [
+     999,
+     1129,
+     859,
+     74
+    ],
+    "edges": {
+     "bottom": false,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "fields_bounds": null,
+    "bounds_basis": "observed"
+   }
+  ],
+  "complete": true
+ }
+}

@@ -25,6 +25,23 @@ TargetWindow bindTargetWindow(quintptr hwnd, quint32 pid, QString* error = nullp
 // backend deliberately requires an unobscured foreground client on one monitor.
 QString validateTargetWindow(const TargetWindow& target, bool requireForeground = true);
 quintptr foregroundWindow();
+
+// The RelinkStudio status overlay is the only window tolerated above the
+// target: our own click-through, never-activating, topmost tool window whose
+// rectangle stays inside the top 4% band of the target client. Full-frame OCR
+// drops words inside its rectangle; no ROI or pixel gate uses that band.
+inline constexpr char StatusOverlayWindowClass[] = "RelinkStudioStatusOverlay";
+bool statusOverlayWindowAllowed(const QString& windowClass, quint32 extendedStyle,
+    const QString& executableName, const QRect& windowRect, const QRect& clientRect);
+// NVIDIA's in-game overlay keeps a full-screen, topmost, layered window that
+// input passes through (WS_EX_LAYERED | WS_EX_TRANSPARENT; live 2026-10-09
+// timed01: "NVIDIA GeForce Overlay DT", class CEF-OSC-WIDGET, NVIDIA
+// Overlay.exe). It cannot take a click; once its panel is interactive the
+// transparent style is gone and it occludes again. It never defines an OCR
+// exclusion band (statusOverlayRect ignores it).
+bool clickThroughVendorOverlayAllowed(const QString& windowClass, quint32 extendedStyle, const QString& executableName);
+// Screen rectangle of an allowed overlay above the target, or empty.
+QRect statusOverlayRect(const TargetWindow& target);
 bool activateTargetWindow(const TargetWindow& target, QString* error = nullptr);
 
 class ForegroundReturnGuard final {

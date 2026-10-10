@@ -133,8 +133,9 @@ int main(int argc, char** argv) {
     check(table->item(0, 0)->text() == "1" && table->item(1, 0)->text() == "4", "original source row numbers retained");
     check(table->item(0, 1)->text() == "S6" && table->item(0, 2)->data(Qt::UserRole).toString() == "10602",
           "season and stable product identity visible");
-    check(table->item(1, 3)->text().contains(QStringLiteral("极品")) && table->item(1, 3)->text().contains(QStringLiteral("红色")),
-          "menu color and variant remain separate from condition");
+    check(table->item(1, 3)->text().contains(QStringLiteral("极品")) && table->item(1, 3)->text().contains(QStringLiteral("传说品阶"))
+          && !table->item(1, 3)->text().contains(QStringLiteral("红色")),
+          "grade and variant remain separate from condition");
     check(table->item(0, 4)->text() == QStringLiteral("成色S") && table->item(1, 4)->text() == QStringLiteral("成色A"),
           "condition IDs resolve without quality inference");
     check(table->item(0, 5)->text() == "10" && table->item(0, 6)->text() == "600" && table->item(0, 7)->text() == "5",

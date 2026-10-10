@@ -1,0 +1,364 @@
+{
+  "schema": "collection-recorded-paired-gap-v1",
+  "source_path": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_ready_stream\\run06\\session.json",
+  "source_sha256": "3c0240f5a3aef30c2b5da7bb5109ef984bec6217f4d795f906f1113817358123",
+  "source_step_index": 114,
+  "projection_note": "Complete row edges reconstructed from the original per-column observed top/bottom arrays. No pixel reconstruction, no new OCR, no invented edge coordinates.",
+  "pixels_included": false,
+  "samples": [
+    {
+      "frame_id": "dxgi:c774c3b9-7d66-47ac-9d30-ffc8bba41c44",
+      "frame_sha256": "5fca06ab57a6a18c1ab817ffc72e11b04ebb913595f56b0c89bcb4f0462e324a",
+      "observed_complete_rows": [
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 392,
+              "bottom": 655,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 394,
+              "bottom": 653,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 666,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 668,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            2.8299999999999983,
+            2.6399999999999935
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 941,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 2.6399999999999935,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            4.119999999999997,
+            3.829999999999991
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 942,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.829999999999991,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            4.140000000000001,
+            3.8100000000000094
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 943,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.8100000000000094,
+          "usable_columns": [
+            true,
+            true
+          ]
+        }
+      ],
+      "original_accepted": false,
+      "wanted_measured_top": [
+        943,
+        943
+      ]
+    },
+    {
+      "frame_id": "dxgi:fce6385b-3c1c-4191-9f21-e44659e73b35",
+      "frame_sha256": "5b6feb02361ceb68f20b90c6c7740f85b43fedc2aa7f9db12211189da32ed9ad",
+      "observed_complete_rows": [
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 392,
+              "bottom": 655,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 394,
+              "bottom": 653,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 666,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 668,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            2.740000000000002,
+            2.6300000000000026
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 941,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 2.6300000000000026,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            3.979999999999997,
+            3.9099999999999966
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 942,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.9099999999999966,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            4.02000000000001,
+            3.9399999999999977
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 943,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.9399999999999977,
+          "usable_columns": [
+            true,
+            true
+          ]
+        }
+      ],
+      "original_accepted": false,
+      "wanted_measured_top": [
+        943,
+        943
+      ]
+    },
+    {
+      "frame_id": "dxgi:74326c4b-70a7-41cf-b7d1-b7cb1247fd65",
+      "frame_sha256": "d70a678d737e86e258fef6b3689250461907e7e102e0d86388b4830e830b90e5",
+      "observed_complete_rows": [
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 392,
+              "bottom": 655,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 394,
+              "bottom": 653,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        },
+        {
+          "cells": [
+            {
+              "column": 0,
+              "top": 666,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            },
+            {
+              "column": 1,
+              "top": 668,
+              "bottom": 928,
+              "top_edge": true,
+              "bottom_edge": true
+            }
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            2.5900000000000034,
+            2.5400000000000063
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 941,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 2.5400000000000063,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            3.8299999999999983,
+            3.690000000000005
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 942,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.690000000000005,
+          "usable_columns": [
+            true,
+            true
+          ]
+        },
+        {
+          "accepted_for_ranking": false,
+          "column_scores": [
+            3.8300000000000054,
+            3.710000000000001
+          ],
+          "gap_from_last_complete_bottom_y": [
+            15,
+            15
+          ],
+          "observed_gap_consistent": false,
+          "peak_y": 943,
+          "refined_top_y": [
+            943,
+            943
+          ],
+          "rejection_reason": "observed_inter_row_gap_mismatch",
+          "score": 3.710000000000001,
+          "usable_columns": [
+            true,
+            true
+          ]
+        }
+      ],
+      "original_accepted": false,
+      "wanted_measured_top": [
+        943,
+        943
+      ]
+    }
+  ]
+}

@@ -17,6 +17,8 @@ struct CatalogProjectionReport {
 };
 
 QString catalogSkinId(const QString& productId);
+// The 品阶 shown for a catalogue skin (its rarity field): the recorded label, or 待核对.
+QString catalogGradeText(const QString& grade);
 // No disk access. Caller owns config backup/save. A rejected projection leaves
 // state unchanged. User tasks keep every parameter and may only get a remapped
 // skinId when their existing catalog entry receives its stable catalog ID.

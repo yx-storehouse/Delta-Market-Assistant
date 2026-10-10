@@ -3,6 +3,8 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
+#include <QHash>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -30,7 +32,7 @@ Skin fixture(const QString& id = QStringLiteral("user:test-s12-one"),
     s.seasonLabel = seasonLabel;
     s.weapon = QStringLiteral("测试武器，仅单测");
     s.skinSeries = QStringLiteral("测试皮肤，仅单测");
-    s.menuColor = QStringLiteral("unknown");
+    s.grade = QStringLiteral("史诗品阶");
     s.displayName = season + QStringLiteral(" | 测试武器 - 测试皮肤，仅单测");
     return s;
 }
@@ -63,20 +65,25 @@ int main(int argc, char** argv) {
     QString error;
     check(parseCatalog(bytes, &catalog, &error), "builtin_parses");
     check(catalog.skins.size() == 149 && catalog.seasons.size() == 11, "149_real_skins_11_seasons");
-    bool blankImages = true, unknownQuality = true, idsNumeric = true;
+    bool blankImages = true, everyGrade = true, idsNumeric = true;
+    QHash<QString, int> grades;
     for (const auto& skin : catalog.skins) {
         blankImages &= skin.thumbnailPath.isEmpty();
-        unknownQuality &= skin.gameQualityName.isEmpty();
+        everyGrade &= gradeLabels().contains(skin.grade);
+        ++grades[skin.grade];
         bool ok = false;
         skin.productId.toLongLong(&ok);
         idsNumeric &= ok;
     }
     check(blankImages, "every_thumbnail_reserved_empty");
-    check(unknownQuality, "formal_quality_not_invented_from_menu_color");
+    check(everyGrade && grades.value(QStringLiteral("传说品阶")) == 28 && grades.value(QStringLiteral("史诗品阶")) == 33
+          && grades.value(QStringLiteral("稀有品阶")) == 88, "every_skin_carries_its_game_grade");
+    check(!bytes.contains("menu_color") && !bytes.contains("game_quality_name")
+          && bytes.contains("\"relink-skin-catalog-v2\""), "builtin_has_no_colour_field");
     check(idsNumeric, "original_numeric_ids_preserved");
     const auto* aug = catalog.findSkin(QStringLiteral("10602"));
-    check(aug && aug->menuColor == "purple" && aug->skinSeries == QStringLiteral("天命")
-          && aug->seasonId == "S6", "known_purple_aug_identity");
+    check(aug && aug->grade == QStringLiteral("史诗品阶") && aug->skinSeries == QStringLiteral("天命")
+          && aug->seasonId == "S6", "known_epic_aug_identity");
     check(catalog.findSkin("10100") && catalog.findSkin("10101")
           && catalog.findSkin("10100")->variantLabel == QStringLiteral("极品")
           && catalog.findSkin("10101")->variantLabel == QStringLiteral("优品")
@@ -102,10 +109,10 @@ int main(int argc, char** argv) {
                 && skin->weapon == row.value("weapon").toString()
                 && skin->skinSeries == row.value("skin_series").toString()
                 && skin->variantLabel == row.value("variant_label").toString()
-                && skin->menuColor == row.value("menu_color").toString()
+                && skin->grade == gradeFromMenuColor(row.value("menu_color").toString())
                 && skin->displayName == row.value("display_name").toString();
         }
-        check(identical, "all_149_items_match_user_verified_reference");
+        check(identical, "all_149_items_match_user_verified_reference_and_its_colour_grade");
     }
     const auto preserved = serializeCatalog(catalog);
     check(!parseCatalog("{", &catalog, &error) && serializeCatalog(catalog) == preserved,
@@ -123,8 +130,59 @@ int main(int argc, char** argv) {
     check(!parseCatalog(serializeCatalog(one), &catalog, &error), "conflicting_skin_season_rejected");
     one = addition(fixture()); one.skins[0].thumbnailPath = "https://example.invalid/test.png";
     check(!parseCatalog(serializeCatalog(one), &catalog, &error), "thumbnail_paths_rejected_in_current_version");
-    one = addition(fixture()); one.skins[0].menuColor = "S";
-    check(!parseCatalog(serializeCatalog(one), &catalog, &error), "condition_not_accepted_as_menu_color");
+    for (const auto& bad : {QStringLiteral("S"), QStringLiteral("purple"), QStringLiteral("普通品阶"), QStringLiteral("史诗")}) {
+        one = addition(fixture()); one.skins[0].grade = bad;
+        check(!parseCatalog(serializeCatalog(one), &catalog, &error), "only_game_grade_labels_accepted");
+    }
+    one = addition(fixture()); one.skins[0].grade.clear();
+    check(parseCatalog(serializeCatalog(one), &catalog, &error) && catalog.skins[0].grade.isEmpty(),
+          "unrecorded_grade_stays_empty");
+    {
+        // An earlier v1 file (menu colour) still loads; the colour becomes its 品阶,
+        // a recorded game_quality_name wins, and v2 is written back.
+        auto legacy = QJsonDocument::fromJson(serializeCatalog(addition(fixture()))).object();
+        legacy["schema"] = QStringLiteral("relink-skin-catalog-v1");
+        auto skins = legacy["skins"].toArray();
+        const QList<QPair<QString, QString>> colours{{"orange", "传说品阶"}, {"red", "传说品阶"},
+            {"purple", "史诗品阶"}, {"blue", "稀有品阶"}, {"unknown", ""}};
+        bool converted = true;
+        for (const auto& [colour, grade] : colours) {
+            auto skin = skins[0].toObject();
+            skin.remove("grade");
+            skin["menu_color"] = colour;
+            skin["game_quality_name"] = QString();
+            legacy["skins"] = QJsonArray{skin};
+            Catalog old;
+            converted &= parseCatalog(QJsonDocument(legacy).toJson(), &old, &error) && old.skins[0].grade == grade
+                && !serializeCatalog(old).contains("menu_color") && serializeCatalog(old).contains("relink-skin-catalog-v2");
+        }
+        check(converted, "v1_menu_colour_converted_to_grade");
+        auto skin = skins[0].toObject();
+        skin.remove("grade");
+        skin["menu_color"] = QStringLiteral("blue");
+        skin["game_quality_name"] = QStringLiteral("史诗品阶");
+        legacy["skins"] = QJsonArray{skin};
+        Catalog old;
+        check(parseCatalog(QJsonDocument(legacy).toJson(), &old, &error) && old.skins[0].grade == QStringLiteral("史诗品阶"),
+              "v1_recorded_quality_wins_over_colour");
+        // The old dialog's free text: a grade name (with or without 品阶) wins, anything else uses the colour.
+        bool freeText = true;
+        for (const auto& [typed, expected] : QList<QPair<QString, QString>>{{"传说", "传说品阶"}, {"紫色", "稀有品阶"}, {"高级", "稀有品阶"}}) {
+            skin["game_quality_name"] = typed;
+            legacy["skins"] = QJsonArray{skin};
+            freeText &= parseCatalog(QJsonDocument(legacy).toJson(), &old, &error) && old.skins[0].grade == expected;
+        }
+        check(freeText, "v1_free_text_quality_never_blocks_loading");
+        skin["game_quality_name"] = QStringLiteral("史诗品阶");
+        skin["menu_color"] = QStringLiteral("green");
+        legacy["skins"] = QJsonArray{skin};
+        check(!parseCatalog(QJsonDocument(legacy).toJson(), &old, &error), "v1_unknown_colour_rejected");
+        auto mixed = QJsonDocument::fromJson(serializeCatalog(addition(fixture()))).object();
+        auto mixedSkin = mixed["skins"].toArray()[0].toObject();
+        mixedSkin["menu_color"] = QStringLiteral("purple");
+        mixed["skins"] = QJsonArray{mixedSkin};
+        check(!parseCatalog(QJsonDocument(mixed).toJson(), &old, &error), "v2_rejects_colour_field");
+    }
     one = addition(fixture()); one.skins[0].productId = "../test";
     check(!parseCatalog(serializeCatalog(one), &catalog, &error), "unsafe_nonstable_id_rejected");
     one = addition(fixture()); one.skins[0].weapon = "bad\nname";
@@ -132,7 +190,7 @@ int main(int argc, char** argv) {
     one = addition(fixture()); one.skins[0].weapon = QString(161, QChar('x'));
     check(!parseCatalog(serializeCatalog(one), &catalog, &error), "field_length_bounded");
     auto invalidUtf8 = serializeCatalog(addition(fixture()));
-    invalidUtf8.replace("unknown", QByteArray(1, char(0xff)));
+    invalidUtf8.replace("S12", QByteArray(1, char(0xff)));
     check(!parseCatalog(invalidUtf8, &catalog, &error), "invalid_utf8_rejected");
     CatalogStore uninitialized;
     check(!uninitialized.appendSeason({"S12", "test"}, {}, &error), "unloaded_store_cannot_save");
@@ -231,6 +289,55 @@ int main(int argc, char** argv) {
           && !error.isEmpty() && read(guardedPath) == guardedBytes
           && guarded.exportJson() == guardedMemory,
           "projection_guard_failure_preserves_existing_bytes_and_memory");
+    {
+        // An existing v1 extension (menu colours) loads, and the first append
+        // keeps its original bytes as a backup before writing v2.
+        const auto legacyPath = temp.filePath("legacy/catalog_extensions.json");
+        QDir().mkpath(QFileInfo(legacyPath).absolutePath());
+        auto legacy = QJsonDocument::fromJson(serializeCatalog(addition(fixture("user:legacy")))).object();
+        legacy["schema"] = QStringLiteral("relink-skin-catalog-v1");
+        auto skin = legacy["skins"].toArray()[0].toObject();
+        skin.remove("grade");
+        skin["menu_color"] = QStringLiteral("orange");
+        skin["game_quality_name"] = QString();
+        legacy["skins"] = QJsonArray{skin};
+        const auto legacyBytes = QJsonDocument(legacy).toJson();
+        check(write(legacyPath, legacyBytes), "legacy_extension_written");
+        CatalogStore upgraded;
+        check(upgraded.load(bytes, legacyPath, &error) && upgraded.catalog().findSkin("user:legacy")
+              && upgraded.catalog().findSkin("user:legacy")->grade == QStringLiteral("传说品阶"),
+              "legacy_extension_loads_with_grade");
+        check(upgraded.appendSkins({fixture("user:after-upgrade")}, &error)
+              && read(legacyPath + ".before-grade-v2.bak") == legacyBytes
+              && read(legacyPath).contains("relink-skin-catalog-v2") && !read(legacyPath).contains("menu_color"),
+              "legacy_extension_backed_up_before_v2_rewrite");
+        const auto backup = read(legacyPath + ".before-grade-v2.bak");
+        check(upgraded.appendSkins({fixture("user:second-after-upgrade")}, &error)
+              && read(legacyPath + ".before-grade-v2.bak") == backup, "backup_written_once");
+    }
+    {
+        // The product name follows from its fields; the runner checks the same rule.
+        auto named = addition(fixture("user:named"));
+        named.skins[0].displayName.clear();
+        Catalog parsedNames;
+        check(parseCatalog(serializeCatalog(named), &parsedNames, &error)
+              && parsedNames.skins[0].displayName == QStringLiteral("S12|测试武器，仅单测 - 测试皮肤，仅单测"),
+              "empty_display_name_built_from_fields");
+        named.skins[0].displayName = QStringLiteral("测试武器 - 别的名字");
+        check(parseCatalog(serializeCatalog(named), &parsedNames, &error)
+              && parsedNames.skins[0].displayName == QStringLiteral("S12|测试武器，仅单测 - 测试皮肤，仅单测"),
+              "unprefixed_or_different_name_rebuilt");
+        named.skins[0].displayName = QStringLiteral("S12 | 测试武器，仅单测 -  测试皮肤，仅单测");
+        check(parseCatalog(serializeCatalog(named), &parsedNames, &error)
+              && parsedNames.skins[0].displayName == QStringLiteral("S12 | 测试武器，仅单测 -  测试皮肤，仅单测"),
+              "equal_name_keeps_its_spelling");
+        Catalog builtinAgain;
+        bool builtinUnchanged = parseCatalog(bytes, &builtinAgain, &error) && builtinAgain.skins.size() == 149;
+        const auto rawSkins = QJsonDocument::fromJson(bytes).object()["skins"].toArray();
+        for (int i = 0; builtinUnchanged && i < rawSkins.size(); ++i)
+            builtinUnchanged &= builtinAgain.skins[i].displayName == rawSkins[i].toObject()["display_name"].toString();
+        check(builtinUnchanged && serializeCatalog(builtinAgain) == serializeCatalog(roundtrip), "builtin_names_unchanged");
+    }
     const auto id1 = nextUserProductId(), id2 = nextUserProductId();
     check(id1.startsWith("user:") && id1 != id2, "local_ids_stable_namespace_and_unique");
     check(parseCatalog(serializeCatalog(addition(fixture(id1))), &catalog, &error), "generated_id_passes_schema");

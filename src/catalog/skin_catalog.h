@@ -2,6 +2,7 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QStringList>
 #include <QVector>
 #include <functional>
 #include <utility>
@@ -20,8 +21,10 @@ struct Skin {
     QString weapon;
     QString skinSeries;
     QString variantLabel;
-    QString menuColor;
-    QString gameQualityName;
+    // The game's own 品阶 as its catalogue filter labels it (传说品阶, 史诗品阶,
+    // 稀有品阶), or empty when not recorded. It replaces the earlier menu
+    // colour: orange/red = 传说, purple = 史诗, blue = 稀有 (user, 2026-10-09).
+    QString grade;
     QString displayName;
     // Reserved for a future thumbnail feature. Current documents require empty.
     QString thumbnailPath;
@@ -34,7 +37,13 @@ struct Catalog {
     const Season* findSeason(const QString& id) const;
 };
 
+// The 品阶 labels a catalogue entry may carry (普通品阶 is never collected).
+const QStringList& gradeLabels();
+// Earlier files recorded the original menu colour instead of the 品阶.
+QString gradeFromMenuColor(const QString& color);
+
 // Strict bounded JSON only; no images, prices, positions, or runtime actions.
+// Reads v2 and the earlier v1 (menu_color is converted to its 品阶); writes v2.
 bool parseCatalog(const QByteArray& bytes, Catalog* result, QString* error = nullptr);
 QByteArray serializeCatalog(const Catalog& catalog);
 QString nextUserProductId();

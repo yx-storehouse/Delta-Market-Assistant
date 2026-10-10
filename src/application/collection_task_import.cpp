@@ -97,7 +97,7 @@ bool previewCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dic
             return fail(error, context + QStringLiteral("的商品名称或赛季与真实目录不一致，整份任务未导入"));
         const auto* projected = projectedSkins.value(productId, nullptr);
         if (!projected || projected->id != catalogSkinId(productId)
-            || projected->name != skin->displayName || projected->menuColor != skin->menuColor
+            || projected->name != skin->displayName || projected->rarity != catalogGradeText(skin->grade)
             || projected->variant != skin->variantLabel || projected->skinSeries != skin->skinSeries
             || projected->series != skin->seasonId + QStringLiteral(" · ") + skin->seasonLabel)
             return fail(error, context + QStringLiteral("的当前目录投影不一致，请先重新加载皮肤资料"));
@@ -107,7 +107,7 @@ bool previewCollectionTaskImport(const QByteArray& bytes, const QJsonObject& dic
         row.seasonId = skin->seasonId;
         row.seasonLabel = skin->seasonLabel;
         row.displayName = skin->displayName;
-        row.menuColor = skin->menuColor;
+        row.grade = skin->grade;
         row.variantLabel = skin->variantLabel;
         auto& task = row.task;
         task.id = collectionImportTaskId(result.sourceSha256, sourceRow);

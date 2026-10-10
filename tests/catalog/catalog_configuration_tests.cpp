@@ -46,7 +46,9 @@ int main(int argc, char** argv) {
     for (const auto& item : state.skins) {
         unknown &= !item.priceKnown && !item.wearKnown && !item.changeKnown
             && item.price == 0 && item.wear == 0 && item.change == 0
-            && item.condition == QStringLiteral("未采集") && item.rarity == QStringLiteral("待核对");
+            && item.condition == QStringLiteral("未采集")
+            && item.rarity == catalog.findSkin(item.catalogProductId)->grade
+            && relink::catalog::gradeLabels().contains(item.rarity);
         noFollows &= !item.followed;
         correctIds &= item.id == catalogSkinId(item.catalogProductId);
     }
@@ -54,8 +56,8 @@ int main(int argc, char** argv) {
     check(noFollows, "no_fake_follows");
     check(correctIds, "stable_source_product_ids");
     auto* aug = skin(state, catalogSkinId("10602"));
-    check(aug && aug->menuColor == "purple" && aug->skinSeries == QStringLiteral("天命")
-          && aug->catalogProductId == "10602", "metadata_projected_without_color_quality_guess");
+    check(aug && aug->rarity == QStringLiteral("史诗品阶") && aug->skinSeries == QStringLiteral("天命")
+          && aug->catalogProductId == "10602", "metadata_projected_with_catalogue_grade");
     check(skin(state, catalogSkinId("10100"))->variant == QStringLiteral("极品")
           && skin(state, catalogSkinId("10101"))->variant == QStringLiteral("优品"), "distinct_variants_preserved");
     aug->followed = true;

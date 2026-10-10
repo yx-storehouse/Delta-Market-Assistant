@@ -7,6 +7,15 @@ $CMake = Join-Path $Root '.tools\aqt-env\Scripts\cmake.exe'
 $env:PATH = "$Compiler;$Qt\bin;$Root\.tools\aqt-env\Scripts;$env:PATH"
 $BuildDir = Join-Path $Root 'build'
 $Cache = Join-Path $BuildDir 'CMakeCache.txt'
+# An already-open frontend may have unchanged Qt DLLs mapped. Rewriting
+# byte-identical dependencies is unnecessary and can fail on Windows locks.
+function Copy-ReleaseFile([string]$Source, [string]$Destination) {
+    $Target = $Destination
+    if (Test-Path -LiteralPath $Destination -PathType Container) { $Target = Join-Path $Destination ([IO.Path]::GetFileName($Source)) }
+    if ((Test-Path -LiteralPath $Target -PathType Leaf) -and
+        ((Get-FileHash -LiteralPath $Source -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $Target -Algorithm SHA256).Hash)) { return }
+    Copy-Item -LiteralPath $Source -Destination $Target -Force
+}
 if (Test-Path -LiteralPath $Cache) {
     $cacheText = Get-Content -LiteralPath $Cache -Raw -ErrorAction SilentlyContinue
     if ($cacheText -notmatch [regex]::Escape($Root)) {
@@ -26,22 +35,25 @@ try {
     if ($Package) {
         $Dest = Join-Path $Root 'dist\RelinkStudio'
         New-Item -ItemType Directory -Path $Dest -Force | Out-Null
-        Copy-Item -LiteralPath (Join-Path $BuildDir 'RelinkStudio.exe') -Destination $Dest -Force
+        Copy-ReleaseFile (Join-Path $BuildDir 'RelinkStudio.exe') $Dest
         New-Item -ItemType Directory -Path (Join-Path $Dest 'vision') -Force | Out-Null
-        Copy-Item -LiteralPath (Join-Path $BuildDir 'vision\windows_ocr_worker.ps1') -Destination (Join-Path $Dest 'vision') -Force
+        Copy-ReleaseFile (Join-Path $BuildDir 'vision\windows_ocr_worker.ps1') (Join-Path $Dest 'vision')
         & (Join-Path $Qt 'bin\windeployqt.exe') --release --no-translations --no-opengl-sw --no-system-d3d-compiler --compiler-runtime --skip-plugin-types generic,networkinformation,tls --dir $Dest (Join-Path $Dest 'RelinkStudio.exe')
         if ($LASTEXITCODE -ne 0) { throw 'Qt deployment failed.' }
         New-Item -ItemType Directory -Path (Join-Path $Dest 'platforms') -Force | Out-Null
-        Copy-Item -LiteralPath (Join-Path $Qt 'plugins\platforms\qoffscreen.dll') -Destination (Join-Path $Dest 'platforms') -Force
+        Copy-ReleaseFile (Join-Path $Qt 'plugins\platforms\qoffscreen.dll') (Join-Path $Dest 'platforms')
+        # The collection runner reads the same skin catalogue this exe embeds.
+        New-Item -ItemType Directory -Path (Join-Path $Dest 'catalog') -Force | Out-Null
+        Copy-ReleaseFile (Join-Path $Root 'src\assets\catalog\skins.json') (Join-Path $Dest 'catalog')
         # QSQLITE is a runtime-loaded plugin: deploy it explicitly, not only
         # whatever windeployqt discovers from import tables.
         New-Item -ItemType Directory -Path (Join-Path $Dest 'sqldrivers') -Force | Out-Null
-        Copy-Item -LiteralPath (Join-Path $Qt 'bin\Qt6Sql.dll') -Destination $Dest -Force
-        Copy-Item -LiteralPath (Join-Path $Qt 'plugins\sqldrivers\qsqlite.dll') -Destination (Join-Path $Dest 'sqldrivers') -Force
+        Copy-ReleaseFile (Join-Path $Qt 'bin\Qt6Sql.dll') $Dest
+        Copy-ReleaseFile (Join-Path $Qt 'plugins\sqldrivers\qsqlite.dll') (Join-Path $Dest 'sqldrivers')
         # Prevent a packaged app from silently finding plugins in the build SDK.
         [System.IO.File]::WriteAllText((Join-Path $Dest 'qt.conf'), "[Paths]`nPrefix=.`nPlugins=.`n", [System.Text.UTF8Encoding]::new($false))
         foreach ($dll in @('libgcc_s_seh-1.dll','libstdc++-6.dll','libwinpthread-1.dll')) {
-            Copy-Item -LiteralPath (Join-Path $Compiler $dll) -Destination $Dest -Force
+            Copy-ReleaseFile (Join-Path $Compiler $dll) $Dest
         }
         $SavedPath = $env:PATH
         $SavedPluginPath = $env:QT_PLUGIN_PATH
@@ -70,10 +82,17 @@ try {
         }
         $ReleaseDocs = Join-Path $Dest 'docs'
         New-Item -ItemType Directory -Path $ReleaseDocs -Force | Out-Null
-        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md','COLLECTION_TASK_IMPORT.md')) {
+        foreach ($name in @('STORE_UI.md','WIN11_DARK_UI.md','FLUENT_UI.md','TERMINAL_UI.md','REAL_SKIN_CATALOG.md','COLLECTION_TASK_IMPORT.md','COLLECTION_ONLY_TRIAL.md','COLLECTION_ALL_RULES.md','COLLECTION_FULL_CYCLE.md','COLLECTION_SPEED.md','COLLECTION_SCROLL_SPEED.md','COLLECTION_HOTKEY.md','PURCHASE_READONLY.md')) {
             $source = Join-Path (Join-Path $Root 'docs') $name
             if (Test-Path -LiteralPath $source) { Copy-Item -LiteralPath $source -Destination $ReleaseDocs -Force }
         }
+        # Deliver the actual collection CLI and its recursively discovered local
+        # imports. The helper only parses Python AST and copies source files; it
+        # never imports the application, captures the game, or duplicates models.
+        $CollectionPython = Join-Path $Root '.tools\ocr-runtime\Scripts\python.exe'
+        if (!(Test-Path -LiteralPath $CollectionPython -PathType Leaf)) { throw 'Collection Python runtime is missing.' }
+        & $CollectionPython -B -X utf8 (Join-Path $Root 'tests\release\package_collection_runtime.py') --root $Root --destination $Dest
+        if ($LASTEXITCODE -ne 0) { throw 'Collection runtime deployment failed.' }
         $ManifestPath = Join-Path $Dest 'file_manifest.json'
         $Files = [ordered]@{}
         Get-ChildItem -LiteralPath $Dest -Recurse -File | Sort-Object FullName | ForEach-Object {

@@ -90,6 +90,94 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(layout['partial_card_ids'], ['partial-l', 'partial-r'])
         self.assertFalse(layout['page_exhausted'])
 
+    def test_same_row_outline_jitter_keeps_left_to_right_order(self):
+        for delta in (1, 2, 3):
+            value = packet()
+            first = value['collection_layout']['cards'][0]
+            first['bounds'][1] += delta
+            first['fields_bounds'][1] += delta
+            value['collection_layout']['cards'][1]['selected'] = True
+            value['collection_layout']['cards'].reverse()
+            before = copy.deepcopy(value)
+            observed = observe_layout(value)
+            with self.subTest(delta=delta):
+                self.assertEqual([c['id'] for c in observed['cards']],
+                                 ['c0', 'c1', 'c2', 'c3', 'c4', 'c5', 'partial-l', 'partial-r'])
+                self.assertEqual(value, before)
+
+    def test_row_jitter_bound_does_not_extend_past_three_pixels(self):
+        value = packet()
+        value['collection_layout']['cards'][0]['bounds'][1] += 4
+        value['collection_layout']['cards'][0]['fields_bounds'][1] += 4
+        self.assertEqual([c['id'] for c in observe_layout(value)['cards']][:2], ['c1', 'c0'])
+
+    def test_partial_card_does_not_join_complete_row(self):
+        value = packet()
+        value['collection_layout']['cards'] = [card('partial-left', 120, 305, height=120, partial=True),
+                                               card('full-right', 997, 303)]
+        observed = observe_layout(value)
+        self.assertEqual([c['id'] for c in observed['cards']], ['full-right', 'partial-left'])
+        self.assertEqual(observed['partial_card_ids'], ['partial-left'])
+
+    def test_clipped_search_region_is_preserved_but_never_selectable(self):
+        value = packet()
+        partial = value['collection_layout']['cards'][-1]
+        partial['bounds_basis'] = 'clipped_search_region'
+        partial['edges'].update(left=False, right=False)
+        observed = observe_layout(value)
+        partial_observed = next(c for c in observed['cards'] if c['id'] == partial['id'])
+        self.assertEqual(partial_observed['bounds_basis'], 'clipped_search_region')
+        self.assertFalse(partial_observed['selectable'])
+        self.assertIsNone(partial_observed['body_bounds'])
+        with self.assertRaisesRegex(ValueError, 'COLLECTION_PARTIAL_CARD_REQUIRES_SCROLL'):
+            bind_card(value, rule(), partial['id'])
+        # Preserve an actually measured side when only the opposite side was
+        # obscured; the mixed observed/search rectangle is still non-actionable.
+        for known_side in ('left', 'right'):
+            partial['edges'].update(left=False, right=False)
+            partial['edges'][known_side] = True
+            partial_observed = next(c for c in observe_layout(value)['cards'] if c['id'] == partial['id'])
+            self.assertTrue(partial_observed['edges'][known_side])
+            self.assertFalse(partial_observed['selectable'])
+            with self.assertRaisesRegex(ValueError, 'COLLECTION_PARTIAL_CARD_REQUIRES_SCROLL'):
+                bind_card(value, rule(), partial['id'])
+
+    def test_clipped_search_region_cannot_claim_observed_edges_or_fields(self):
+        for mutation in ('complete', 'side', 'vertical', 'fields', 'condition', 'unknown'):
+            value = packet()
+            item = value['collection_layout']['cards'][0 if mutation == 'complete' else -1]
+            item['bounds_basis'] = 'clipped_search_region'
+            if mutation != 'complete':
+                item['edges'].update(left=False, right=False)
+            if mutation == 'side':
+                item['edges'].update(left=True, right=True)
+            elif mutation == 'vertical':
+                item['edges']['bottom'] = True
+            elif mutation == 'fields':
+                x,y,w,h = item['bounds']
+                item['fields_bounds'] = [x,y+h-20,w,20]
+            elif mutation == 'condition':
+                item['condition_bounds'] = [997,1130,100,20]
+            elif mutation == 'unknown':
+                item['bounds_basis'] = 'guessed'
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, 'COLLECTION_LAYOUT_BOUNDS_BASIS'):
+                observe_layout(value)
+
+    def test_row_requires_95_percent_overlap_of_taller_card(self):
+        value = packet()
+        left, right = card('left', 120, 305), card('right', 997, 303, height=290)
+        value['collection_layout']['cards'] = [left, right]
+        self.assertEqual([c['id'] for c in observe_layout(value)['cards']], ['right', 'left'])
+
+    def test_row_jitter_grouping_cannot_chain_three_pixel_offsets(self):
+        value = packet()
+        cards = [card('right', 1400, 303), card('middle', 800, 306), card('left', 120, 309)]
+        for item in cards:
+            item['bounds'][2] = 450
+            item['fields_bounds'][2] = 450
+        value['collection_layout']['cards'] = cards
+        self.assertEqual([c['id'] for c in observe_layout(value)['cards']], ['middle', 'right', 'left'])
+
     def test_empty_visible_list_is_not_page_exhaustion(self):
         value = packet()
         value['collection_layout']['cards'] = []
@@ -189,7 +277,8 @@ class SelectionTests(unittest.TestCase):
     def test_point_comes_from_current_observed_body(self):
         value = scrolled(packet())
         lease = bind_card(value, rule(), 'new-l')
-        self.assertEqual(lease['point'], [552, 472])
+        self.assertEqual(lease['point'], [172, 405])
+        self.assertEqual(lease['point_policy'], 'observed_body_upper_left_gutter_v1')
         self.assertNotEqual(lease['point'], [500, 420])
         self.assertEqual(validate_card_lease(value, rule(), lease), lease)
 
@@ -360,22 +449,27 @@ class NoRepeatTests(unittest.TestCase):
         result = collection_disposition(item, self.gold, [record()])
         self.assertEqual(result['disposition'], 'preserve_confirmed')
         self.assertEqual(result['key'], record()['key'])
-        with self.assertRaisesRegex(ValueError, 'COLLECTION_CONFIRMED_STATE_CONFLICT'):
-            collection_disposition(item, self.white, [record()])
+        white = collection_disposition(item, self.white, [record()])
+        self.assertEqual(white['disposition'], 'observed_white_requires_new_attempt')
+        self.assertFalse(white['allow_toggle'])
 
     def test_non_observed_numeric_wear_is_not_an_identity(self):
         for wear in ('NaN', 'Infinity', '2e0', '-0.2', '2198642', '2.1986420000'):
             with self.subTest(wear=wear), self.assertRaisesRegex(ValueError, 'COLLECTION_CANDIDATE_IDENTITY'):
                 collection_disposition(dict(candidate(), wear=wear), self.white, [])
 
-    def test_normalized_duplicate_journal_identities_stop(self):
-        with self.assertRaisesRegex(ValueError, 'COLLECTION_JOURNAL_IDENTITY'):
-            collection_disposition(candidate(), self.gold,
-                                   [record(), record(item=dict(candidate(), wear='2.1986420'))])
+    def test_completed_normalized_identity_records_are_statistical_history(self):
+        records = [record(), record(item=dict(candidate(), wear='2.1986420'))]
+        self.assertEqual(collection_disposition(candidate(), self.gold, records)['disposition'], 'preserve_confirmed')
+        white = collection_disposition(candidate(), self.white, records)
+        self.assertEqual(white['historical_attempt_keys'], [entry['key'] for entry in records])
+        self.assertFalse(white['allow_toggle'])
 
-    def test_confirmed_identity_shown_white_requires_reconciliation(self):
-        with self.assertRaisesRegex(ValueError, 'COLLECTION_CONFIRMED_STATE_CONFLICT'):
-            collection_disposition(candidate(), self.white, [record()])
+    def test_confirmed_history_does_not_override_current_white_star(self):
+        value = collection_disposition(candidate(), self.white, [record()])
+        self.assertEqual(value['disposition'], 'observed_white_requires_new_attempt')
+        self.assertEqual(value['history_role'], 'statistics_only')
+        self.assertFalse(value['allow_toggle'])
 
     def test_pending_attempt_blocks_all_scroll_and_dispositions(self):
         for status in ('prepared', 'dispatched', 'input_uncertain'):

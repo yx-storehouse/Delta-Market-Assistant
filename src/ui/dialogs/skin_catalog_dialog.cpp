@@ -25,12 +25,8 @@
 
 namespace relink::ui {
 namespace {
-QString colorLabel(const QString& value) {
-    if (value == QStringLiteral("red")) return QStringLiteral("红色");
-    if (value == QStringLiteral("orange")) return QStringLiteral("橙色");
-    if (value == QStringLiteral("purple")) return QStringLiteral("紫色");
-    if (value == QStringLiteral("blue")) return QStringLiteral("蓝色");
-    return QStringLiteral("未记录");
+QString gradeLabel(const QString& grade) {
+    return grade.isEmpty() ? QStringLiteral("未记录") : grade;
 }
 QString visibleValue(const QString& value) {
     return value.isEmpty() ? QStringLiteral("—") : value;
@@ -83,7 +79,7 @@ SkinCatalogDialog::SkinCatalogDialog(catalog::CatalogStore* store, QWidget* pare
     m_tabs->setObjectName(QStringLiteral("catalogTabs"));
     m_tabs->setDocumentMode(true);
     // Explicitly neutral tabs even when this dialog is embedded without the
-    // application stylesheet. Menu colors are data labels, not UI accents.
+    // application stylesheet.
     m_tabs->setStyleSheet(QStringLiteral(
         "QTabWidget::pane { border: 1px solid #E5E5E5; border-radius: 8px; background: #FFFFFF; }"
         "QTabBar::tab { color: #5E5E5E; background: #F3F3F3; padding: 10px 18px; margin-right: 4px; "
@@ -103,7 +99,7 @@ SkinCatalogDialog::SkinCatalogDialog(catalog::CatalogStore* store, QWidget* pare
     filters->addWidget(m_filter);
     browseLayout->addLayout(filters);
     m_table = table({QStringLiteral("赛季"), QStringLiteral("武器"), QStringLiteral("皮肤系列"),
-                     QStringLiteral("极品/优品"), QStringLiteral("菜单颜色"), QStringLiteral("游戏品质名"),
+                     QStringLiteral("极品/优品"), QStringLiteral("品阶"),
                      QStringLiteral("商品 ID")}, QStringLiteral("catalogTable"), RowStyle::Lines);
     m_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     m_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -111,11 +107,10 @@ SkinCatalogDialog::SkinCatalogDialog(catalog::CatalogStore* store, QWidget* pare
     m_table->setColumnWidth(1, 170);
     m_table->setColumnWidth(2, 145);
     m_table->setColumnWidth(3, 90);
-    m_table->setColumnWidth(4, 90);
-    m_table->setColumnWidth(5, 100);
-    m_table->setColumnWidth(6, 110);
+    m_table->setColumnWidth(4, 100);
+    m_table->setColumnWidth(5, 110);
     browseLayout->addWidget(m_table, 1);
-    auto* browseHint = label(QStringLiteral("目录不包含实时报价；皮肤缩略图暂时留空。游戏品质名未核实时保持空白。"),
+    auto* browseHint = label(QStringLiteral("目录不包含实时报价；皮肤缩略图暂时留空。品阶与游戏筛选框里的名称一致，收藏时按它勾选品阶。"),
                              QStringLiteral("cardCaption"));
     browseHint->setWordWrap(true);
     browseLayout->addWidget(browseHint);
@@ -165,17 +160,14 @@ SkinCatalogDialog::SkinCatalogDialog(catalog::CatalogStore* store, QWidget* pare
     m_variant->addItem(QStringLiteral("无标记"), QString());
     m_variant->addItem(QStringLiteral("极品"), QStringLiteral("极品"));
     m_variant->addItem(QStringLiteral("优品"), QStringLiteral("优品"));
-    m_menuColor = new FluentComboBox;
-    m_menuColor->setObjectName(QStringLiteral("catalogMenuColor"));
-    m_menuColor->addItem(QStringLiteral("未记录"), QStringLiteral("unknown"));
-    for (const auto& color : {QStringLiteral("red"), QStringLiteral("orange"), QStringLiteral("purple"), QStringLiteral("blue")})
-        m_menuColor->addItem(colorLabel(color), color);
+    m_grade = new FluentComboBox;
+    m_grade->setObjectName(QStringLiteral("catalogGrade"));
+    m_grade->addItem(QStringLiteral("未记录"), QString());
+    for (const auto& grade : catalog::gradeLabels()) m_grade->addItem(grade, grade);
     field(QStringLiteral("极品/优品标记"), m_variant, 5, 0);
-    field(QStringLiteral("原菜单颜色"), m_menuColor, 5, 1);
+    field(QStringLiteral("品阶"), m_grade, 5, 1);
     m_productId = input(QStringLiteral("catalogProductId"), QStringLiteral("有原商品 ID 时填写；留空生成本地稳定 ID"));
-    m_quality = input(QStringLiteral("catalogGameQuality"), QStringLiteral("未核实可留空，不按颜色自动推断"));
     field(QStringLiteral("商品 ID"), m_productId, 7, 0);
-    field(QStringLiteral("游戏正式品质名"), m_quality, 7, 1);
     form->setColumnStretch(0, 1);
     form->setColumnStretch(1, 1);
     addLayout->addLayout(form);
@@ -269,12 +261,12 @@ void SkinCatalogDialog::refreshTable() {
     for (const auto& skin : data.skins) {
         if (!season.isEmpty() && skin.seasonId != season) continue;
         const QString searchable = QStringList{skin.productId, skin.seasonId, skin.seasonLabel, skin.weapon,
-            skin.skinSeries, skin.variantLabel, skin.gameQualityName, skin.displayName, colorLabel(skin.menuColor)}.join(' ');
+            skin.skinSeries, skin.variantLabel, skin.displayName, gradeLabel(skin.grade)}.join(' ');
         if (!search.isEmpty() && !searchable.contains(search, Qt::CaseInsensitive)) continue;
         const int row = m_table->rowCount();
         m_table->insertRow(row);
         const QStringList cells{skin.seasonId, skin.weapon, visibleValue(skin.skinSeries),
-            visibleValue(skin.variantLabel), colorLabel(skin.menuColor), visibleValue(skin.gameQualityName), skin.productId};
+            visibleValue(skin.variantLabel), gradeLabel(skin.grade), skin.productId};
         for (int col = 0; col < cells.size(); ++col) {
             auto* item = put(m_table, row, col, cells[col], QColor(), skin.productId);
             const QString tooltip = col == 0 ? skin.seasonId + QStringLiteral(" · ") + skin.seasonLabel : cells[col];
@@ -328,9 +320,10 @@ void SkinCatalogDialog::addSkin() {
     skin.weapon = m_weapon->text().trimmed();
     skin.skinSeries = m_skinSeries->text().trimmed();
     skin.variantLabel = m_variant->currentData().toString();
-    skin.menuColor = m_menuColor->currentData().toString();
-    skin.gameQualityName = m_quality->text().trimmed();
-    skin.displayName = skin.weapon;
+    skin.grade = m_grade->currentData().toString();
+    // Same form as the built-in catalogue ("S6|AUG 突击步枪 - 天命"); the
+    // collection runner identifies the product by this display name.
+    skin.displayName = season.id + QStringLiteral("|") + skin.weapon;
     if (!skin.skinSeries.isEmpty()) skin.displayName += QStringLiteral(" - ") + skin.skinSeries;
     if (!skin.variantLabel.isEmpty()) skin.displayName += QStringLiteral(" - ") + skin.variantLabel;
     skin.thumbnailPath.clear();
@@ -343,7 +336,6 @@ void SkinCatalogDialog::addSkin() {
     m_productId->clear();
     m_weapon->clear();
     m_skinSeries->clear();
-    m_quality->clear();
     m_weapon->setFocus();
     showMessage(QStringLiteral("已追加 %1 · %2。可继续添加同赛季皮肤。").arg(season.id, skin.displayName));
     emit catalogChanged();
@@ -402,8 +394,8 @@ void SkinCatalogDialog::exportTemplate() {
     const QString seasonId = QStringLiteral("S%1").arg(maxSeason + 1);
     const QJsonObject skin{{"product_id", catalog::nextUserProductId()}, {"season_id", seasonId},
         {"season_label", ""}, {"weapon", ""}, {"skin_series", ""}, {"variant_label", ""},
-        {"menu_color", "unknown"}, {"game_quality_name", ""}, {"display_name", ""}, {"thumbnail_path", ""}};
-    const QJsonObject root{{"schema", "relink-skin-catalog-v1"},
+        {"grade", ""}, {"display_name", ""}, {"thumbnail_path", ""}};
+    const QJsonObject root{{"schema", "relink-skin-catalog-v2"},
         {"seasons", QJsonArray{QJsonObject{{"id", seasonId}, {"label", ""}}}}, {"skins", QJsonArray{skin}}};
     const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("保存空白新赛季模板"),
         QStringLiteral("新赛季皮肤模板.json"), QStringLiteral("皮肤目录 JSON (*.json)"));
@@ -412,6 +404,6 @@ void SkinCatalogDialog::exportTemplate() {
     if (!saveJson(path, QJsonDocument(root).toJson(QJsonDocument::Indented), &error)) {
         showMessage(QStringLiteral("模板保存失败：%1").arg(error), true); return;
     }
-    showMessage(QStringLiteral("模板已保存。填写赛季名称、武器、系列等真实字段后导入；每款皮肤的商品 ID 必须唯一，缩略图留空。"));
+    showMessage(QStringLiteral("模板已保存。填写赛季名称、武器、系列等真实字段后导入；品阶填 传说品阶、史诗品阶 或 稀有品阶（未知留空）；显示名称可留空，导入时按“赛季|武器 - 系列”生成；每款皮肤的商品 ID 必须唯一，缩略图留空。"));
 }
 } // namespace relink::ui

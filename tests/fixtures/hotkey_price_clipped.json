@@ -1,0 +1,5285 @@
+{
+ "source": "artifacts/hotkey_runs/20261009-212123/failure/failure.json (failing_step 312, attempt 1)",
+ "result": {
+  "adapter_state": "Closed",
+  "capture_passed": false,
+  "capture_resource_cache": {
+   "background_capture": false,
+   "initializations": 1,
+   "initializations_this_request": 0,
+   "invalidations": 0,
+   "pixel_cache": false,
+   "ready": true,
+   "reuses": 9697,
+   "reuses_this_request": 23,
+   "schema": "dxgi-resource-cache-v1",
+   "shared_between_requests": true,
+   "source_timestamp_barrier_unchanged": true,
+   "staging_creates": 1,
+   "staging_creates_this_request": 0
+  },
+  "capture_server": {
+   "fresh_capture_per_request": true,
+   "ocr_owner_reused": true,
+   "pid": "321008",
+   "protocol": "live-capture-server-v1",
+   "request_sequence": 177
+  },
+  "capture_stream": {
+   "consumed": 638,
+   "error": "",
+   "image_file_writes": 0,
+   "mode": "latest_frame_stream",
+   "pending_frames": 1,
+   "pending_slot_capacity": 1,
+   "produced": 9698,
+   "produced_during_native_recognition": 0,
+   "producer_lifetime": "foreground_collection_worker_session",
+   "rejected_pre_barrier_or_stale": 831,
+   "replaced_without_queue": 8228,
+   "request_source_barrier_unchanged": true,
+   "resource_owner": {
+    "background_capture": false,
+    "initializations": 1,
+    "invalidations": 0,
+    "pixel_cache": false,
+    "ready": true,
+    "reuses": 9697,
+    "schema": "dxgi-resource-cache-v1",
+    "staging_creates": 1
+   },
+   "started": true,
+   "stopped": false
+  },
+  "collection_catalog_image_error": "E_COLLECTION_CATALOG_REGION_UNAVAILABLE",
+  "collection_current_listing_regions": {
+   "actions_enabled": false,
+   "anchor_evidence": [
+    {
+     "anchor": "listing.sale",
+     "bounds": [
+      235.04531550720355,
+      92.46873821966777,
+      41.465880987259084,
+      20.960563795417485
+     ],
+     "label": "在售",
+     "region": "sale_header",
+     "word_count": 2
+    },
+    {
+     "anchor": "listing.default_sort",
+     "bounds": [
+      1153,
+      253,
+      82,
+      20
+     ],
+     "label": "默认排序",
+     "region": "listing_controls",
+     "word_count": 4
+    },
+    {
+     "anchor": "listing.condition",
+     "bounds": [
+      1931,
+      659,
+      41,
+      19
+     ],
+     "label": "成色",
+     "region": "detail_anchors",
+     "word_count": 2
+    },
+    {
+     "anchor": "listing.similar",
+     "bounds": [
+      2024,
+      599,
+      83,
+      20
+     ],
+     "label": "相似皮肤",
+     "region": "detail_anchors",
+     "word_count": 4
+    }
+   ],
+   "coverage": "current_listing_regions",
+   "elapsed_ms": 38,
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "full_frame_ocr_performed": false,
+   "matched": true,
+   "observations": [
+    {
+     "bounds": [
+      170,
+      64,
+      300,
+      96
+     ],
+     "error": "",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "sale_header",
+     "language": "zh-Hans-CN",
+     "ok": true,
+     "provider": "Windows.Media.Ocr",
+     "same_frame": true,
+     "scale": 2,
+     "timing": {
+      "engine_cache_hit": true,
+      "engine_created": false,
+      "error": "",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "frame_released": true,
+      "frame_total_ms": 15,
+      "helper_idle_retired": false,
+      "helper_pid": "321576",
+      "helper_request_index": 129,
+      "helper_reused": true,
+      "helper_roundtrip_ms": 14,
+      "helper_start_ms": 0,
+      "language": "zh-Hans-CN",
+      "mapping_name": "Local\\RelinkVision_1e29af1a-649e-4172-bc1c-caa4de0aa269_0",
+      "mapping_prepare_ms": 0,
+      "ocr_pool_executor": 2,
+      "ok": true,
+      "request_id": "1e29af1a-649e-4172-bc1c-caa4de0aa269",
+      "request_write_ms": 0,
+      "roi_preprocess_ms": 0,
+      "roi_total_ms": 16,
+      "worker_bitmap_copy_ms": 7.592300000000001,
+      "worker_engine_init_ms": 0.0122,
+      "worker_helper_request_ms": 12.9037,
+      "worker_recognize_ms": 4.4066,
+      "worker_runtime_init_ms": 0.0026000000000000003
+     },
+     "truncated": false,
+     "words": [
+      {
+       "height": 20.948470162570956,
+       "text": "在",
+       "width": 20.459942524696004,
+       "x": 235.04531550720355,
+       "y": 92.46873821966777
+      },
+      {
+       "height": 20.93712649578456,
+       "text": "售",
+       "width": 19.96007122003465,
+       "x": 256.551125274428,
+       "y": 92.4921755193007
+      }
+     ]
+    },
+    {
+     "bounds": [
+      110,
+      230,
+      1760,
+      70
+     ],
+     "error": "",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "listing_controls",
+     "language": "zh-Hans-CN",
+     "ok": true,
+     "provider": "Windows.Media.Ocr",
+     "same_frame": true,
+     "scale": 2,
+     "timing": {
+      "engine_cache_hit": true,
+      "engine_created": false,
+      "error": "",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "frame_released": true,
+      "frame_total_ms": 19,
+      "helper_idle_retired": false,
+      "helper_pid": "294396",
+      "helper_request_index": 133,
+      "helper_reused": true,
+      "helper_roundtrip_ms": 17,
+      "helper_start_ms": 0,
+      "language": "zh-Hans-CN",
+      "mapping_name": "Local\\RelinkVision_35cc08a3-b462-47e5-a19f-9ad38eeea4f9_0",
+      "mapping_prepare_ms": 0,
+      "ocr_pool_executor": 3,
+      "ok": true,
+      "request_id": "35cc08a3-b462-47e5-a19f-9ad38eeea4f9",
+      "request_write_ms": 0,
+      "roi_preprocess_ms": 0,
+      "roi_total_ms": 20,
+      "worker_bitmap_copy_ms": 1.2076,
+      "worker_engine_init_ms": 0.0119,
+      "worker_helper_request_ms": 15.0503,
+      "worker_recognize_ms": 12.8587,
+      "worker_runtime_init_ms": 0.0029000000000000002
+     },
+     "truncated": false,
+     "words": [
+      {
+       "height": 26,
+       "text": "平",
+       "width": 25,
+       "x": 238,
+       "y": 251
+      },
+      {
+       "height": 18,
+       "text": "已",
+       "width": 19,
+       "x": 276,
+       "y": 255
+      },
+      {
+       "height": 21,
+       "text": "筛",
+       "width": 20,
+       "x": 296,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "选",
+       "width": 20,
+       "x": 317,
+       "y": 253
+      },
+      {
+       "height": 17,
+       "text": "1",
+       "width": 6,
+       "x": 338,
+       "y": 255
+      },
+      {
+       "height": 19,
+       "text": "顶",
+       "width": 20,
+       "x": 346,
+       "y": 254
+      },
+      {
+       "height": 18,
+       "text": "不",
+       "width": 19,
+       "x": 527,
+       "y": 255
+      },
+      {
+       "height": 19,
+       "text": "限",
+       "width": 18,
+       "x": 549,
+       "y": 254
+      },
+      {
+       "height": 19,
+       "text": "公",
+       "width": 19,
+       "x": 569,
+       "y": 254
+      },
+      {
+       "height": 18,
+       "text": "示",
+       "width": 19,
+       "x": 590,
+       "y": 255
+      },
+      {
+       "height": 20,
+       "text": "期",
+       "width": 18,
+       "x": 611,
+       "y": 253
+      },
+      {
+       "height": 19,
+       "text": "默",
+       "width": 19,
+       "x": 1153,
+       "y": 253
+      },
+      {
+       "height": 19,
+       "text": "认",
+       "width": 19,
+       "x": 1174,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "排",
+       "width": 19,
+       "x": 1195,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "序",
+       "width": 19,
+       "x": 1216,
+       "y": 253
+      }
+     ]
+    },
+    {
+     "bounds": [
+      1905,
+      560,
+      540,
+      190
+     ],
+     "error": "",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "detail_anchors",
+     "language": "zh-Hans-CN",
+     "ok": true,
+     "provider": "Windows.Media.Ocr",
+     "same_frame": true,
+     "scale": 2,
+     "timing": {
+      "engine_cache_hit": true,
+      "engine_created": false,
+      "error": "",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "frame_released": true,
+      "frame_total_ms": 19,
+      "helper_idle_retired": false,
+      "helper_pid": "321576",
+      "helper_request_index": 128,
+      "helper_reused": true,
+      "helper_roundtrip_ms": 17,
+      "helper_start_ms": 0,
+      "language": "zh-Hans-CN",
+      "mapping_name": "Local\\RelinkVision_7b69c09e-30cf-40c6-b658-b12790a8aa08_0",
+      "mapping_prepare_ms": 0,
+      "ocr_pool_executor": 2,
+      "ok": true,
+      "request_id": "7b69c09e-30cf-40c6-b658-b12790a8aa08",
+      "request_write_ms": 0,
+      "roi_preprocess_ms": 0,
+      "roi_total_ms": 20,
+      "worker_bitmap_copy_ms": 1.0183,
+      "worker_engine_init_ms": 0.0122,
+      "worker_helper_request_ms": 15.1401,
+      "worker_recognize_ms": 13.1004,
+      "worker_runtime_init_ms": 0.0043
+     },
+     "truncated": false,
+     "words": [
+      {
+       "height": 17,
+       "text": "生",
+       "width": 18,
+       "x": 1994,
+       "y": 600
+      },
+      {
+       "height": 20,
+       "text": "相",
+       "width": 19,
+       "x": 2024,
+       "y": 599
+      },
+      {
+       "height": 20,
+       "text": "似",
+       "width": 20,
+       "x": 2045,
+       "y": 599
+      },
+      {
+       "height": 20,
+       "text": "皮",
+       "width": 20,
+       "x": 2066,
+       "y": 599
+      },
+      {
+       "height": 19,
+       "text": "肤",
+       "width": 20,
+       "x": 2087,
+       "y": 599
+      },
+      {
+       "height": 19,
+       "text": "成",
+       "width": 20,
+       "x": 1931,
+       "y": 659
+      },
+      {
+       "height": 19,
+       "text": "色",
+       "width": 19,
+       "x": 1953,
+       "y": 659
+      },
+      {
+       "height": 17,
+       "text": "S",
+       "width": 13,
+       "x": 2213,
+       "y": 662
+      },
+      {
+       "height": 20,
+       "text": "〔",
+       "width": 6,
+       "x": 2228,
+       "y": 660
+      },
+      {
+       "height": 17,
+       "text": "0",
+       "width": 11,
+       "x": 2244,
+       "y": 662
+      },
+      {
+       "height": 3,
+       "text": "．",
+       "width": 3,
+       "x": 2258,
+       "y": 676
+      },
+      {
+       "height": 17,
+       "text": "017490",
+       "width": 81,
+       "x": 2265,
+       "y": 662
+      },
+      {
+       "height": 20,
+       "text": "〕",
+       "width": 6,
+       "x": 2349,
+       "y": 660
+      },
+      {
+       "height": 14,
+       "text": "7",
+       "width": 13,
+       "x": 2387,
+       "y": 661
+      },
+      {
+       "height": 21,
+       "text": "AUG",
+       "width": 54,
+       "x": 1932,
+       "y": 726
+      },
+      {
+       "height": 23,
+       "text": "突",
+       "width": 22,
+       "x": 1989,
+       "y": 725
+      },
+      {
+       "height": 22,
+       "text": "击",
+       "width": 23,
+       "x": 2014,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "步",
+       "width": 22,
+       "x": 2039,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "枪",
+       "width": 23,
+       "x": 2064,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "的",
+       "width": 21,
+       "x": 2090,
+       "y": 725
+      },
+      {
+       "height": 22,
+       "text": "黑",
+       "width": 22,
+       "x": 2114,
+       "y": 726
+      },
+      {
+       "height": 23,
+       "text": "银",
+       "width": 23,
+       "x": 2139,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "先",
+       "width": 22,
+       "x": 2164,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "锋",
+       "width": 24,
+       "x": 2188,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "典",
+       "width": 23,
+       "x": 2214,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "藏",
+       "width": 23,
+       "x": 2239,
+       "y": 725
+      },
+      {
+       "height": 23,
+       "text": "外",
+       "width": 23,
+       "x": 2264,
+       "y": 725
+      },
+      {
+       "height": 22,
+       "text": "观",
+       "width": 23,
+       "x": 2289,
+       "y": 726
+      }
+     ]
+    },
+    {
+     "bounds": [
+      700,
+      370,
+      1160,
+      570
+     ],
+     "error": "",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "modal_guard",
+     "language": "zh-Hans-CN",
+     "ok": true,
+     "provider": "Windows.Media.Ocr",
+     "same_frame": true,
+     "scale": 1,
+     "timing": {
+      "frame_released": true,
+      "frame_total_ms": 21,
+      "split_halves": [
+       {
+        "engine_cache_hit": true,
+        "engine_created": false,
+        "error": "",
+        "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+        "frame_released": true,
+        "frame_total_ms": 19,
+        "helper_idle_retired": false,
+        "helper_pid": "285256",
+        "helper_request_index": 415,
+        "helper_reused": true,
+        "helper_roundtrip_ms": 17,
+        "helper_start_ms": 0,
+        "language": "zh-Hans-CN",
+        "mapping_name": "Local\\RelinkVision_e2dff963-ef6e-4a09-b8d3-6589b8b4fd67_0",
+        "mapping_prepare_ms": 0,
+        "ocr_pool_executor": 0,
+        "ok": true,
+        "request_id": "e2dff963-ef6e-4a09-b8d3-6589b8b4fd67",
+        "request_write_ms": 0,
+        "roi_preprocess_ms": 1,
+        "roi_total_ms": 20,
+        "worker_bitmap_copy_ms": 0.9995,
+        "worker_engine_init_ms": 0.0106,
+        "worker_helper_request_ms": 14.9397,
+        "worker_recognize_ms": 13.042300000000001,
+        "worker_runtime_init_ms": 0.0031000000000000003
+       },
+       {
+        "engine_cache_hit": true,
+        "engine_created": false,
+        "error": "",
+        "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+        "frame_released": true,
+        "frame_total_ms": 21,
+        "helper_idle_retired": false,
+        "helper_pid": "307156",
+        "helper_request_index": 122,
+        "helper_reused": true,
+        "helper_roundtrip_ms": 19,
+        "helper_start_ms": 0,
+        "language": "zh-Hans-CN",
+        "mapping_name": "Local\\RelinkVision_a541986f-7760-4fd6-b6fa-a98f6d9fcbf4_0",
+        "mapping_prepare_ms": 0,
+        "ocr_pool_executor": 1,
+        "ok": true,
+        "request_id": "a541986f-7760-4fd6-b6fa-a98f6d9fcbf4",
+        "request_write_ms": 0,
+        "roi_preprocess_ms": 1,
+        "roi_total_ms": 22,
+        "worker_bitmap_copy_ms": 1.0227,
+        "worker_engine_init_ms": 0.0112,
+        "worker_helper_request_ms": 17.1933,
+        "worker_recognize_ms": 15.264800000000001,
+        "worker_runtime_init_ms": 0.0031000000000000003
+       }
+      ],
+      "split_overlap_px": 60
+     },
+     "truncated": false,
+     "words": [
+      {
+       "height": 25,
+       "text": "03",
+       "width": 42,
+       "x": 906,
+       "y": 585
+      },
+      {
+       "height": 17,
+       "text": "囗",
+       "width": 11,
+       "x": 951,
+       "y": 589
+      },
+      {
+       "height": 17,
+       "text": "囗",
+       "width": 11,
+       "x": 965,
+       "y": 589
+      },
+      {
+       "height": 19,
+       "text": "成",
+       "width": 20,
+       "x": 1004,
+       "y": 588
+      },
+      {
+       "height": 19,
+       "text": "色",
+       "width": 19,
+       "x": 1026,
+       "y": 588
+      },
+      {
+       "height": 17,
+       "text": "S",
+       "width": 13,
+       "x": 1047,
+       "y": 589
+      },
+      {
+       "height": 17,
+       "text": "AUG",
+       "width": 46,
+       "x": 1008,
+       "y": 640
+      },
+      {
+       "height": 20,
+       "text": "突",
+       "width": 19,
+       "x": 1057,
+       "y": 638
+      },
+      {
+       "height": 19,
+       "text": "击",
+       "width": 19,
+       "x": 1078,
+       "y": 639
+      },
+      {
+       "height": 19,
+       "text": "步",
+       "width": 19,
+       "x": 1099,
+       "y": 639
+      },
+      {
+       "height": 20,
+       "text": "枪",
+       "width": 20,
+       "x": 1119,
+       "y": 638
+      },
+      {
+       "height": 2,
+       "text": "一",
+       "width": 7,
+       "x": 1141,
+       "y": 649
+      },
+      {
+       "height": 18,
+       "text": "黑",
+       "width": 19,
+       "x": 1150,
+       "y": 640
+      },
+      {
+       "height": 19,
+       "text": "银",
+       "width": 20,
+       "x": 1170,
+       "y": 639
+      },
+      {
+       "height": 19,
+       "text": "先",
+       "width": 19,
+       "x": 1192,
+       "y": 639
+      },
+      {
+       "height": 20,
+       "text": "锋",
+       "width": 21,
+       "x": 1212,
+       "y": 638
+      },
+      {
+       "height": 4,
+       "text": "．",
+       "width": 2,
+       "x": 1805,
+       "y": 599
+      },
+      {
+       "height": 17,
+       "text": "3",
+       "width": 11,
+       "x": 1814,
+       "y": 589
+      },
+      {
+       "height": 17,
+       "text": "囗",
+       "width": 11,
+       "x": 1828,
+       "y": 589
+      },
+      {
+       "height": 17,
+       "text": "囗",
+       "width": 11,
+       "x": 1842,
+       "y": 589
+      },
+      {
+       "height": 20,
+       "text": "成",
+       "width": 20,
+       "x": 1004,
+       "y": 862
+      },
+      {
+       "height": 19,
+       "text": "色",
+       "width": 19,
+       "x": 1026,
+       "y": 862
+      },
+      {
+       "height": 17,
+       "text": "S",
+       "width": 13,
+       "x": 1047,
+       "y": 863
+      },
+      {
+       "height": 17,
+       "text": "AUG",
+       "width": 46,
+       "x": 1008,
+       "y": 914
+      },
+      {
+       "height": 20,
+       "text": "突",
+       "width": 19,
+       "x": 1057,
+       "y": 913
+      },
+      {
+       "height": 19,
+       "text": "击",
+       "width": 19,
+       "x": 1078,
+       "y": 913
+      },
+      {
+       "height": 20,
+       "text": "步",
+       "width": 19,
+       "x": 1099,
+       "y": 913
+      },
+      {
+       "height": 20,
+       "text": "枪",
+       "width": 20,
+       "x": 1119,
+       "y": 913
+      },
+      {
+       "height": 2,
+       "text": "一",
+       "width": 7,
+       "x": 1141,
+       "y": 923
+      },
+      {
+       "height": 19,
+       "text": "黑",
+       "width": 19,
+       "x": 1150,
+       "y": 914
+      },
+      {
+       "height": 19,
+       "text": "银",
+       "width": 20,
+       "x": 1170,
+       "y": 913
+      },
+      {
+       "height": 20,
+       "text": "先",
+       "width": 19,
+       "x": 1192,
+       "y": 913
+      },
+      {
+       "height": 20,
+       "text": "锋",
+       "width": 20,
+       "x": 1212,
+       "y": 913
+      }
+     ]
+    }
+   ],
+   "old_candidate_fields_reused": false,
+   "parallel_ocr": true,
+   "reason": "CURRENT_LISTING_REGIONS_MATCH",
+   "regions": [
+    {
+     "bounds": [
+      170,
+      64,
+      300,
+      96
+     ],
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "sale_header",
+     "same_frame": true,
+     "word_count": 2
+    },
+    {
+     "bounds": [
+      110,
+      230,
+      1760,
+      70
+     ],
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "listing_controls",
+     "same_frame": true,
+     "word_count": 15
+    },
+    {
+     "bounds": [
+      1905,
+      560,
+      540,
+      190
+     ],
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "detail_anchors",
+     "same_frame": true,
+     "word_count": 28
+    },
+    {
+     "bounds": [
+      700,
+      370,
+      1160,
+      570
+     ],
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "modal_guard",
+     "same_frame": true,
+     "word_count": 33
+    }
+   ],
+   "requires_full_frame_fallback": false,
+   "requires_prior_full_calibration": true,
+   "same_frame": true,
+   "schema": "collection-listing-regions-v1",
+   "startup_page": {
+    "actions_enabled": false,
+    "anchor_checks": {
+     "collection.added": false,
+     "collection.full": false,
+     "listing.condition": true,
+     "listing.default_sort": true,
+     "listing.page_number": false,
+     "listing.sale": true,
+     "listing.similar": true
+    },
+    "anchors": [
+     "list.sale",
+     "list.sort",
+     "list.condition",
+     "list.similar"
+    ],
+    "calibration": "current_same_frame_listing_regions_after_prior_full_calibration",
+    "candidate_pages": [
+     "skin_listings"
+    ],
+    "context_continuation": true,
+    "coverage": "current_listing_regions",
+    "full_frame_ocr_performed": false,
+    "live_calibrated": false,
+    "low_score_tokens": 0,
+    "overlay": "none",
+    "page": "skin_listings",
+    "provider_scores_available": false,
+    "reason": "CURRENT_LISTING_REGIONS_MATCH",
+    "token_count": 78,
+    "valid_input": true
+   },
+   "valid_input": true
+  },
+  "collection_layout": {
+   "cards": [
+    {
+     "bounds": [
+      120,
+      304,
+      863,
+      38
+     ],
+     "bounds_basis": "observed",
+     "edge_measurements": {
+      "bottom_mean": 38.8544444444446,
+      "left_contrast": 6.1666666666666625,
+      "left_profile": [
+       [
+        113,
+        0,
+        0,
+        27.46
+       ],
+       [
+        114,
+        -0.01,
+        0,
+        27.46
+       ],
+       [
+        115,
+        -0.03,
+        0,
+        27.46
+       ],
+       [
+        116,
+        0.04,
+        0,
+        27.54
+       ],
+       [
+        117,
+        0.07,
+        0,
+        27.58
+       ],
+       [
+        118,
+        0.1,
+        0.13,
+        27.62
+       ],
+       [
+        119,
+        0.04,
+        0,
+        27.58
+       ],
+       [
+        120,
+        0.86,
+        0.88,
+        28.42
+       ],
+       [
+        121,
+        2.18,
+        1,
+        29.75
+       ],
+       [
+        122,
+        6.17,
+        1,
+        33.75
+       ],
+       [
+        123,
+        4.86,
+        1,
+        32.46
+       ],
+       [
+        124,
+        3.85,
+        1,
+        31.46
+       ],
+       [
+        125,
+        3.83,
+        1,
+        31.46
+       ],
+       [
+        126,
+        3.82,
+        1,
+        31.46
+       ],
+       [
+        127,
+        5.72,
+        1,
+        33.38
+       ]
+      ],
+      "left_support": 0.875,
+      "right_contrast": 4.2962962962962905,
+      "right_profile": [
+       [
+        977,
+        4.07,
+        1,
+        36.83
+       ],
+       [
+        978,
+        4.16,
+        1,
+        36.96
+       ],
+       [
+        979,
+        4.29,
+        1,
+        37.13
+       ],
+       [
+        980,
+        4.3,
+        1,
+        37.17
+       ],
+       [
+        981,
+        2.26,
+        1,
+        35.17
+       ],
+       [
+        982,
+        1.39,
+        0.88,
+        34.33
+       ],
+       [
+        983,
+        0.35,
+        0.13,
+        33.33
+       ],
+       [
+        984,
+        0.27,
+        0.13,
+        33.29
+       ],
+       [
+        985,
+        0.24,
+        0.13,
+        33.29
+       ],
+       [
+        986,
+        -0.01,
+        0,
+        33.08
+       ],
+       [
+        987,
+        -0.09,
+        0,
+        33.04
+       ],
+       [
+        988,
+        0.04,
+        0,
+        33.21
+       ],
+       [
+        989,
+        0.05,
+        0,
+        33.25
+       ],
+       [
+        990,
+        0.01,
+        0,
+        33.25
+       ],
+       [
+        991,
+        -0.03,
+        0,
+        33.25
+       ]
+      ],
+      "right_support": 0.875,
+      "top_mean": 0
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "fields_bounds": null,
+     "id": "edge:120:304:982:341",
+     "selected": false
+    },
+    {
+     "bounds": [
+      997,
+      304,
+      863,
+      38
+     ],
+     "bounds_basis": "observed",
+     "edge_measurements": {
+      "bottom_mean": 46.89805555555574,
+      "left_contrast": 5.583333333333332,
+      "left_profile": [
+       [
+        990,
+        -0.01,
+        0,
+        33.25
+       ],
+       [
+        991,
+        -0.03,
+        0,
+        33.25
+       ],
+       [
+        992,
+        0.03,
+        0,
+        33.33
+       ],
+       [
+        993,
+        0,
+        0,
+        33.33
+       ],
+       [
+        994,
+        -0.02,
+        0,
+        33.33
+       ],
+       [
+        995,
+        -0.04,
+        0,
+        33.33
+       ],
+       [
+        996,
+        -0.06,
+        0,
+        33.33
+       ],
+       [
+        997,
+        0.91,
+        0.88,
+        34.33
+       ],
+       [
+        998,
+        1.89,
+        1,
+        35.33
+       ],
+       [
+        999,
+        2.87,
+        1,
+        36.33
+       ],
+       [
+        1000,
+        3.84,
+        1,
+        37.33
+       ],
+       [
+        1001,
+        3.82,
+        1,
+        37.33
+       ],
+       [
+        1002,
+        3.8,
+        1,
+        37.33
+       ],
+       [
+        1003,
+        3.77,
+        1,
+        37.33
+       ],
+       [
+        1004,
+        5.58,
+        1,
+        39.17
+       ]
+      ],
+      "left_support": 0.875,
+      "right_contrast": 4.500000000000005,
+      "right_profile": [
+       [
+        1854,
+        4.5,
+        1,
+        47.92
+       ],
+       [
+        1855,
+        4.5,
+        1,
+        48
+       ],
+       [
+        1856,
+        4.42,
+        1,
+        48
+       ],
+       [
+        1857,
+        4.38,
+        1,
+        48.04
+       ],
+       [
+        1858,
+        2.29,
+        1,
+        46.04
+       ],
+       [
+        1859,
+        1.88,
+        1,
+        45.71
+       ],
+       [
+        1860,
+        0.5,
+        0.25,
+        44.42
+       ],
+       [
+        1861,
+        0.38,
+        0.38,
+        44.38
+       ],
+       [
+        1862,
+        0.08,
+        0,
+        44.17
+       ],
+       [
+        1863,
+        -0.08,
+        0,
+        44.08
+       ],
+       [
+        1864,
+        -0.21,
+        0,
+        44.04
+       ],
+       [
+        1865,
+        0.08,
+        0,
+        44.42
+       ],
+       [
+        1866,
+        0.13,
+        0,
+        44.54
+       ],
+       [
+        1867,
+        -0.08,
+        0,
+        44.42
+       ],
+       [
+        1868,
+        0.04,
+        0,
+        44.63
+       ]
+      ],
+      "right_support": 1,
+      "top_mean": 0
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "fields_bounds": null,
+     "id": "edge:997:304:1859:341",
+     "selected": false
+    },
+    {
+     "bounds": [
+      120,
+      356,
+      862,
+      261
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      121,
+      574,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 41.048333333333375,
+      "left_contrast": 8.194029850746267,
+      "left_profile": [
+       [
+        113,
+        -0.02,
+        0,
+        29.01
+       ],
+       [
+        114,
+        -0.04,
+        0,
+        28.99
+       ],
+       [
+        115,
+        0.03,
+        0,
+        29.04
+       ],
+       [
+        116,
+        0.01,
+        0.01,
+        29
+       ],
+       [
+        117,
+        0,
+        0.01,
+        28.99
+       ],
+       [
+        118,
+        0.08,
+        0.06,
+        29.06
+       ],
+       [
+        119,
+        0.12,
+        0.13,
+        29.08
+       ],
+       [
+        120,
+        1.01,
+        0.81,
+        29.96
+       ],
+       [
+        121,
+        2.1,
+        0.99,
+        31.04
+       ],
+       [
+        122,
+        5.93,
+        1,
+        34.86
+       ],
+       [
+        123,
+        5.32,
+        1,
+        34.23
+       ],
+       [
+        124,
+        4.19,
+        1,
+        33.1
+       ],
+       [
+        125,
+        4.18,
+        1,
+        33.07
+       ],
+       [
+        126,
+        8.18,
+        1,
+        37.06
+       ],
+       [
+        127,
+        8.19,
+        1,
+        37.06
+       ]
+      ],
+      "left_support": 0.8059701492537313,
+      "right_contrast": 3.679380873410722,
+      "right_profile": [
+       [
+        977,
+        3.62,
+        1,
+        37.72
+       ],
+       [
+        978,
+        3.62,
+        1,
+        37.72
+       ],
+       [
+        979,
+        3.63,
+        1,
+        37.73
+       ],
+       [
+        980,
+        3.68,
+        1,
+        37.78
+       ],
+       [
+        981,
+        1.68,
+        0.91,
+        35.78
+       ],
+       [
+        982,
+        0.73,
+        0.61,
+        34.84
+       ],
+       [
+        983,
+        -0.18,
+        0.09,
+        33.93
+       ],
+       [
+        984,
+        -0.07,
+        0.12,
+        34.04
+       ],
+       [
+        985,
+        -0.06,
+        0.1,
+        34.05
+       ],
+       [
+        986,
+        -0.07,
+        0,
+        34.04
+       ],
+       [
+        987,
+        -0.01,
+        0,
+        34.11
+       ],
+       [
+        988,
+        0.01,
+        0,
+        34.13
+       ],
+       [
+        989,
+        -0.01,
+        0,
+        34.11
+       ],
+       [
+        990,
+        0.03,
+        0,
+        34.15
+       ],
+       [
+        991,
+        0.02,
+        0.01,
+        34.14
+       ]
+      ],
+      "right_support": 0.9104477611940298,
+      "top_mean": 31.64944444444439
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      121,
+      574,
+      860,
+      42
+     ],
+     "id": "edge:120:356:981:616",
+     "price_bounds": [
+      832,
+      574,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      997,
+      356,
+      863,
+      261
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      998,
+      574,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 52.163055555555786,
+      "left_contrast": 8.02653399668325,
+      "left_profile": [
+       [
+        990,
+        0.02,
+        0,
+        34.15
+       ],
+       [
+        991,
+        0.01,
+        0.01,
+        34.14
+       ],
+       [
+        992,
+        -0.06,
+        0,
+        34.08
+       ],
+       [
+        993,
+        0.06,
+        0,
+        34.2
+       ],
+       [
+        994,
+        0.06,
+        0.04,
+        34.2
+       ],
+       [
+        995,
+        -0.14,
+        0.09,
+        34.01
+       ],
+       [
+        996,
+        -0.05,
+        0.12,
+        34.1
+       ],
+       [
+        997,
+        0.92,
+        0.69,
+        35.07
+       ],
+       [
+        998,
+        1.92,
+        0.96,
+        36.07
+       ],
+       [
+        999,
+        3.02,
+        1,
+        37.17
+       ],
+       [
+        1000,
+        4.05,
+        1,
+        38.21
+       ],
+       [
+        1001,
+        4.07,
+        1,
+        38.23
+       ],
+       [
+        1002,
+        4.14,
+        1,
+        38.3
+       ],
+       [
+        1003,
+        8.02,
+        1,
+        42.19
+       ],
+       [
+        1004,
+        8.03,
+        1,
+        42.19
+       ]
+      ],
+      "left_support": 0.6865671641791045,
+      "right_contrast": 3.8899944720840223,
+      "right_profile": [
+       [
+        1854,
+        3.84,
+        1,
+        52.09
+       ],
+       [
+        1855,
+        3.87,
+        1,
+        52.12
+       ],
+       [
+        1856,
+        3.88,
+        1,
+        52.12
+       ],
+       [
+        1857,
+        3.89,
+        1,
+        52.13
+       ],
+       [
+        1858,
+        1.89,
+        0.96,
+        50.13
+       ],
+       [
+        1859,
+        1.25,
+        0.85,
+        49.49
+       ],
+       [
+        1860,
+        0.27,
+        0.3,
+        48.51
+       ],
+       [
+        1861,
+        -0.04,
+        0.1,
+        48.2
+       ],
+       [
+        1862,
+        -0.02,
+        0.07,
+        48.21
+       ],
+       [
+        1863,
+        -0.06,
+        0.01,
+        48.18
+       ],
+       [
+        1864,
+        -0.02,
+        0,
+        48.21
+       ],
+       [
+        1865,
+        0.01,
+        0,
+        48.25
+       ],
+       [
+        1866,
+        0.01,
+        0,
+        48.24
+       ],
+       [
+        1867,
+        0.02,
+        0,
+        48.25
+       ],
+       [
+        1868,
+        -0.03,
+        0,
+        48.2
+       ]
+      ],
+      "right_support": 0.8507462686567164,
+      "top_mean": 40.36527777777794
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      998,
+      574,
+      861,
+      42
+     ],
+     "id": "edge:997:356:1859:616",
+     "price_bounds": [
+      1710,
+      574,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      121,
+      631,
+      862,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      122,
+      848,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 58.481944444444466,
+      "left_contrast": 8.334991708126037,
+      "left_profile": [
+       [
+        113,
+        -0.07,
+        0,
+        34.06
+       ],
+       [
+        114,
+        -0.05,
+        0,
+        34.06
+       ],
+       [
+        115,
+        0.05,
+        0.01,
+        34.14
+       ],
+       [
+        116,
+        0,
+        0.04,
+        34.08
+       ],
+       [
+        117,
+        0.03,
+        0.06,
+        34.09
+       ],
+       [
+        118,
+        0.02,
+        0.04,
+        34.05
+       ],
+       [
+        119,
+        0.03,
+        0.18,
+        34.04
+       ],
+       [
+        120,
+        0.77,
+        0.57,
+        34.77
+       ],
+       [
+        121,
+        1.93,
+        0.96,
+        35.92
+       ],
+       [
+        122,
+        4.11,
+        0.99,
+        38.07
+       ],
+       [
+        123,
+        4.74,
+        0.99,
+        38.69
+       ],
+       [
+        124,
+        4.31,
+        0.99,
+        38.23
+       ],
+       [
+        125,
+        4.34,
+        0.99,
+        38.24
+       ],
+       [
+        126,
+        8.28,
+        0.99,
+        42.17
+       ],
+       [
+        127,
+        8.33,
+        0.99,
+        42.2
+       ]
+      ],
+      "left_support": 0.9552238805970149,
+      "right_contrast": 4.246545052515202,
+      "right_profile": [
+       [
+        977,
+        4.25,
+        1,
+        41.7
+       ],
+       [
+        978,
+        4.22,
+        1,
+        41.71
+       ],
+       [
+        979,
+        4.17,
+        1,
+        41.69
+       ],
+       [
+        980,
+        4.01,
+        1,
+        41.57
+       ],
+       [
+        981,
+        1.87,
+        0.93,
+        39.46
+       ],
+       [
+        982,
+        1.3,
+        0.9,
+        38.93
+       ],
+       [
+        983,
+        0.31,
+        0.24,
+        37.98
+       ],
+       [
+        984,
+        -0.01,
+        0.09,
+        37.69
+       ],
+       [
+        985,
+        -0.02,
+        0.07,
+        37.71
+       ],
+       [
+        986,
+        0,
+        0,
+        37.77
+       ],
+       [
+        987,
+        -0.01,
+        0,
+        37.8
+       ],
+       [
+        988,
+        -0.04,
+        0,
+        37.8
+       ],
+       [
+        989,
+        0.05,
+        0,
+        37.92
+       ],
+       [
+        990,
+        0.03,
+        0,
+        37.94
+       ],
+       [
+        991,
+        -0.02,
+        0,
+        37.92
+       ]
+      ],
+      "right_support": 0.8955223880597015,
+      "top_mean": 34.53388888888923
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      122,
+      848,
+      860,
+      42
+     ],
+     "id": "edge:121:631:982:890",
+     "price_bounds": [
+      833,
+      848,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      998,
+      631,
+      862,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      999,
+      848,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 67.15250000000009,
+      "left_contrast": 7.786069651741295,
+      "left_profile": [
+       [
+        990,
+        0.02,
+        0,
+        37.94
+       ],
+       [
+        991,
+        -0.01,
+        0,
+        37.92
+       ],
+       [
+        992,
+        0.02,
+        0,
+        37.98
+       ],
+       [
+        993,
+        0,
+        0,
+        37.98
+       ],
+       [
+        994,
+        -0.01,
+        0.01,
+        38
+       ],
+       [
+        995,
+        -0.04,
+        0.1,
+        38
+       ],
+       [
+        996,
+        -0.06,
+        0.12,
+        38
+       ],
+       [
+        997,
+        0.72,
+        0.61,
+        38.81
+       ],
+       [
+        998,
+        1.71,
+        0.97,
+        39.82
+       ],
+       [
+        999,
+        2.81,
+        1,
+        40.94
+       ],
+       [
+        1000,
+        4.05,
+        1,
+        42.21
+       ],
+       [
+        1001,
+        4.03,
+        1,
+        42.21
+       ],
+       [
+        1002,
+        4.02,
+        1,
+        42.23
+       ],
+       [
+        1003,
+        7.79,
+        1,
+        46.02
+       ],
+       [
+        1004,
+        7.78,
+        1,
+        46.04
+       ]
+      ],
+      "left_support": 0.9701492537313433,
+      "right_contrast": 3.8518518518518525,
+      "right_profile": [
+       [
+        1854,
+        3.85,
+        1,
+        56.48
+       ],
+       [
+        1855,
+        3.84,
+        1,
+        56.49
+       ],
+       [
+        1856,
+        3.84,
+        1,
+        56.5
+       ],
+       [
+        1857,
+        3.71,
+        1,
+        56.38
+       ],
+       [
+        1858,
+        1.71,
+        0.97,
+        54.41
+       ],
+       [
+        1859,
+        1.28,
+        0.91,
+        54
+       ],
+       [
+        1860,
+        0.28,
+        0.24,
+        53
+       ],
+       [
+        1861,
+        -0.03,
+        0.07,
+        52.72
+       ],
+       [
+        1862,
+        0.02,
+        0.04,
+        52.79
+       ],
+       [
+        1863,
+        0.03,
+        0.01,
+        52.81
+       ],
+       [
+        1864,
+        -0.01,
+        0.01,
+        52.79
+       ],
+       [
+        1865,
+        0.01,
+        0,
+        52.82
+       ],
+       [
+        1866,
+        0,
+        0,
+        52.83
+       ],
+       [
+        1867,
+        -0.04,
+        0,
+        52.81
+       ],
+       [
+        1868,
+        0.02,
+        0,
+        52.89
+       ]
+      ],
+      "right_support": 0.9104477611940298,
+      "top_mean": 46.25805555555539
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      999,
+      848,
+      860,
+      42
+     ],
+     "id": "edge:998:631:1859:890",
+     "price_bounds": [
+      1710,
+      848,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      119,
+      904,
+      865,
+      262
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      120,
+      1123,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 118.66527777777806,
+      "left_contrast": 139.82734204793027,
+      "left_profile": [
+       [
+        113,
+        -0.02,
+        0,
+        62.15
+       ],
+       [
+        114,
+        0.01,
+        0,
+        62.26
+       ],
+       [
+        115,
+        -0.01,
+        0,
+        62.32
+       ],
+       [
+        116,
+        0,
+        0,
+        62.42
+       ],
+       [
+        117,
+        -0.02,
+        0.04,
+        62.48
+       ],
+       [
+        118,
+        -0.01,
+        0.1,
+        62.57
+       ],
+       [
+        119,
+        126.18,
+        0.99,
+        188.85
+       ],
+       [
+        120,
+        139.83,
+        1,
+        202.57
+       ],
+       [
+        121,
+        58.26,
+        1,
+        121.09
+       ],
+       [
+        122,
+        21.12,
+        1,
+        84.03
+       ],
+       [
+        123,
+        20.21,
+        1,
+        83.21
+       ],
+       [
+        124,
+        20.1,
+        1,
+        83.18
+       ],
+       [
+        125,
+        20.05,
+        1,
+        83.21
+       ],
+       [
+        126,
+        22.83,
+        1,
+        86.07
+       ],
+       [
+        127,
+        22.81,
+        1,
+        86.13
+       ]
+      ],
+      "left_support": 0.9852941176470589,
+      "right_contrast": 92.2897603485839,
+      "right_profile": [
+       [
+        977,
+        18.82,
+        1,
+        86.99
+       ],
+       [
+        978,
+        18.76,
+        1,
+        86.98
+       ],
+       [
+        979,
+        18.71,
+        1,
+        86.97
+       ],
+       [
+        980,
+        18.46,
+        1,
+        86.77
+       ],
+       [
+        981,
+        21.44,
+        1,
+        89.79
+       ],
+       [
+        982,
+        47.89,
+        1,
+        116.28
+       ],
+       [
+        983,
+        92.29,
+        1,
+        160.73
+       ],
+       [
+        984,
+        76.38,
+        0.54,
+        144.86
+       ],
+       [
+        985,
+        -0.08,
+        0.09,
+        68.45
+       ],
+       [
+        986,
+        0.02,
+        0.04,
+        68.6
+       ],
+       [
+        987,
+        0.04,
+        0,
+        68.66
+       ],
+       [
+        988,
+        0,
+        0,
+        68.66
+       ],
+       [
+        989,
+        -0.03,
+        0,
+        68.68
+       ],
+       [
+        990,
+        0.01,
+        0.01,
+        68.77
+       ],
+       [
+        991,
+        -0.04,
+        0,
+        68.76
+       ]
+      ],
+      "right_support": 1,
+      "top_mean": 150.95638888888922
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      120,
+      1123,
+      863,
+      42
+     ],
+     "id": "edge:119:904:983:1165",
+     "price_bounds": [
+      834,
+      1123,
+      149,
+      42
+     ],
+     "selected": true
+    },
+    {
+     "bounds": [
+      998,
+      906,
+      862,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      999,
+      1123,
+      115,
+      42
+     ],
+     "edge_measurements": {
+      "bottom_mean": 129.9630555555556,
+      "left_contrast": 6.2410171365395275,
+      "left_profile": [
+       [
+        990,
+        0,
+        0,
+        68.8
+       ],
+       [
+        991,
+        -0.02,
+        0,
+        68.85
+       ],
+       [
+        992,
+        0.03,
+        0,
+        68.96
+       ],
+       [
+        993,
+        -0.01,
+        0,
+        68.98
+       ],
+       [
+        994,
+        -0.05,
+        0.01,
+        69
+       ],
+       [
+        995,
+        -0.08,
+        0.04,
+        69.03
+       ],
+       [
+        996,
+        -0.14,
+        0.04,
+        69.04
+       ],
+       [
+        997,
+        0.33,
+        0.19,
+        69.57
+       ],
+       [
+        998,
+        1.22,
+        0.85,
+        70.52
+       ],
+       [
+        999,
+        2.22,
+        0.99,
+        71.59
+       ],
+       [
+        1000,
+        3.25,
+        1,
+        72.68
+       ],
+       [
+        1001,
+        3.21,
+        1,
+        72.71
+       ],
+       [
+        1002,
+        3.2,
+        1,
+        72.76
+       ],
+       [
+        1003,
+        6.24,
+        0.99,
+        75.87
+       ],
+       [
+        1004,
+        6.17,
+        0.99,
+        75.86
+       ]
+      ],
+      "left_support": 0.8507462686567164,
+      "right_contrast": 3.6218905472636798,
+      "right_profile": [
+       [
+        1854,
+        3.49,
+        0.97,
+        75.26
+       ],
+       [
+        1855,
+        3.56,
+        0.97,
+        75.25
+       ],
+       [
+        1856,
+        3.62,
+        0.99,
+        75.23
+       ],
+       [
+        1857,
+        3.5,
+        0.99,
+        75.02
+       ],
+       [
+        1858,
+        1.69,
+        0.85,
+        73.13
+       ],
+       [
+        1859,
+        1.44,
+        0.82,
+        72.8
+       ],
+       [
+        1860,
+        0.44,
+        0.49,
+        71.71
+       ],
+       [
+        1861,
+        0.13,
+        0.19,
+        71.31
+       ],
+       [
+        1862,
+        0.02,
+        0.1,
+        71.11
+       ],
+       [
+        1863,
+        0.03,
+        0.03,
+        71.04
+       ],
+       [
+        1864,
+        0.01,
+        0.04,
+        70.94
+       ],
+       [
+        1865,
+        0.01,
+        0,
+        70.85
+       ],
+       [
+        1866,
+        -0.02,
+        0,
+        70.74
+       ],
+       [
+        1867,
+        -0.06,
+        0,
+        70.61
+       ],
+       [
+        1868,
+        0.03,
+        0,
+        70.61
+       ]
+      ],
+      "right_support": 0.8208955223880597,
+      "top_mean": 65.44555555555536
+     },
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      999,
+      1123,
+      860,
+      42
+     ],
+     "id": "edge:998:906:1859:1165",
+     "price_bounds": [
+      1710,
+      1123,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      121,
+      1181,
+      870,
+      22
+     ],
+     "bounds_basis": "clipped_search_region",
+     "edge_measurements": {
+      "bottom_mean": 0,
+      "left_contrast": 23.51111111111111,
+      "left_profile": [
+       [
+        113,
+        -0.1,
+        0,
+        91.33
+       ],
+       [
+        114,
+        0.06,
+        0,
+        91.53
+       ],
+       [
+        115,
+        0.02,
+        0,
+        91.53
+       ],
+       [
+        116,
+        -0.08,
+        0,
+        91.47
+       ],
+       [
+        117,
+        -0.19,
+        0,
+        91.4
+       ],
+       [
+        118,
+        -0.09,
+        0,
+        91.53
+       ],
+       [
+        119,
+        0.01,
+        0,
+        91.67
+       ],
+       [
+        120,
+        0.7,
+        0.4,
+        92.4
+       ],
+       [
+        121,
+        1.47,
+        0.8,
+        93.2
+       ],
+       [
+        122,
+        2.3,
+        1,
+        94.07
+       ],
+       [
+        123,
+        3.13,
+        1,
+        94.93
+       ],
+       [
+        124,
+        3.09,
+        1,
+        94.93
+       ],
+       [
+        125,
+        2.92,
+        1,
+        94.8
+       ],
+       [
+        126,
+        23.48,
+        1,
+        115.4
+       ],
+       [
+        127,
+        23.51,
+        1,
+        115.47
+       ]
+      ],
+      "left_support": 0.8,
+      "right_contrast": 0.05185185185184764,
+      "right_profile": [
+       [
+        977,
+        -0.24,
+        0.2,
+        162.4
+       ],
+       [
+        978,
+        -0.21,
+        0.4,
+        162.53
+       ],
+       [
+        979,
+        -0.18,
+        0.2,
+        162.67
+       ],
+       [
+        980,
+        -0.15,
+        0.2,
+        162.8
+       ],
+       [
+        981,
+        -0.72,
+        0,
+        162.33
+       ],
+       [
+        982,
+        -1.02,
+        0,
+        162.13
+       ],
+       [
+        983,
+        -1.99,
+        0,
+        161.27
+       ],
+       [
+        984,
+        -0.5,
+        0,
+        162.87
+       ],
+       [
+        985,
+        -0.47,
+        0,
+        163
+       ],
+       [
+        986,
+        0.03,
+        0,
+        163.6
+       ],
+       [
+        987,
+        -0.07,
+        0,
+        163.6
+       ],
+       [
+        988,
+        0.02,
+        0,
+        163.8
+       ],
+       [
+        989,
+        0.05,
+        0,
+        163.93
+       ],
+       [
+        990,
+        -0.05,
+        0,
+        163.93
+       ],
+       [
+        991,
+        -0.02,
+        0,
+        164.07
+       ]
+      ],
+      "right_support": 0,
+      "top_mean": 91.81833333333329
+     },
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": false,
+      "top": true
+     },
+     "fields_bounds": null,
+     "id": "edge:121:1181:990:1202",
+     "selected": false
+    },
+    {
+     "bounds": [
+      998,
+      1180,
+      862,
+      23
+     ],
+     "bounds_basis": "observed",
+     "edge_measurements": {
+      "bottom_mean": 0,
+      "left_contrast": 7.2666666666666,
+      "left_profile": [
+       [
+        990,
+        0.05,
+        0,
+        163.47
+       ],
+       [
+        991,
+        0.08,
+        0,
+        163.6
+       ],
+       [
+        992,
+        -0.09,
+        0,
+        163.53
+       ],
+       [
+        993,
+        0.01,
+        0,
+        163.73
+       ],
+       [
+        994,
+        0.17,
+        0,
+        164
+       ],
+       [
+        995,
+        0.53,
+        0.4,
+        164.47
+       ],
+       [
+        996,
+        0.5,
+        0.4,
+        164.53
+       ],
+       [
+        997,
+        0.53,
+        0.4,
+        164.67
+       ],
+       [
+        998,
+        1.29,
+        0.8,
+        165.53
+       ],
+       [
+        999,
+        1.79,
+        0.8,
+        166.13
+       ],
+       [
+        1000,
+        2.48,
+        0.8,
+        166.93
+       ],
+       [
+        1001,
+        2.51,
+        0.8,
+        167.07
+       ],
+       [
+        1002,
+        2.41,
+        0.8,
+        167.07
+       ],
+       [
+        1003,
+        7.24,
+        0.8,
+        172
+       ],
+       [
+        1004,
+        7.27,
+        0.8,
+        172.13
+       ]
+      ],
+      "left_support": 0.8,
+      "right_contrast": 3.2148148148148152,
+      "right_profile": [
+       [
+        1854,
+        3.17,
+        1,
+        106.53
+       ],
+       [
+        1855,
+        3.14,
+        1,
+        106.27
+       ],
+       [
+        1856,
+        3.18,
+        1,
+        106.07
+       ],
+       [
+        1857,
+        3.21,
+        1,
+        105.87
+       ],
+       [
+        1858,
+        1.92,
+        0.8,
+        104.33
+       ],
+       [
+        1859,
+        1.62,
+        1,
+        103.8
+       ],
+       [
+        1860,
+        0.46,
+        0.4,
+        102.4
+       ],
+       [
+        1861,
+        -0.24,
+        0,
+        101.47
+       ],
+       [
+        1862,
+        -0.2,
+        0,
+        101.27
+       ],
+       [
+        1863,
+        -0.03,
+        0,
+        101.2
+       ],
+       [
+        1864,
+        0.01,
+        0,
+        101
+       ],
+       [
+        1865,
+        -0.02,
+        0,
+        100.73
+       ],
+       [
+        1866,
+        0.01,
+        0,
+        100.53
+       ],
+       [
+        1867,
+        0.05,
+        0,
+        100.33
+       ],
+       [
+        1868,
+        -0.04,
+        0,
+        100
+       ]
+      ],
+      "right_support": 1,
+      "top_mean": 134.97555555555567
+     },
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": null,
+     "id": "edge:998:1180:1859:1202",
+     "selected": false
+    }
+   ],
+   "complete": true,
+   "detector": "visible_edges",
+   "edge_evidence": {
+    "actions_enabled": false,
+    "complete": false,
+    "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+    "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+    "rows": [
+     {
+      "cells": [
+       {
+        "bottom": 341,
+        "bottom_edge": true,
+        "column": 0,
+        "top": 304,
+        "top_edge": false
+       },
+       {
+        "bottom": 341,
+        "bottom_edge": true,
+        "column": 1,
+        "top": 304,
+        "top_edge": false
+       }
+      ]
+     },
+     {
+      "cells": [
+       {
+        "bottom": 616,
+        "bottom_edge": true,
+        "column": 0,
+        "top": 356,
+        "top_edge": true
+       },
+       {
+        "bottom": 616,
+        "bottom_edge": true,
+        "column": 1,
+        "top": 356,
+        "top_edge": true
+       }
+      ]
+     },
+     {
+      "cells": [
+       {
+        "bottom": 890,
+        "bottom_edge": true,
+        "column": 0,
+        "top": 631,
+        "top_edge": true
+       },
+       {
+        "bottom": 890,
+        "bottom_edge": true,
+        "column": 1,
+        "top": 631,
+        "top_edge": true
+       }
+      ]
+     },
+     {
+      "cells": [
+       {
+        "bottom": 1165,
+        "bottom_edge": true,
+        "column": 0,
+        "top": 904,
+        "top_edge": true
+       },
+       {
+        "bottom": 1165,
+        "bottom_edge": true,
+        "column": 1,
+        "top": 906,
+        "top_edge": true
+       }
+      ]
+     },
+     {
+      "cells": [
+       {
+        "bottom": 1202,
+        "bottom_edge": false,
+        "column": 0,
+        "top": 1181,
+        "top_edge": true
+       },
+       {
+        "bottom": 1202,
+        "bottom_edge": false,
+        "column": 1,
+        "top": 1180,
+        "top_edge": true
+       }
+      ]
+     }
+    ],
+    "schema": "collection-edge-candidates-v1",
+    "scrollbar_candidate": {
+     "geometry_basis": "observed_centerline_only",
+     "measured_center_x": 1878,
+     "method": "symmetric_contrast_with_independent_left_affine_background",
+     "thumb_bounds": [
+      1878,
+      454,
+      1,
+      61
+     ],
+     "track_bounds": [
+      1878,
+      304,
+      1,
+      899
+     ]
+    },
+    "tail_top_selection": {
+     "accepted": true,
+     "actions_enabled": false,
+     "basis": "same_frame_both_column_refined_top_edges",
+     "candidates": [
+      {
+       "accepted_for_ranking": true,
+       "column_scores": [
+        2.299999999999983,
+        1.9800000000000182
+       ],
+       "gap_check_basis": "per_column_observed_gaps",
+       "gap_from_last_complete_bottom_y": [
+        16,
+        15
+       ],
+       "observed_gap_consistent": true,
+       "peak_y": 1178,
+       "refined_top_y": [
+        1181,
+        1180
+       ],
+       "rejection_reason": "",
+       "score": 2.299999999999983,
+       "usable_columns": [
+        true,
+        false
+       ]
+      },
+      {
+       "accepted_for_ranking": true,
+       "column_scores": [
+        3.3800000000000097,
+        2.730000000000018
+       ],
+       "gap_check_basis": "per_column_observed_gaps",
+       "gap_from_last_complete_bottom_y": [
+        16,
+        15
+       ],
+       "observed_gap_consistent": true,
+       "peak_y": 1179,
+       "refined_top_y": [
+        1181,
+        1180
+       ],
+       "rejection_reason": "",
+       "score": 2.730000000000018,
+       "usable_columns": [
+        true,
+        true
+       ]
+      },
+      {
+       "accepted_for_ranking": true,
+       "column_scores": [
+        3.1700000000000017,
+        2.8500000000000227
+       ],
+       "gap_check_basis": "per_column_observed_gaps",
+       "gap_from_last_complete_bottom_y": [
+        16,
+        15
+       ],
+       "observed_gap_consistent": true,
+       "peak_y": 1180,
+       "refined_top_y": [
+        1181,
+        1180
+       ],
+       "rejection_reason": "",
+       "score": 2.8500000000000227,
+       "usable_columns": [
+        true,
+        true
+       ]
+      },
+      {
+       "accepted_for_ranking": true,
+       "column_scores": [
+        2.0999999999999943,
+        0.7599999999999909
+       ],
+       "gap_check_basis": "per_column_observed_gaps",
+       "gap_from_last_complete_bottom_y": [
+        16,
+        15
+       ],
+       "observed_gap_consistent": true,
+       "peak_y": 1181,
+       "refined_top_y": [
+        1181,
+        1180
+       ],
+       "rejection_reason": "",
+       "score": 2.0999999999999943,
+       "usable_columns": [
+        true,
+        false
+       ]
+      }
+     ],
+     "maximum_column_alignment_pixels": 3,
+     "same_frame_pitch": {
+      "basis": "same_frame_independent_complete_row_gaps_and_bottom_intervals",
+      "columns": [
+       {
+        "column": 0,
+        "last_complete_bottom_y": 1165,
+        "last_complete_top_y": 904,
+        "maximum_gap": 15,
+        "minimum_gap": 14,
+        "observed_bottom_pitches": [
+         274,
+         275
+        ],
+        "observed_complete_bottom_y": [
+         616,
+         890,
+         1165
+        ],
+        "observed_complete_top_y": [
+         356,
+         631,
+         904
+        ],
+        "observed_inter_row_gaps": [
+         15,
+         14
+        ],
+        "observed_top_pitches": [
+         275,
+         273
+        ]
+       },
+       {
+        "column": 1,
+        "last_complete_bottom_y": 1165,
+        "last_complete_top_y": 906,
+        "maximum_gap": 16,
+        "minimum_gap": 15,
+        "observed_bottom_pitches": [
+         274,
+         275
+        ],
+        "observed_complete_bottom_y": [
+         616,
+         890,
+         1165
+        ],
+        "observed_complete_top_y": [
+         356,
+         631,
+         906
+        ],
+        "observed_inter_row_gaps": [
+         15,
+         16
+        ],
+        "observed_top_pitches": [
+         275,
+         275
+        ]
+       }
+      ],
+      "complete_row_count": 3,
+      "coordinates_inferred": false,
+      "paired_complete_rows_aligned": true,
+      "paired_gap_envelope": {
+       "available": true,
+       "coordinates_inferred": false,
+       "extra_margin_pixels": 3,
+       "maximum": 16,
+       "minimum": 14
+      },
+      "proven": true,
+      "tolerance_pixels": 3
+     },
+     "schema": "collection-tail-top-selection-v1",
+     "search_interval": [
+      1171,
+      1198
+     ],
+     "selected_peak_y": 1180,
+     "selected_top_y": [
+      1181,
+      1180
+     ],
+     "thresholds_changed": false
+    }
+   },
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "image_file_writes": 0,
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "page_exhausted": false,
+   "same_frame": true,
+   "schema": "collection-layout-v1",
+   "scrollbar": {
+    "geometry_basis": "observed_centerline_only",
+    "measured_center_x": 1878,
+    "method": "symmetric_contrast_with_independent_left_affine_background",
+    "thumb_bounds": [
+     1878,
+     454,
+     1,
+     61
+    ],
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ]
+   },
+   "selected_card_proof": null,
+   "viewport": [
+    2560,
+    1440
+   ]
+  },
+  "collection_observation": {
+   "coverage": "field_projection",
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "image_file_writes": 0,
+   "page": "skin_listings",
+   "regions": [
+    {
+     "bounds": [
+      110,
+      230,
+      1760,
+      70
+     ],
+     "error": "",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "kind": "listing_controls",
+     "language": "zh-Hans-CN",
+     "ok": true,
+     "provider": "Windows.Media.Ocr",
+     "same_frame": true,
+     "scale": 2,
+     "timing": {
+      "engine_cache_hit": true,
+      "engine_created": false,
+      "error": "",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "frame_released": true,
+      "frame_total_ms": 19,
+      "helper_idle_retired": false,
+      "helper_pid": "294396",
+      "helper_request_index": 133,
+      "helper_reused": true,
+      "helper_roundtrip_ms": 17,
+      "helper_start_ms": 0,
+      "language": "zh-Hans-CN",
+      "mapping_name": "Local\\RelinkVision_35cc08a3-b462-47e5-a19f-9ad38eeea4f9_0",
+      "mapping_prepare_ms": 0,
+      "ocr_pool_executor": 3,
+      "ok": true,
+      "request_id": "35cc08a3-b462-47e5-a19f-9ad38eeea4f9",
+      "request_write_ms": 0,
+      "roi_preprocess_ms": 0,
+      "roi_total_ms": 20,
+      "worker_bitmap_copy_ms": 1.2076,
+      "worker_engine_init_ms": 0.0119,
+      "worker_helper_request_ms": 15.0503,
+      "worker_recognize_ms": 12.8587,
+      "worker_runtime_init_ms": 0.0029000000000000002
+     },
+     "truncated": false,
+     "words": [
+      {
+       "height": 26,
+       "text": "平",
+       "width": 25,
+       "x": 238,
+       "y": 251
+      },
+      {
+       "height": 18,
+       "text": "已",
+       "width": 19,
+       "x": 276,
+       "y": 255
+      },
+      {
+       "height": 21,
+       "text": "筛",
+       "width": 20,
+       "x": 296,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "选",
+       "width": 20,
+       "x": 317,
+       "y": 253
+      },
+      {
+       "height": 17,
+       "text": "1",
+       "width": 6,
+       "x": 338,
+       "y": 255
+      },
+      {
+       "height": 19,
+       "text": "顶",
+       "width": 20,
+       "x": 346,
+       "y": 254
+      },
+      {
+       "height": 18,
+       "text": "不",
+       "width": 19,
+       "x": 527,
+       "y": 255
+      },
+      {
+       "height": 19,
+       "text": "限",
+       "width": 18,
+       "x": 549,
+       "y": 254
+      },
+      {
+       "height": 19,
+       "text": "公",
+       "width": 19,
+       "x": 569,
+       "y": 254
+      },
+      {
+       "height": 18,
+       "text": "示",
+       "width": 19,
+       "x": 590,
+       "y": 255
+      },
+      {
+       "height": 20,
+       "text": "期",
+       "width": 18,
+       "x": 611,
+       "y": 253
+      },
+      {
+       "height": 19,
+       "text": "默",
+       "width": 19,
+       "x": 1153,
+       "y": 253
+      },
+      {
+       "height": 19,
+       "text": "认",
+       "width": 19,
+       "x": 1174,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "排",
+       "width": 19,
+       "x": 1195,
+       "y": 253
+      },
+      {
+       "height": 20,
+       "text": "序",
+       "width": 19,
+       "x": 1216,
+       "y": 253
+      }
+     ]
+    },
+    {
+     "error": "",
+     "kind": "product_title",
+     "ok": true,
+     "split_fields_refinement": false,
+     "truncated": false,
+     "words": [
+      {
+       "text": "AUG突击步枪-黑银先锋",
+       "score": 0.99884,
+       "x": 1915,
+       "y": 238,
+       "width": 530,
+       "height": 54
+      }
+     ],
+     "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+     "windows_observation": {
+      "error": "E_LOCAL_TEXT_PENDING",
+      "kind": "product_title",
+      "ok": false,
+      "split_fields_refinement": false,
+      "truncated": false,
+      "words": []
+     }
+    },
+    {
+     "actions_enabled": false,
+     "bounds": [
+      1920,
+      640,
+      505,
+      66
+     ],
+     "coverage": "same_frame_region_projection",
+     "evidence_basis": "current_parent_ocr_words_projected_from_same_frame",
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "historical_cache_used": false,
+     "kind": "selected_detail",
+     "ok": true,
+     "old_candidate_fields_reused": false,
+     "projection_ocr_performed": false,
+     "same_frame": true,
+     "source_provider": "Windows.Media.Ocr",
+     "source_region_bounds": [
+      1905,
+      560,
+      540,
+      190
+     ],
+     "source_region_kind": "detail_anchors",
+     "truncated": false,
+     "words": [
+      {
+       "height": 19,
+       "text": "成",
+       "width": 20,
+       "x": 1931,
+       "y": 659
+      },
+      {
+       "height": 19,
+       "text": "色",
+       "width": 19,
+       "x": 1953,
+       "y": 659
+      },
+      {
+       "height": 17,
+       "text": "S",
+       "width": 13,
+       "x": 2213,
+       "y": 662
+      },
+      {
+       "height": 20,
+       "text": "〔",
+       "width": 6,
+       "x": 2228,
+       "y": 660
+      },
+      {
+       "height": 17,
+       "text": "0",
+       "width": 11,
+       "x": 2244,
+       "y": 662
+      },
+      {
+       "height": 3,
+       "text": "．",
+       "width": 3,
+       "x": 2258,
+       "y": 676
+      },
+      {
+       "height": 17,
+       "text": "017490",
+       "width": 81,
+       "x": 2265,
+       "y": 662
+      },
+      {
+       "height": 20,
+       "text": "〕",
+       "width": 6,
+       "x": 2349,
+       "y": 660
+      },
+      {
+       "height": 14,
+       "text": "7",
+       "width": 13,
+       "x": 2387,
+       "y": 661
+      }
+     ]
+    },
+    {
+     "error": "",
+     "kind": "selected_detail_precise",
+     "ok": true,
+     "split_fields_refinement": false,
+     "truncated": false,
+     "words": [
+      {
+       "height": 20.840339366756428,
+       "text": "sc",
+       "width": 21.490518907842112,
+       "x": 2212.88393925688,
+       "y": 659.5052981217603
+      },
+      {
+       "height": 24.38031477958762,
+       "text": "0.017490)",
+       "width": 111.8294630556125,
+       "x": 2243.5821719070905,
+       "y": 657.2554471157648
+      }
+     ]
+    },
+    {
+     "bounds": [
+      120,
+      1123,
+      863,
+      42
+     ],
+     "card_id": "edge:119:904:983:1165",
+     "error": "LOCAL_PRICE_PROVIDER_NOT_SELECTED",
+     "field_attempts": [
+      {
+       "attempt": 1,
+       "bounds": [
+        120,
+        1123,
+        115,
+        42
+       ],
+       "engine": "Windows.Media.Ocr",
+       "error": "",
+       "field": "condition_bounds",
+       "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+       "language": "zh-Hans-CN",
+       "ok": true,
+       "same_frame": true,
+       "scale": 2,
+       "timing": {
+        "engine_cache_hit": true,
+        "engine_created": false,
+        "error": "",
+        "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+        "frame_released": true,
+        "frame_total_ms": 7,
+        "helper_idle_retired": false,
+        "helper_pid": "294396",
+        "helper_request_index": 134,
+        "helper_reused": true,
+        "helper_roundtrip_ms": 6,
+        "helper_start_ms": 0,
+        "language": "zh-Hans-CN",
+        "mapping_name": "Local\\RelinkVision_4d3d1009-392a-4057-a67f-79f2a2d7a4fb_0",
+        "mapping_prepare_ms": 0,
+        "ocr_pool_executor": 3,
+        "ocr_pool_speculative_same_frame": true,
+        "ok": true,
+        "request_id": "4d3d1009-392a-4057-a67f-79f2a2d7a4fb",
+        "request_write_ms": 0,
+        "roi_preprocess_ms": 0,
+        "roi_total_ms": 7,
+        "worker_bitmap_copy_ms": 0.1844,
+        "worker_engine_init_ms": 0.0112,
+        "worker_helper_request_ms": 2.8175000000000003,
+        "worker_recognize_ms": 2.0399000000000003,
+        "worker_runtime_init_ms": 0.0035
+       },
+       "tokens": [
+        "成",
+        "色",
+        "S"
+       ],
+       "word_count": 3
+      },
+      {
+       "attempt": 0,
+       "bounds": [
+        834,
+        1123,
+        149,
+        42
+       ],
+       "engine": "local_price_pending",
+       "error": "E_NUMERIC_CLIPPED_INK",
+       "field": "price_bounds",
+       "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+       "numeric_preprocess": {
+        "background_level": 115,
+        "edge_line_column_count": 0,
+        "edge_line_pixels_removed": 0,
+        "edge_line_row_count": 0,
+        "error": "E_NUMERIC_CLIPPED_INK",
+        "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+        "highlight_level": 235,
+        "image_file_writes": 0,
+        "ink_threshold": 169,
+        "method": "observed_components_edge_line_removal_white_padding",
+        "padding_source_pixels": 5,
+        "same_frame": true,
+        "scale": 3,
+        "schema": "numeric-roi-v1",
+        "source_region": [
+         834,
+         1123,
+         149,
+         42
+        ]
+       },
+       "ok": false,
+       "same_frame": true,
+       "scale": 3
+      }
+     ],
+     "kind": "card_fields",
+     "ok": false,
+     "scope": "visible_layout",
+     "split_fields_refinement": true,
+     "truncated": false,
+     "words": [
+      {
+       "height": 21.113156135999482,
+       "text": "成",
+       "width": 21.5844657655939,
+       "x": 126.04921672928391,
+       "y": 1136.2173686425626
+      },
+      {
+       "height": 21.00151312601316,
+       "text": "色",
+       "width": 19.587584237229937,
+       "x": 148.56995542837166,
+       "y": 1136.0714685543849
+      },
+      {
+       "height": 18.22630369059238,
+       "text": "S",
+       "width": 14.455826653837121,
+       "x": 169.1496341040886,
+       "y": 1137.2031167553548
+      }
+     ]
+    }
+   ],
+   "same_frame": true
+  },
+  "collection_page_context": {
+   "actions_enabled": false,
+   "calibration_frame_id": "dxgi:ff13ea40-3256-4789-adb6-9672ce92859e",
+   "calibration_frame_sha256": "0ec23eff548d2b1a11dc1424df69e86fc399dbdd41785108a6276a7a4bbbb9d1",
+   "current_control_text_read": true,
+   "current_regions_eligible": true,
+   "evidence_basis": "current_same_frame_listing_regions",
+   "exact_guard_reason": "guard_pixels_changed",
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "guards": [
+    {
+     "bounds": [
+      170,
+      64,
+      300,
+      96
+     ],
+     "exact_pixels_equal": false,
+     "name": "sale_header",
+     "sha256": "90e0cee6aa22daccb706c8021323e778421a4d07be235208e8b3717db7bd12ad"
+    },
+    {
+     "bounds": [
+      110,
+      230,
+      1760,
+      70
+     ],
+     "exact_pixels_equal": false,
+     "name": "listing_controls",
+     "sha256": "95947295abc3665d79a5b7594e5001c5c6f5526b17f57b6008f80e52a5db0cf4"
+    },
+    {
+     "bounds": [
+      1915,
+      238,
+      530,
+      54
+     ],
+     "exact_pixels_equal": false,
+     "name": "product_title",
+     "sha256": "03d487bdf32f196d5915bd84c4d790561385a532f301a8a5f5fdb6ef15ab315a"
+    },
+    {
+     "bounds": [
+      988,
+      340,
+      7,
+      850
+     ],
+     "exact_pixels_equal": false,
+     "name": "centre_overlay_seam",
+     "sha256": "8fb6c5ad251d69d382670a7baba16ef01bc4d4adef51f77e1ead799389d29eb8"
+    },
+    {
+     "bounds": [
+      2425,
+      370,
+      20,
+      650
+     ],
+     "exact_pixels_equal": false,
+     "name": "right_overlay_strip",
+     "sha256": "9a7772b0fd7b59475b8b054dc06f09919213a5d317299a465918eab43ae1e1bd"
+    }
+   ],
+   "old_candidate_fields_reused": false,
+   "reason": "current_listing_regions_confirmed",
+   "same_frame_guards": true,
+   "schema": "collection-page-context-v1",
+   "scope": "page_context_continuation_only",
+   "used": true
+  },
+  "collection_ready_watch": {
+   "actions_enabled": false,
+   "deadline_budget_ms": 900,
+   "deadline_budget_ms_requested": 900,
+   "fixed_retry_wait_ms": 0,
+   "full_candidate_validation_required": true,
+   "kind": "selection",
+   "listing_region_frame_retries": 0,
+   "maximum_frames": 48,
+   "maximum_frames_requested": 48,
+   "mode": "native_latest_frame_readiness",
+   "samples": [
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:b35f8bd0-31c9-4201-ad06-06db07d3bba8",
+     "frame_sha256": "c49d29003b7ea45b4cdab2eedc94bca635adc57c11299944fcf13d804c9d825b",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 10,
+      "frame_id": "dxgi:b35f8bd0-31c9-4201-ad06-06db07d3bba8",
+      "frame_sha256": "c49d29003b7ea45b4cdab2eedc94bca635adc57c11299944fcf13d804c9d825b",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074810,
+     "source_mono_ms": 1260074821,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:35c90132-321c-475a-a3c6-2af9f4c27cba",
+     "frame_sha256": "e65bbf82196668021d8c460693e20ead89ac6ccc6fbbb980bd14932d30f20c6b",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 10,
+      "frame_id": "dxgi:35c90132-321c-475a-a3c6-2af9f4c27cba",
+      "frame_sha256": "e65bbf82196668021d8c460693e20ead89ac6ccc6fbbb980bd14932d30f20c6b",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074841,
+     "source_mono_ms": 1260074843,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:5cc94682-e7ae-4569-ab65-9db406d90a51",
+     "frame_sha256": "a516f24d054a6c455d4d7d92689d6e2d2ea443d4516b1c262a34f699e44c2e59",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 11,
+      "frame_id": "dxgi:5cc94682-e7ae-4569-ab65-9db406d90a51",
+      "frame_sha256": "a516f24d054a6c455d4d7d92689d6e2d2ea443d4516b1c262a34f699e44c2e59",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074864,
+     "source_mono_ms": 1260074871,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:80958384-3214-44ec-916e-ac94f73086c2",
+     "frame_sha256": "9619c196792285c5ef3b87c8a4e33ef61abf9e1bf5f0d8fd80e2c0f2ae1dee61",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 12,
+      "frame_id": "dxgi:80958384-3214-44ec-916e-ac94f73086c2",
+      "frame_sha256": "9619c196792285c5ef3b87c8a4e33ef61abf9e1bf5f0d8fd80e2c0f2ae1dee61",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074890,
+     "source_mono_ms": 1260074894,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:a0d4c247-b4c9-421e-9d30-ddcfa45a6df9",
+     "frame_sha256": "01feb8af55239bdf219fbff27ef3d92e1fe446cc0df54a49e79044199e161433",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 10,
+      "frame_id": "dxgi:a0d4c247-b4c9-421e-9d30-ddcfa45a6df9",
+      "frame_sha256": "01feb8af55239bdf219fbff27ef3d92e1fe446cc0df54a49e79044199e161433",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074917,
+     "source_mono_ms": 1260074924,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:75950e2e-8c97-4a1c-9d3a-8765190ad529",
+     "frame_sha256": "3d8d185abeeff7900d8bab6b3ff8f7fae58a1cfbdc9706b53d892024f30c3460",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 10,
+      "frame_id": "dxgi:75950e2e-8c97-4a1c-9d3a-8765190ad529",
+      "frame_sha256": "3d8d185abeeff7900d8bab6b3ff8f7fae58a1cfbdc9706b53d892024f30c3460",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": true,
+      "page_classified": false,
+      "ready_for_full_ocr": false,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 0,
+      "selected_target_contains_point": false,
+      "selected_target_match_count": 0,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "ocr_performed": false,
+     "requested_mono_ms": 1260074946,
+     "source_mono_ms": 1260074949,
+     "source_uncertainty_ms": 1
+    },
+    {
+     "fixed_retry_wait_ms": 0,
+     "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+     "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+     "gate": {
+      "actions_enabled": false,
+      "elapsed_ms": 10,
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+      "identity_proven": false,
+      "layout_complete": true,
+      "ocr_deferred": false,
+      "page_classified": false,
+      "ready_for_full_ocr": true,
+      "requested_selection_point": [
+       173,
+       950
+      ],
+      "requires_original_full_validation": true,
+      "same_frame": true,
+      "schema": "collection-selection-preflight-v1",
+      "scope": "negative_readiness_gate_only",
+      "selected_count": 1,
+      "selected_target_contains_point": true,
+      "selected_target_match_count": 1,
+      "target_hint_role": "negative_gate_only_original_rebind_required"
+     },
+     "listing_regions_reason": "CURRENT_LISTING_REGIONS_MATCH",
+     "ocr_performed": true,
+     "requested_mono_ms": 1260074967,
+     "source_mono_ms": 1260074971,
+     "source_uncertainty_ms": 1
+    }
+   ],
+   "schema": "collection-ready-watch-v1"
+  },
+  "collection_selected_card": {
+   "bounds": [
+    119,
+    904,
+    865,
+    262
+   ],
+   "card_id": "edge:119:904:983:1165",
+   "favorite_bright_fraction": 0.12990196078431374,
+   "favorite_warm_fraction": 0,
+   "fields_bounds": [
+    120,
+    1123,
+    863,
+    42
+   ],
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "same_frame": true,
+   "selected": true
+  },
+  "collection_selection_preflight": {
+   "actions_enabled": false,
+   "elapsed_ms": 10,
+   "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "full_frame_ocr_replaced_by": "current_same_frame_listing_regions",
+   "identity_proven": false,
+   "layout_complete": true,
+   "ocr_deferred": false,
+   "page_classified": false,
+   "ready_for_full_ocr": true,
+   "requested_selection_point": [
+    173,
+    950
+   ],
+   "requires_current_candidate_validation": true,
+   "requires_original_full_validation": false,
+   "same_frame": true,
+   "schema": "collection-selection-preflight-v1",
+   "scope": "negative_readiness_gate_only",
+   "selected_count": 1,
+   "selected_target_contains_point": true,
+   "selected_target_match_count": 1,
+   "target_hint_role": "negative_gate_only_original_rebind_required"
+  },
+  "diagnostic": "live_capture",
+  "error": null,
+  "expected_page": "skin_listings",
+  "focus_activation_requests": 0,
+  "focus_policy": "caller-owned",
+  "focus_restore_requests": 0,
+  "foreground_cleanup_owner": "batch_caller",
+  "foreground_hwnd": "10420988",
+  "frames": [
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074826,
+    "capture_ms": 13,
+    "capture_start_mono_ms": 1260074813,
+    "digest_ms": 3.665,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074810,
+    "sha256": "c49d29003b7ea45b4cdab2eedc94bca635adc57c11299944fcf13d804c9d825b",
+    "source": "dxgi",
+    "source_age_ms": 5,
+    "source_mono_ms": 1260074821,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074848,
+    "capture_ms": 9,
+    "capture_start_mono_ms": 1260074839,
+    "digest_ms": 3.8124,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074841,
+    "sha256": "e65bbf82196668021d8c460693e20ead89ac6ccc6fbbb980bd14932d30f20c6b",
+    "source": "dxgi",
+    "source_age_ms": 5,
+    "source_mono_ms": 1260074843,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074874,
+    "capture_ms": 9,
+    "capture_start_mono_ms": 1260074865,
+    "digest_ms": 3.6538,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074864,
+    "sha256": "a516f24d054a6c455d4d7d92689d6e2d2ea443d4516b1c262a34f699e44c2e59",
+    "source": "dxgi",
+    "source_age_ms": 3,
+    "source_mono_ms": 1260074871,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074900,
+    "capture_ms": 12,
+    "capture_start_mono_ms": 1260074888,
+    "digest_ms": 3.6852,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074890,
+    "sha256": "9619c196792285c5ef3b87c8a4e33ef61abf9e1bf5f0d8fd80e2c0f2ae1dee61",
+    "source": "dxgi",
+    "source_age_ms": 6,
+    "source_mono_ms": 1260074894,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074930,
+    "capture_ms": 15,
+    "capture_start_mono_ms": 1260074915,
+    "digest_ms": 3.6508,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074917,
+    "sha256": "01feb8af55239bdf219fbff27ef3d92e1fe446cc0df54a49e79044199e161433",
+    "source": "dxgi",
+    "source_age_ms": 6,
+    "source_mono_ms": 1260074924,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074952,
+    "capture_ms": 9,
+    "capture_start_mono_ms": 1260074943,
+    "digest_ms": 3.628,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074946,
+    "sha256": "3d8d185abeeff7900d8bab6b3ff8f7fae58a1cfbdc9706b53d892024f30c3460",
+    "source": "dxgi",
+    "source_age_ms": 3,
+    "source_mono_ms": 1260074949,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   },
+   {
+    "bytes": 14745600,
+    "capture_end_mono_ms": 1260074978,
+    "capture_ms": 13,
+    "capture_start_mono_ms": 1260074965,
+    "digest_ms": 3.6608,
+    "digest_provider": "Windows.CNG.SHA256",
+    "dpi": 144,
+    "freshness": "source_timestamp",
+    "height": 1440,
+    "near_black": false,
+    "not_before_mono_ms": 1260074810,
+    "pixel_max": 255,
+    "pixel_min": 6,
+    "requested_mono_ms": 1260074967,
+    "sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+    "source": "dxgi",
+    "source_age_ms": 7,
+    "source_mono_ms": 1260074971,
+    "source_uncertainty_ms": 1,
+    "width": 2560
+   }
+  ],
+  "full_frame_ocr_performed": false,
+  "game_in_background": false,
+  "game_input_sent": false,
+  "ide_foreground_restored": false,
+  "image_file_writes": 0,
+  "ocr": {
+   "body_anchors": [],
+   "business_fields_validated": false,
+   "confidence_available": false,
+   "coordinate_space": "client_physical_px",
+   "coverage": "calibrated_listing_fields",
+   "frame_age_at_result_ms": 68,
+   "frame_age_before_output_ms": 68,
+   "frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "full_frame_ocr_performed": false,
+   "language": "zh-Hans-CN",
+   "page_hint": "unknown",
+   "provider": "Windows.Media.Ocr",
+   "word_count": 0
+  },
+  "ocr_passed": true,
+  "ocr_pool": {
+   "batches": 75,
+   "caller_jobs": 140,
+   "caller_reruns": 0,
+   "image_file_writes": 0,
+   "retired": 0,
+   "retired_after_session_failure": [],
+   "schema": "windows-ocr-pool-v1",
+   "warm_errors": [],
+   "warmed": 3,
+   "worker_jobs": 379,
+   "workers": 3
+  },
+  "ocr_session": {
+   "calls": [],
+   "calls_truncated": false,
+   "cumulative": {
+    "engine_create_count": 2,
+    "frame_mappings_released": 416,
+    "helper_foreground_observed": false,
+    "helper_pid": "285256",
+    "helper_running": true,
+    "helper_start_count": 1,
+    "helper_ui_checks": 1538,
+    "helper_visible_window_observed": false,
+    "mapping_quarantined": false,
+    "protocol": "windows-ocr-session-v1",
+    "request_count": 416,
+    "scope": "current_diagnostic_process",
+    "session_poisoned": false,
+    "success_count": 416
+   },
+   "engine_create_count": 0,
+   "frame_mappings_released": 0,
+   "helper_foreground_observed": false,
+   "helper_pid": "285256",
+   "helper_running": true,
+   "helper_start_count": 0,
+   "helper_ui_checks": 0,
+   "helper_visible_window_observed": false,
+   "mapping_quarantined": false,
+   "protocol": "windows-ocr-session-v1",
+   "request_count": 0,
+   "scope": "capture_request",
+   "session_poisoned": false,
+   "success_count": 0
+  },
+  "page_match_passed": true,
+  "recognition_performed": true,
+  "resources_drained": true,
+  "resources_drained_scope": "request_delivery_leases_only_producer_owned_by_session",
+  "return_hwnd": "0",
+  "return_window_bound": false,
+  "startup_page": {
+   "actions_enabled": false,
+   "anchor_checks": {
+    "collection.added": false,
+    "collection.full": false,
+    "listing.condition": true,
+    "listing.default_sort": true,
+    "listing.page_number": false,
+    "listing.sale": true,
+    "listing.similar": true
+   },
+   "anchors": [
+    "list.sale",
+    "list.sort",
+    "list.condition",
+    "list.similar"
+   ],
+   "calibration": "current_same_frame_listing_regions_after_prior_full_calibration",
+   "candidate_pages": [
+    "skin_listings"
+   ],
+   "context_continuation": true,
+   "coverage": "current_listing_regions",
+   "full_frame_ocr_performed": false,
+   "live_calibrated": false,
+   "low_score_tokens": 0,
+   "overlay": "none",
+   "page": "skin_listings",
+   "provider_scores_available": false,
+   "reason": "CURRENT_LISTING_REGIONS_MATCH",
+   "token_count": 78,
+   "valid_input": true
+  },
+  "target_foreground_retained": true,
+  "diagnostic_actual_command": [
+   "C:\\Users\\Administrator\\Desktop\\price\\dist\\RelinkStudio\\RelinkStudio.exe",
+   "--live-capture-check",
+   "--focus-policy",
+   "caller-owned",
+   "--target-hwnd",
+   "10420988",
+   "--target-pid",
+   "296204",
+   "--frames",
+   "1",
+   "--ocr",
+   "--expected-page",
+   "skin_listings",
+   "--collection-observation",
+   "--collection-layout",
+   "--collection-selection-preflight",
+   "--collection-numeric-price",
+   "--collection-selection-point",
+   "[173,950]",
+   "--reuse-capture-resources",
+   "--collection-ready-stream",
+   "--collection-local-hotpath",
+   "--collection-price-image",
+   "--collection-local-price",
+   "--collection-title-image",
+   "--collection-catalog-image",
+   "--collection-local-text"
+  ],
+  "collection_diagnostic_options": {
+   "full_preview_requested": false,
+   "native_duplicate_text_omitted": true
+  },
+  "local_price_ocr": {
+   "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+   "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+   },
+   "expected_value_supplied": false,
+   "provider_selection": "explicit_before_run_not_price_match",
+   "confidence_threshold": 0.99,
+   "image_file_writes": 0,
+   "source_frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "source_frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "source_png_sha256": "f3ad183bfa74924a6b91a44ac086a4dae74dfd7e6eed8cb4fd4cdb2b1738fa74",
+   "native_observation": {
+    "bounds": [
+     120,
+     1123,
+     863,
+     42
+    ],
+    "card_id": "edge:119:904:983:1165",
+    "error": "E_NUMERIC_CLIPPED_INK",
+    "field_attempts": [
+     {
+      "attempt": 1,
+      "bounds": [
+       120,
+       1123,
+       115,
+       42
+      ],
+      "engine": "Windows.Media.Ocr",
+      "error": "",
+      "field": "condition_bounds",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "language": "zh-Hans-CN",
+      "ok": true,
+      "same_frame": true,
+      "scale": 2,
+      "timing": {
+       "engine_cache_hit": true,
+       "engine_created": false,
+       "error": "",
+       "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+       "frame_released": true,
+       "frame_total_ms": 7,
+       "helper_idle_retired": false,
+       "helper_pid": "294396",
+       "helper_request_index": 134,
+       "helper_reused": true,
+       "helper_roundtrip_ms": 6,
+       "helper_start_ms": 0,
+       "language": "zh-Hans-CN",
+       "mapping_name": "Local\\RelinkVision_4d3d1009-392a-4057-a67f-79f2a2d7a4fb_0",
+       "mapping_prepare_ms": 0,
+       "ocr_pool_executor": 3,
+       "ocr_pool_speculative_same_frame": true,
+       "ok": true,
+       "request_id": "4d3d1009-392a-4057-a67f-79f2a2d7a4fb",
+       "request_write_ms": 0,
+       "roi_preprocess_ms": 0,
+       "roi_total_ms": 7,
+       "worker_bitmap_copy_ms": 0.1844,
+       "worker_engine_init_ms": 0.0112,
+       "worker_helper_request_ms": 2.8175000000000003,
+       "worker_recognize_ms": 2.0399000000000003,
+       "worker_runtime_init_ms": 0.0035
+      },
+      "tokens": [
+       "成",
+       "色",
+       "S"
+      ],
+      "word_count": 3
+     },
+     {
+      "attempt": 0,
+      "bounds": [
+       834,
+       1123,
+       149,
+       42
+      ],
+      "engine": "local_price_pending",
+      "error": "E_NUMERIC_CLIPPED_INK",
+      "field": "price_bounds",
+      "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+      "numeric_preprocess": {
+       "background_level": 115,
+       "edge_line_column_count": 0,
+       "edge_line_pixels_removed": 0,
+       "edge_line_row_count": 0,
+       "error": "E_NUMERIC_CLIPPED_INK",
+       "frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+       "highlight_level": 235,
+       "image_file_writes": 0,
+       "ink_threshold": 169,
+       "method": "observed_components_edge_line_removal_white_padding",
+       "padding_source_pixels": 5,
+       "same_frame": true,
+       "scale": 3,
+       "schema": "numeric-roi-v1",
+       "source_region": [
+        834,
+        1123,
+        149,
+        42
+       ]
+      },
+      "ok": false,
+      "same_frame": true,
+      "scale": 3
+     }
+    ],
+    "kind": "card_fields",
+    "ok": false,
+    "scope": "visible_layout",
+    "split_fields_refinement": true,
+    "truncated": false,
+    "words": [
+     {
+      "height": 21.113156135999482,
+      "text": "成",
+      "width": 21.5844657655939,
+      "x": 126.04921672928391,
+      "y": 1136.2173686425626
+     },
+     {
+      "height": 21.00151312601316,
+      "text": "色",
+      "width": 19.587584237229937,
+      "x": 148.56995542837166,
+      "y": 1136.0714685543849
+     },
+     {
+      "height": 18.22630369059238,
+      "text": "S",
+      "width": 14.455826653837121,
+      "x": 169.1496341040886,
+      "y": 1137.2031167553548
+     }
+    ]
+   },
+   "ok": false,
+   "error": "LOCAL_PRICE_PROVIDER_NOT_SELECTED",
+   "elapsed_ms": 0.01740013249218464
+  },
+  "local_title_ocr": {
+   "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+   "model_sha256": {
+    "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+    "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+    "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+   },
+   "region_kind": "product_title",
+   "source_frame_id": "dxgi:a57599a2-76b6-4114-9e8e-a5d07b637b4f",
+   "source_frame_sha256": "bcdbf6ab0060989c223a4d487f4f2a8572984db3bd1759d5d07eab68290b494e",
+   "source_png_sha256": "34e9e4c70ccf003ee787961cc566e1187b7efebbe84140b78e60af9bbf76afed",
+   "image_file_writes": 0,
+   "expected_text_supplied": false,
+   "provider_selection": "explicit_before_run_not_target_match",
+   "recognition_cache_hit": false,
+   "single_line_attempt": {
+    "texts": [
+     "AUG突击步枪-黑银先锋"
+    ],
+    "scores": [
+     0.99884
+    ],
+    "elapsed_ms": 22.641299990937114,
+    "accepted": true,
+    "fallback_reason": null,
+    "expected_text_supplied": false,
+    "detector_used": false
+   },
+   "recognition_route": "known_listing_single_line_recognizer",
+   "word_bounds_basis": "whole_current_observed_title_roi_not_detector_boxes",
+   "ok": true,
+   "words": [
+    {
+     "text": "AUG突击步枪-黑银先锋",
+     "score": 0.99884,
+     "x": 1915,
+     "y": 238,
+     "width": 530,
+     "height": 54
+    }
+   ],
+   "rejected": [],
+   "bounds": [
+    1915,
+    238,
+    530,
+    54
+   ],
+   "error": null,
+   "elapsed_ms": 23.254100000485778
+  },
+  "local_title_error": "LOCAL_PRICE_PROVIDER_NOT_SELECTED",
+  "coordinator_observation": {
+   "capture_started_mono_ms": 1260074781.0,
+   "received_mono_ms": 1260075046.0,
+   "capture_roundtrip_ms": 265.00000013038516,
+   "age_upper_at_receive_ms": 273.00000013038516,
+   "age_basis": "max(worker_age,coordinator_roundtrip+source_age+uncertainty)"
+  }
+ },
+ "pending_geometry": {
+  "kind": "selection",
+  "lease": {
+   "schema": "collection-card-lease-v1",
+   "layout_id": "f491f7743a738f365feef3bab18dbf8843f41ca12644cd40780f7b3b29a77287",
+   "frame_id": "dxgi:8afd816a-2fbb-4a81-b01c-51b3b5a79edf",
+   "frame_sha256": "e72c8a58167c181695991e81997957ecfb6c365ea9d4ed43dbcca17d08a95d6c",
+   "scope": {
+    "row_index": 12,
+    "product_name": "AUG突击步枪-黑银先锋",
+    "condition_label": "成色S"
+   },
+   "card": {
+    "id": "edge:121:906:982:1165",
+    "bounds": [
+     121,
+     906,
+     862,
+     260
+    ],
+    "fields_bounds": [
+     122,
+     1123,
+     860,
+     42
+    ],
+    "edges": {
+     "bottom": true,
+     "left": true,
+     "right": true,
+     "top": true
+    },
+    "selected": false,
+    "selectable": true,
+    "body_bounds": [
+     125,
+     910,
+     854,
+     209
+    ],
+    "bounds_basis": "observed",
+    "condition_bounds": [
+     122,
+     1123,
+     115,
+     42
+    ],
+    "price_bounds": [
+     833,
+     1123,
+     149,
+     42
+    ]
+   },
+   "point": [
+    173,
+    950
+   ],
+   "point_policy": "observed_body_upper_left_gutter_v1",
+   "viewport": [
+    2560,
+    1440
+   ],
+   "purchase_phase_enabled": false
+  },
+  "rule": {
+   "row_index": 12,
+   "product_name": "AUG突击步枪-黑银先锋",
+   "condition_label": "成色S",
+   "enabled": true,
+   "dictionary_resolved": true
+  },
+  "wait_layout": {
+   "schema": "collection-layout-v1",
+   "frame_id": "dxgi:8afd816a-2fbb-4a81-b01c-51b3b5a79edf",
+   "frame_sha256": "e72c8a58167c181695991e81997957ecfb6c365ea9d4ed43dbcca17d08a95d6c",
+   "viewport": [
+    2560,
+    1440
+   ],
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "cards": [
+    {
+     "id": "edge:120:304:982:341",
+     "bounds": [
+      120,
+      304,
+      863,
+      38
+     ],
+     "fields_bounds": null,
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "selected": false,
+     "selectable": false,
+     "body_bounds": null,
+     "bounds_basis": "observed"
+    },
+    {
+     "id": "edge:997:304:1859:341",
+     "bounds": [
+      997,
+      304,
+      863,
+      38
+     ],
+     "fields_bounds": null,
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "selected": false,
+     "selectable": false,
+     "body_bounds": null,
+     "bounds_basis": "observed"
+    },
+    {
+     "id": "edge:120:356:981:616",
+     "bounds": [
+      120,
+      356,
+      862,
+      261
+     ],
+     "fields_bounds": [
+      121,
+      574,
+      860,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": true,
+     "body_bounds": [
+      124,
+      360,
+      854,
+      210
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      121,
+      574,
+      115,
+      42
+     ],
+     "price_bounds": [
+      832,
+      574,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:997:356:1859:616",
+     "bounds": [
+      997,
+      356,
+      863,
+      261
+     ],
+     "fields_bounds": [
+      998,
+      574,
+      861,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": true,
+     "body_bounds": [
+      1001,
+      360,
+      855,
+      210
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      998,
+      574,
+      115,
+      42
+     ],
+     "price_bounds": [
+      1710,
+      574,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:121:631:982:890",
+     "bounds": [
+      121,
+      631,
+      862,
+      260
+     ],
+     "fields_bounds": [
+      122,
+      848,
+      860,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": true,
+     "body_bounds": [
+      125,
+      635,
+      854,
+      209
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      122,
+      848,
+      115,
+      42
+     ],
+     "price_bounds": [
+      833,
+      848,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:996:629:1860:889",
+     "bounds": [
+      996,
+      629,
+      865,
+      261
+     ],
+     "fields_bounds": [
+      997,
+      847,
+      863,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": true,
+     "selectable": true,
+     "body_bounds": [
+      1000,
+      633,
+      857,
+      210
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      997,
+      847,
+      115,
+      42
+     ],
+     "price_bounds": [
+      1711,
+      847,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:121:906:982:1165",
+     "bounds": [
+      121,
+      906,
+      862,
+      260
+     ],
+     "fields_bounds": [
+      122,
+      1123,
+      860,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": true,
+     "body_bounds": [
+      125,
+      910,
+      854,
+      209
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      122,
+      1123,
+      115,
+      42
+     ],
+     "price_bounds": [
+      833,
+      1123,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:998:906:1859:1165",
+     "bounds": [
+      998,
+      906,
+      862,
+      260
+     ],
+     "fields_bounds": [
+      999,
+      1123,
+      860,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": true,
+     "body_bounds": [
+      1002,
+      910,
+      854,
+      209
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      999,
+      1123,
+      115,
+      42
+     ],
+     "price_bounds": [
+      1710,
+      1123,
+      149,
+      42
+     ]
+    },
+    {
+     "id": "edge:122:1181:980:1202",
+     "bounds": [
+      122,
+      1181,
+      859,
+      22
+     ],
+     "fields_bounds": null,
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": false,
+     "body_bounds": null,
+     "bounds_basis": "observed"
+    },
+    {
+     "id": "edge:997:1180:1857:1202",
+     "bounds": [
+      997,
+      1180,
+      861,
+      23
+     ],
+     "fields_bounds": null,
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "selected": false,
+     "selectable": false,
+     "body_bounds": null,
+     "bounds_basis": "observed"
+    }
+   ],
+   "scrollbar": {
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ],
+    "thumb_bounds": [
+     1878,
+     454,
+     1,
+     61
+    ]
+   },
+   "partial_card_ids": [
+    "edge:120:304:982:341",
+    "edge:997:304:1859:341",
+    "edge:122:1181:980:1202",
+    "edge:997:1180:1857:1202"
+   ],
+   "page_exhausted": false,
+   "purchase_phase_enabled": false,
+   "layout_id": "f491f7743a738f365feef3bab18dbf8843f41ca12644cd40780f7b3b29a77287"
+  }
+ }
+}

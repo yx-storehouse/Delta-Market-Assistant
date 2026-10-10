@@ -1,0 +1,4605 @@
+{
+ "source": {
+  "run": "artifacts/hotkey_runs/20261009-234656",
+  "steps": "segment_01/session.steps/000355-000376",
+  "error": "COLLECTION_SCROLL_COVERAGE_INCOMPLETE",
+  "note": "#374 selection frame read short (listing_viewport h 548, track h 544); row 2 clipped; packets pruned to the fields the trial/geometry layer reads",
+  "bank": {
+   "path": "artifacts/collection_scroll_speed/calibration_bank.json",
+   "sha256": "c58b2906c9356836c5fa14f0f1195ea9f93db67be57e8a518e428dc5012ea433"
+  }
+ },
+ "config_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+ "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+ "rule": {
+  "condition_label": "成色S",
+  "current_value_literals": {
+   "maxPrice": "300",
+   "maxWear": "5",
+   "minPrice": "10",
+   "quantity": "0"
+  },
+  "dictionary_resolved": true,
+  "display_name": "S11|AS Val突击步枪 - 黑银先锋",
+  "enabled": true,
+  "game_grade": "史诗品阶",
+  "grade": "any",
+  "import_source": {
+   "conditionId": "0",
+   "dictionarySha256": "e8fdfa2677f51785d589ac048bb7ca4617b144e41a2525c489728975c0b876b4",
+   "fields": {
+    "启用": true,
+    "成色设置栏": 0,
+    "最低价格设置栏": 10,
+    "最高价格设置栏": 300,
+    "枪名设置栏": 11103,
+    "磨损度设置栏": 5,
+    "限量设置栏": 0
+   },
+   "format": "savedValue",
+   "productId": "11103",
+   "row": 14,
+   "sourceSha256": "cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253"
+  },
+  "limit_raw": 0,
+  "max_wear": "5",
+  "ownership": "any",
+  "price_max": "300",
+  "price_min": "10",
+  "product_id": "11103",
+  "product_name": "ASVal突击步枪-黑银先锋",
+  "quantity_semantics": "unlimited",
+  "row_index": 14,
+  "season_id": "S11",
+  "season_label": "疾风魅影",
+  "season_label_display": "疾风魅影",
+  "source_product_id": "11103",
+  "source_row_index": 14,
+  "task_id": "savedvalue:cff452bcd4b77a17fb3cc9a23f55e0131304098f7ac0057205f619bbd4406253:14",
+  "task_name": "S11|AS Val突击步枪 - 黑银先锋 · 成色S",
+  "variant_label": ""
+ },
+ "profiles": [
+  {
+   "schema": "collection-scroll-calibration-v1",
+   "delta": -480,
+   "viewport": [
+    2560,
+    1440
+   ],
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "shape": {
+    "column_left_ranges": [
+     [
+      117,
+      124
+     ],
+     [
+      993,
+      1001
+     ]
+    ],
+    "card_width_range": [
+     856,
+     877
+    ],
+    "card_height_range": [
+     257,
+     268
+    ],
+    "fields_height_range": [
+     42,
+     42
+    ],
+    "row_pitch_range": [
+     270,
+     280
+    ]
+   },
+   "scrollbar": {
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ],
+    "thumb_height_range": [
+     69,
+     71
+    ]
+   },
+   "content_displacement_pixels": [
+    584,
+    592
+   ],
+   "thumb_displacement_pixels": [
+    29,
+    31
+   ],
+   "content_pixels_per_thumb_pixel": [
+    18.766666666666666,
+    20.433333333333334
+   ],
+   "source": {
+    "record_path": "artifacts\\collection_scroll_speed\\probe_02\\measurement.json",
+    "record_sha256": "f86c384c25080564175c74ec53262bbcba110f7d054cac58890b07d77e0d6f53",
+    "before_frame_id": "dxgi:990116f8-c96a-4151-8d94-20a9f4317b24",
+    "after_frame_id": "dxgi:13d1a711-2cf7-46d5-98b7-fddb8bf1dd3a",
+    "measurement_method": "same_listing_identity_after_independent_batch"
+   }
+  },
+  {
+   "schema": "collection-scroll-calibration-v1",
+   "delta": -600,
+   "viewport": [
+    2560,
+    1440
+   ],
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "shape": {
+    "column_left_ranges": [
+     [
+      117,
+      124
+     ],
+     [
+      993,
+      1001
+     ]
+    ],
+    "card_width_range": [
+     854,
+     872
+    ],
+    "card_height_range": [
+     257,
+     267
+    ],
+    "fields_height_range": [
+     42,
+     42
+    ],
+    "row_pitch_range": [
+     270,
+     280
+    ]
+   },
+   "scrollbar": {
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ],
+    "thumb_height_range": [
+     68,
+     71
+    ]
+   },
+   "content_displacement_pixels": [
+    730,
+    738
+   ],
+   "thumb_displacement_pixels": [
+    36,
+    39
+   ],
+   "content_pixels_per_thumb_pixel": [
+    18.489473684210527,
+    20.664864864864864
+   ],
+   "source": {
+    "record_path": "artifacts\\collection_scroll_speed\\probe_03\\measurement.json",
+    "record_sha256": "cfea9dbd1ed00cf931ae8ee5f6d9fb47629a8b5d01adf76125e8af93d904c1d9",
+    "before_frame_id": "dxgi:db6b6244-e33c-4b4d-b9b7-1cb89e430f51",
+    "after_frame_id": "dxgi:9a215892-72db-44f1-8b85-7d9b141563a0",
+    "measurement_method": "same_listing_identity_after_independent_batch"
+   }
+  },
+  {
+   "schema": "collection-scroll-calibration-v1",
+   "delta": -480,
+   "viewport": [
+    2560,
+    1440
+   ],
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "shape": {
+    "column_left_ranges": [
+     [
+      117,
+      124
+     ],
+     [
+      993,
+      1001
+     ]
+    ],
+    "card_width_range": [
+     854,
+     876
+    ],
+    "card_height_range": [
+     257,
+     268
+    ],
+    "fields_height_range": [
+     42,
+     42
+    ],
+    "row_pitch_range": [
+     270,
+     280
+    ]
+   },
+   "scrollbar": {
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ],
+    "thumb_height_range": [
+     61,
+     63
+    ]
+   },
+   "content_displacement_pixels": [
+    584,
+    594
+   ],
+   "thumb_displacement_pixels": [
+    24,
+    26
+   ],
+   "content_pixels_per_thumb_pixel": [
+    22.68,
+    24.44
+   ],
+   "source": {
+    "record_path": "artifacts\\collection_scroll_speed\\probe_row12_delta480_retry2\\measurement.json",
+    "record_sha256": "e7ebcb0adea46753d60263bc36f9c8f51373c7e6c3e495613b58b2d89d8d99aa",
+    "before_frame_id": "dxgi:03198607-1207-4c8c-827f-9964c66b608c",
+    "after_frame_id": "dxgi:15456d71-2ed6-429b-9076-a2f0bed2ca6a",
+    "measurement_method": "same_listing_identity_after_independent_batch"
+   }
+  },
+  {
+   "schema": "collection-scroll-calibration-v1",
+   "delta": -600,
+   "viewport": [
+    2560,
+    1440
+   ],
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "shape": {
+    "column_left_ranges": [
+     [
+      117,
+      124
+     ],
+     [
+      993,
+      1001
+     ]
+    ],
+    "card_width_range": [
+     854,
+     872
+    ],
+    "card_height_range": [
+     257,
+     267
+    ],
+    "fields_height_range": [
+     42,
+     42
+    ],
+    "row_pitch_range": [
+     270,
+     280
+    ]
+   },
+   "scrollbar": {
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ],
+    "thumb_height_range": [
+     61,
+     63
+    ]
+   },
+   "content_displacement_pixels": [
+    730,
+    738
+   ],
+   "thumb_displacement_pixels": [
+    30,
+    32
+   ],
+   "content_pixels_per_thumb_pixel": [
+    22.84516129032258,
+    24.50967741935484
+   ],
+   "source": {
+    "record_path": "artifacts\\collection_scroll_speed\\probe_row12_delta600\\measurement.json",
+    "record_sha256": "aa6bd9e30285fd1b19fa85753c5fdd99373d19c5165dc7360ca96940a7f35dda",
+    "before_frame_id": "dxgi:bc02d694-0b78-4315-8e8d-299b1187322e",
+    "after_frame_id": "dxgi:62eb01f1-82e1-46ce-9236-ff2092961364",
+    "measurement_method": "same_listing_identity_after_independent_batch"
+   }
+  }
+ ],
+ "first_frame": {
+  "startup_page": {
+   "page": "skin_listings",
+   "overlay": "none"
+  },
+  "collection_observation": {
+   "coverage": "field_projection",
+   "frame_id": "dxgi:198f81a5-d732-4253-a6ea-2297268ea01f",
+   "frame_sha256": "0a0327817823e7ec8bc81ff8938a240d73c20c32af72f1797a68a755a3a27644",
+   "image_file_writes": 0,
+   "page": "skin_listings",
+   "same_frame": true,
+   "regions": [
+    {
+     "error": "",
+     "kind": "product_title",
+     "ok": true,
+     "split_fields_refinement": false,
+     "truncated": false,
+     "words": [
+      {
+       "text": "AS Val突击步枪-黑银先锋",
+       "score": 0.99587,
+       "x": 1915,
+       "y": 238,
+       "width": 530,
+       "height": 54
+      }
+     ],
+     "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+     "windows_observation": {
+      "error": "E_LOCAL_TEXT_PENDING",
+      "kind": "product_title",
+      "ok": false,
+      "split_fields_refinement": false,
+      "truncated": false,
+      "words": []
+     }
+    }
+   ]
+  },
+  "frames": [
+   {
+    "sha256": "0a0327817823e7ec8bc81ff8938a240d73c20c32af72f1797a68a755a3a27644",
+    "width": 2560,
+    "height": 1440
+   }
+  ],
+  "collection_layout": {
+   "cards": [
+    {
+     "bounds": [
+      120,
+      304,
+      863,
+      187
+     ],
+     "bounds_basis": "observed",
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "fields_bounds": null,
+     "id": "edge:120:304:982:490",
+     "selected": false
+    },
+    {
+     "bounds": [
+      996,
+      304,
+      866,
+      189
+     ],
+     "bounds_basis": "observed",
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": false
+     },
+     "fields_bounds": null,
+     "id": "edge:996:304:1861:492",
+     "selected": true
+    },
+    {
+     "bounds": [
+      120,
+      506,
+      863,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      121,
+      723,
+      115,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      121,
+      723,
+      861,
+      42
+     ],
+     "id": "edge:120:506:982:765",
+     "price_bounds": [
+      833,
+      723,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      997,
+      506,
+      863,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      998,
+      723,
+      115,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      998,
+      723,
+      861,
+      42
+     ],
+     "id": "edge:997:506:1859:765",
+     "price_bounds": [
+      1710,
+      723,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      121,
+      780,
+      861,
+      261
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      122,
+      998,
+      115,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      122,
+      998,
+      859,
+      42
+     ],
+     "id": "edge:121:780:981:1040",
+     "price_bounds": [
+      832,
+      998,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      998,
+      781,
+      862,
+      260
+     ],
+     "bounds_basis": "observed",
+     "condition_bounds": [
+      999,
+      998,
+      115,
+      42
+     ],
+     "edges": {
+      "bottom": true,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": [
+      999,
+      998,
+      860,
+      42
+     ],
+     "id": "edge:998:781:1859:1040",
+     "price_bounds": [
+      1710,
+      998,
+      149,
+      42
+     ],
+     "selected": false
+    },
+    {
+     "bounds": [
+      120,
+      1055,
+      861,
+      148
+     ],
+     "bounds_basis": "observed",
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": null,
+     "id": "edge:120:1055:980:1202",
+     "selected": false
+    },
+    {
+     "bounds": [
+      998,
+      1055,
+      862,
+      148
+     ],
+     "bounds_basis": "observed",
+     "edges": {
+      "bottom": false,
+      "left": true,
+      "right": true,
+      "top": true
+     },
+     "fields_bounds": null,
+     "id": "edge:998:1055:1859:1202",
+     "selected": false
+    }
+   ],
+   "complete": true,
+   "detector": "visible_edges",
+   "frame_id": "dxgi:198f81a5-d732-4253-a6ea-2297268ea01f",
+   "frame_sha256": "0a0327817823e7ec8bc81ff8938a240d73c20c32af72f1797a68a755a3a27644",
+   "image_file_writes": 0,
+   "listing_viewport": [
+    108,
+    300,
+    1765,
+    903
+   ],
+   "page_exhausted": false,
+   "same_frame": true,
+   "schema": "collection-layout-v1",
+   "scrollbar": {
+    "geometry_basis": "observed_centerline_only",
+    "measured_center_x": 1878,
+    "method": "symmetric_contrast_with_independent_left_affine_background",
+    "thumb_bounds": [
+     1878,
+     354,
+     1,
+     61
+    ],
+    "track_bounds": [
+     1878,
+     304,
+     1,
+     899
+    ]
+   },
+   "viewport": [
+    2560,
+    1440
+   ]
+  },
+  "collection_selected_card": {
+   "bounds": [
+    996,
+    304,
+    866,
+    189
+   ],
+   "card_id": "edge:996:304:1861:492",
+   "favorite_bright_fraction": 0,
+   "favorite_warm_fraction": 0.13398692810457516,
+   "fields_bounds": null,
+   "frame_id": "dxgi:198f81a5-d732-4253-a6ea-2297268ea01f",
+   "frame_sha256": "0a0327817823e7ec8bc81ff8938a240d73c20c32af72f1797a68a755a3a27644",
+   "same_frame": true,
+   "selected": true
+  },
+  "collection_geometry_rebind": {
+   "kind": "scroll",
+   "passed": true,
+   "evidence": {
+    "scrollbar_shift_pixels": 25
+   }
+  }
+ },
+ "steps": [
+  {
+   "index": 356,
+   "kind": "select_visible_card",
+   "source_sha256": "34c0dc35d7b2690b1d2e151b4006f9e255d1a93b3c75b51e44b7cd6a84a39f76",
+   "point": [
+    172,
+    550
+   ],
+   "receipt_settlements": []
+  },
+  {
+   "index": 357,
+   "kind": "capture",
+   "source_sha256": "985b3c450a54425f2cc7116b39776c389c1395f3db0fe7acde1baf5c96abd0c0",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99602,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        119,
+        504,
+        865,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        120,
+        722,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        120,
+        722,
+        863,
+        42
+       ],
+       "id": "edge:119:504:983:764",
+       "price_bounds": [
+        834,
+        722,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        997,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        998,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        998,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:997:506:1859:765",
+       "price_bounds": [
+        1710,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        780,
+        862,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:121:780:982:1040",
+       "price_bounds": [
+        833,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        781,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:998:781:1859:1040",
+       "price_bounds": [
+        1710,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1055,
+        860,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1055:980:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        1055,
+        862,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:1055:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       354,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      119,
+      504,
+      865,
+      261
+     ],
+     "card_id": "edge:119:504:983:764",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      722,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 358,
+   "kind": "collect_selected",
+   "source_sha256": "8ef486af7fb5d40fc38b098458fae64dbfe89449b9d5ccf28c6dbe0a6a0f56c5",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.161141",
+    "row_index": 14,
+    "source_frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+    "source_frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色S",
+     "raw_words": [
+      {
+       "height": 20.54616303069455,
+       "text": "成",
+       "width": 21.49245660920618,
+       "x": 126.15120607757318,
+       "y": 736.6072103873732
+      },
+      {
+       "height": 20.940805885585952,
+       "text": "色",
+       "width": 19.521365517818506,
+       "x": 148.64653858767255,
+       "y": 736.0336380517701
+      },
+      {
+       "height": 18.18255226748479,
+       "text": "S",
+       "width": 14.397377953438273,
+       "x": 169.22311596262722,
+       "y": 737.2196897995136
+      }
+     ],
+     "raw_grade": "S",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": false,
+     "region": "card_fields",
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "161141",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.161141)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 20,
+         "text": "0.161141)",
+         "width": 111,
+         "x": 2244,
+         "y": 660
+        }
+       ],
+       "excluded_english_prefix": [
+        {
+         "height": 20,
+         "text": "sc",
+         "width": 21,
+         "x": 2213,
+         "y": 660
+        }
+       ],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 10,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.161141)"
+      }
+     ]
+    },
+    "card_id": "edge:119:504:983:764",
+    "card_bounds": [
+     119,
+     504,
+     865,
+     261
+    ],
+    "fields_bounds": [
+     120,
+     722,
+     863,
+     42
+    ],
+    "source_layout_id": "982e0900c513868a6d2a368f5d2702f466b10ea066bfef45bf6b821b3c93eb2c",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 434.0000000204891,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      119,
+      504,
+      865,
+      261
+     ],
+     "card_id": "edge:119:504:983:764",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      722,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:b9c8188c-d58d-4c0d-8f9c-ee2f101c59b8",
+     "frame_sha256": "b11ee0639e58755725f44f023f5c25281737b0f85a4ed8b639e1e4237eae0564",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "0dc3502782c4b6ae234b6107a2c26f87b4db1f269e562051f100eed3cf316584",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "0dc3502782c4b6ae234b6107a2c26f87b4db1f269e562051f100eed3cf316584",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": []
+  },
+  {
+   "index": 359,
+   "kind": "select_visible_card",
+   "source_sha256": "7589ba5df79645ed0bb97a50043ab552adad5a798dbe5e18d867f59b24d09332",
+   "point": [
+    1049,
+    550
+   ],
+   "receipt_settlements": [
+    {
+     "attempt_key": "0dc3502782c4b6ae234b6107a2c26f87b4db1f269e562051f100eed3cf316584",
+     "outcome": {
+      "mode": "pixel",
+      "key": "0dc3502782c4b6ae234b6107a2c26f87b4db1f269e562051f100eed3cf316584",
+      "layout_unchanged": true,
+      "frame_id": "dxgi:bc511435-0cc0-405c-8352-4c7e20faeeb9",
+      "frame_sha256": "ecb0e79b9502c244bc53f021bc3221972c0da5751bb4cbd6895842574e1955ff",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 360,
+   "kind": "capture",
+   "source_sha256": "350a07d6541e6aa03781abfba9c1247998dfe6cefc20dbfb47cd5d7f05ba0a8d",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.9947,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        120,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:120:506:982:765",
+       "price_bounds": [
+        833,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        996,
+        504,
+        866,
+        262
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        997,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        997,
+        723,
+        864,
+        42
+       ],
+       "id": "edge:996:504:1861:765",
+       "price_bounds": [
+        1712,
+        723,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        121,
+        780,
+        862,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:121:780:982:1040",
+       "price_bounds": [
+        833,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        780,
+        862,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:998:780:1859:1040",
+       "price_bounds": [
+        1710,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1055,
+        860,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1055:980:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        1055,
+        862,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:1055:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1879,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1879,
+       354,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1879,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      996,
+      504,
+      866,
+      262
+     ],
+     "card_id": "edge:996:504:1861:765",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      723,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 361,
+   "kind": "collect_selected",
+   "source_sha256": "4da086f8412eeb526c8f6fe819b3bc40a6c7a843d09ac43139d9ddfc38db73f6",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.151752",
+    "row_index": 14,
+    "source_frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+    "source_frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色S",
+     "raw_words": [
+      {
+       "height": 20.348846429819176,
+       "text": "成",
+       "width": 21.27665400633488,
+       "x": 1002.9615469361797,
+       "y": 736.6855922085996
+      },
+      {
+       "height": 20.7429937443329,
+       "text": "色",
+       "width": 19.815186167817203,
+       "x": 1025.4764945407699,
+       "y": 736.2182703102327
+      },
+      {
+       "height": 18.364205038220565,
+       "text": "S",
+       "width": 14.189070943899914,
+       "x": 1046.0660705185846,
+       "y": 737.1670513045905
+      }
+     ],
+     "raw_grade": "S",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": false,
+     "region": "card_fields",
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "151752",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.151752)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 20,
+         "text": "0.151752)",
+         "width": 111,
+         "x": 2244,
+         "y": 660
+        }
+       ],
+       "excluded_english_prefix": [
+        {
+         "height": 20,
+         "text": "sc",
+         "width": 21,
+         "x": 2213,
+         "y": 660
+        }
+       ],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 10,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.151752)"
+      }
+     ]
+    },
+    "card_id": "edge:996:504:1861:765",
+    "card_bounds": [
+     996,
+     504,
+     866,
+     262
+    ],
+    "fields_bounds": [
+     997,
+     723,
+     864,
+     42
+    ],
+    "source_layout_id": "ea9cbec36dced8d1d5ce1fbdf45d54399b45f163cfb319b257e2a38cb591b0f3",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 442.0000000819564,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      996,
+      504,
+      866,
+      262
+     ],
+     "card_id": "edge:996:504:1861:765",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      723,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:fd9a3340-1b45-45c4-afd7-dd11d7dc5a0d",
+     "frame_sha256": "c5c93067a2595203c3d010457f61a470dd81001c0cf023e243955749ec88e9ba",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "f2c6bb93107610e6935533e6f83351424b16c41e149df461d6ffde53e3e2a2e0",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "f2c6bb93107610e6935533e6f83351424b16c41e149df461d6ffde53e3e2a2e0",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": []
+  },
+  {
+   "index": 362,
+   "kind": "select_visible_card",
+   "source_sha256": "38c1467cf150e5b331e5c33ebff4eba5f0fa7220d518a488a4c71dec93ef4a33",
+   "point": [
+    173,
+    824
+   ],
+   "receipt_settlements": [
+    {
+     "attempt_key": "f2c6bb93107610e6935533e6f83351424b16c41e149df461d6ffde53e3e2a2e0",
+     "outcome": {
+      "mode": "pixel",
+      "key": "f2c6bb93107610e6935533e6f83351424b16c41e149df461d6ffde53e3e2a2e0",
+      "layout_unchanged": true,
+      "frame_id": "dxgi:b6507539-5fee-46e2-b4d7-727d0842d63a",
+      "frame_sha256": "09b760d54ec33942562fc6aedcc960030604fc4788bcb6e53b2e7fb43cdeb9bf",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 363,
+   "kind": "capture",
+   "source_sha256": "f42ac0a9ff8591932a4bc82acac8ab8c169a51cd77a6fa08368fbbe596227dca",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99507,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        120,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:120:506:982:765",
+       "price_bounds": [
+        833,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        998,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        998,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:997:506:1859:765",
+       "price_bounds": [
+        1710,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        119,
+        779,
+        865,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        120,
+        997,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        120,
+        997,
+        863,
+        42
+       ],
+       "id": "edge:119:779:983:1039",
+       "price_bounds": [
+        834,
+        997,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        998,
+        781,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:998:781:1859:1040",
+       "price_bounds": [
+        1710,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1055,
+        860,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1055:980:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        999,
+        1055,
+        861,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:999:1055:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       354,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      119,
+      779,
+      865,
+      261
+     ],
+     "card_id": "edge:119:779:983:1039",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      997,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 364,
+   "kind": "collect_selected",
+   "source_sha256": "e322d3c0d9b3cfac5b7edbd987824d27b82319cdfdb78256c1dfdd06a8a818a9",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.332234",
+    "row_index": 14,
+    "source_frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+    "source_frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色S",
+     "raw_words": [
+      {
+       "height": 20.51999505257308,
+       "text": "成",
+       "width": 20.993141841828894,
+       "x": 126.15120607757318,
+       "y": 1011.6333783654947
+      },
+      {
+       "height": 21.440120652963238,
+       "text": "色",
+       "width": 19.54753349593998,
+       "x": 148.6203706095511,
+       "y": 1010.5343232843928
+      },
+      {
+       "height": 18.18255226748479,
+       "text": "S",
+       "width": 14.397377953438273,
+       "x": 169.22311596262722,
+       "y": 1012.2196897995136
+      }
+     ],
+     "raw_grade": "S",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": false,
+     "region": "card_fields",
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "332234",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.332234)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 25.100031642111734,
+         "text": "0.332234)",
+         "width": 111.90420219307795,
+         "x": 2243.562957798742,
+         "y": 657.1023619842089
+        }
+       ],
+       "excluded_english_prefix": [],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 9.56295779874199,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.332234)"
+      }
+     ]
+    },
+    "card_id": "edge:119:779:983:1039",
+    "card_bounds": [
+     119,
+     779,
+     865,
+     261
+    ],
+    "fields_bounds": [
+     120,
+     997,
+     863,
+     42
+    ],
+    "source_layout_id": "4c6e3edf45ac808eae4ce1b5a2a5a396e5f5256d927212603e3b03afed3a08f8",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 415.00000019185245,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      119,
+      779,
+      865,
+      261
+     ],
+     "card_id": "edge:119:779:983:1039",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      997,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:fa47176c-b1df-4429-adf5-d157b907cf8f",
+     "frame_sha256": "e9f6cbdd7337ad505d283ad0b963e57a142b6c9696b73e929d394c5a1fd72b75",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "2f08763185bfa3e17210cc068d2ca4fb41757ecb7bc823d0982e5748377369de",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "2f08763185bfa3e17210cc068d2ca4fb41757ecb7bc823d0982e5748377369de",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": []
+  },
+  {
+   "index": 365,
+   "kind": "select_visible_card",
+   "source_sha256": "cc91a51c028af077149f83d285c6fa4cf1d63daf46c6f79a5c14b135f22640ee",
+   "point": [
+    1050,
+    825
+   ],
+   "receipt_settlements": [
+    {
+     "attempt_key": "2f08763185bfa3e17210cc068d2ca4fb41757ecb7bc823d0982e5748377369de",
+     "outcome": {
+      "mode": "pixel",
+      "key": "2f08763185bfa3e17210cc068d2ca4fb41757ecb7bc823d0982e5748377369de",
+      "layout_unchanged": true,
+      "frame_id": "dxgi:12279a18-4d4d-4e5f-a0a7-fdb7dacfb62e",
+      "frame_sha256": "25372eb900d7863d74511ffcabe1a5153427bf31d6acc347aad2bee2e436d470",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 366,
+   "kind": "capture",
+   "source_sha256": "ec773340ca8ab81f96345bd7f0e0b750d1a6ae0795e7e912c89d8efb6e9048d4",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99549,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        187
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:490",
+       "selected": false
+      },
+      {
+       "bounds": [
+        120,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:120:506:982:765",
+       "price_bounds": [
+        833,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        506,
+        863,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        998,
+        723,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        998,
+        723,
+        861,
+        42
+       ],
+       "id": "edge:997:506:1859:765",
+       "price_bounds": [
+        1710,
+        723,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        780,
+        862,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        998,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        998,
+        860,
+        42
+       ],
+       "id": "edge:121:780:982:1040",
+       "price_bounds": [
+        833,
+        998,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        996,
+        779,
+        865,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        997,
+        997,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        997,
+        997,
+        863,
+        42
+       ],
+       "id": "edge:996:779:1860:1039",
+       "price_bounds": [
+        1711,
+        997,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        121,
+        1055,
+        860,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1055:980:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        1055,
+        862,
+        148
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:1055:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       354,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      996,
+      779,
+      865,
+      261
+     ],
+     "card_id": "edge:996:779:1860:1039",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      997,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 367,
+   "kind": "collect_selected",
+   "source_sha256": "edbf784488e254a4cdb8b78f177ceb79705e67eaf78d23eeb61468dfb68ce081",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.217193",
+    "row_index": 14,
+    "source_frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+    "source_frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色S",
+     "raw_words": [
+      {
+       "height": 20.51999505257308,
+       "text": "成",
+       "width": 20.993141841828894,
+       "x": 1003.1512060775732,
+       "y": 1011.6333783654947
+      },
+      {
+       "height": 21.440120652963238,
+       "text": "色",
+       "width": 19.54753349593998,
+       "x": 1025.6203706095512,
+       "y": 1010.5343232843928
+      },
+      {
+       "height": 18.18255226748479,
+       "text": "S",
+       "width": 14.397377953438273,
+       "x": 1046.2231159626272,
+       "y": 1012.2196897995136
+      }
+     ],
+     "raw_grade": "S",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": false,
+     "region": "card_fields",
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "217193",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.217193)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 24.38031477958762,
+         "text": "0.217193)",
+         "width": 111.8294630556125,
+         "x": 2243.5821719070905,
+         "y": 657.2554471157648
+        }
+       ],
+       "excluded_english_prefix": [
+        {
+         "height": 20.840339366756428,
+         "text": "sc",
+         "width": 21.490518907842112,
+         "x": 2212.88393925688,
+         "y": 659.5052981217603
+        }
+       ],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 9.58217190709047,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.217193)"
+      }
+     ]
+    },
+    "card_id": "edge:996:779:1860:1039",
+    "card_bounds": [
+     996,
+     779,
+     865,
+     261
+    ],
+    "fields_bounds": [
+     997,
+     997,
+     863,
+     42
+    ],
+    "source_layout_id": "f49e3c3b9db4df7858b8f97974be6834d17f7eab70bc16c4168ce189cb5dc52d",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 380.0,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      996,
+      779,
+      865,
+      261
+     ],
+     "card_id": "edge:996:779:1860:1039",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      997,
+      863,
+      42
+     ],
+     "frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+     "frame_sha256": "b6a2476037bf46ce069b8f0558f41a310c062540b7b4d05a10da8b5385d7a2bc",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "ed4b62782d197fc426a6a29f39b395563893673e11a7d1b10ea4b18319265a3a",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "ed4b62782d197fc426a6a29f39b395563893673e11a7d1b10ea4b18319265a3a",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": [
+    {
+     "attempt_key": "ed4b62782d197fc426a6a29f39b395563893673e11a7d1b10ea4b18319265a3a",
+     "outcome": {
+      "mode": "pixel",
+      "key": "ed4b62782d197fc426a6a29f39b395563893673e11a7d1b10ea4b18319265a3a",
+      "layout_unchanged": true,
+      "frame_id": "dxgi:cb426764-0055-44f9-8c7f-5ea960d22016",
+      "frame_sha256": "86d009c7fa19007e99034d2993efef3ca8c7c1a81adffb2b29af4c2afabf5260",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 368,
+   "kind": "scroll_visible_list",
+   "source_sha256": "3ba3fb2ee18826390c03e388171237346200b10d4fe5d314162f5a0668b004e9",
+   "delta": -480,
+   "coverage_frame_id": "dxgi:499316d9-48ea-47d5-b815-c1940b372c55",
+   "coverage_layout_id": "f49e3c3b9db4df7858b8f97974be6834d17f7eab70bc16c4168ce189cb5dc52d"
+  },
+  {
+   "index": 369,
+   "kind": "capture",
+   "source_sha256": "010b96754da4a255f5c52343312ecb912a42d97c87c7bd9a70bf1faf86a2e5f8",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:aad93bb9-fa04-463c-87b9-b27e41b6bf42",
+     "frame_sha256": "938862c208c2355318ab16ada70d4303464eca4ad86a895553f1b4c40ffc0be9",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.9959,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "938862c208c2355318ab16ada70d4303464eca4ad86a895553f1b4c40ffc0be9",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        996,
+        304,
+        866,
+        152
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:996:304:1861:455",
+       "selected": true
+      },
+      {
+       "bounds": [
+        120,
+        468,
+        863,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        686,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        686,
+        861,
+        42
+       ],
+       "id": "edge:120:468:982:728",
+       "price_bounds": [
+        833,
+        686,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        468,
+        863,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        998,
+        686,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        998,
+        686,
+        861,
+        42
+       ],
+       "id": "edge:997:468:1859:728",
+       "price_bounds": [
+        1710,
+        686,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:121:743:982:1002",
+       "price_bounds": [
+        833,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:998:743:1859:1002",
+       "price_bounds": [
+        1710,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1018,
+        862,
+        185
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1018:982:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        1018,
+        862,
+        185
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:1018:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:aad93bb9-fa04-463c-87b9-b27e41b6bf42",
+     "frame_sha256": "938862c208c2355318ab16ada70d4303464eca4ad86a895553f1b4c40ffc0be9",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       379,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      996,
+      304,
+      866,
+      152
+     ],
+     "card_id": "edge:996:304:1861:455",
+     "favorite_bright_fraction": 0,
+     "favorite_warm_fraction": 0.13398692810457516,
+     "fields_bounds": null,
+     "frame_id": "dxgi:aad93bb9-fa04-463c-87b9-b27e41b6bf42",
+     "frame_sha256": "938862c208c2355318ab16ada70d4303464eca4ad86a895553f1b4c40ffc0be9",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "scroll",
+     "passed": true,
+     "evidence": {
+      "scrollbar_shift_pixels": 25
+     }
+    }
+   }
+  },
+  {
+   "index": 370,
+   "kind": "select_visible_card",
+   "source_sha256": "b3166f54ae561c30de6ebd9dcdd1040513658a264b27afd19d04c95a90a74acb",
+   "point": [
+    172,
+    512
+   ],
+   "receipt_settlements": []
+  },
+  {
+   "index": 371,
+   "kind": "capture",
+   "source_sha256": "c34630596718498b3c7ab51aadb7be2bcb0bf2dd1cea2abdcc3ff49a59b6d5ee",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99633,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        119,
+        467,
+        866,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        120,
+        685,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        120,
+        685,
+        864,
+        42
+       ],
+       "id": "edge:119:467:984:727",
+       "price_bounds": [
+        835,
+        685,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        997,
+        468,
+        863,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        998,
+        686,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        998,
+        686,
+        861,
+        42
+       ],
+       "id": "edge:997:468:1859:728",
+       "price_bounds": [
+        1710,
+        686,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:121:743:982:1002",
+       "price_bounds": [
+        833,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:998:743:1859:1002",
+       "price_bounds": [
+        1710,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1018,
+        861,
+        185
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1018:981:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        1018,
+        862,
+        185
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:1018:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       379,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      119,
+      467,
+      866,
+      261
+     ],
+     "card_id": "edge:119:467:984:727",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      685,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 372,
+   "kind": "collect_selected",
+   "source_sha256": "999fefa8306886e5fe2aa87cc7c0193841401aa7cc71aaa0c27c20006c36e510",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.284425",
+    "row_index": 14,
+    "source_frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+    "source_frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色s",
+     "raw_words": [
+      {
+       "height": 21.04829947021683,
+       "text": "成",
+       "width": 21.96675770822211,
+       "x": 125.4526254511933,
+       "y": 699.459975963965
+      },
+      {
+       "height": 21.849069064630342,
+       "text": "色",
+       "width": 19.552923469617138,
+       "x": 148.42095367491916,
+       "y": 698.3500231684108
+      },
+      {
+       "height": 18.466021584791733,
+       "text": "s",
+       "width": 14.332959513767968,
+       "x": 169.0931363036318,
+       "y": 700.1246591858286
+      }
+     ],
+     "raw_grade": "s",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": true,
+     "region": "card_fields",
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "284425",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.284425)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 24.38031477958762,
+         "text": "0.284425)",
+         "width": 111.8294630556125,
+         "x": 2243.5821719070905,
+         "y": 657.2554471157648
+        }
+       ],
+       "excluded_english_prefix": [
+        {
+         "height": 20.840339366756428,
+         "text": "sc",
+         "width": 21.490518907842112,
+         "x": 2212.88393925688,
+         "y": 659.5052981217603
+        }
+       ],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 9.58217190709047,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.284425)"
+      }
+     ]
+    },
+    "card_id": "edge:119:467:984:727",
+    "card_bounds": [
+     119,
+     467,
+     866,
+     261
+    ],
+    "fields_bounds": [
+     120,
+     685,
+     864,
+     42
+    ],
+    "source_layout_id": "4d0c36f00693ba530f52a3d0bd42111e77fa02516719dc9294240c2e2ef4faf1",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 430.99999978765845,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      119,
+      467,
+      866,
+      261
+     ],
+     "card_id": "edge:119:467:984:727",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      120,
+      685,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:5da23b68-4d04-4559-ba63-c5a9f5537d1d",
+     "frame_sha256": "ceadefd36c433db10973c7051206b6393ecd24d00b8bc0ce61383f20f3d87765",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "2e12a978ac04eb35299ed7cd930c68d2fa19aba93fd37efbd32030518e67eeb7",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "2e12a978ac04eb35299ed7cd930c68d2fa19aba93fd37efbd32030518e67eeb7",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": []
+  },
+  {
+   "index": 373,
+   "kind": "select_visible_card",
+   "source_sha256": "784c735b44eaf3102ccd6c06a888a0a29b9407328c35f16bc081c7f2f063ba85",
+   "point": [
+    1049,
+    512
+   ],
+   "receipt_settlements": [
+    {
+     "attempt_key": "2e12a978ac04eb35299ed7cd930c68d2fa19aba93fd37efbd32030518e67eeb7",
+     "outcome": {
+      "mode": "pixel",
+      "key": "2e12a978ac04eb35299ed7cd930c68d2fa19aba93fd37efbd32030518e67eeb7",
+      "layout_unchanged": true,
+      "frame_id": "dxgi:020910e4-5b9b-4f46-a430-dbd509282894",
+      "frame_sha256": "4d6469e937aac842960592870591049e530ef96b46224241b1b5af3f4129c52f",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 374,
+   "kind": "capture",
+   "source_sha256": "ae7b372ea30c3958781d45801d96b0db1146b53dd05a7d06707ff355b402ee50",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99678,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        120,
+        468,
+        863,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        686,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        686,
+        861,
+        42
+       ],
+       "id": "edge:120:468:982:728",
+       "price_bounds": [
+        833,
+        686,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        996,
+        467,
+        866,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        997,
+        685,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        997,
+        685,
+        864,
+        42
+       ],
+       "id": "edge:996:467:1861:727",
+       "price_bounds": [
+        1712,
+        685,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        121,
+        743,
+        862,
+        105
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:743:982:847",
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        743,
+        862,
+        105
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:998:743:1859:847",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      548
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       379,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       544
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      996,
+      467,
+      866,
+      261
+     ],
+     "card_id": "edge:996:467:1861:727",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      685,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "same_frame": true,
+     "selected": true
+    },
+    "collection_geometry_rebind": {
+     "kind": "selection",
+     "passed": true,
+     "evidence": {}
+    }
+   }
+  },
+  {
+   "index": 375,
+   "kind": "collect_selected",
+   "source_sha256": "5aeb371524144706b0db30e317de92529a8f5cc14113f3acfc9d72d18cadf959",
+   "collection_attempt": {
+    "eligible": true,
+    "product": "ASVal突击步枪-黑银先锋",
+    "condition": "成色S",
+    "price": "300",
+    "wear": "0.050034",
+    "row_index": 14,
+    "source_frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+    "source_frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+    "purchase_phase_enabled": false,
+    "wear_source": "direct",
+    "condition_evidence": {
+     "method": "literal_prefix_ascii_grade_case",
+     "raw_text": "成色S",
+     "raw_words": [
+      {
+       "height": 20.02068028519579,
+       "text": "成",
+       "width": 20.966973863707423,
+       "x": 1003.1512060775732,
+       "y": 699.6333783654947
+      },
+      {
+       "height": 20.44149111820866,
+       "text": "色",
+       "width": 19.495197539697035,
+       "x": 1025.6465385876725,
+       "y": 699.0336380517701
+      },
+      {
+       "height": 18.15638428936332,
+       "text": "S",
+       "width": 13.898063186060988,
+       "x": 1046.2231159626272,
+       "y": 700.2458577776351
+      }
+     ],
+     "raw_grade": "S",
+     "canonical_grade": "S",
+     "canonical_text": "成色S",
+     "case_changed": false,
+     "region": "card_fields",
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "independent_detail_condition": "成色S"
+    },
+    "wear_evidence": {
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "readings": [
+      {
+       "method": "direct",
+       "region": "selected_detail",
+       "words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        },
+        {
+         "height": 17,
+         "text": "0",
+         "width": 11,
+         "x": 2244,
+         "y": 662
+        },
+        {
+         "height": 3,
+         "text": "．",
+         "width": 3,
+         "x": 2258,
+         "y": 676
+        },
+        {
+         "height": 17,
+         "text": "050034",
+         "width": 81,
+         "x": 2265,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〕",
+         "width": 6,
+         "x": 2349,
+         "y": 660
+        }
+       ],
+       "text": "S(0.050034)"
+      },
+      {
+       "method": "chinese_prefix_english_decimal",
+       "prefix_region": "selected_detail",
+       "decimal_region": "selected_detail_precise",
+       "prefix_words": [
+        {
+         "height": 17,
+         "text": "S",
+         "width": 13,
+         "x": 2213,
+         "y": 662
+        },
+        {
+         "height": 20,
+         "text": "〔",
+         "width": 6,
+         "x": 2228,
+         "y": 660
+        }
+       ],
+       "decimal_words": [
+        {
+         "height": 25.626345384141842,
+         "text": "0.050034)",
+         "width": 111.94687721119222,
+         "x": 2243.5576258103383,
+         "y": 656.6927190300779
+        }
+       ],
+       "excluded_english_prefix": [],
+       "prefix_union": [
+        2213,
+        660,
+        21,
+        20
+       ],
+       "prefix_union_tolerance_px": 2,
+       "prefix_gap_px": 9.557625810338322,
+       "baseline_tolerance_px": 6,
+       "digit_sequence_agreed": true,
+       "text": "S(0.050034)"
+      }
+     ]
+    },
+    "card_id": "edge:996:467:1861:727",
+    "card_bounds": [
+     996,
+     467,
+     866,
+     261
+    ],
+    "fields_bounds": [
+     997,
+     685,
+     864,
+     42
+    ],
+    "source_layout_id": "ab543fe692210814349390419a25a798945645853e3c2b2077fd9a6bd9c817e2",
+    "geometry_mode": "observed_dynamic",
+    "source_sha256": "6534c7b96c299bdb42ec123a207de17691426db7bf13d9cc9bef7eb5cb02c949",
+    "age_at_action_ms": 476.0000000409782,
+    "receipt_status": "pending",
+    "favorite_before": {
+     "bounds": [
+      996,
+      467,
+      866,
+      261
+     ],
+     "card_id": "edge:996:467:1861:727",
+     "favorite_bright_fraction": 0.12990196078431374,
+     "favorite_warm_fraction": 0,
+     "fields_bounds": [
+      997,
+      685,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:ec9772b4-d3d1-4319-bc48-85b319941e54",
+     "frame_sha256": "b078f3173d82aee37939017251cc38d2a7c81b030120807dc26fe05649776f1b",
+     "same_frame": true,
+     "selected": true
+    },
+    "star_policy": "observed_white_over_completed_history",
+    "history_disposition": {
+     "disposition": "unseen_white_requires_candidate_and_journal",
+     "key": "51cd3aad3a20ef5dade2c1e95b4ca0ec8bd86672514fab7ab30a3d3037d02aae",
+     "allow_toggle": false
+    }
+   },
+   "collection_attempt_key": "51cd3aad3a20ef5dade2c1e95b4ca0ec8bd86672514fab7ab30a3d3037d02aae",
+   "receipt_mode": "pipelined_pixel",
+   "receipt_settlements": [
+    {
+     "attempt_key": "51cd3aad3a20ef5dade2c1e95b4ca0ec8bd86672514fab7ab30a3d3037d02aae",
+     "outcome": {
+      "mode": "pixel",
+      "key": "51cd3aad3a20ef5dade2c1e95b4ca0ec8bd86672514fab7ab30a3d3037d02aae",
+      "layout_unchanged": false,
+      "frame_id": "dxgi:2614ff0e-3ae5-4ad3-83b4-6879ab9ba856",
+      "frame_sha256": "8b2eed440c4c16d12e15508d1dd1b0d136a79913b8da18f76d57de4a8930b4c2",
+      "scope": "visible_layout"
+     }
+    }
+   ]
+  },
+  {
+   "index": 376,
+   "kind": "capture",
+   "source_sha256": "5ed7eb25e50ac0dee0af7bd87c1db4093092ea6039fb3924fbb1b5e461f421ea",
+   "result": {
+    "startup_page": {
+     "page": "skin_listings",
+     "overlay": "none"
+    },
+    "collection_observation": {
+     "coverage": "field_projection",
+     "frame_id": "dxgi:cea2f44d-1a87-4ff8-9c98-4d14b87bf566",
+     "frame_sha256": "9571675bac9ea7e324f343fb8b54ee792c53a06b8fa653d41d3ad3ef553a32e1",
+     "image_file_writes": 0,
+     "page": "skin_listings",
+     "same_frame": true,
+     "regions": [
+      {
+       "error": "",
+       "kind": "product_title",
+       "ok": true,
+       "split_fields_refinement": false,
+       "truncated": false,
+       "words": [
+        {
+         "text": "AS Val突击步枪-黑银先锋",
+         "score": 0.99698,
+         "x": 1915,
+         "y": 238,
+         "width": 530,
+         "height": 54
+        }
+       ],
+       "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+       "windows_observation": {
+        "error": "E_LOCAL_TEXT_PENDING",
+        "kind": "product_title",
+        "ok": false,
+        "split_fields_refinement": false,
+        "truncated": false,
+        "words": []
+       }
+      }
+     ]
+    },
+    "frames": [
+     {
+      "sha256": "9571675bac9ea7e324f343fb8b54ee792c53a06b8fa653d41d3ad3ef553a32e1",
+      "width": 2560,
+      "height": 1440
+     }
+    ],
+    "collection_layout": {
+     "cards": [
+      {
+       "bounds": [
+        120,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:120:304:982:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        304,
+        863,
+        150
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": false
+       },
+       "fields_bounds": null,
+       "id": "edge:997:304:1859:453",
+       "selected": false
+      },
+      {
+       "bounds": [
+        120,
+        468,
+        863,
+        261
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        121,
+        686,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        121,
+        686,
+        861,
+        42
+       ],
+       "id": "edge:120:468:982:728",
+       "price_bounds": [
+        833,
+        686,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        996,
+        467,
+        866,
+        264
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        997,
+        688,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        997,
+        688,
+        864,
+        42
+       ],
+       "id": "edge:996:467:1861:730",
+       "price_bounds": [
+        1712,
+        688,
+        149,
+        42
+       ],
+       "selected": true
+      },
+      {
+       "bounds": [
+        121,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        122,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        122,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:121:743:982:1002",
+       "price_bounds": [
+        833,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        998,
+        743,
+        862,
+        260
+       ],
+       "bounds_basis": "observed",
+       "condition_bounds": [
+        999,
+        960,
+        115,
+        42
+       ],
+       "edges": {
+        "bottom": true,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": [
+        999,
+        960,
+        860,
+        42
+       ],
+       "id": "edge:998:743:1859:1002",
+       "price_bounds": [
+        1710,
+        960,
+        149,
+        42
+       ],
+       "selected": false
+      },
+      {
+       "bounds": [
+        121,
+        1017,
+        861,
+        186
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:121:1017:981:1202",
+       "selected": false
+      },
+      {
+       "bounds": [
+        997,
+        1018,
+        863,
+        185
+       ],
+       "bounds_basis": "observed",
+       "edges": {
+        "bottom": false,
+        "left": true,
+        "right": true,
+        "top": true
+       },
+       "fields_bounds": null,
+       "id": "edge:997:1018:1859:1202",
+       "selected": false
+      }
+     ],
+     "complete": true,
+     "detector": "visible_edges",
+     "frame_id": "dxgi:cea2f44d-1a87-4ff8-9c98-4d14b87bf566",
+     "frame_sha256": "9571675bac9ea7e324f343fb8b54ee792c53a06b8fa653d41d3ad3ef553a32e1",
+     "image_file_writes": 0,
+     "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+     ],
+     "page_exhausted": false,
+     "same_frame": true,
+     "schema": "collection-layout-v1",
+     "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+       1878,
+       379,
+       1,
+       61
+      ],
+      "track_bounds": [
+       1878,
+       304,
+       1,
+       899
+      ]
+     },
+     "viewport": [
+      2560,
+      1440
+     ]
+    },
+    "collection_selected_card": {
+     "bounds": [
+      996,
+      467,
+      866,
+      264
+     ],
+     "card_id": "edge:996:467:1861:730",
+     "favorite_bright_fraction": 0,
+     "favorite_warm_fraction": 0.13398692810457516,
+     "fields_bounds": [
+      997,
+      688,
+      864,
+      42
+     ],
+     "frame_id": "dxgi:cea2f44d-1a87-4ff8-9c98-4d14b87bf566",
+     "frame_sha256": "9571675bac9ea7e324f343fb8b54ee792c53a06b8fa653d41d3ad3ef553a32e1",
+     "same_frame": true,
+     "selected": true
+    }
+   }
+  }
+ ]
+}

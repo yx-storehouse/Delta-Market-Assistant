@@ -1,19 +1,29 @@
 #include "windows_ocr.h"
 #include "dxgi_observation_source.h"
 #include "shared_frame_memory.h"
+#include "numeric_roi.h"
 
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QHash>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QProcess>
+#include <QSet>
 #include <QUuid>
+#include <algorithm>
+#include <atomic>
+#include <chrono>
 #include <cmath>
+#include <condition_variable>
 #include <cstring>
+#include <mutex>
 #include <QRectF>
+#include <thread>
 #include <utility>
+#include <vector>
 #ifdef Q_OS_WIN
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -39,6 +49,298 @@ void inspectHelperUi(HelperUiState& state) {
     }, reinterpret_cast<LPARAM>(&state));
 }
 #endif
+}
+
+// Helper idle policy (see setWindowsOcrHelperIdlePolicy).
+std::atomic<int> g_helperIdleMs{600000}, g_helperRestartAfterMs{570000}, g_helperRequestLimit{4000};
+
+// Deliberately separate from WorkerProcess: the existing vision-worker schema
+// requires confidence/model hashes that Windows OCR does not expose. This
+// explicit session wraps the unchanged one-shot result and adds lease release.
+class WindowsOcrSession final {
+public:
+    explicit WindowsOcrSession(QString path) : m_path(std::move(path)), m_state(new State) {}
+    ~WindowsOcrSession() {
+#ifdef Q_OS_WIN
+        if (!stop(false)) {
+            // Never release a mapping while an unconfirmed reader may use it.
+            // This exceptional state remains quarantined until process exit.
+            // The OS reclaims these handles when this coordinator exits.
+            (void)m_state.release();
+        }
+#endif
+    }
+
+    bool poisoned() const { return m_poisoned; }
+
+    QJsonObject metrics() const {
+        return {{"protocol", "windows-ocr-session-v1"}, {"scope", "current_diagnostic_process"},
+            {"helper_start_count", m_starts}, {"request_count", m_requests},
+            {"success_count", m_successes}, {"engine_create_count", m_engineCreates},
+            {"frame_mappings_released", m_released}, {"helper_pid", QString::number(m_pid)},
+            {"helper_running", m_state->process.state() != QProcess::NotRunning},
+            {"mapping_quarantined", bool(m_state->mapping)}, {"session_poisoned", m_poisoned},
+            {"helper_ui_checks", m_uiChecks}, {"helper_visible_window_observed", m_visible},
+            {"helper_foreground_observed", m_foreground}, {"calls", m_calls}};
+    }
+
+    void amend(const QString& requestId, const QJsonObject& values) {
+        if (m_calls.isEmpty()) return;
+        auto last = m_calls.last().toObject();
+        if (last.value("request_id") != requestId) return;
+        for (auto i = values.begin(); i != values.end(); ++i) last[i.key()] = i.value();
+        m_calls[m_calls.size()-1] = last;
+    }
+
+    OcrReply run(const runtime::observation::FrameEnvelope& frame, const QString& language, int timeoutMs) {
+#ifndef Q_OS_WIN
+        Q_UNUSED(frame); Q_UNUSED(language); Q_UNUSED(timeoutMs);
+        return failure(QStringLiteral("E_PLATFORM_UNSUPPORTED"));
+#else
+        if (m_poisoned || m_state->mapping) return failure(QStringLiteral("E_OCR_SESSION_POISONED"));
+        // No event loop runs in this thread, so QProcess notices the helper's
+        // own idle exit only inside a wait. Refresh first: an idle-exited helper
+        // is restarted, never written to (that poisoned a pool session after a
+        // long standby, 2026-10-08). Close to the helper's idle limit, retire it
+        // gracefully instead of racing a request against its exit.
+        bool retiredIdle = false;
+        if (m_state->process.state() != QProcess::NotRunning) m_state->process.waitForFinished(0);
+        if (m_state->process.state() == QProcess::Running
+            && ((m_idle.isValid() && m_idle.elapsed() >= g_helperRestartAfterMs.load())
+                || m_helperRequests >= g_helperRequestLimit.load()))
+            retiredIdle = stop(false);
+        QElapsedTimer total;
+        total.start();
+        const QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        const QString frameId = frame.frameId.isEmpty() ? QStringLiteral("request:") + id : frame.frameId;
+        if (frameId.size() > 256 || frameId.contains(QChar(0))) return failure(QStringLiteral("E_OCR_FRAME"));
+        ++m_requests;
+        const bool reused = m_state->process.state() == QProcess::Running;
+        QJsonObject timing{{"request_id", id}, {"frame_id", frameId}, {"language", language},
+            {"helper_reused", reused}, {"helper_start_ms", 0}, {"frame_released", false}};
+        const int checksBefore = m_uiChecks;
+        auto complete = [&](OcrReply reply) {
+            timing["frame_total_ms"] = total.elapsed();
+            timing["helper_pid"] = QString::number(m_pid);
+            timing["helper_idle_retired"] = retiredIdle;
+            m_idle.start();
+            timing["ok"] = reply.ok;
+            timing["error"] = reply.error;
+            reply.timing = timing;
+            reply.helperUiChecks = m_uiChecks - checksBefore;
+            reply.helperVisibleWindowObserved = m_visible;
+            reply.helperForegroundObserved = m_foreground;
+            m_calls.append(timing);
+            if (m_calls.size() > 128) m_calls.removeFirst();
+            return reply;
+        };
+        auto abort = [&](const QString& error) {
+            m_poisoned = true;
+            const bool exited = stop(true);
+            timing["helper_exit_confirmed"] = exited;
+            timing["frame_released"] = exited;
+            return complete(failure(exited ? error : QStringLiteral("E_OCR_EXIT_UNCONFIRMED")));
+        };
+        m_state->mapping = std::make_unique<SharedFrameMemory>();
+        QString error;
+        if (!m_state->mapping->create(id, 0, frame.validBytes, &error)
+            || !m_state->mapping->write(frame.pixels, 0, &error)) {
+            m_state->mapping.reset();
+            return complete(failure(error));
+        }
+        timing["mapping_prepare_ms"] = total.elapsed();
+        const QString mappingName = m_state->mapping->poolEntry().value("mapping_name").toString();
+        timing["mapping_name"] = mappingName;
+        if (!reused) {
+            // An idle helper may have exited cleanly. A failed prior request
+            // poisons the session instead and never restarts implicitly.
+            if (m_starts && !retiredIdle
+                && (m_state->process.exitStatus() != QProcess::NormalExit || m_state->process.exitCode() != 0))
+                return abort(QStringLiteral("E_OCR_CRASH"));
+            wchar_t systemDirectory[MAX_PATH]{};
+            if (!GetSystemDirectoryW(systemDirectory, MAX_PATH)) return abort(QStringLiteral("E_OCR_HOST"));
+            const QString program = QString::fromWCharArray(systemDirectory)
+                + QStringLiteral("/WindowsPowerShell/v1.0/powershell.exe");
+            if (!QFileInfo::exists(program)) return abort(QStringLiteral("E_OCR_HOST"));
+            auto& process = m_state->process;
+            process.setProgram(program);
+            process.setArguments({QStringLiteral("-NoLogo"), QStringLiteral("-NoProfile"), QStringLiteral("-NonInteractive"),
+                QStringLiteral("-ExecutionPolicy"), QStringLiteral("Bypass"), QStringLiteral("-File"), m_path,
+                QStringLiteral("-Session"), QStringLiteral("-OverlappedStdin"),
+                QStringLiteral("-IdleTimeoutMs"), QString::number(g_helperIdleMs.load())});
+            process.setWorkingDirectory(QFileInfo(m_path).absolutePath());
+            process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* a) {
+                a->flags |= CREATE_NO_WINDOW;
+                a->startupInfo->dwFlags |= STARTF_USESHOWWINDOW;
+                a->startupInfo->wShowWindow = SW_HIDE;
+            });
+            QElapsedTimer startup; startup.start();
+            process.start();
+            if (!process.waitForStarted(std::min(2000, timeoutMs))) return abort(QStringLiteral("E_OCR_START"));
+            ++m_starts;
+            m_helperRequests = 0;
+            m_pid = process.processId();
+            m_ui = {static_cast<DWORD>(m_pid), 0, false, false};
+            timing["helper_start_ms"] = startup.elapsed();
+        }
+        auto& process = m_state->process;
+        QByteArray output;
+        qint64 stderrBytes = 0;
+        auto drain = [&]() {
+            inspectHelperUi(m_ui);
+            ++m_uiChecks;
+            m_visible |= m_ui.visible;
+            m_foreground |= m_ui.foreground;
+            process.setReadChannel(QProcess::StandardError);
+            while (process.bytesAvailable() > 0) {
+                stderrBytes += process.read(16384).size();
+                if (stderrBytes > 65536) { error = QStringLiteral("E_OCR_OUTPUT_LIMIT"); break; }
+            }
+            process.setReadChannel(QProcess::StandardOutput);
+            while (process.bytesAvailable() > 0 && error.isEmpty()) {
+                output += process.read(16384);
+                if (output.size() > 1048576) error = QStringLiteral("E_OCR_OUTPUT_LIMIT");
+            }
+            if (m_visible || m_foreground) error = QStringLiteral("E_OCR_HELPER_VISIBLE");
+        };
+        drain();
+        if (!error.isEmpty()) return abort(error);
+        if (!output.isEmpty()) return abort(QStringLiteral("E_OCR_RESPONSE"));
+        const QJsonObject input{{"protocol", "windows-ocr-once-v1"}, {"request_id", id},
+            {"mapping_name", mappingName}, {"width", frame.width}, {"height", frame.height},
+            {"bytes", frame.validBytes}, {"language", language}};
+        const QJsonObject envelope{{"protocol", "windows-ocr-session-v1"}, {"session_id", m_sessionId},
+            {"frame_id", frameId}, {"request", input}};
+        const QByteArray request = QJsonDocument(envelope).toJson(QJsonDocument::Compact) + '\n';
+        QElapsedTimer roundtrip; roundtrip.start();
+        if (request.size() > 4096 || process.write(request) != request.size()) return abort(QStringLiteral("E_OCR_WRITE"));
+        ++m_helperRequests;
+        timing["helper_request_index"] = m_helperRequests;
+        // QProcess buffers writes. In this blocking diagnostic there is no Qt
+        // event loop to deliver a later write notifier to an already-running
+        // child. Flush the request explicitly before waiting for its reply.
+        // Startup masked this requirement for the first request.
+        while (process.bytesToWrite() > 0) {
+            const int remaining = timeoutMs - int(total.elapsed());
+            if (remaining <= 0) return abort(QStringLiteral("E_OCR_TIMEOUT"));
+            if (!process.waitForBytesWritten(std::min(1000, remaining)) && process.bytesToWrite() > 0)
+                return abort(QStringLiteral("E_OCR_WRITE"));
+            drain();
+            if (!error.isEmpty()) return abort(error);
+        }
+        timing["request_write_ms"] = roundtrip.elapsed();
+        while (error.isEmpty() && !output.contains('\n') && total.elapsed() < timeoutMs) {
+            process.waitForReadyRead(std::min(20, std::max(1, timeoutMs-int(total.elapsed()))));
+            drain();
+            if (process.state() == QProcess::NotRunning && !output.contains('\n')) { error = QStringLiteral("E_OCR_CRASH"); break; }
+        }
+        timing["helper_roundtrip_ms"] = roundtrip.elapsed();
+        if (!error.isEmpty()) return abort(error);
+        if (!output.contains('\n')) return abort(QStringLiteral("E_OCR_TIMEOUT"));
+        const int end = output.indexOf('\n');
+        if (end != output.size()-1) return abort(QStringLiteral("E_OCR_RESPONSE"));
+        QJsonParseError parseError;
+        const auto document = QJsonDocument::fromJson(output.left(end), &parseError);
+        if (parseError.error != QJsonParseError::NoError || !document.isObject()) return abort(QStringLiteral("E_OCR_RESPONSE"));
+        const auto replyEnvelope = document.object();
+        const auto keys = replyEnvelope.keys();
+        if (QSet<QString>(keys.begin(), keys.end()) != QSet<QString>{"protocol","session_id","request_id","frame_id",
+                "mapping_name","frame_released","result","timing"}
+            || replyEnvelope.value("protocol") != "windows-ocr-session-v1" || replyEnvelope.value("session_id") != m_sessionId
+            || replyEnvelope.value("request_id") != id || replyEnvelope.value("frame_id") != frameId
+            || replyEnvelope.value("mapping_name") != mappingName)
+            return abort(QStringLiteral("E_OCR_CORRELATION"));
+        if (!replyEnvelope.value("frame_released").isBool() || !replyEnvelope.value("frame_released").toBool())
+            return abort(QStringLiteral("E_OCR_RELEASE"));
+        if (!replyEnvelope.value("result").isObject() || !replyEnvelope.value("timing").isObject())
+            return abort(QStringLiteral("E_OCR_RESPONSE"));
+        const auto workerTiming = replyEnvelope.value("timing").toObject();
+        for (const auto key : {"runtime_init_ms","engine_init_ms","bitmap_copy_ms","recognize_ms","helper_request_ms"}) {
+            const auto value = workerTiming.value(key);
+            if (!value.isDouble() || !std::isfinite(value.toDouble()) || value.toDouble()<0 || value.toDouble()>60000)
+                return abort(QStringLiteral("E_OCR_RESPONSE"));
+            timing[QStringLiteral("worker_") + QLatin1String(key)] = value;
+        }
+        if (!workerTiming.value("engine_cache_hit").isBool() || !workerTiming.value("engine_created").isBool()
+            || !workerTiming.value("engine_create_count").isDouble()
+            || workerTiming.value("engine_create_count").toDouble() < 0
+            || workerTiming.value("engine_create_count").toDouble() > 2
+            || std::floor(workerTiming.value("engine_create_count").toDouble()) != workerTiming.value("engine_create_count").toDouble())
+            return abort(QStringLiteral("E_OCR_RESPONSE"));
+        timing["engine_cache_hit"] = workerTiming.value("engine_cache_hit");
+        timing["engine_created"] = workerTiming.value("engine_created");
+        const auto body = replyEnvelope.value("result").toObject();
+        auto reply = validateOcrReply(QJsonDocument(body).toJson(QJsonDocument::Compact), id, frame.width, frame.height);
+        const bool negative = body.value("protocol") == "windows-ocr-once-v1" && body.value("request_id") == id
+            && body.value("ok").isBool() && !body.value("ok").toBool()
+            && QStringList{"E_OCR_LANGUAGE","E_OCR_IMAGE_SIZE","E_OCR_WORKER_INPUT","E_OCR_ENGINE","E_OCR_TOKEN_LIMIT"}
+                .contains(body.value("error").toString());
+        if (!reply.ok && !negative) return abort(reply.error);
+        if (reply.ok && reply.observation.value("language") != language) return abort(QStringLiteral("E_OCR_LANGUAGE"));
+        // The worker's finally has disposed this exact mapping before emitting
+        // the correlated acknowledgement. The owner can now release its view.
+        m_state->mapping->close();
+        m_state->mapping.reset();
+        ++m_released;
+        if (workerTiming.value("engine_created").toBool()) ++m_engineCreates;
+        timing["frame_released"] = true;
+        if (reply.ok) { ++m_successes; reply.observation["frame_id"] = frameId; }
+        return complete(reply);
+#endif
+    }
+
+private:
+    struct State {
+        std::unique_ptr<SharedFrameMemory> mapping;
+        QProcess process;
+    };
+    bool stop(bool forced) {
+        auto& process = m_state->process;
+        if (process.state() != QProcess::NotRunning) {
+            if (!forced) { process.closeWriteChannel(); process.waitForFinished(1000); }
+            if (process.state() != QProcess::NotRunning) { process.kill(); process.waitForFinished(1500); }
+        }
+        if (process.state() != QProcess::NotRunning) return false;
+        if (m_state->mapping) { m_state->mapping->close(); m_state->mapping.reset(); ++m_released; }
+        return true;
+    }
+    QString m_path;
+    QString m_sessionId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    std::unique_ptr<State> m_state;
+    qint64 m_pid = 0;
+    int m_starts = 0, m_requests = 0, m_successes = 0, m_engineCreates = 0, m_released = 0, m_uiChecks = 0;
+    bool m_poisoned = false, m_visible = false, m_foreground = false;
+    QElapsedTimer m_idle;
+    int m_helperRequests = 0;
+    QJsonArray m_calls;
+#ifdef Q_OS_WIN
+    HelperUiState m_ui;
+#endif
+};
+
+namespace {
+std::shared_ptr<WindowsOcrSession> acquireSession(const QString& helper) {
+    // A temporary English recognizer in the live ROI loop reuses the Chinese
+    // recognizer's session, but unrelated threads never share a QProcess.
+    static thread_local QHash<QString, std::weak_ptr<WindowsOcrSession>> sessions;
+    for (auto it=sessions.begin(); it!=sessions.end();) {
+        if (it.value().expired()) it=sessions.erase(it); else ++it;
+    }
+    const QString path = QFileInfo(helper).canonicalFilePath();
+    if (auto existing = sessions.value(path).lock()) return existing;
+    auto session = std::make_shared<WindowsOcrSession>(path);
+    sessions.insert(path, session);
+    return session;
+}
+}
+
+void setWindowsOcrHelperRequestLimit(int requests) {
+    g_helperRequestLimit = std::clamp(requests, 1, 4000);
+}
+
+void setWindowsOcrHelperIdlePolicy(int helperIdleMs, int restartAfterMs) {
+    g_helperIdleMs = std::clamp(helperIdleMs, 100, 3600000);
+    g_helperRestartAfterMs = std::max(0, restartAfterMs);
 }
 
 OcrReply validateOcrReply(const QByteArray& data, const QString& requestId, int width, int height) {
@@ -140,7 +442,20 @@ QJsonObject summarizeRecognizedPage(const QJsonObject& observation) {
 WindowsOcrRecognizer::WindowsOcrRecognizer(QString helperPath, QString language, int timeoutMs)
     : m_helperPath(std::move(helperPath)), m_language(std::move(language)), m_timeoutMs(timeoutMs) {}
 
+WindowsOcrRecognizer::~WindowsOcrRecognizer() = default;
+
+bool WindowsOcrRecognizer::sessionPoisoned() const {
+    return m_session && m_session->poisoned();
+}
+
+QJsonObject WindowsOcrRecognizer::sessionMetrics() const {
+    return m_session ? m_session->metrics() : QJsonObject{{"protocol", "windows-ocr-session-v1"},
+        {"scope", "current_diagnostic_process"}, {"helper_start_count", 0}, {"request_count", 0},
+        {"success_count", 0}, {"engine_create_count", 0}, {"helper_running", false}, {"calls", QJsonArray{}}};
+}
+
 OcrReply WindowsOcrRecognizer::recognizeRegion(const runtime::observation::FrameEnvelope& frame, const QRect& region,int scale,bool invert) {
+    QElapsedTimer regionClock; regionClock.start();
     if (!summarizeBgra(frame.pixels,frame.width,frame.height,frame.strideBytes).valid
         || frame.pixelFormat!="BGRA8" || frame.validBytes!=frame.pixels.size()
         || region.isEmpty() || !QRect(0,0,frame.width,frame.height).contains(region)
@@ -167,7 +482,12 @@ OcrReply WindowsOcrRecognizer::recognizeRegion(const runtime::observation::Frame
         }
         for(int i=1;i<scale;++i)std::memcpy(row+i*cropped.strideBytes,row,cropped.strideBytes);
     }
+    const qint64 preprocessMs = regionClock.elapsed();
     auto result=recognizeFrame(cropped);
+    result.timing["roi_preprocess_ms"] = preprocessMs;
+    result.timing["roi_total_ms"] = regionClock.elapsed();
+    if (m_session) m_session->amend(result.timing.value("request_id").toString(),
+        {{"roi_preprocess_ms", preprocessMs}, {"roi_total_ms", regionClock.elapsed()}});
     if(!result.ok)return result;
     auto words=result.observation.value("words").toArray();
     for(int i=0;i<words.size();++i){auto word=words[i].toObject();
@@ -178,6 +498,21 @@ OcrReply WindowsOcrRecognizer::recognizeRegion(const runtime::observation::Frame
     result.observation["roi_scale"]=scale;
     result.observation["roi_preprocess"]=invert?"grayscale_minmax_contrast_inverted":"grayscale_minmax_contrast";
     return result;
+}
+
+OcrReply WindowsOcrRecognizer::recognizeNumericRegion(const runtime::observation::FrameEnvelope& frame,const QRect& region,int scale,int padding) {
+    QElapsedTimer clock;clock.start();
+    const auto prepared=prepareNumericRegion(frame,region,scale,padding);
+    if(!prepared.ok){auto reply=failure(prepared.error);reply.observation["numeric_preprocess"]=prepared.metadata;return reply;}
+    const qint64 preprocessMs=clock.elapsed();
+    auto reply=recognizeFrame(prepared.frame);
+    reply.timing["numeric_preprocess_ms"]=preprocessMs;
+    if(reply.ok){QString error;reply.observation=mapNumericRegionObservation(prepared,reply.observation,&error);
+        if(!error.isEmpty()){reply.ok=false;reply.error=error;}}
+    else reply.observation["numeric_preprocess"]=prepared.metadata;
+    reply.timing["numeric_total_ms"]=clock.elapsed();
+    if(m_session)m_session->amend(reply.timing["request_id"].toString(),{{"numeric_preprocess_ms",preprocessMs},{"numeric_total_ms",clock.elapsed()}});
+    return reply;
 }
 
 QString WindowsOcrRecognizer::recognize(const runtime::observation::FrameEnvelope& frame, QString* errorCode) {
@@ -196,66 +531,174 @@ OcrReply WindowsOcrRecognizer::recognizeFrame(const runtime::observation::FrameE
     const QFileInfo helper(m_helperPath);
     if (!helper.isAbsolute() || !helper.isFile() || !helper.isReadable() || helper.isSymLink())
         return failure(QStringLiteral("E_OCR_HELPER"));
-#ifdef Q_OS_WIN
-    wchar_t systemDirectory[MAX_PATH]{};
-    if (!GetSystemDirectoryW(systemDirectory, MAX_PATH)) return failure(QStringLiteral("E_OCR_HOST"));
-    const QString program = QString::fromWCharArray(systemDirectory) + QStringLiteral("/WindowsPowerShell/v1.0/powershell.exe");
-    if (!QFileInfo::exists(program)) return failure(QStringLiteral("E_OCR_HOST"));
-    const QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    SharedFrameMemory mapping;
-    QString error;
-    if (!mapping.create(id, 0, frame.validBytes, &error) || !mapping.write(frame.pixels, 0, &error)) return failure(error);
-    const QJsonObject input{{"protocol", "windows-ocr-once-v1"}, {"request_id", id},
-        {"mapping_name", mapping.poolEntry().value("mapping_name")}, {"width", frame.width}, {"height", frame.height},
-        {"bytes", frame.validBytes}, {"language", m_language}};
-    QProcess process;
-    process.setProgram(program);
-    process.setArguments({QStringLiteral("-NoLogo"), QStringLiteral("-NoProfile"), QStringLiteral("-NonInteractive"),
-        QStringLiteral("-ExecutionPolicy"), QStringLiteral("Bypass"), QStringLiteral("-File"), helper.absoluteFilePath()});
-    process.setWorkingDirectory(helper.absolutePath());
-    process.setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* a) {
-        a->flags |= CREATE_NO_WINDOW; a->startupInfo->dwFlags |= STARTF_USESHOWWINDOW; a->startupInfo->wShowWindow = SW_HIDE;
-    });
-    QElapsedTimer clock;
-    clock.start();
-    process.start();
-    if (!process.waitForStarted(std::min(2000, m_timeoutMs))) return failure(QStringLiteral("E_OCR_START"));
-    HelperUiState helperUi{static_cast<DWORD>(process.processId()), 0, false, false};
-    inspectHelperUi(helperUi);
-    const QByteArray request = QJsonDocument(input).toJson(QJsonDocument::Compact) + '\n';
-    if (process.write(request) != request.size()) error = QStringLiteral("E_OCR_WRITE");
-    process.closeWriteChannel();
-    QByteArray output;
-    qint64 stderrBytes = 0;
-    auto drain = [&]() {
-        inspectHelperUi(helperUi);
-        output += process.readAllStandardOutput();
-        stderrBytes += process.readAllStandardError().size();
-        if (output.size() > 1048576 || stderrBytes > 65536) error = QStringLiteral("E_OCR_OUTPUT_LIMIT");
-        if (helperUi.visible || helperUi.foreground) error = QStringLiteral("E_OCR_HELPER_VISIBLE");
+    if (!m_session) m_session = acquireSession(helper.absoluteFilePath());
+    return m_session->run(frame, m_language, m_timeoutMs);
+}
+
+OcrReply runOcrRegionJob(const runtime::observation::FrameEnvelope& frame, const OcrRegionJob& job,
+        WindowsOcrRecognizer& chinese, WindowsOcrRecognizer& english) {
+    if (job.language != QStringLiteral("zh-Hans-CN") && job.language != QStringLiteral("en-US"))
+        return failure(QStringLiteral("E_OCR_OPTIONS"));
+    auto& recognizer = job.language == QStringLiteral("en-US") ? english : chinese;
+    return job.numeric ? recognizer.recognizeNumericRegion(frame, job.region, job.scale)
+                       : recognizer.recognizeRegion(frame, job.region, job.scale, job.invert);
+}
+
+struct WindowsOcrPool::State {
+    struct Batch {
+        const runtime::observation::FrameEnvelope* frame = nullptr;
+        const QList<OcrRegionJob>* jobs = nullptr;
+        std::vector<OcrReply>* replies = nullptr;
+        std::vector<int>* owners = nullptr;
+        std::atomic<int> next{0};
+        int remaining = 0, users = 0;
     };
-    while (error.isEmpty() && process.state() != QProcess::NotRunning && clock.elapsed() < m_timeoutMs) {
-        process.waitForFinished(20); drain();
+    QString helper;
+    mutable std::mutex mutex;
+    std::condition_variable wake, finished;
+    Batch* batch = nullptr;
+    quint64 generation = 0, batches = 0, workerJobs = 0, callerJobs = 0, callerReruns = 0;
+    bool stopping = false;
+    int workers = 0, warmed = 0, retired = 0;
+    QStringList warmErrors;
+    QList<int> retiredOwners;
+    std::vector<std::thread> threads;
+
+    // Returns false when this worker must retire: its helper session failed
+    // for good and would otherwise fail every job it grabs (2026-10-08 hotkey
+    // run: poisoned workers kept taking jobs). The caller re-reads them.
+    bool work(Batch* b, int owner, WindowsOcrRecognizer& chinese, WindowsOcrRecognizer& english) {
+        while (true) {
+            const int index = b->next.fetch_add(1);
+            if (index >= b->jobs->size()) return true;
+            auto reply = runOcrRegionJob(*b->frame, b->jobs->at(index), chinese, english);
+            reply.timing["ocr_pool_executor"] = owner;
+            const bool retire = owner && (chinese.sessionPoisoned() || english.sessionPoisoned());
+            std::lock_guard<std::mutex> lock(mutex);
+            (*b->replies)[size_t(index)] = std::move(reply);
+            (*b->owners)[size_t(index)] = owner;
+            if (owner) ++workerJobs; else ++callerJobs;
+            if (--b->remaining == 0) finished.notify_all();
+            if (retire) {
+                ++retired;
+                retiredOwners.append(owner);
+                return false;
+            }
+        }
     }
-    if (process.state() != QProcess::NotRunning) {
-        if (error.isEmpty()) error = QStringLiteral("E_OCR_TIMEOUT");
-        process.kill();
-        if (!process.waitForFinished(1500)) return failure(QStringLiteral("E_OCR_EXIT_UNCONFIRMED"));
+    void worker(int owner) {
+        WindowsOcrRecognizer chinese(helper, QStringLiteral("zh-Hans-CN")), english(helper, QStringLiteral("en-US"));
+        // Start this thread's hidden helper and both engines off the critical
+        // path. A worker whose helper fails retires; the caller and remaining
+        // workers still complete every batch, so no request depends on it.
+        runtime::observation::FrameEnvelope warm;
+        warm.frameId = QStringLiteral("ocr-pool-warmup:%1").arg(owner);
+        warm.width = 96; warm.height = 48; warm.strideBytes = warm.width * 4;
+        warm.validBytes = qint64(warm.strideBytes) * warm.height;
+        warm.pixels = QByteArray(int(warm.validBytes), char(0xff));
+        warm.pixelFormat = QStringLiteral("BGRA8");
+        const auto first = chinese.recognizeFrame(warm);
+        const auto second = english.recognizeFrame(warm);
+        {
+            std::lock_guard<std::mutex> lock(mutex);
+            ++warmed;
+            finished.notify_all();
+            if (!first.ok || !second.ok) {
+                warmErrors.append(first.ok ? second.error : first.error);
+                ++retired;
+                return;
+            }
+        }
+        quint64 seen = 0;
+        while (true) {
+            Batch* b = nullptr;
+            {
+                std::unique_lock<std::mutex> lock(mutex);
+                wake.wait(lock, [&] { return stopping || (batch && generation != seen); });
+                if (stopping) return;
+                seen = generation; b = batch; ++b->users;
+            }
+            const bool keep = work(b, owner, chinese, english);
+            std::lock_guard<std::mutex> lock(mutex);
+            --b->users;
+            finished.notify_all();
+            if (!keep) return;
+        }
     }
-    drain();
-    // The reader is confirmed exited before the owner releases the mapping.
-    mapping.close();
-    if (!error.isEmpty()) return failure(error);
-    if (process.exitStatus() != QProcess::NormalExit) return failure(QStringLiteral("E_OCR_CRASH"));
-    auto reply = validateOcrReply(output, id, frame.width, frame.height);
-    if (process.exitCode() != 0 && reply.ok) return failure(QStringLiteral("E_OCR_EXIT"));
-    if (reply.ok && reply.observation.value("language") != m_language) return failure(QStringLiteral("E_OCR_LANGUAGE"));
-    reply.helperUiChecks = helperUi.checks;
-    reply.helperVisibleWindowObserved = helperUi.visible;
-    reply.helperForegroundObserved = helperUi.foreground;
-    return reply;
-#else
-    return failure(QStringLiteral("E_PLATFORM_UNSUPPORTED"));
-#endif
+};
+
+WindowsOcrPool::WindowsOcrPool(QString helperPath, int workers) : m_state(new State) {
+    m_state->helper = std::move(helperPath);
+    m_state->workers = std::clamp(workers, 0, 8);
+    for (int i = 0; i < m_state->workers; ++i)
+        m_state->threads.emplace_back([state = m_state.get(), owner = i + 1] { state->worker(owner); });
+}
+
+WindowsOcrPool::~WindowsOcrPool() {
+    {
+        std::lock_guard<std::mutex> lock(m_state->mutex);
+        m_state->stopping = true;
+    }
+    m_state->wake.notify_all();
+    for (auto& thread : m_state->threads)
+        if (thread.joinable()) thread.join();
+}
+
+QList<OcrReply> WindowsOcrPool::run(const runtime::observation::FrameEnvelope& frame, const QList<OcrRegionJob>& jobs,
+        WindowsOcrRecognizer& callerChinese, WindowsOcrRecognizer& callerEnglish) {
+    if (jobs.isEmpty()) return {};
+    std::vector<OcrReply> replies(size_t(jobs.size()));
+    std::vector<int> owners(size_t(jobs.size()), -1);
+    State::Batch batch;
+    batch.frame = &frame; batch.jobs = &jobs; batch.replies = &replies; batch.owners = &owners;
+    batch.remaining = int(jobs.size());
+    {
+        std::lock_guard<std::mutex> lock(m_state->mutex);
+        ++m_state->batches; ++m_state->generation;
+        m_state->batch = &batch;
+    }
+    m_state->wake.notify_all();
+    m_state->work(&batch, 0, callerChinese, callerEnglish);
+    {
+        // Workers hold only a pointer to this stack batch: wait until every
+        // taken job finished AND every worker released the batch.
+        std::unique_lock<std::mutex> lock(m_state->mutex);
+        m_state->finished.wait(lock, [&] { return batch.remaining == 0 && batch.users == 0; });
+        m_state->batch = nullptr;
+    }
+    // A worker-side transport failure is not evidence about the pixels: read
+    // the same job again on the caller's own session, exactly as the serial
+    // path would have. Content results (including empty text) are kept.
+    static const QSet<QString> transport{"E_OCR_SESSION_POISONED", "E_OCR_CRASH", "E_OCR_TIMEOUT", "E_OCR_WRITE",
+        "E_OCR_START", "E_OCR_RESPONSE", "E_OCR_CORRELATION", "E_OCR_RELEASE", "E_OCR_EXIT_UNCONFIRMED",
+        "E_OCR_HELPER_VISIBLE", "E_OCR_OUTPUT_LIMIT", "E_OCR_HOST", "E_OCR_WORKER_INPUT"};
+    for (size_t index = 0; index < replies.size(); ++index) {
+        if (owners[index] <= 0 || replies[index].ok || !transport.contains(replies[index].error)) continue;
+        const QString failed = replies[index].error;
+        auto reply = runOcrRegionJob(frame, jobs.at(int(index)), callerChinese, callerEnglish);
+        reply.timing["ocr_pool_executor"] = 0;
+        reply.timing["ocr_pool_rerun_after_worker_error"] = failed;
+        reply.timing["ocr_pool_failed_executor"] = owners[index];
+        replies[index] = std::move(reply);
+        std::lock_guard<std::mutex> lock(m_state->mutex);
+        ++m_state->callerReruns;
+    }
+    return QList<OcrReply>(replies.begin(), replies.end());
+}
+
+bool WindowsOcrPool::waitWarm(int timeoutMs) const {
+    std::unique_lock<std::mutex> lock(m_state->mutex);
+    return m_state->finished.wait_for(lock, std::chrono::milliseconds(std::max(0, timeoutMs)),
+        [&] { return m_state->warmed >= m_state->workers; });
+}
+
+QJsonObject WindowsOcrPool::metrics() const {
+    std::lock_guard<std::mutex> lock(m_state->mutex);
+    return {{"schema", "windows-ocr-pool-v1"}, {"workers", m_state->workers}, {"warmed", m_state->warmed},
+        {"retired", m_state->retired}, {"warm_errors", QJsonArray::fromStringList(m_state->warmErrors)},
+        {"batches", double(m_state->batches)}, {"worker_jobs", double(m_state->workerJobs)},
+        {"caller_jobs", double(m_state->callerJobs)}, {"caller_reruns", double(m_state->callerReruns)},
+        {"retired_after_session_failure", [&] { QJsonArray owners; for (int owner : m_state->retiredOwners) owners.append(owner); return owners; }()},
+        {"image_file_writes", 0}};
 }
 } // namespace relink::vision

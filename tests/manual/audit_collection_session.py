@@ -3,7 +3,7 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
-from collection_journal import candidate_key
+from collection_journal import validate_record_identity
 
 ROOT=Path(__file__).resolve().parents[2]
 TX=ROOT/'artifacts/m2_savedvalue_collection'
@@ -17,7 +17,7 @@ def main():
     journal=[]
     for path in sorted((TX/'journal').glob('*.json')):
         item=json.loads(path.read_text(encoding='utf-8'));candidate=item['candidate']
-        assert item['key']==candidate_key(candidate)==path.stem
+        assert validate_record_identity(item)==path.stem
         assert candidate['source_sha256']==digest and candidate['eligible']
         assert item['status'] in ('confirmed','confirmed_reconciliation'),'pending collection requires reconciliation'
         if item['status']=='confirmed':

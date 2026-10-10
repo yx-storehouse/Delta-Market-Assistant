@@ -40,8 +40,8 @@ QByteArray read(const QString& path) {
 }
 relink::catalog::Skin referenceSkin(const QString& id, const QString& season,
         const QString& seasonLabel, const QString& weapon, const QString& series) {
-    return {id, season, seasonLabel, weapon, series, QString(), QStringLiteral("purple"),
-            QString(), weapon + QStringLiteral(" - ") + series, QString()};
+    return {id, season, seasonLabel, weapon, series, QString(), QStringLiteral("史诗品阶"),
+            weapon + QStringLiteral(" - ") + series, QString()};
 }
 }
 
@@ -81,15 +81,15 @@ int main(int argc, char** argv) {
     auto* filter = child<QComboBox>(dialog, "catalogSeasonFilter");
     check(!dialog.isVisible(), "constructor does not open a visible window");
     check(table->rowCount() == 2 && changed == 0 && !QFile::exists(extensionPath), "render does not create data or mutation");
-    check(table->item(0, 3)->text() == QStringLiteral("—"), "variant not inferred from menu color");
-    check(table->item(0, 4)->text() == QStringLiteral("紫色"), "menu color retained as textual metadata");
-    check(table->item(0, 5)->text() == QStringLiteral("—"), "unknown quality remains unassigned");
+    check(table->item(0, 3)->text() == QStringLiteral("—"), "variant not inferred from grade");
+    check(table->item(0, 4)->text() == QStringLiteral("史诗品阶"), "grade shown as the game's own label");
+    check(table->columnCount() == 6, "no separate colour or quality-name column");
     check(table->findChildren<QLabel*>().isEmpty(), "table has no thumbnail label or generated artwork");
     search->setText(QStringLiteral("黑银"));
-    check(table->rowCount() == 1 && table->item(0, 6)->text() == "11102", "search locates exact source product");
+    check(table->rowCount() == 1 && table->item(0, 5)->text() == "11102", "search locates exact source product");
     search->clear();
     filter->setCurrentIndex(filter->findData(QStringLiteral("S6")));
-    check(table->rowCount() == 1 && table->item(0, 6)->text() == "10602", "season filter");
+    check(table->rowCount() == 1 && table->item(0, 5)->text() == "10602", "season filter");
     filter->setCurrentIndex(0);
     search->setText(QStringLiteral("no match"));
     check(table->rowCount() == 0, "empty search has no fabricated fallback rows");
@@ -104,19 +104,24 @@ int main(int argc, char** argv) {
     auto* weapon = child<QLineEdit>(dialog, "catalogWeapon");
     auto* series = child<QLineEdit>(dialog, "catalogSkinSeries");
     auto* productId = child<QLineEdit>(dialog, "catalogProductId");
-    auto* color = child<QComboBox>(dialog, "catalogMenuColor");
+    auto* grade = child<QComboBox>(dialog, "catalogGrade");
+    check(grade->count() == 4 && grade->itemData(0).toString().isEmpty()
+          && grade->findData(QStringLiteral("普通品阶")) < 0 && grade->findData(QStringLiteral("purple")) < 0,
+          "grade choices are the three game labels plus unrecorded");
     season->setCurrentIndex(season->findData(QStringLiteral("S6")));
     weapon->setText(QStringLiteral("P90冲锋枪"));
     series->setText(QStringLiteral("天命"));
     productId->setText(QStringLiteral("10602"));
-    color->setCurrentIndex(color->findData(QStringLiteral("purple")));
+    grade->setCurrentIndex(grade->findData(QStringLiteral("史诗品阶")));
     add->click();
     check(changed == 0 && store.catalog().skins.size() == 2 && !QFile::exists(extensionPath), "duplicate source ID rejected without writes");
     productId->setText(QStringLiteral("10603"));
     add->click();
     check(changed == 1 && store.catalog().skins.size() == 3, "same-season append saved and emitted once");
     const auto* p90 = store.catalog().findSkin(QStringLiteral("10603"));
-    check(p90 && p90->thumbnailPath.isEmpty() && p90->gameQualityName.isEmpty(), "new skin keeps reserved image and unknown quality empty");
+    check(p90 && p90->thumbnailPath.isEmpty() && p90->grade == QStringLiteral("史诗品阶"), "new skin keeps reserved image and its chosen grade");
+    check(p90 && p90->displayName == QStringLiteral("S6|P90冲锋枪 - 天命"), "added skin is named like the built-in catalogue (Sx| prefix)");
+    check(!read(extensionPath).contains("menu_color") && read(extensionPath).contains("\"grade\""), "saved addition carries grade, no colour");
     check(QFile::exists(extensionPath) && !read(extensionPath).isEmpty(), "append is persisted before completion");
     check(weapon->text().isEmpty() && series->text().isEmpty() && productId->text().isEmpty(), "form clears identity fields after save");
     check(season->currentData().toString() == "S6", "same-season continuation remains selected");

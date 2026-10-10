@@ -303,9 +303,8 @@ int main(int argc, char** argv) {
     catalogSkin.name = QStringLiteral("AUG突击步枪-天命");
     catalogSkin.series = QStringLiteral("S6");
     catalogSkin.condition = QStringLiteral("未采集");
-    catalogSkin.rarity = QStringLiteral("紫色");
+    catalogSkin.rarity = QStringLiteral("史诗品阶");
     catalogSkin.catalogProductId = QStringLiteral("10602");
-    catalogSkin.menuColor = QStringLiteral("purple");
     catalogSkin.variant = QStringLiteral("standard");
     catalogSkin.skinSeries = QStringLiteral("天命");
     catalogState.skins.append(catalogSkin);
@@ -317,7 +316,8 @@ int main(int argc, char** argv) {
     AppState catalogReloaded;
     check(catalogReloaded.loadFrom(candidate, &error) && catalogReloaded.skins.size() == 1
           && catalogReloaded.skins[0].catalogProductId == QStringLiteral("10602")
-          && catalogReloaded.skins[0].menuColor == QStringLiteral("purple")
+          && catalogReloaded.skins[0].rarity == QStringLiteral("史诗品阶")
+          && !read(candidate).contains("menuColor")
           && catalogReloaded.skins[0].variant == QStringLiteral("standard")
           && catalogReloaded.skins[0].skinSeries == QStringLiteral("天命")
           && !catalogReloaded.skins[0].priceKnown && !catalogReloaded.skins[0].wearKnown

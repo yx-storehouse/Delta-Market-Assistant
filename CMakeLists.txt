@@ -18,9 +18,11 @@ qt_add_executable(RelinkStudio WIN32
   src/diagnostics/collection_import_self_test.cpp src/diagnostics/collection_import_self_test.h
   src/diagnostics/collection_task_cli.cpp src/diagnostics/collection_task_cli.h
   src/diagnostics/ui_self_test_runner.cpp src/diagnostics/ui_self_test_runner.h
-  src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h
+  src/diagnostics/live_capture_check.cpp src/diagnostics/live_capture_check.h src/diagnostics/live_capture_protocol.h
   src/diagnostics/startup_observer_self_test.cpp src/diagnostics/startup_observer_self_test.h
   src/diagnostics/savedvalue_preview.cpp src/diagnostics/savedvalue_preview.h
+  src/overlay/status_overlay.cpp src/overlay/status_overlay.h
+  src/application/collection_hotkey.cpp src/application/collection_hotkey.h
   src/application/runtime/replay_controller.cpp src/application/runtime/replay_controller.h
   src/application/runtime/ui_projection.cpp src/application/runtime/ui_projection.h
   src/ledger/storage_self_test.cpp src/ledger/storage_self_test.h
@@ -60,7 +62,7 @@ if(WIN32)
   # Explorer and the taskbar show the same neutral icon the window paints.
   enable_language(RC)
   target_sources(RelinkStudio PRIVATE src/app.rc)
-  target_link_libraries(RelinkStudio PRIVATE dwmapi)
+  target_link_libraries(RelinkStudio PRIVATE dwmapi winmm)
   target_link_libraries(relink_ui PRIVATE dwmapi)
 endif()
 add_executable(domain_tests tests/domain_tests.cpp src/domain.cpp src/domain.h)
@@ -131,27 +133,74 @@ target_link_libraries(relink_catalog_filter PUBLIC relink_startup_observation Qt
 target_link_libraries(RelinkStudio PRIVATE relink_catalog_filter)
 add_executable(catalog_filter_tests tests/runtime/catalog_filter_tests.cpp)
 target_link_libraries(catalog_filter_tests PRIVATE relink_catalog_filter)
+add_library(relink_frame_digest STATIC src/application/vision/frame_sha256.cpp src/application/vision/frame_sha256.h)
+target_include_directories(relink_frame_digest PUBLIC src)
+target_link_libraries(relink_frame_digest PUBLIC Qt6::Core)
+if(WIN32)
+  target_link_libraries(relink_frame_digest PRIVATE bcrypt)
+endif()
+add_executable(frame_sha256_tests tests/runtime/frame_sha256_tests.cpp)
+target_link_libraries(frame_sha256_tests PRIVATE relink_frame_digest)
+add_test(NAME frame_sha256_tests COMMAND frame_sha256_tests)
+add_library(relink_collection_layout STATIC
+  src/application/vision/collection_layout.cpp src/application/vision/collection_layout.h)
+target_include_directories(relink_collection_layout PUBLIC src)
+target_link_libraries(relink_collection_layout PUBLIC Qt6::Core relink_frame_digest)
+target_link_libraries(RelinkStudio PRIVATE relink_collection_layout)
+add_library(relink_collection_page_context STATIC
+  src/application/vision/collection_page_context.cpp src/application/vision/collection_page_context.h)
+target_include_directories(relink_collection_page_context PUBLIC src)
+target_link_libraries(relink_collection_page_context PUBLIC Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_collection_page_context)
+add_executable(collection_page_context_tests tests/runtime/collection_page_context_tests.cpp)
+target_link_libraries(collection_page_context_tests PRIVATE relink_collection_page_context)
+add_test(NAME collection_page_context_tests COMMAND collection_page_context_tests)
+add_library(relink_collection_listing_regions STATIC
+  src/application/vision/collection_listing_regions.cpp src/application/vision/collection_listing_regions.h)
+target_include_directories(relink_collection_listing_regions PUBLIC src)
+target_link_libraries(relink_collection_listing_regions PUBLIC Qt6::Core)
+target_link_libraries(RelinkStudio PRIVATE relink_collection_listing_regions)
+add_executable(collection_listing_regions_tests tests/runtime/collection_listing_regions_tests.cpp)
+target_link_libraries(collection_listing_regions_tests PRIVATE relink_collection_listing_regions)
+add_test(NAME collection_listing_regions_tests COMMAND collection_listing_regions_tests)
+add_executable(collection_layout_tests tests/runtime/collection_layout_tests.cpp)
+target_link_libraries(collection_layout_tests PRIVATE relink_collection_layout)
 add_executable(startup_observer_tests tests/runtime/startup_observer_tests.cpp)
 target_link_libraries(startup_observer_tests PRIVATE relink_startup_observation)
 add_executable(lobby_calibration_tests tests/runtime/lobby_calibration_tests.cpp)
 target_link_libraries(lobby_calibration_tests PRIVATE relink_startup_observation)
 add_executable(foreground_policy_tests tests/runtime/foreground_policy_tests.cpp)
 target_include_directories(foreground_policy_tests PRIVATE src)
+add_executable(live_capture_server_tests tests/runtime/live_capture_server_tests.cpp)
+target_include_directories(live_capture_server_tests PRIVATE src)
+target_link_libraries(live_capture_server_tests PRIVATE Qt6::Core)
+add_dependencies(live_capture_server_tests RelinkStudio)
 add_executable(market_calibration_tests tests/runtime/market_calibration_tests.cpp)
 target_link_libraries(market_calibration_tests PRIVATE relink_startup_observation)
 
 # Opt-in on-demand capture, isolated from UI configuration / replay reducers.
 add_library(relink_windows_capture STATIC
   src/application/vision/target_window.cpp src/application/vision/target_window.h
-  src/application/vision/dxgi_observation_source.cpp src/application/vision/dxgi_observation_source.h)
+  src/application/vision/dxgi_observation_source.cpp src/application/vision/dxgi_observation_source.h
+  src/application/vision/latest_frame_stream.cpp src/application/vision/latest_frame_stream.h)
 target_include_directories(relink_windows_capture PUBLIC src)
 target_link_libraries(relink_windows_capture PUBLIC relink_runtime Qt6::Core)
 if(WIN32)
   target_link_libraries(relink_windows_capture PRIVATE d3d11 dxgi dxguid dwmapi)
 endif()
 target_link_libraries(RelinkStudio PRIVATE relink_windows_capture)
+add_executable(collection_hotkey_tests tests/runtime/collection_hotkey_tests.cpp
+  src/application/collection_hotkey.cpp src/application/collection_hotkey.h src/domain.cpp src/domain.h)
+target_include_directories(collection_hotkey_tests PRIVATE src)
+target_link_libraries(collection_hotkey_tests PRIVATE Qt6::Core)
+add_test(NAME collection_hotkey_tests COMMAND collection_hotkey_tests ${CMAKE_SOURCE_DIR})
 add_executable(windows_capture_tests tests/runtime/windows_capture_tests.cpp)
 target_link_libraries(windows_capture_tests PRIVATE relink_windows_capture)
+add_executable(latest_frame_stream_tests tests/runtime/latest_frame_stream_tests.cpp)
+target_link_libraries(latest_frame_stream_tests PRIVATE relink_windows_capture)
+add_executable(collection_scroll_readiness_tests tests/runtime/collection_scroll_readiness_tests.cpp)
+target_include_directories(collection_scroll_readiness_tests PRIVATE src)
+target_link_libraries(collection_scroll_readiness_tests PRIVATE Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_business)
 
 # Windows transport is independent of the replay/domain/UI layers. The fixture
@@ -161,7 +210,8 @@ add_library(relink_vision_transport STATIC
   src/application/vision/worker_process.cpp src/application/vision/worker_process.h)
 target_include_directories(relink_vision_transport PUBLIC src)
 target_link_libraries(relink_vision_transport PUBLIC relink_runtime Qt6::Core)
-add_library(relink_windows_ocr STATIC src/application/vision/windows_ocr.cpp src/application/vision/windows_ocr.h)
+add_library(relink_windows_ocr STATIC src/application/vision/windows_ocr.cpp src/application/vision/windows_ocr.h
+  src/application/vision/numeric_roi.cpp src/application/vision/numeric_roi.h)
 target_include_directories(relink_windows_ocr PUBLIC src)
 target_link_libraries(relink_windows_ocr PUBLIC relink_windows_capture relink_vision_transport Qt6::Core)
 target_link_libraries(RelinkStudio PRIVATE relink_windows_ocr)
@@ -255,6 +305,14 @@ set_tests_properties(skin_catalog_dialog_tests PROPERTIES ENVIRONMENT "QT_QPA_PL
 add_test(NAME catalog_configuration_tests COMMAND catalog_configuration_tests "${CMAKE_SOURCE_DIR}/src/assets/catalog/skins.json")
 add_test(NAME savedvalue_tests COMMAND savedvalue_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/domain/relink_0925_catalog.json")
 add_test(NAME catalog_filter_tests COMMAND catalog_filter_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/catalog_filter_signals_20261007.json")
+add_test(NAME collection_layout_tests COMMAND collection_layout_tests)
+add_executable(collection_tail_gap_tests tests/runtime/collection_tail_gap_tests.cpp)
+target_link_libraries(collection_tail_gap_tests PRIVATE relink_collection_layout)
+add_test(NAME collection_tail_gap_tests COMMAND collection_tail_gap_tests "${CMAKE_SOURCE_DIR}/tests/runtime/fixtures/collection_tail_gap_run06.json")
+add_executable(purchase_observation_tests tests/runtime/purchase_observation_tests.cpp src/application/vision/skin_page_classifier.cpp)
+target_include_directories(purchase_observation_tests PRIVATE src)
+target_link_libraries(purchase_observation_tests PRIVATE Qt6::Core)
+add_test(NAME purchase_observation_tests COMMAND purchase_observation_tests)
 add_test(NAME domain_tests COMMAND domain_tests)
 add_test(NAME business_tests COMMAND business_tests)
 add_test(NAME business_value_tests COMMAND business_value_tests)
@@ -264,10 +322,18 @@ add_test(NAME profile_store_tests COMMAND profile_store_tests)
 add_test(NAME runtime_tests COMMAND runtime_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/replay_cases.json")
 add_test(NAME observation_adapter_tests COMMAND observation_adapter_tests)
 add_test(NAME windows_capture_tests COMMAND windows_capture_tests)
+add_test(NAME latest_frame_stream_tests COMMAND latest_frame_stream_tests)
+set_tests_properties(latest_frame_stream_tests PROPERTIES TIMEOUT 20)
+add_test(NAME collection_scroll_readiness_tests COMMAND collection_scroll_readiness_tests "${CMAKE_SOURCE_DIR}/tests/runtime/fixtures/collection_stream_scroll_run01.json")
 add_test(NAME startup_observer_tests COMMAND startup_observer_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/startup_pages.json")
 add_test(NAME startup_observer_self_test COMMAND RelinkStudio --startup-observer-self-test)
 add_test(NAME lobby_calibration_tests COMMAND lobby_calibration_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/lobby_live_20261007.json")
 add_test(NAME foreground_policy_tests COMMAND foreground_policy_tests)
+add_test(NAME live_capture_server_tests COMMAND live_capture_server_tests "$<TARGET_FILE:RelinkStudio>")
+add_test(NAME status_overlay_self_test COMMAND RelinkStudio --status-overlay --self-test
+  --pipe-name "\\\\.\\pipe\\RelinkStudioStatusOverlayCTest")
+set_tests_properties(status_overlay_self_test PROPERTIES TIMEOUT 30 PASS_REGULAR_EXPRESSION "STATUS_OVERLAY_SELF_TEST=PASS")
+set_tests_properties(live_capture_server_tests PROPERTIES TIMEOUT 45)
 add_test(NAME market_calibration_tests COMMAND market_calibration_tests "${CMAKE_SOURCE_DIR}/docs/business_rebuild/implementation/runtime/fixtures/market_live_20261007.json")
 set_tests_properties(windows_capture_tests PROPERTIES TIMEOUT 20)
 add_test(NAME windows_ocr_tests COMMAND windows_ocr_tests "${CMAKE_SOURCE_DIR}/src/vision/windows_ocr_worker.ps1")

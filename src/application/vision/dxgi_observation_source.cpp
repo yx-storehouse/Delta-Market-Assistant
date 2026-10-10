@@ -48,6 +48,43 @@ struct MappedTexture {
 #endif
 }
 
+struct DxgiCaptureResources::State {
+    TargetWindow target;
+    bool ready = false;
+#ifdef Q_OS_WIN
+    DWORD thread = 0;
+    Com<IDXGIFactory1> factory;
+    Com<IDXGIAdapter1> adapter;
+    Com<IDXGIOutput> output;
+    Com<ID3D11Device> device;
+    Com<ID3D11DeviceContext> context;
+    Com<IDXGIOutput1> output1;
+    Com<IDXGIOutputDuplication> duplication;
+    Com<ID3D11Texture2D> staging;
+    DXGI_OUTPUT_DESC outputDesc{};
+#endif
+};
+
+DxgiCaptureResources::DxgiCaptureResources() = default;
+DxgiCaptureResources::~DxgiCaptureResources() = default;
+bool DxgiCaptureResources::discard() {
+    if (m_busy.exchange(true)) return false;
+    if (m_state) { m_state.reset(); ++m_invalidations; }
+    m_busy.store(false);
+    return true;
+}
+QJsonObject DxgiCaptureResources::metrics() const {
+    return {{"schema", "dxgi-resource-cache-v1"}, {"initializations", m_initializations},
+        {"reuses", m_reuses}, {"invalidations", m_invalidations}, {"staging_creates", m_stagingCreates},
+        {"ready", m_state && m_state->ready}, {"pixel_cache", false}, {"background_capture", false}};
+}
+bool sameCaptureResourceTarget(const TargetWindow& a, const TargetWindow& b) {
+    return a.valid() && b.valid() && a.hwnd == b.hwnd && a.pid == b.pid
+        && a.processCreated == b.processCreated && a.windowClass == b.windowClass
+        && a.executableName == b.executableName && a.clientRect == b.clientRect
+        && a.monitorRect == b.monitorRect && a.monitor == b.monitor && a.dpi == b.dpi;
+}
+
 bool sameObservationDemand(const ObservationDemand& a, const ObservationDemand& b) {
     if (a.demandId != b.demandId || !sameContext(a.context, b.context) || a.mode != b.mode
         || a.purpose != b.purpose || a.createdMonoMs != b.createdMonoMs || a.notBeforeMonoMs != b.notBeforeMonoMs
@@ -76,8 +113,10 @@ PixelSummary summarizeBgra(const QByteArray& pixels, int width, int height, int 
     return s;
 }
 
-DxgiObservationSource::DxgiObservationSource(TargetWindow target, ObservationDemand demand)
-    : m_target(std::move(target)), m_demand(std::move(demand)) {}
+DxgiObservationSource::DxgiObservationSource(TargetWindow target, ObservationDemand demand,
+        std::shared_ptr<DxgiCaptureResources> resources)
+    : m_target(std::move(target)), m_demand(std::move(demand)),
+      m_resources(resources ? std::move(resources) : std::make_shared<DxgiCaptureResources>()) {}
 
 void DxgiObservationSource::cancel(const QString& demandId, const runtime::RuntimeContext& context) {
     if (demandId == m_demand.demandId && sameContext(context, m_demand.context)) m_cancelled.store(true);
@@ -91,6 +130,17 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
     };
     if (m_busy.exchange(true)) return fail(QStringLiteral("E_CAPTURE_BUSY"));
     struct BusyReset { std::atomic<bool>& b; ~BusyReset() { b.store(false); } } reset{m_busy};
+    if (m_resources->m_busy.exchange(true)) return fail(QStringLiteral("E_CAPTURE_RESOURCE_BUSY"));
+    BusyReset resourceBusy{m_resources->m_busy};
+    // Declared before any mapped texture/held desktop frame. Those transient
+    // objects unwind first, then the failed cache is released here.
+    bool captureSucceeded = false;
+    struct DropFailedCache {
+        DxgiCaptureResources& owner; bool& succeeded;
+        ~DropFailedCache() {
+            if (!succeeded && owner.m_state) { owner.m_state.reset(); ++owner.m_invalidations; }
+        }
+    } cacheFailure{*m_resources, captureSucceeded};
     ObservationAdapter validator(this);
     if (!validator.validateDemand(request.demand).valid || !sameObservationDemand(request.demand, m_demand)
         || request.requestId.isEmpty() || request.requestId.size() > 200 || request.requestNumber <= m_lastRequestNumber
@@ -116,12 +166,26 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
         return {};
     };
     auto abort = [&](const QString& code) { return fail(code, m_cancelled.load() ? CaptureStatus::Cancelled : CaptureStatus::Failed); };
-    Com<IDXGIFactory1> factory;
+    auto& owner = *m_resources;
+    if (owner.m_state && owner.m_state->ready) {
+        auto& old = *owner.m_state;
+        DXGI_OUTPUT_DESC current{};
+        const bool valid = old.thread == GetCurrentThreadId()
+            && sameCaptureResourceTarget(old.target, m_target) && old.factory->IsCurrent()
+            && SUCCEEDED(old.device->GetDeviceRemovedReason()) && SUCCEEDED(old.output->GetDesc(&current))
+            && current.AttachedToDesktop && current.Monitor == old.outputDesc.Monitor
+            && current.Rotation == old.outputDesc.Rotation
+            && EqualRect(&current.DesktopCoordinates, &old.outputDesc.DesktopCoordinates);
+        if (!valid) { owner.m_state.reset(); ++owner.m_invalidations; }
+    }
+    if (!owner.m_state) owner.m_state = std::make_unique<DxgiCaptureResources::State>();
+    auto& gpu = *owner.m_state;
+    auto& factory=gpu.factory; auto& adapter=gpu.adapter; auto& output=gpu.output;
+    auto& outputDesc=gpu.outputDesc; auto& device=gpu.device; auto& context=gpu.context;
+    auto& output1=gpu.output1; auto& duplication=gpu.duplication; auto& staging=gpu.staging;
+    if (!gpu.ready) {
     if (FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(factory.put()))))
         return fail(QStringLiteral("E_DXGI_FACTORY"));
-    Com<IDXGIAdapter1> adapter;
-    Com<IDXGIOutput> output;
-    DXGI_OUTPUT_DESC outputDesc{};
     bool found = false;
     for (UINT i = 0; i < 32 && !found; ++i) {
         if (factory->EnumAdapters1(i, adapter.put()) == DXGI_ERROR_NOT_FOUND) break;
@@ -136,15 +200,14 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
     if (!found) return fail(QStringLiteral("E_DXGI_OUTPUT"));
     if (outputDesc.Rotation != DXGI_MODE_ROTATION_IDENTITY) return fail(QStringLiteral("E_DXGI_ROTATION_UNSUPPORTED"));
     if (const auto e = interrupted(); !e.isEmpty()) return abort(e);
-    Com<ID3D11Device> device;
-    Com<ID3D11DeviceContext> context;
     if (FAILED(D3D11CreateDevice(adapter.get(), D3D_DRIVER_TYPE_UNKNOWN, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
             nullptr, 0, D3D11_SDK_VERSION, device.put(), nullptr, context.put()))) return fail(QStringLiteral("E_D3D_DEVICE"));
-    Com<IDXGIOutput1> output1;
     if (FAILED(output->QueryInterface(__uuidof(IDXGIOutput1), reinterpret_cast<void**>(output1.put()))))
         return fail(QStringLiteral("E_DXGI_OUTPUT_INTERFACE"));
-    Com<IDXGIOutputDuplication> duplication;
     if (FAILED(output1->DuplicateOutput(device.get(), duplication.put()))) return fail(QStringLiteral("E_DXGI_DUPLICATION"));
+    gpu.target = m_target; gpu.thread = GetCurrentThreadId(); gpu.ready = true;
+    ++owner.m_initializations;
+    } else { ++owner.m_reuses; }
     LARGE_INTEGER frequency{};
     QueryPerformanceFrequency(&frequency);
     const int width = m_target.clientRect.width(), height = m_target.clientRect.height();
@@ -177,20 +240,21 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
             return fail(QStringLiteral("E_DXGI_TEXTURE_SHAPE"));
         desc.Width = width; desc.Height = height; desc.MipLevels = 1; desc.ArraySize = 1;
         desc.Usage = D3D11_USAGE_STAGING; desc.BindFlags = 0; desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ; desc.MiscFlags = 0;
-        Com<ID3D11Texture2D> staging;
-        if (FAILED(device->CreateTexture2D(&desc, nullptr, staging.put()))) return fail(QStringLiteral("E_D3D_STAGING"));
+        if (!staging.get()) {
+            if (FAILED(device->CreateTexture2D(&desc, nullptr, staging.put()))) return fail(QStringLiteral("E_D3D_STAGING"));
+            ++owner.m_stagingCreates;
+        }
         const D3D11_BOX box{UINT(left), UINT(top), 0, UINT(left + width), UINT(top + height), 1};
         context->CopySubresourceRegion(staging.get(), 0, 0, 0, 0, texture.get(), 0, &box);
         context->Flush();
         MappedTexture mapped{context.get(), staging.get(), false};
         D3D11_MAPPED_SUBRESOURCE data{};
-        while (true) {
-            if (const auto e = interrupted(); !e.isEmpty()) return abort(e);
-            const HRESULT result = context->Map(staging.get(), 0, D3D11_MAP_READ, D3D11_MAP_FLAG_DO_NOT_WAIT, &data);
-            if (result == DXGI_ERROR_WAS_STILL_DRAWING) { Sleep(1); continue; }
-            if (FAILED(result)) return fail(QStringLiteral("E_D3D_MAP"));
-            mapped.mapped = true; break;
-        }
+        if (const auto e = interrupted(); !e.isEmpty()) return abort(e);
+        // A blocking Map waits only for this flushed GPU copy (~1-2 ms). The
+        // former DO_NOT_WAIT + Sleep(1) loop slept a whole default timer
+        // quantum (~15.6 ms) on almost every frame before reading pixels.
+        if (FAILED(context->Map(staging.get(), 0, D3D11_MAP_READ, 0, &data))) return fail(QStringLiteral("E_D3D_MAP"));
+        mapped.mapped = true;
         if (!data.pData || data.RowPitch < UINT(width * 4)) return fail(QStringLiteral("E_D3D_ROW_PITCH"));
         FrameEnvelope frame;
         frame.width = width; frame.height = height; frame.strideBytes = width * 4;
@@ -215,7 +279,9 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
         frame.sourceMonoMs = presented; frame.sourceUncertaintyMs = 1;
         if (frame.captureEndMonoMs - (presented - 1) > m_demand.maxFrameAgeMs)
             return fail(QStringLiteral("E_FRAME_TOO_OLD"));
-        reply.status = CaptureStatus::Captured; reply.frame = std::move(frame); return reply;
+        reply.status = CaptureStatus::Captured; reply.frame = std::move(frame);
+        captureSucceeded = true;
+        return reply;
     }
     return fail(QStringLiteral("E_CAPTURE_FRAME_LIMIT"));
 #else

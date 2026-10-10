@@ -14,6 +14,8 @@
 #include "diagnostics/live_capture_check.h"
 #include "diagnostics/startup_observer_self_test.h"
 #include "diagnostics/savedvalue_preview.h"
+#include "overlay/status_overlay.h"
+#include "application/collection_hotkey.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -26,21 +28,26 @@
 #include <QPalette>
 #include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QTimer>
 #include <cstdio>
 
 int main(int argc, char** argv) {
-    bool startupCheck = false, liveCheck = false, savedValueCheck = false, importTasks = false;
+    bool startupCheck = false, liveCheck = false, liveServer = false, savedValueCheck = false, importTasks = false, statusOverlay = false;
     for (int i = 1; i < argc; ++i) {
+        statusOverlay |= QByteArray(argv[i]) == "--status-overlay";
         importTasks |= QByteArray(argv[i]) == "--import-collection-tasks" || QByteArray(argv[i]).startsWith("--import-collection-tasks=");
         startupCheck |= QByteArray(argv[i]) == "--startup-observer-self-test";
         liveCheck |= QByteArray(argv[i]) == "--live-capture-check";
+        liveServer |= QByteArray(argv[i]) == "--live-capture-server";
         savedValueCheck |= QByteArray(argv[i]) == "--savedvalue-preview" || QByteArray(argv[i]).startsWith("--savedvalue-preview=");
     }
-    if (int(startupCheck)+int(liveCheck)+int(savedValueCheck)+int(importTasks)>1) {
+    if (int(startupCheck)+int(liveCheck)+int(liveServer)+int(savedValueCheck)+int(importTasks)+int(statusOverlay)>1) {
         std::fprintf(stderr, "E_DIAGNOSTIC_MODE_CONFLICT\n"); return 2;
     }
+    if (statusOverlay) return relink::overlay::runStatusOverlay(argc,argv);
     if (importTasks) return relink::diagnostics::runCollectionTaskImportCli(argc,argv);
     if (savedValueCheck) return relink::diagnostics::runSavedValuePreview(argc,argv);
+    if (liveServer) return relink::diagnostics::runLiveCaptureServer(argc,argv);
     if (startupCheck) {
         QCoreApplication app(argc, argv);
         return relink::diagnostics::runStartupObserverSelfTest(QStringLiteral(":/fixtures/startup_pages.json"));
@@ -203,6 +210,15 @@ int main(int argc, char** argv) {
     MainWindow window(&state, nullptr, fixtureMode ? &workspace : nullptr, fixtureMode ? nullptr : &catalog);
     window.show(); // Offscreen platform renders to memory only when headless=true.
     if (!headless) {
+        // The run hotkey belongs to the interactive program only: it starts the
+        // collection runner on the saved tasks and stops it on the next press.
+        relink::application::CollectionHotkeyController hotkeys(&state);
+        hotkeys.setSaveConfiguration([&state](QString* error) { return state.saveTo(state.configPath, error); });
+        QObject::connect(&state, &AppState::changed, &hotkeys, &relink::application::CollectionHotkeyController::syncHotkey);
+        QObject::connect(&app, &QApplication::aboutToQuit, &hotkeys, [&hotkeys]() { hotkeys.shutdown(); });
+        // Load the recognition engines while the program, not the game, is in
+        // front: the first press then starts at once.
+        QTimer::singleShot(300, &hotkeys, &relink::application::CollectionHotkeyController::preload);
         QObject::connect(&app, &QApplication::aboutToQuit, &state, [&state, &window]() {
             state.pauseSimulation();
             if (window.property("skipAutomaticConfigSave").toBool()) return;

@@ -19,7 +19,8 @@ namespace {
 constexpr qsizetype MaxBytes = 4 * 1024 * 1024;
 constexpr qsizetype MaxSkins = 20000;
 constexpr qsizetype MaxSeasons = 999;
-const QString Schema = QStringLiteral("relink-skin-catalog-v1");
+const QString Schema = QStringLiteral("relink-skin-catalog-v2");
+const QString LegacySchema = QStringLiteral("relink-skin-catalog-v1");
 
 bool fail(QString* error, const QString& message) {
     if (error) *error = message;
@@ -44,6 +45,27 @@ bool text(const QJsonObject& object, const char* name, bool required,
     return true;
 }
 
+QString compact(const QString& value) {
+    static const QRegularExpression spaces(QStringLiteral("\\s+"));
+    return value.normalized(QString::NormalizationForm_KC).remove(spaces);
+}
+
+// "S6|AUG 突击步枪 - 天命": the collection runner identifies a product, and
+// checks the game's title, by this name. It follows from the other fields, so
+// a missing or differently written name (no "Sx|" prefix, as older dialog
+// additions and hand-filled templates had) is rebuilt; the same rule runs in
+// tests/manual/collection_run_config.py. A name already equal up to spacing
+// keeps its original spelling.
+void canonicalizeDisplayName(Skin& skin) {
+    QString suffix = skin.skinSeries;
+    if (!skin.skinSeries.isEmpty() && !skin.variantLabel.isEmpty()) suffix += QStringLiteral(" - ");
+    suffix += skin.variantLabel;
+    const QString name = skin.weapon + (suffix.isEmpty() ? QString() : QStringLiteral(" - ") + suffix);
+    const auto parts = skin.displayName.split(QLatin1Char('|'));
+    if (parts.size() == 2 && parts[0].trimmed() == skin.seasonId && compact(parts[1]) == compact(name)) return;
+    skin.displayName = skin.seasonId + QStringLiteral("|") + name;
+}
+
 bool knownKeys(const QJsonObject& object, const QSet<QString>& allowed, QString* error) {
     for (auto it = object.begin(); it != object.end(); ++it)
         if (!allowed.contains(it.key()))
@@ -66,8 +88,7 @@ QJsonObject skinJson(const Skin& skin) {
     return {{"product_id", skin.productId}, {"season_id", skin.seasonId},
             {"season_label", skin.seasonLabel}, {"weapon", skin.weapon},
             {"skin_series", skin.skinSeries}, {"variant_label", skin.variantLabel},
-            {"menu_color", skin.menuColor}, {"game_quality_name", skin.gameQualityName},
-            {"display_name", skin.displayName}, {"thumbnail_path", skin.thumbnailPath}};
+            {"grade", skin.grade}, {"display_name", skin.displayName}, {"thumbnail_path", skin.thumbnailPath}};
 }
 
 bool merge(const Catalog& base, const Catalog& extra, Catalog* result, QString* error) {
@@ -114,6 +135,18 @@ bool readExtension(const QString& path, QByteArray* bytes, bool* exists, QString
 
 } // namespace
 
+const QStringList& gradeLabels() {
+    static const QStringList labels{QStringLiteral("传说品阶"), QStringLiteral("史诗品阶"), QStringLiteral("稀有品阶")};
+    return labels;
+}
+
+QString gradeFromMenuColor(const QString& color) {
+    if (color == QStringLiteral("orange") || color == QStringLiteral("red")) return QStringLiteral("传说品阶");
+    if (color == QStringLiteral("purple")) return QStringLiteral("史诗品阶");
+    if (color == QStringLiteral("blue")) return QStringLiteral("稀有品阶");
+    return {};
+}
+
 const Skin* Catalog::findSkin(const QString& id) const {
     for (const auto& skin : skins) if (skin.productId == id) return &skin;
     return nullptr;
@@ -138,7 +171,8 @@ bool parseCatalog(const QByteArray& bytes, Catalog* result, QString* error) {
         return fail(error, QStringLiteral("皮肤目录 JSON 格式错误：%1").arg(parseError.errorString()));
     const auto root = document.object();
     if (!knownKeys(root, {"schema", "seasons", "skins"}, error)) return false;
-    if (root.value("schema").toString() != Schema)
+    const bool legacy = root.value("schema").toString() == LegacySchema;
+    if (!legacy && root.value("schema").toString() != Schema)
         return fail(error, QStringLiteral("皮肤目录 schema 不匹配"));
     if (!root.value("seasons").isArray() || !root.value("skins").isArray())
         return fail(error, QStringLiteral("seasons 与 skins 必须为数组"));
@@ -163,12 +197,16 @@ bool parseCatalog(const QByteArray& bytes, Catalog* result, QString* error) {
     }
     static const QRegularExpression productId(QStringLiteral("^(?:[1-9][0-9]{0,17}|user:[a-zA-Z0-9][a-zA-Z0-9._-]{0,79})$"));
     static const QSet<QString> colors{"red", "orange", "purple", "blue", "unknown"};
-    const QSet<QString> skinKeys{"product_id", "season_id", "season_label", "weapon", "skin_series",
-        "variant_label", "menu_color", "game_quality_name", "display_name", "thumbnail_path"};
+    const QSet<QString> skinKeys = legacy
+        ? QSet<QString>{"product_id", "season_id", "season_label", "weapon", "skin_series",
+                        "variant_label", "menu_color", "game_quality_name", "display_name", "thumbnail_path"}
+        : QSet<QString>{"product_id", "season_id", "season_label", "weapon", "skin_series",
+                        "variant_label", "grade", "display_name", "thumbnail_path"};
     for (const auto& value : skins) {
         if (!value.isObject()) return fail(error, QStringLiteral("皮肤条目必须是对象"));
         const auto object = value.toObject();
         Skin skin;
+        QString menuColor, qualityName;
         if (!knownKeys(object, skinKeys, error)
             || !text(object, "product_id", true, &skin.productId, error)
             || !text(object, "season_id", true, &skin.seasonId, error)
@@ -176,14 +214,25 @@ bool parseCatalog(const QByteArray& bytes, Catalog* result, QString* error) {
             || !text(object, "weapon", true, &skin.weapon, error)
             || !text(object, "skin_series", false, &skin.skinSeries, error)
             || !text(object, "variant_label", false, &skin.variantLabel, error)
-            || !text(object, "menu_color", true, &skin.menuColor, error)
-            || !text(object, "game_quality_name", false, &skin.gameQualityName, error)
-            || !text(object, "display_name", true, &skin.displayName, error, 320)
+            || (legacy ? !text(object, "menu_color", true, &menuColor, error)
+                             || !text(object, "game_quality_name", false, &qualityName, error)
+                       : !text(object, "grade", false, &skin.grade, error))
+            || !text(object, "display_name", false, &skin.displayName, error, 320)
             || !text(object, "thumbnail_path", false, &skin.thumbnailPath, error)) return false;
         if (!productId.match(skin.productId).hasMatch())
             return fail(error, QStringLiteral("商品 ID 应为原始数字 ID 或 user: 开头的自定义 ID"));
-        if (!colors.contains(skin.menuColor))
-            return fail(error, QStringLiteral("菜单颜色应为 red、orange、purple、blue 或 unknown"));
+        if (legacy) {
+            if (!colors.contains(menuColor))
+                return fail(error, QStringLiteral("菜单颜色应为 red、orange、purple、blue 或 unknown"));
+            // The old dialog saved free text here. A text naming a 品阶 (with or
+            // without the 品阶 suffix) wins; anything else falls back to the colour.
+            const QString named = qualityName.endsWith(QStringLiteral("品阶")) ? qualityName
+                                                                              : qualityName + QStringLiteral("品阶");
+            skin.grade = gradeLabels().contains(named) ? named : gradeFromMenuColor(menuColor);
+        }
+        if (!skin.grade.isEmpty() && !gradeLabels().contains(skin.grade))
+            return fail(error, QStringLiteral("商品 %1 的品阶（grade）应为 传说品阶、史诗品阶、稀有品阶 或空白（未记录）")
+                                   .arg(skin.productId));
         if (!skin.thumbnailPath.isEmpty())
             return fail(error, QStringLiteral("当前版本的皮肤缩略图字段应留空"));
         if (!skin.variantLabel.isEmpty() && skin.variantLabel != QStringLiteral("极品")
@@ -192,6 +241,9 @@ bool parseCatalog(const QByteArray& bytes, Catalog* result, QString* error) {
         const auto* season = parsed.findSeason(skin.seasonId);
         if (!season || season->label != skin.seasonLabel)
             return fail(error, QStringLiteral("商品 %1 缺少一致的赛季定义").arg(skin.productId));
+        canonicalizeDisplayName(skin);
+        if (skin.displayName.size() > 320)
+            return fail(error, QStringLiteral("商品 %1 的显示名称过长").arg(skin.productId));
         if (productIds.contains(skin.productId))
             return fail(error, QStringLiteral("目录包含重复商品 ID：%1").arg(skin.productId));
         productIds.insert(skin.productId);
@@ -295,6 +347,17 @@ bool CatalogStore::commitAddition(const Catalog& addition, QString* error) {
     if (!readExtension(m_extensionPath, &current, &existed, error)) return false;
     if (existed != m_extensionExisted || current != m_extensionBytes)
         return fail(error, QStringLiteral("皮肤扩展文件已被修改，请重新打开目录后再追加；现有数据已保留"));
+    // The first save over an earlier v1 file (menu colours) keeps its bytes,
+    // so a previous program version can still be restored with its data.
+    if (existed && current.contains("\"relink-skin-catalog-v1\"")) {
+        const QString backup = m_extensionPath + QStringLiteral(".before-grade-v2.bak");
+        if (!QFileInfo::exists(backup)) {
+            QSaveFile copy(backup);
+            copy.setDirectWriteFallback(false);
+            if (!copy.open(QIODevice::WriteOnly) || copy.write(current) != current.size() || !copy.commit())
+                return fail(error, QStringLiteral("备份旧版皮肤扩展数据失败，原数据未改动：%1").arg(copy.errorString()));
+        }
+    }
     QSaveFile file(m_extensionPath);
     file.setDirectWriteFallback(false);
     if (!file.open(QIODevice::WriteOnly))

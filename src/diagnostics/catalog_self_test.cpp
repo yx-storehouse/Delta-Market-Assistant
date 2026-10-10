@@ -67,7 +67,8 @@ int runCatalogSelfTest(QApplication& app, const QString& requestedOutput) {
     check(condition&&condition->currentText()==QStringLiteral("不限")&&condition->findText(QStringLiteral("成色C"))>=0,"CONDITION_SEPARATE_FROM_QUALITY");
     auto* color=window.findChild<QComboBox*>("favoriteRarity");
     if(color) color->setCurrentIndex(1);
-    check(color&&table->rowCount()>0&&table->rowCount()<149,"MENU_COLOR_FILTER");
+    check(color&&color->findText(QStringLiteral("史诗品阶"))>0&&color->findText(QStringLiteral("紫色"))<0
+          &&table->rowCount()>0&&table->rowCount()<149,"GRADE_FILTER");
     if(color) color->setCurrentIndex(0);
     search->setText("S11"); check(table->rowCount()==13,"SEASON_SEARCH");
     search->setText(QStringLiteral("极品")); check(table->rowCount()==14,"VARIANT_SEARCH");
@@ -121,7 +122,7 @@ int runCatalogSelfTest(QApplication& app, const QString& requestedOutput) {
     legacyCollision.name=QStringLiteral("保留自定义皮肤");legacyCollision.series="legacy";legacyCollision.condition=QStringLiteral("未采集");legacyCollision.rarity=QStringLiteral("待核对");
     state.skins.append(legacyCollision);
     catalog::Catalog conflict;conflict.seasons={{"S12",QStringLiteral("仅测试的未来赛季")}};
-    conflict.skins={{"user:conflict","S12",QStringLiteral("仅测试的未来赛季"),"AUG",QStringLiteral("仅测试冲突"),{},"unknown",{},QStringLiteral("AUG - 仅测试冲突"),{}}};
+    conflict.skins={{"user:conflict","S12",QStringLiteral("仅测试的未来赛季"),"AUG",QStringLiteral("仅测试冲突"),{},{},QStringLiteral("AUG - 仅测试冲突"),{}}};
     const auto stableExtension=read(store.extensionPath());
     check(!dialog->importCatalogJson(catalog::serializeCatalog(conflict),&error)&&read(store.extensionPath())==stableExtension&&store.catalog().skins.size()==150,"CONFIG_COLLISION_REJECTED_BEFORE_COMMIT");
     state.skins.removeLast();

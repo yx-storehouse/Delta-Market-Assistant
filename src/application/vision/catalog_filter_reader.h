@@ -30,6 +30,14 @@ struct CatalogFilterState {
 // geometry or ambiguous pixels stay Unknown; no false/unselected default.
 CatalogFilterState readCatalogFilter(
     const runtime::observation::FrameEnvelope& frame, const QJsonObject& fullClientOcr);
+// Request a narrow re-read only for an actually missing season label on a
+// validated, bound filter frame. Merge only actual same-frame ROI OCR words;
+// no expected season value is accepted by this interface.
+QRect catalogSeasonLabelRefinementRegion(
+    const runtime::observation::FrameEnvelope& frame, const QJsonObject& fullClientOcr);
+QJsonObject refineCatalogSeasonLabel(const runtime::observation::FrameEnvelope& frame,
+    const QJsonObject& fullClientOcr, const QJsonObject& regionOcr, const QRect& region,
+    QJsonObject* evidence = nullptr);
 // All samples are summarized in memory. No pixel/patch serialization or I/O.
 FilterCheckbox measureFilterCheckbox(const runtime::observation::FrameEnvelope& frame,
     const QRect& bounds, const QString& label);

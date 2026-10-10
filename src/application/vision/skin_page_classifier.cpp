@@ -207,6 +207,10 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         if (has(u"返回", bottom)) evidence.append("navigation.back");
         candidate(SkinPage::EmptyWatchlist, evidence);
     }
+    // Emptied by its refresh (peek01): the list's own "no content" message and
+    // the watchlist count; the message alone could be an empty market listing.
+    else if (sale && has(u"暂无信息内容", body) && has(u"我的关注", QRectF(0, .80, .30, .20)))
+        candidate(SkinPage::EmptyWatchlist, {"list.sale", "watch.empty_content", "watch.count"});
     // The open listing-filter panel covers "similar skins" and dims the
     // footer. Its three independent right-panel anchors can prove that layout
     // instead; sale/sort/condition context is still mandatory.
@@ -214,7 +218,13 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
     const bool listings = sale && (exact(u"默认排序", top) || has(u"按稀有度", top) || has(u"按价格", top) || has(u"按成色", top))
         && has(u"成色", body) && (a.pageNumber(bottom) || has(u"相似皮肤", body) || listingFilterPanel);
     if (listings) {
-        const bool watched = has(u"我的关注:", bottom);
+        // The watchlist names its count bottom-left ("我的关注：60/150"). OCR
+        // may drop or split the colon (live 2026-10-09 purchase_readonly/
+        // live04: one read of an unchanged watchlist became skin_listings), so
+        // the label alone counts there; that corner shows no other 我的关注
+        // (the 成功添加至我的关注 toast is centred, the catalogue button top).
+        const QRectF countCorner(0, .80, .30, .20);
+        const bool watched = has(u"我的关注:", bottom) || has(u"我的关注", countCorner);
         candidate(watched ? SkinPage::WatchlistListings : SkinPage::SkinListings,
             watched ? QStringList{"list.sale", "list.sort", "list.condition", "list.layout", "watch.count"}
                     : QStringList{"list.sale", "list.sort", "list.condition", "list.layout"});
@@ -265,6 +275,132 @@ SkinPageResult classifySkinPage(const QJsonObject& observation) {
         if (toString(page) == result.candidates.first()) result.page = page;
     result.reason = result.overlay == PageOverlay::None ? QStringLiteral("MULTI_ANCHOR_MATCH") : QStringLiteral("OVERLAY_REQUIRES_RECHECK");
     return result;
+}
+static QJsonObject refineEmptyWatchlistReadings(const QJsonObject& observation,const QList<QRect>& regions,
+        const QList<QJsonObject>& readings,const char* schema,QJsonObject* evidence) {
+    QJsonObject audit{{"schema",schema},
+        {"replacement_applied",false},{"actions_enabled",false},{"same_frame",false},
+        {"frame_id",observation["frame_id"]},{"frame_sha256",observation["frame_sha256"]},
+        {"image_file_writes",0}};
+    const auto fail=[&](const char* reason){audit["error"]=reason;if(evidence)*evidence=audit;return observation;};
+    const auto classified=classifySkinPage(observation);
+    if(!classified.validInput ||classified.page!=SkinPage::Unknown ||!classified.candidates.isEmpty()
+        ||classified.overlay!=PageOverlay::None ||observation["width"]!=2560 ||observation["height"]!=1440)
+        return fail("E_EMPTY_WATCHLIST_REFINEMENT_SCOPE");
+    const QString frameId=observation["frame_id"].toString(),hash=observation["frame_sha256"].toString();
+    static const QRegularExpression sha(QStringLiteral("^[0-9a-f]{64}$"));
+    if(frameId.isEmpty() ||!sha.match(hash).hasMatch())return fail("E_EMPTY_WATCHLIST_REFINEMENT_FRAME");
+    QJsonArray newWords;
+    for(int i=0;i<regions.size();++i){
+        const auto& reading=readings[i];
+        if(reading["frame_id"]!=frameId ||reading["frame_sha256"]!=hash ||reading["same_frame"]!=true
+            ||reading["coverage"]!="roi" ||reading["width"]!=observation["width"]
+            ||reading["height"]!=observation["height"])
+            return fail("E_EMPTY_WATCHLIST_REFINEMENT_FRAME");
+        if(!reading["words"].isArray() ||reading["words"].toArray().isEmpty()
+            ||reading["words"].toArray().size()>32)return fail("E_EMPTY_WATCHLIST_REFINEMENT_WORDS");
+        auto validated=reading;validated["coverage"]="full_client";
+        if(!classifySkinPage(validated).validInput)return fail("E_EMPTY_WATCHLIST_REFINEMENT_WORDS");
+        for(const auto& word:reading["words"].toArray()){
+            const auto w=word.toObject();const QRectF b(w["x"].toDouble(),w["y"].toDouble(),
+                w["width"].toDouble(),w["height"].toDouble());
+            if(!QRectF(regions[i]).contains(b))return fail("E_EMPTY_WATCHLIST_REFINEMENT_BOUNDS");
+            newWords.append(word);
+        }
+    }
+    audit["same_frame"]=true;
+    QJsonArray merged;
+    for(const auto& value:observation["words"].toArray()){
+        const auto w=value.toObject();const QPointF center(w["x"].toDouble()+w["width"].toDouble()/2,
+            w["y"].toDouble()+w["height"].toDouble()/2);
+        bool inside=false;
+        for(const auto& region:regions)inside=inside||QRectF(region).contains(center);
+        if(!inside)merged.append(value);
+    }
+    for(const auto& word:newWords)merged.append(word);
+    auto candidate=observation;candidate["words"]=merged;
+    const auto after=classifySkinPage(candidate);
+    audit["anchor_checks_after"]=after.anchorChecks;
+    if(!after.validInput ||after.page!=SkinPage::EmptyWatchlist ||after.overlay!=PageOverlay::None)
+        return fail("E_EMPTY_WATCHLIST_REFINEMENT_LABELS");
+    audit["replacement_applied"]=true;if(evidence)*evidence=audit;
+    return candidate;
+}
+QJsonObject refineEmptyWatchlistPage(const QJsonObject& observation,
+        const QJsonObject& saleReading,const QJsonObject& emptyReading,QJsonObject* evidence) {
+    return refineEmptyWatchlistReadings(observation,{QRect(170,64,300,96),QRect(1075,835,435,100)},
+        {saleReading,emptyReading},"empty-watchlist-same-frame-refinement-v1",evidence);
+}
+QJsonObject refineEmptiedWatchlistPage(const QJsonObject& observation,const QJsonObject& saleReading,
+        const QJsonObject& contentReading,const QJsonObject& countReading,QJsonObject* evidence) {
+    return refineEmptyWatchlistReadings(observation,
+        {QRect(170,64,300,96),EmptiedWatchlistContentRegion,WatchlistCountRegion},
+        {saleReading,contentReading,countReading},"emptied-watchlist-same-frame-refinement-v1",evidence);
+}
+QRect homeCirculationRefinementRegion(const QJsonObject& observation) {
+    const auto classified=classifySkinPage(observation);
+    const auto checks=classified.anchorChecks;
+    if(!classified.validInput ||classified.page!=SkinPage::Unknown
+        ||classified.overlay!=PageOverlay::None ||!classified.candidates.isEmpty()
+        ||observation["width"]!=2560 ||observation["height"]!=1440
+        ||!checks["catalog.skin_tab"].toBool() ||!checks["catalog.watch"].toBool()
+        ||checks["catalog.circulation"].toBool())return {};
+    return QRect(625,310,800,95);
+}
+QRect listingFilterAllLabelRefinementRegion(const QJsonObject& observation) {
+    const auto classified=classifySkinPage(observation);
+    const auto checks=classified.anchorChecks;
+    if(!classified.validInput ||classified.overlay!=PageOverlay::None
+        ||(classified.page!=SkinPage::SkinListings &&classified.page!=SkinPage::WatchlistListings)
+        ||observation["width"]!=2560 ||observation["height"]!=1440
+        ||!checks["listing.sale"].toBool() ||!checks["listing.default_sort"].toBool()
+        ||!checks["listing.condition"].toBool() ||!checks["listing.filter_price"].toBool()
+        ||!checks["listing.filter_confirm"].toBool() ||checks["listing.filter_all"].toBool())return {};
+    // Recorded condition-filter label boxes: x1894..1976,y455..474. The
+    // selected checkbox ends at x1878; exclude it rather than changing text.
+    return QRect(1886,444,120,42);
+}
+QJsonObject refineListingFilterAllLabel(const QJsonObject& observation,
+        const QJsonObject& regionObservation,const QRect& region,QJsonObject* evidence) {
+    QJsonObject audit{{"schema","listing-filter-label-refinement-v1"},{"field","listing.filter_all"},
+        {"bounds",QJsonArray{region.x(),region.y(),region.width(),region.height()}},
+        {"replacement_applied",false},{"actions_enabled",false},{"same_frame",false},
+        {"frame_id",observation["frame_id"]},{"frame_sha256",observation["frame_sha256"]},
+        {"words",regionObservation["words"]},{"image_file_writes",0}};
+    const auto fail=[&](const char* reason){audit["error"]=reason;if(evidence)*evidence=audit;return observation;};
+    if(region.isEmpty() ||region!=listingFilterAllLabelRefinementRegion(observation))
+        return fail("E_LISTING_FILTER_REFINEMENT_SCOPE");
+    const QString frameId=observation["frame_id"].toString(),hash=observation["frame_sha256"].toString();
+    static const QRegularExpression sha(QStringLiteral("^[0-9a-f]{64}$"));
+    if(frameId.isEmpty() ||!sha.match(hash).hasMatch() ||regionObservation["frame_id"]!=frameId
+        ||regionObservation["frame_sha256"]!=hash ||regionObservation["same_frame"]!=true
+        ||regionObservation["coverage"]!="roi" ||regionObservation["width"]!=observation["width"]
+        ||regionObservation["height"]!=observation["height"])
+        return fail("E_LISTING_FILTER_REFINEMENT_FRAME");
+    audit["same_frame"]=true;
+    if(!regionObservation["words"].isArray() ||regionObservation["words"].toArray().isEmpty()
+        ||regionObservation["words"].toArray().size()>16)return fail("E_LISTING_FILTER_REFINEMENT_WORDS");
+    auto validated=regionObservation;validated["coverage"]="full_client";
+    if(!classifySkinPage(validated).validInput)return fail("E_LISTING_FILTER_REFINEMENT_WORDS");
+    for(const auto& value:regionObservation["words"].toArray()){
+        const auto word=value.toObject();const QRectF box(word["x"].toDouble(),word["y"].toDouble(),
+            word["width"].toDouble(),word["height"].toDouble());
+        if(!QRectF(region).contains(box))return fail("E_LISTING_FILTER_REFINEMENT_BOUNDS");
+    }
+    QJsonArray merged;
+    for(const auto& value:observation["words"].toArray()){
+        const auto word=value.toObject();const QRectF box(word["x"].toDouble(),word["y"].toDouble(),
+            word["width"].toDouble(),word["height"].toDouble());
+        if(!QRectF(region).contains(box.center()))merged.append(value);
+    }
+    for(const auto& value:regionObservation["words"].toArray())merged.append(value);
+    auto candidate=observation;candidate["words"]=merged;
+    const auto before=classifySkinPage(observation),after=classifySkinPage(candidate);
+    audit["anchor_checks_after"]=after.anchorChecks;
+    if(!after.validInput ||after.page!=before.page ||after.overlay!=PageOverlay::ListingFilter
+        ||!after.anchorChecks["listing.filter_all"].toBool())return fail("E_LISTING_FILTER_REFINEMENT_LABEL");
+    audit["replacement_applied"]=true;if(evidence)*evidence=audit;
+    return candidate;
 }
 QJsonObject projectLobbyAnchorDiagnostics(const QJsonObject& observation) {
     const auto validated = classifySkinPage(observation);

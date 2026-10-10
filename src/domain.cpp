@@ -64,7 +64,7 @@ QJsonObject skinJson(const Skin& skin) {
             {QStringLiteral("price"), skin.price}, {QStringLiteral("change"), skin.change},
             {QStringLiteral("followed"), skin.followed},
             {QStringLiteral("catalogProductId"), skin.catalogProductId},
-            {QStringLiteral("menuColor"), skin.menuColor}, {QStringLiteral("variant"), skin.variant},
+            {QStringLiteral("variant"), skin.variant},
             {QStringLiteral("skinSeries"), skin.skinSeries},
             {QStringLiteral("priceKnown"), skin.priceKnown}, {QStringLiteral("wearKnown"), skin.wearKnown},
             {QStringLiteral("changeKnown"), skin.changeKnown}, {QStringLiteral("dataSource"), skin.dataSource}};
@@ -134,6 +134,7 @@ bool parseTaskImportSource(const QJsonObject& task, TaskImportSource& source,
 QJsonObject runJson(const RunSettings& run) {
     return {{QStringLiteral("profile"), run.profile}, {QStringLiteral("hotkey"), run.hotkey},
             {QStringLiteral("purchaseDelayMs"), run.purchaseDelayMs},
+            {QStringLiteral("enterBeforeSeconds"), run.enterBeforeSeconds},
             {QStringLiteral("dynamicDelay"), run.dynamicDelay},
             {QStringLiteral("queueFullTrigger"), run.queueFullTrigger},
             {QStringLiteral("queueFullStepMs"), run.queueFullStepMs},
@@ -213,6 +214,7 @@ bool parseRunSettings(const QJsonObject& root, RunSettings& run, QString* error)
         run.hotkey = hotkey.toString();
     }
     return integer("purchaseDelayMs", run.purchaseDelayMs, 0, 60000)
+        && integer("enterBeforeSeconds", run.enterBeforeSeconds, 1, 5)
         && flag("dynamicDelay", run.dynamicDelay)
         && integer("queueFullTrigger", run.queueFullTrigger, 1, 9999)
         && step("queueFullStepMs", run.queueFullStepMs)
@@ -288,8 +290,11 @@ bool parseConfig(const QJsonObject& root, QVector<Skin>& parsedSkins,
         skin.dataSource = root.value(QStringLiteral("source")).toString()
                 == QStringLiteral("synthetic_frontend_fixture")
             ? QStringLiteral("test_fixture") : QStringLiteral("legacy_configuration");
+        // Earlier files also saved the catalogue menu colour; the 品阶 in
+        // rarity replaced it. The value is still validated, then dropped.
+        QString legacyMenuColor;
         if (!optionalText("catalogProductId", skin.catalogProductId)
-            || !optionalText("menuColor", skin.menuColor)
+            || !optionalText("menuColor", legacyMenuColor)
             || !optionalText("variant", skin.variant)
             || !optionalText("skinSeries", skin.skinSeries)
             || !optionalText("dataSource", skin.dataSource)

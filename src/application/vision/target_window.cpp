@@ -1,6 +1,7 @@
 #include "target_window.h"
 
 #include <QFileInfo>
+#include <algorithm>
 #include <utility>
 #ifdef Q_OS_WIN
 #ifndef NOMINMAX
@@ -41,7 +42,63 @@ bool identity(const TargetWindow& t) {
     return alive && times && stamp == t.processCreated && GetClassNameW(w, name, 256)
         && QString::fromWCharArray(name) == t.windowClass;
 }
+QString processExecutableName(HWND window) {
+    DWORD pid = 0;
+    GetWindowThreadProcessId(window, &pid);
+    HANDLE process = pid ? OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid) : nullptr;
+    if (!process) return {};
+    wchar_t path[32768]{};
+    DWORD size = 32768;
+    const bool good = QueryFullProcessImageNameW(process, 0, path, &size);
+    CloseHandle(process);
+    return good ? QFileInfo(QString::fromWCharArray(path, size)).fileName() : QString();
+}
+bool allowedOverlayWindow(HWND window, const QRect& bounds, const QRect& client) {
+    wchar_t name[256]{};
+    if (!GetClassNameW(window, name, 256)) return false;
+    return statusOverlayWindowAllowed(QString::fromWCharArray(name),
+        quint32(GetWindowLongPtrW(window, GWL_EXSTYLE)), processExecutableName(window), bounds, client);
+}
 #endif
+}
+
+bool statusOverlayWindowAllowed(const QString& windowClass, quint32 extendedStyle,
+        const QString& executableName, const QRect& windowRect, const QRect& clientRect) {
+    // WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE
+    constexpr quint32 required = 0x00080000u | 0x00000020u | 0x00000008u | 0x00000080u | 0x08000000u;
+    if (windowClass != QLatin1String(StatusOverlayWindowClass) || (extendedStyle & required) != required
+        || executableName.compare(QStringLiteral("RelinkStudio.exe"), Qt::CaseInsensitive) != 0
+        || windowRect.isEmpty() || clientRect.isEmpty()) return false;
+    const int band = std::max(1, int(clientRect.height() * 4 / 100));
+    return windowRect.top() >= clientRect.top() && windowRect.bottom() < clientRect.top() + band
+        && windowRect.left() >= clientRect.left() && windowRect.right() <= clientRect.right()
+        && windowRect.width() <= clientRect.width() * 4 / 5;
+}
+
+bool clickThroughVendorOverlayAllowed(const QString& windowClass, quint32 extendedStyle, const QString& executableName) {
+    // WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST
+    constexpr quint32 required = 0x00080000u | 0x00000020u | 0x00000008u;
+    return windowClass == QLatin1String("CEF-OSC-WIDGET") && (extendedStyle & required) == required
+        && executableName.compare(QStringLiteral("NVIDIA Overlay.exe"), Qt::CaseInsensitive) == 0;
+}
+
+QRect statusOverlayRect(const TargetWindow& t) {
+#ifdef Q_OS_WIN
+    DpiScope dpi;
+    const auto w = reinterpret_cast<HWND>(t.hwnd);
+    int count = 0;
+    for (HWND other = GetWindow(w, GW_HWNDPREV); other && count < 2048; other = GetWindow(other, GW_HWNDPREV), ++count) {
+        if (!IsWindowVisible(other) || IsIconic(other) || cloaked(other)) continue;
+        RECT bounds{};
+        if (FAILED(DwmGetWindowAttribute(other, DWMWA_EXTENDED_FRAME_BOUNDS, &bounds, sizeof(bounds)))
+            && !GetWindowRect(other, &bounds)) continue;
+        if (t.clientRect.intersects(rect(bounds)) && allowedOverlayWindow(other, rect(bounds), t.clientRect))
+            return rect(bounds);
+    }
+#else
+    Q_UNUSED(t);
+#endif
+    return {};
 }
 
 TargetWindow bindTargetWindow(quintptr hwnd, quint32 expectedPid, QString* error) {
@@ -116,7 +173,13 @@ QString validateTargetWindow(const TargetWindow& t, bool requireForeground) {
             RECT bounds{};
             if (FAILED(DwmGetWindowAttribute(other, DWMWA_EXTENDED_FRAME_BOUNDS, &bounds, sizeof(bounds)))
                 && !GetWindowRect(other, &bounds)) return QStringLiteral("E_WINDOW_OCCLUSION_UNKNOWN");
-            if (t.clientRect.intersects(rect(bounds))) return QStringLiteral("E_WINDOW_OCCLUDED");
+            if (t.clientRect.intersects(rect(bounds))) {
+                if (allowedOverlayWindow(other, rect(bounds), t.clientRect)) continue;
+                wchar_t vendorClass[256]{};
+                if (GetClassNameW(other, vendorClass, 256) && clickThroughVendorOverlayAllowed(QString::fromWCharArray(vendorClass),
+                        quint32(GetWindowLongPtrW(other, GWL_EXSTYLE)), processExecutableName(other))) continue;
+                return QStringLiteral("E_WINDOW_OCCLUDED");
+            }
         }
         if (other) return QStringLiteral("E_WINDOW_OCCLUSION_UNKNOWN");
     }

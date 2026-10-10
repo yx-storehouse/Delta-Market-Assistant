@@ -60,6 +60,66 @@ int main(int argc,char** argv){
  invalid=o;invalid["words"]=without;check(readCatalogFilter(f,invalid).seasonLabel==QStringLiteral("全部赛季"),"adjacent_split_season_label");
  without=words;without[4]=word(QStringLiteral("棱镜攻势S2"),779,436,145,20);invalid=o;invalid["words"]=without;
  check(readCatalogFilter(f,invalid).seasonLabel==QStringLiteral("棱镜攻势S2"),"selected_season_text_preserved");
+ // Season re-read is missing-field-only and accepts actual same-frame OCR,
+ // never an expected configuration label. These words/pixels are synthetic.
+ auto missingSeason=o;auto seasonWords=words;seasonWords.removeAt(4);missingSeason["words"]=seasonWords;
+ const auto seasonRegion=catalogSeasonLabelRefinementRegion(f,missingSeason);
+ check(seasonRegion==QRect(770,426,270,42),"missing season requests exact calibrated text-only ROI excluding arrow");
+ check(catalogSeasonLabelRefinementRegion(f,o).isEmpty(),"already observed season never triggers opportunistic replacement");
+ auto local=bind(QJsonObject{{"width",2560},{"height",1440},{"coverage","roi"},
+     {"coordinate_space","client_physical_px"},{"same_frame",true},
+     {"words",QJsonArray{word(QStringLiteral("气象感应"),779,436,86,20)}}},f);
+ QJsonObject seasonAudit;
+ const auto merged=refineCatalogSeasonLabel(f,missingSeason,local,seasonRegion,&seasonAudit);
+ const auto afterSeason=readCatalogFilter(f,merged);
+ check(afterSeason.complete &&afterSeason.seasonLabel==QStringLiteral("气象感应"),"actual ROI season words flow through original reader");
+ check(seasonAudit["replacement_applied"]==true &&seasonAudit["same_frame"]==true
+     &&seasonAudit["words"]==local["words"] &&seasonAudit["bounds"].toArray()==QJsonArray{770,426,270,42}
+     &&seasonAudit["frame_id"]==f.frameId &&seasonAudit["frame_sha256"]==missingSeason["frame_sha256"],
+     "season refinement preserves actual word boxes frame hash and ROI audit");
+ check(seasonAudit["expected_text_supplied"]==false &&seasonAudit["actions_enabled"]==false
+     &&seasonAudit["image_file_writes"]==0,"season helper has no target text input actions or file writes");
+ for(const auto& id:initial.boxes.keys())check(afterSeason.boxes[id].measurement==initial.boxes[id].measurement
+     &&afterSeason.boxes[id].state==initial.boxes[id].state,"season re-read leaves real checkbox evidence unchanged");
+ auto otherLocal=local;otherLocal["words"]=QJsonArray{word(QStringLiteral("不同实际赛季"),779,436,120,20)};
+ const auto other=refineCatalogSeasonLabel(f,missingSeason,otherLocal,seasonRegion,&seasonAudit);
+ check(readCatalogFilter(f,other).seasonLabel==QStringLiteral("不同实际赛季"),"reader preserves another actual label instead of substituting requested season");
+ auto splitLocal=local;QJsonArray split;
+ for(int i=0;i<4;++i)split.append(word(QStringLiteral("气象感应").mid(i,1),779+22*i,436,20,20));
+ splitLocal["words"]=split;
+ check(readCatalogFilter(f,refineCatalogSeasonLabel(f,missingSeason,splitLocal,seasonRegion)).seasonLabel==QStringLiteral("气象感应"),
+     "adjacent split actual season tokens use unchanged reader joining rules");
+ const auto rejectLocal=[&](const QJsonObject& bad,const char* name){QJsonObject audit;
+     check(refineCatalogSeasonLabel(f,missingSeason,bad,seasonRegion,&audit)==missingSeason
+         &&audit["replacement_applied"]==false,name);};
+ auto badLocal=local;badLocal["frame_id"]="stale";rejectLocal(badLocal,"cross-frame season words rejected");
+ badLocal=local;badLocal["frame_sha256"]=QString(64,'0');rejectLocal(badLocal,"cross-hash season words rejected");
+ badLocal=local;badLocal["same_frame"]=false;rejectLocal(badLocal,"failed OCR is not merged as same-frame success");
+ badLocal=local;badLocal["coverage"]="full_client";rejectLocal(badLocal,"season refinement requires bounded ROI observation");
+ badLocal=local;badLocal["width"]=1920;rejectLocal(badLocal,"wrong source dimensions rejected");
+ badLocal=local;badLocal["coordinate_space"]="rotated";rejectLocal(badLocal,"unmapped season coordinates rejected");
+ badLocal=local;badLocal["words"]=QJsonArray{};rejectLocal(badLocal,"empty retry cannot fill missing season");
+ badLocal=local;badLocal["words"]=QJsonArray{word(QStringLiteral("气象感应"),1020,436,86,20)};
+ rejectLocal(badLocal,"word extending into right-arrow area rejected even with center near label");
+ badLocal=local;auto lowSeason=word(QStringLiteral("气象感应"),779,436,86,20);lowSeason["score"]=.69;
+ badLocal["words"]=QJsonArray{lowSeason};rejectLocal(badLocal,"season low confidence is not promoted by refinement");
+ badLocal=local;badLocal["words"]=QJsonArray{word(QStringLiteral("气象"),779,430,42,16),word(QStringLiteral("感应"),824,449,42,16)};
+ rejectLocal(badLocal,"different baselines do not form one season name");
+ badLocal=local;badLocal["words"]=QJsonArray{word(QStringLiteral("气象"),779,436,42,20),word(QStringLiteral("感应"),970,436,42,20)};
+ rejectLocal(badLocal,"widely separated words cannot complete a season");
+ badLocal=local;auto duplicate=local["words"].toArray();duplicate.append(duplicate.first());badLocal["words"]=duplicate;
+ rejectLocal(badLocal,"overlapping duplicate season tokens rejected");
+ check(refineCatalogSeasonLabel(f,o,local,seasonRegion)==o,"already known label is never replaced");
+ check(refineCatalogSeasonLabel(f,missingSeason,local,seasonRegion.translated(1,0))==missingSeason,"different refinement ROI rejected");
+ pixels=f;pixels.dpiX=96;check(catalogSeasonLabelRefinementRegion(pixels,missingSeason).isEmpty(),"unsupported DPI cannot trigger narrow season OCR");
+ auto wrongPage=missingSeason;wrongPage["words"]=QJsonArray{};
+ check(catalogSeasonLabelRefinementRegion(f,wrongPage).isEmpty(),"missing catalog page anchors cannot trigger season OCR");
+ auto missingCheckbox=missingSeason;auto missingCheckboxWords=seasonWords;missingCheckboxWords.removeAt(4);missingCheckbox["words"]=missingCheckboxWords;
+ const auto incomplete=readCatalogFilter(f,refineCatalogSeasonLabel(f,missingCheckbox,local,seasonRegion));
+ check(!incomplete.complete &&incomplete.seasonLabel==QStringLiteral("气象感应") &&incomplete.boxes["owned"].state==CheckState::Unknown,
+     "season success does not bypass original checkbox and label completeness checks");
+ check(missingSeason["words"].toArray()==seasonWords &&local["words"].toArray().size()==1,
+     "season refinement never mutates input observation or raw ROI words");
  const QRect box(locations[0],QSize(36,36));
  for(int fill:{0,20,60,120,255}){pixels=f;paint(pixels,box,fill);
   check(measureFilterCheckbox(pixels,box,"test").state==CheckState::Unknown,"flat_region_not_a_checkbox");}
@@ -80,6 +140,33 @@ int main(int argc,char** argv){
  for(const auto& mutation:QList<QPair<QString,double>>{{"green_fraction",.1},{"bright_fraction",1.},{"center_stddev",20.},{"interior_stddev",0.},{"sample_count",10.5}}){
   auto bad=signal;bad[mutation.first]=mutation.second;check(classifyFilterCheckboxMeasurement(bad)==CheckState::Unknown,"unexpected_style_stays_unknown");}
  auto badBorder=signal;badBorder["border_means"]=QJsonArray{67,67,20,65};check(classifyFilterCheckboxMeasurement(badBorder)==CheckState::Unknown,"selected_requires_all_four_edges");
+ {
+  // Live 2026-10-09 (hotkey run 20261009-141700): the pointer rested on the
+  // ticked 已拥有 after the season was chosen; only its border glowed.
+  QJsonObject hovered{{"interior_mean",174.2734159779612},{"interior_stddev",43.75229066958887},{"center_mean",198.54036458333346},
+   {"center_stddev",0.9620052149946706},{"bright_fraction",0.8677685950413223},{"green_fraction",0},{"sample_count",484},
+   {"border_means",QJsonArray{105.68518518518533,104.35493827160492,105.85493827160492,103.16358024691355}}};
+  check(classifyFilterCheckboxMeasurement(hovered)==CheckState::Checked,"hovered_ticked_box_read_by_its_inset");
+  QJsonObject hoveredEmpty{{"interior_mean",26.8},{"interior_stddev",0.3},{"center_mean",26.9},{"center_stddev",0.2},
+   {"bright_fraction",0},{"green_fraction",0},{"sample_count",484},{"border_means",QJsonArray{105,104,106,103}}};
+  check(classifyFilterCheckboxMeasurement(hoveredEmpty)==CheckState::Unchecked,"glowing_empty_box_stays_unchecked");
+  // Recorded under the pointer (8 runs): an empty box barely glows.
+  QJsonObject recordedEmpty{{"interior_mean",25},{"interior_stddev",0.02},{"center_mean",25},{"center_stddev",0.02},
+   {"bright_fraction",0},{"green_fraction",0},{"sample_count",484},{"border_means",QJsonArray{68.3,67.6,72.6,65.6}}};
+  check(classifyFilterCheckboxMeasurement(recordedEmpty)==CheckState::Unchecked,"recorded_hovered_empty_box_unchecked");
+  auto washed=hovered;washed["border_means"]=QJsonArray{170,168,171,169};
+  check(classifyFilterCheckboxMeasurement(washed)==CheckState::Unknown,"border_as_bright_as_center_is_not_a_tick");
+  auto dim=hovered;dim["border_means"]=QJsonArray{106,106,106,106};dim["center_mean"]=185;
+  check(classifyFilterCheckboxMeasurement(dim)==CheckState::Unknown,"glowing_border_with_dim_center_stays_unknown");
+  auto edge=hovered;edge["border_means"]=QJsonArray{120,118,119,117};edge["center_mean"]=200;
+  check(classifyFilterCheckboxMeasurement(edge)==CheckState::Checked,"border_glow_up_to_120_accepted");
+  edge["border_means"]=QJsonArray{121,118,119,117};
+  check(classifyFilterCheckboxMeasurement(edge)==CheckState::Unknown,"border_glow_above_120_unknown");
+  auto flat=hovered;flat["interior_stddev"]=2;flat["bright_fraction"]=1;
+  check(classifyFilterCheckboxMeasurement(flat)==CheckState::Unknown,"flat_bright_square_still_not_a_tick");
+  auto midAnimation=hovered;midAnimation["center_mean"]=110;
+  check(classifyFilterCheckboxMeasurement(midAnimation)==CheckState::Unknown,"half_drawn_inset_stays_unknown");
+ }
  pixels=f;paint(pixels,box,65);paint(pixels,box.adjusted(5,5,-5,-5),25);paint(pixels,box.adjusted(8,8,-8,-8),193);
  check(measureFilterCheckbox(pixels,box,"selected").state==CheckState::Checked,"synthetic_selected_raster_uses_real_pixel_sampler");
  check(bind(o,f)["frame_sha256"]==o["frame_sha256"],"reader_never_mutates_original_pixels");

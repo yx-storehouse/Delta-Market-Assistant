@@ -1,8 +1,12 @@
 # 使用 savedValue 任务执行收藏
 
+> **后续实机更新（2026-10-07）：** 当前配置冻结与连续协调器试段已完成本轮17次确认新增；优化后最后观察为 AUG 天命 C 第六卡金星，在动态滚动缺口停止。最新事实见 [收藏半程实机记录](../../../COLLECTION_ONLY_TRIAL.md) 和 checkpoint。下文“空关注”校正是此次试跑之前的现场，旧坐标均须重新观察，历史累计42次不等于当前关注数。
+
 2026-10-07。本轮按用户提供的任务数据实际执行“查找商品 → 成色筛选 → 同帧价格/磨损联合匹配 → 加入我的关注 → 读取结果”。不是只读演示；购买业务仍属于后续我的关注阶段。
 
-**当前实机暂停点：已确认新增 25 个关注卖单（AUG 天命 10 个，P90 天命 15 个）。当前为 P90 天命成色 B 的第 1 页，第 6 个完全可见卡片已经金星；后面的半行仍有条目，现有六卡片几何还未覆盖滚动后的字段关联，所以停在 `COLLECTION_UNSCANNED_SCROLL_REGION`。本轮没有把剩余任务标为完成。最后批次已经恢复 IDE 前台。**
+**现场校正（2026-10-07）：最新独立观察为“空关注”，当前 `cursor_valid=false`；见 `artifacts/m2_savedvalue_collection/current_checkpoint.json` 和 `artifacts/collection_workflow/watchlist_current_confirm.json`。原 25 次已确认收藏是历史动作数，不是当前关注数量。恢复时按原空关注路线重新定位，不沿用旧 P90 卡位。完整流程缺口和慢速根因见 [收藏对齐与性能审计](../../11_bbzps_collection_alignment_performance.md)。**
+
+历史暂停点：曾确认新增 25 个关注卖单（AUG 天命 10 个，P90 天命 15 个），停在 P90 天命成色 B 的第 1 页、第 6 张完整卡片。底部半行和滚动字段尚未覆盖，原停止码为 `COLLECTION_UNSCANNED_SCROLL_REGION`。该历史记录没有把剩余任务标为完成，也不代表现在仍在这个页面。
 
 当前数量与每次尝试以 `artifacts/m2_savedvalue_collection/session_audit.json`、`journal/` 和各 `live_*.json` 为准。失败记录不会被后续成功覆盖。普通桌面 UI 仍是配置/回放前端；实际操作来自显式启动的人工联调驱动，不代表 UI 的完整执行器已经接通。
 

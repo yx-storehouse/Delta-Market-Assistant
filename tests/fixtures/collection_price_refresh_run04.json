@@ -1,0 +1,3388 @@
+{
+  "schema": "recorded-price-refresh-numeric-v1",
+  "source_session_sha256": "56cbf818776f01b7b83e1142f13e23e4166796b694a5bcc19b41ef5dff5413a1",
+  "pixels_included": false,
+  "origin": {
+    "capture_passed": true,
+    "ocr_passed": true,
+    "page_match_passed": true,
+    "startup_page": {
+      "actions_enabled": false,
+      "anchor_checks": {
+        "collection.added": false,
+        "collection.full": false,
+        "listing.condition": true,
+        "listing.default_sort": true,
+        "listing.page_number": false,
+        "listing.sale": true,
+        "listing.similar": true
+      },
+      "anchors": [
+        "list.sale",
+        "list.sort",
+        "list.condition",
+        "list.similar"
+      ],
+      "calibration": "current_same_frame_listing_regions_after_prior_full_calibration",
+      "candidate_pages": [
+        "skin_listings"
+      ],
+      "context_continuation": true,
+      "coverage": "current_listing_regions",
+      "full_frame_ocr_performed": false,
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "skin_listings",
+      "provider_scores_available": false,
+      "reason": "CURRENT_LISTING_REGIONS_MATCH",
+      "token_count": 83,
+      "valid_input": true
+    },
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_end_mono_ms": 1155609637,
+        "capture_ms": 30,
+        "capture_start_mono_ms": 1155609607,
+        "digest_ms": 3.8375,
+        "digest_provider": "Windows.CNG.SHA256",
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "not_before_mono_ms": 1155609608,
+        "pixel_max": 255,
+        "pixel_min": 5,
+        "requested_mono_ms": 1155609608,
+        "sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+        "source": "dxgi",
+        "source_age_ms": 26,
+        "source_mono_ms": 1155609611,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "coordinate_space": "client_physical_px",
+      "coverage": "calibrated_listing_fields",
+      "frame_age_at_result_ms": 148,
+      "frame_age_before_output_ms": 148,
+      "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "full_frame_ocr_performed": false,
+      "language": "zh-Hans-CN",
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "word_count": 0
+    },
+    "focus_activation_requests": 0,
+    "focus_restore_requests": 0,
+    "collection_layout": {
+      "cards": [],
+      "complete": false,
+      "detector": "visible_edges",
+      "error": "E_COLLECTION_CARD_HORIZONTAL_EDGE",
+      "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+      "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "image_file_writes": 0,
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "same_frame": true,
+      "schema": "collection-layout-v1",
+      "scrollbar": {
+        "geometry_basis": "observed_centerline_only",
+        "measured_center_x": 1878,
+        "method": "symmetric_contrast_with_independent_left_affine_background",
+        "thumb_bounds": [
+          1878,
+          429,
+          1,
+          61
+        ],
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ]
+      },
+      "selected_card_proof": {
+        "actions_enabled": false,
+        "card": {
+          "bounds": [
+            996,
+            392,
+            866,
+            264
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            997,
+            613,
+            115,
+            42
+          ],
+          "edge_measurements": {
+            "bottom_mean": 202.27083333333493,
+            "left_contrast": 214.51143790849667,
+            "left_profile": [
+              [
+                989,
+                0,
+                0,
+                34.49
+              ],
+              [
+                990,
+                0.04,
+                0,
+                34.52
+              ],
+              [
+                991,
+                0.02,
+                0.01,
+                34.51
+              ],
+              [
+                992,
+                -0.06,
+                0.01,
+                34.43
+              ],
+              [
+                993,
+                0.05,
+                0,
+                34.54
+              ],
+              [
+                994,
+                0.06,
+                0.07,
+                34.54
+              ],
+              [
+                995,
+                -0.1,
+                0.07,
+                34.39
+              ],
+              [
+                996,
+                207.18,
+                1,
+                241.67
+              ],
+              [
+                997,
+                214.51,
+                1,
+                249
+              ],
+              [
+                998,
+                67.68,
+                1,
+                102.17
+              ],
+              [
+                999,
+                13.35,
+                1,
+                47.84
+              ],
+              [
+                1000,
+                14.37,
+                1,
+                48.86
+              ],
+              [
+                1001,
+                14.41,
+                1,
+                48.9
+              ],
+              [
+                1002,
+                14.44,
+                1,
+                48.93
+              ],
+              [
+                1003,
+                18.02,
+                1,
+                52.51
+              ]
+            ],
+            "left_support": 1,
+            "right_contrast": 200.0936819172113,
+            "right_profile": [
+              [
+                1854,
+                13.41,
+                1,
+                62.34
+              ],
+              [
+                1855,
+                13.44,
+                1,
+                62.37
+              ],
+              [
+                1856,
+                13.49,
+                1,
+                62.41
+              ],
+              [
+                1857,
+                13.17,
+                1,
+                62.08
+              ],
+              [
+                1858,
+                11.23,
+                1,
+                60.15
+              ],
+              [
+                1859,
+                62.02,
+                1,
+                110.93
+              ],
+              [
+                1860,
+                200.09,
+                1,
+                249
+              ],
+              [
+                1861,
+                193.15,
+                1,
+                242.05
+              ],
+              [
+                1862,
+                0,
+                0.03,
+                48.9
+              ],
+              [
+                1863,
+                -0.05,
+                0.01,
+                48.84
+              ],
+              [
+                1864,
+                -0.03,
+                0,
+                48.86
+              ],
+              [
+                1865,
+                0.02,
+                0,
+                48.91
+              ],
+              [
+                1866,
+                0.01,
+                0,
+                48.9
+              ],
+              [
+                1867,
+                0.02,
+                0,
+                48.9
+              ],
+              [
+                1868,
+                -0.02,
+                0,
+                48.85
+              ]
+            ],
+            "right_support": 1,
+            "top_mean": 184.53527777777705
+          },
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "id": "edge:996:392:1861:655",
+          "price_bounds": [
+            1712,
+            613,
+            149,
+            42
+          ],
+          "selected": true
+        },
+        "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+        "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+        "horizontal_edge_candidates": {
+          "bottoms": [
+            655
+          ],
+          "tops": [
+            392
+          ]
+        },
+        "image_file_writes": 0,
+        "local_selection_check_scope": "reference_horizontal_band_and_peer_column_only",
+        "local_selection_conflict_checked": true,
+        "peer_geometry_resolved": true,
+        "prior_card_reference": {
+          "bounds": [
+            996,
+            392,
+            866,
+            262
+          ],
+          "card_id": "edge:996:392:1861:653",
+          "fields_bounds": [
+            997,
+            611,
+            864,
+            42
+          ],
+          "frame_id": "dxgi:7310e395-0a61-4a21-8f98-c432a7a593b3",
+          "frame_sha256": "11175302e40bdc6096a5272534df62768789db7772be640ea0b17a6af841ab2b"
+        },
+        "proven": true,
+        "same_frame": true,
+        "schema": "collection-selected-card-proof-v1",
+        "scope": "receipt_only",
+        "unique_selection_proven": false,
+        "unresolved_regions_may_contain_selection": true
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    "collection_observation": {
+      "coverage": "field_projection",
+      "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+      "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "image_file_writes": 0,
+      "page": "skin_listings",
+      "regions": [
+        {
+          "bounds": [
+            110,
+            230,
+            1760,
+            70
+          ],
+          "error": "",
+          "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+          "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+          "kind": "listing_controls",
+          "language": "zh-Hans-CN",
+          "ok": true,
+          "provider": "Windows.Media.Ocr",
+          "same_frame": true,
+          "scale": 2,
+          "timing": {
+            "engine_cache_hit": true,
+            "engine_created": false,
+            "error": "",
+            "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+            "frame_released": true,
+            "frame_total_ms": 17,
+            "helper_pid": "300276",
+            "helper_reused": true,
+            "helper_roundtrip_ms": 15,
+            "helper_start_ms": 0,
+            "language": "zh-Hans-CN",
+            "mapping_name": "Local\\RelinkVision_0a9df2a1-129b-459d-a746-c54686d003da_0",
+            "mapping_prepare_ms": 0,
+            "ok": true,
+            "request_id": "0a9df2a1-129b-459d-a746-c54686d003da",
+            "request_write_ms": 0,
+            "roi_preprocess_ms": 1,
+            "roi_total_ms": 19,
+            "worker_bitmap_copy_ms": 1.5371000000000001,
+            "worker_engine_init_ms": 0.0167,
+            "worker_helper_request_ms": 14.324,
+            "worker_recognize_ms": 11.7249,
+            "worker_runtime_init_ms": 0.0032
+          },
+          "truncated": false,
+          "words": [
+            {
+              "height": 26,
+              "text": "平",
+              "width": 25,
+              "x": 238,
+              "y": 251
+            },
+            {
+              "height": 18,
+              "text": "已",
+              "width": 19,
+              "x": 276,
+              "y": 255
+            },
+            {
+              "height": 21,
+              "text": "筛",
+              "width": 20,
+              "x": 296,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "选",
+              "width": 20,
+              "x": 317,
+              "y": 253
+            },
+            {
+              "height": 17,
+              "text": "1",
+              "width": 6,
+              "x": 338,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "顶",
+              "width": 21,
+              "x": 345,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "不",
+              "width": 19,
+              "x": 527,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "限",
+              "width": 18,
+              "x": 549,
+              "y": 254
+            },
+            {
+              "height": 19,
+              "text": "公",
+              "width": 19,
+              "x": 569,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "示",
+              "width": 19,
+              "x": 590,
+              "y": 255
+            },
+            {
+              "height": 20,
+              "text": "期",
+              "width": 18,
+              "x": 611,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "默",
+              "width": 19,
+              "x": 1153,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "认",
+              "width": 19,
+              "x": 1174,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "排",
+              "width": 19,
+              "x": 1195,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "序",
+              "width": 19,
+              "x": 1216,
+              "y": 253
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "product_title",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "text": "AS Val突击步枪-黑银先锋",
+              "score": 0.9952,
+              "x": 1915,
+              "y": 238,
+              "width": 530,
+              "height": 54
+            }
+          ],
+          "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+          "windows_observation": {
+            "error": "E_LOCAL_TEXT_PENDING",
+            "kind": "product_title",
+            "ok": false,
+            "split_fields_refinement": false,
+            "truncated": false,
+            "words": []
+          }
+        },
+        {
+          "actions_enabled": false,
+          "bounds": [
+            1920,
+            640,
+            505,
+            66
+          ],
+          "coverage": "same_frame_region_projection",
+          "evidence_basis": "current_parent_ocr_words_projected_from_same_frame",
+          "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+          "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+          "historical_cache_used": false,
+          "kind": "selected_detail",
+          "ok": true,
+          "old_candidate_fields_reused": false,
+          "projection_ocr_performed": false,
+          "same_frame": true,
+          "source_provider": "Windows.Media.Ocr",
+          "source_region_bounds": [
+            1905,
+            560,
+            540,
+            190
+          ],
+          "source_region_kind": "detail_anchors",
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1931,
+              "y": 659
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1953,
+              "y": 659
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 2213,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〔",
+              "width": 6,
+              "x": 2228,
+              "y": 660
+            },
+            {
+              "height": 17,
+              "text": "0",
+              "width": 11,
+              "x": 2244,
+              "y": 662
+            },
+            {
+              "height": 3,
+              "text": "．",
+              "width": 3,
+              "x": 2258,
+              "y": 676
+            },
+            {
+              "height": 17,
+              "text": "029618",
+              "width": 81,
+              "x": 2265,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〕",
+              "width": 6,
+              "x": 2349,
+              "y": 660
+            },
+            {
+              "height": 14,
+              "text": "7",
+              "width": 13,
+              "x": 2387,
+              "y": 661
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "selected_detail_precise",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 25.626345384141842,
+              "text": "0.029618)",
+              "width": 111.94687721119222,
+              "x": 2243.5576258103383,
+              "y": 656.6927190300779
+            }
+          ]
+        },
+        {
+          "bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "card_id": "edge:996:392:1861:655",
+          "error": "",
+          "field_attempts": [
+            {
+              "attempt": 1,
+              "bounds": [
+                997,
+                613,
+                115,
+                42
+              ],
+              "engine": "Windows.Media.Ocr",
+              "error": "",
+              "field": "condition_bounds",
+              "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+              "language": "zh-Hans-CN",
+              "ok": true,
+              "same_frame": true,
+              "scale": 2,
+              "timing": {
+                "engine_cache_hit": true,
+                "engine_created": false,
+                "error": "",
+                "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+                "frame_released": true,
+                "frame_total_ms": 5,
+                "helper_pid": "300276",
+                "helper_reused": true,
+                "helper_roundtrip_ms": 4,
+                "helper_start_ms": 0,
+                "language": "zh-Hans-CN",
+                "mapping_name": "Local\\RelinkVision_a94064d1-c9e6-4989-9fbf-1fee474372a0_0",
+                "mapping_prepare_ms": 0,
+                "ok": true,
+                "request_id": "a94064d1-c9e6-4989-9fbf-1fee474372a0",
+                "request_write_ms": 0,
+                "roi_preprocess_ms": 0,
+                "roi_total_ms": 5,
+                "worker_bitmap_copy_ms": 0.24680000000000002,
+                "worker_engine_init_ms": 0.0131,
+                "worker_helper_request_ms": 2.6423,
+                "worker_recognize_ms": 1.6854,
+                "worker_runtime_init_ms": 0.0027
+              },
+              "tokens": [
+                "成",
+                "色",
+                "S"
+              ],
+              "word_count": 3
+            },
+            {
+              "attempt": 0,
+              "bounds": [
+                1712,
+                613,
+                149,
+                42
+              ],
+              "engine": "local_price_pending",
+              "error": "E_LOCAL_PRICE_PENDING",
+              "field": "price_bounds",
+              "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+              "numeric_preprocess": {
+                "background_level": 62,
+                "component_bounds": [
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "crop_bounds": [
+                  1813,
+                  625,
+                  41,
+                  19
+                ],
+                "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+                "edge_line_column_count": 1,
+                "edge_line_pixels_removed": 190,
+                "edge_line_row_count": 1,
+                "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+                "glyph_span_count": 3,
+                "highlight_level": 250,
+                "image_file_writes": 0,
+                "ink_bounds": [
+                  1814,
+                  626,
+                  39,
+                  17
+                ],
+                "ink_threshold": 147,
+                "method": "observed_components_edge_line_removal_white_padding",
+                "padding_prepared_pixels": 15,
+                "padding_source_pixels": 5,
+                "prepared_size": [
+                  153,
+                  87
+                ],
+                "reliable_digit_span_bounds": [
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "reliable_digit_span_minimum": 3,
+                "same_frame": true,
+                "scale": 3,
+                "schema": "numeric-roi-v1",
+                "source_frame_bytes_unchanged": true,
+                "source_region": [
+                  1712,
+                  613,
+                  149,
+                  42
+                ]
+              },
+              "ok": false,
+              "same_frame": true,
+              "scale": 3
+            }
+          ],
+          "kind": "card_fields",
+          "ok": true,
+          "scope": "receipt_only",
+          "split_fields_refinement": true,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1004,
+              "y": 625
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1026,
+              "y": 625
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 1047,
+              "y": 626
+            },
+            {
+              "text": "300",
+              "score": 0.99998,
+              "x": 1813.0,
+              "y": 625.0,
+              "width": 40.666666666666664,
+              "height": 18.666666666666668
+            }
+          ],
+          "price_provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU"
+        }
+      ],
+      "same_frame": true
+    },
+    "collection_selected_card": {
+      "actions_enabled": false,
+      "bounds": [
+        996,
+        392,
+        866,
+        264
+      ],
+      "card_id": "edge:996:392:1861:655",
+      "favorite_bright_fraction": 0,
+      "favorite_warm_fraction": 0.13398692810457516,
+      "fields_bounds": [
+        997,
+        613,
+        864,
+        42
+      ],
+      "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+      "frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "same_frame": true,
+      "scope": "receipt_only",
+      "selected": true,
+      "unique_selection_proven": false
+    },
+    "local_title_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "region_kind": "product_title",
+      "source_frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+      "source_frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "source_png_sha256": "226994fe07dcffb976adf1a936f6ecbec6d9f2c8fc4e8bff2db83efea3e2393c",
+      "image_file_writes": 0,
+      "expected_text_supplied": false,
+      "provider_selection": "explicit_before_run_not_target_match",
+      "recognition_cache_hit": false,
+      "single_line_attempt": {
+        "texts": [
+          "AS Val突击步枪-黑银先锋"
+        ],
+        "scores": [
+          0.9952
+        ],
+        "elapsed_ms": 26.065600104629993,
+        "accepted": true,
+        "fallback_reason": null,
+        "expected_text_supplied": false,
+        "detector_used": false
+      },
+      "recognition_route": "known_listing_single_line_recognizer",
+      "word_bounds_basis": "whole_current_observed_title_roi_not_detector_boxes",
+      "ok": true,
+      "words": [
+        {
+          "text": "AS Val突击步枪-黑银先锋",
+          "score": 0.9952,
+          "x": 1915,
+          "y": 238,
+          "width": 530,
+          "height": 54
+        }
+      ],
+      "rejected": [],
+      "bounds": [
+        1915,
+        238,
+        530,
+        54
+      ],
+      "error": null,
+      "elapsed_ms": 26.777399936690927
+    },
+    "local_price_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "expected_value_supplied": false,
+      "provider_selection": "explicit_before_run_not_price_match",
+      "confidence_threshold": 0.99,
+      "image_file_writes": 0,
+      "source_frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+      "source_frame_sha256": "3f39e04b304bd318dce02b6ba93778f769d8a2ee0da88d7961a79e9c587502ba",
+      "source_png_sha256": "c28edaafd86f57438f13e9baf305d8a7de5331cd682dc22a9875df67a22cad29",
+      "native_observation": {
+        "bounds": [
+          997,
+          613,
+          864,
+          42
+        ],
+        "card_id": "edge:996:392:1861:655",
+        "error": "E_LOCAL_PRICE_PENDING",
+        "field_attempts": [
+          {
+            "attempt": 1,
+            "bounds": [
+              997,
+              613,
+              115,
+              42
+            ],
+            "engine": "Windows.Media.Ocr",
+            "error": "",
+            "field": "condition_bounds",
+            "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+            "language": "zh-Hans-CN",
+            "ok": true,
+            "same_frame": true,
+            "scale": 2,
+            "timing": {
+              "engine_cache_hit": true,
+              "engine_created": false,
+              "error": "",
+              "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+              "frame_released": true,
+              "frame_total_ms": 5,
+              "helper_pid": "300276",
+              "helper_reused": true,
+              "helper_roundtrip_ms": 4,
+              "helper_start_ms": 0,
+              "language": "zh-Hans-CN",
+              "mapping_name": "Local\\RelinkVision_a94064d1-c9e6-4989-9fbf-1fee474372a0_0",
+              "mapping_prepare_ms": 0,
+              "ok": true,
+              "request_id": "a94064d1-c9e6-4989-9fbf-1fee474372a0",
+              "request_write_ms": 0,
+              "roi_preprocess_ms": 0,
+              "roi_total_ms": 5,
+              "worker_bitmap_copy_ms": 0.24680000000000002,
+              "worker_engine_init_ms": 0.0131,
+              "worker_helper_request_ms": 2.6423,
+              "worker_recognize_ms": 1.6854,
+              "worker_runtime_init_ms": 0.0027
+            },
+            "tokens": [
+              "成",
+              "色",
+              "S"
+            ],
+            "word_count": 3
+          },
+          {
+            "attempt": 0,
+            "bounds": [
+              1712,
+              613,
+              149,
+              42
+            ],
+            "engine": "local_price_pending",
+            "error": "E_LOCAL_PRICE_PENDING",
+            "field": "price_bounds",
+            "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+            "numeric_preprocess": {
+              "background_level": 62,
+              "component_bounds": [
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "crop_bounds": [
+                1813,
+                625,
+                41,
+                19
+              ],
+              "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+              "edge_line_column_count": 1,
+              "edge_line_pixels_removed": 190,
+              "edge_line_row_count": 1,
+              "frame_id": "dxgi:dc5faa3b-b686-4d99-b6fa-a37a1fe69d0e",
+              "glyph_span_count": 3,
+              "highlight_level": 250,
+              "image_file_writes": 0,
+              "ink_bounds": [
+                1814,
+                626,
+                39,
+                17
+              ],
+              "ink_threshold": 147,
+              "method": "observed_components_edge_line_removal_white_padding",
+              "padding_prepared_pixels": 15,
+              "padding_source_pixels": 5,
+              "prepared_size": [
+                153,
+                87
+              ],
+              "reliable_digit_span_bounds": [
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "reliable_digit_span_minimum": 3,
+              "same_frame": true,
+              "scale": 3,
+              "schema": "numeric-roi-v1",
+              "source_frame_bytes_unchanged": true,
+              "source_region": [
+                1712,
+                613,
+                149,
+                42
+              ]
+            },
+            "ok": false,
+            "same_frame": true,
+            "scale": 3
+          }
+        ],
+        "kind": "card_fields",
+        "ok": false,
+        "scope": "receipt_only",
+        "split_fields_refinement": true,
+        "truncated": false,
+        "words": [
+          {
+            "height": 19,
+            "text": "成",
+            "width": 20,
+            "x": 1004,
+            "y": 625
+          },
+          {
+            "height": 19,
+            "text": "色",
+            "width": 19,
+            "x": 1026,
+            "y": 625
+          },
+          {
+            "height": 17,
+            "text": "S",
+            "width": 13,
+            "x": 1047,
+            "y": 626
+          }
+        ]
+      },
+      "raw_texts": [
+        "300"
+      ],
+      "scores": [
+        0.99998
+      ],
+      "detector_boxes": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            122.0,
+            0.0
+          ],
+          [
+            122.0,
+            56.0
+          ],
+          [
+            0.0,
+            56.0
+          ]
+        ]
+      ],
+      "crop_bounds": [
+        1813,
+        625,
+        41,
+        19
+      ],
+      "ink_bounds": [
+        1814,
+        626,
+        39,
+        17
+      ],
+      "scale": 3,
+      "reliable_digit_span_minimum": 3,
+      "ok": true,
+      "words": [
+        {
+          "text": "300",
+          "score": 0.99998,
+          "x": 1813.0,
+          "y": 625.0,
+          "width": 40.666666666666664,
+          "height": 18.666666666666668
+        }
+      ],
+      "elapsed_ms": 22.944900207221508
+    },
+    "collection_geometry_scope": "receipt_only",
+    "collection_receipt_passed": true,
+    "collection_receipt_geometry_passed": true
+  },
+  "failed": {
+    "capture_passed": false,
+    "ocr_passed": true,
+    "page_match_passed": true,
+    "startup_page": {
+      "actions_enabled": false,
+      "anchor_checks": {
+        "catalog.circulation": false,
+        "catalog.rows": false,
+        "catalog.skin_tab": false,
+        "catalog.watch": true,
+        "collection.added": true,
+        "collection.full": false,
+        "listing.condition": true,
+        "listing.default_sort": true,
+        "listing.filter_all": false,
+        "listing.filter_confirm": false,
+        "listing.filter_price": false,
+        "listing.page_number": true,
+        "listing.sale": true,
+        "listing.similar": true,
+        "mandel.current": false,
+        "mandel.past": false,
+        "mandel.tab": false
+      },
+      "anchors": [
+        "list.sale",
+        "list.sort",
+        "list.condition",
+        "list.layout"
+      ],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [
+        "skin_listings"
+      ],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "skin_listings",
+      "provider_scores_available": false,
+      "reason": "MULTI_ANCHOR_MATCH",
+      "token_count": 209,
+      "valid_input": true
+    },
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_end_mono_ms": 1155610077,
+        "capture_ms": 33,
+        "capture_start_mono_ms": 1155610044,
+        "digest_ms": 3.6688,
+        "digest_provider": "Windows.CNG.SHA256",
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "not_before_mono_ms": 1155610043,
+        "pixel_max": 255,
+        "pixel_min": 5,
+        "requested_mono_ms": 1155610043,
+        "sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+        "source": "dxgi",
+        "source_age_ms": 30,
+        "source_mono_ms": 1155610047,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "coordinate_space": "client_physical_px",
+      "coordinate_transform": "clockwise_about_image_center",
+      "coverage": "full_client",
+      "frame_age_at_result_ms": 270,
+      "frame_age_before_output_ms": 273,
+      "frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "full_frame_ocr_performed": true,
+      "language": "zh-Hans-CN",
+      "outside_frame_tokens_dropped": 0,
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "source_text_angle_degrees": 0,
+      "word_count": 209
+    },
+    "focus_activation_requests": 0,
+    "focus_restore_requests": 0,
+    "collection_layout": {
+      "cards": [
+        {
+          "bounds": [
+            120,
+            304,
+            863,
+            75
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": false
+          },
+          "fields_bounds": null,
+          "id": "edge:120:304:982:378",
+          "selected": false
+        },
+        {
+          "bounds": [
+            997,
+            304,
+            863,
+            75
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": false
+          },
+          "fields_bounds": null,
+          "id": "edge:997:304:1859:378",
+          "selected": false
+        },
+        {
+          "bounds": [
+            120,
+            394,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            611,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            121,
+            611,
+            860,
+            42
+          ],
+          "id": "edge:120:394:981:653",
+          "price_bounds": [
+            832,
+            611,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            996,
+            392,
+            866,
+            264
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            997,
+            613,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "id": "edge:996:392:1861:655",
+          "price_bounds": [
+            1712,
+            613,
+            149,
+            42
+          ],
+          "selected": true
+        },
+        {
+          "bounds": [
+            121,
+            666,
+            862,
+            263
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            122,
+            886,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            122,
+            886,
+            860,
+            42
+          ],
+          "id": "edge:121:666:982:928",
+          "price_bounds": [
+            833,
+            886,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            668,
+            862,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            886,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            886,
+            860,
+            42
+          ],
+          "id": "edge:998:668:1859:928",
+          "price_bounds": [
+            1710,
+            886,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            943,
+            861,
+            260
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:121:943:981:1202",
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            943,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:998:943:1859:1202",
+          "selected": false
+        }
+      ],
+      "complete": true,
+      "detector": "visible_edges",
+      "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+      "frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "image_file_writes": 0,
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "page_exhausted": false,
+      "same_frame": true,
+      "schema": "collection-layout-v1",
+      "scrollbar": {
+        "geometry_basis": "observed_centerline_only",
+        "measured_center_x": 1878,
+        "method": "symmetric_contrast_with_independent_left_affine_background",
+        "thumb_bounds": [
+          1878,
+          429,
+          1,
+          61
+        ],
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ]
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    "collection_observation": {
+      "coverage": "field_projection",
+      "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+      "frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "image_file_writes": 0,
+      "page": "skin_listings",
+      "regions": [
+        {
+          "error": "",
+          "kind": "listing_controls",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 26,
+              "text": "平",
+              "width": 25,
+              "x": 238,
+              "y": 251
+            },
+            {
+              "height": 18,
+              "text": "已",
+              "width": 19,
+              "x": 276,
+              "y": 255
+            },
+            {
+              "height": 21,
+              "text": "筛",
+              "width": 20,
+              "x": 296,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "选",
+              "width": 20,
+              "x": 317,
+              "y": 253
+            },
+            {
+              "height": 17,
+              "text": "1",
+              "width": 6,
+              "x": 338,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "顶",
+              "width": 20,
+              "x": 346,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "不",
+              "width": 19,
+              "x": 527,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "限",
+              "width": 18,
+              "x": 549,
+              "y": 254
+            },
+            {
+              "height": 19,
+              "text": "公",
+              "width": 19,
+              "x": 569,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "示",
+              "width": 19,
+              "x": 590,
+              "y": 255
+            },
+            {
+              "height": 20,
+              "text": "期",
+              "width": 18,
+              "x": 611,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "默",
+              "width": 19,
+              "x": 1153,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "认",
+              "width": 19,
+              "x": 1174,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "排",
+              "width": 19,
+              "x": 1195,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "序",
+              "width": 19,
+              "x": 1216,
+              "y": 253
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "product_title",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "text": "AS Val突击步枪-黑银先锋",
+              "score": 0.99625,
+              "x": 1915,
+              "y": 238,
+              "width": 530,
+              "height": 54
+            }
+          ],
+          "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+          "windows_observation": {
+            "error": "E_LOCAL_TEXT_PENDING",
+            "kind": "product_title",
+            "ok": false,
+            "split_fields_refinement": false,
+            "truncated": false,
+            "words": []
+          }
+        },
+        {
+          "error": "",
+          "kind": "selected_detail",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1931,
+              "y": 659
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1953,
+              "y": 659
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 2213,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〔",
+              "width": 6,
+              "x": 2228,
+              "y": 660
+            },
+            {
+              "height": 17,
+              "text": "0",
+              "width": 11,
+              "x": 2244,
+              "y": 662
+            },
+            {
+              "height": 3,
+              "text": "．",
+              "width": 3,
+              "x": 2258,
+              "y": 676
+            },
+            {
+              "height": 17,
+              "text": "029618",
+              "width": 81,
+              "x": 2265,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〕",
+              "width": 6,
+              "x": 2349,
+              "y": 660
+            },
+            {
+              "height": 14,
+              "text": "7",
+              "width": 13,
+              "x": 2387,
+              "y": 661
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "selected_detail_precise",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 25.626345384141842,
+              "text": "0.029618)",
+              "width": 111.94687721119222,
+              "x": 2243.5576258103383,
+              "y": 656.6927190300779
+            }
+          ]
+        },
+        {
+          "bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "card_id": "edge:996:392:1861:655",
+          "error": "LOCAL_PRICE_CONFIDENCE",
+          "field_attempts": [
+            {
+              "attempt": 1,
+              "bounds": [
+                997,
+                613,
+                115,
+                42
+              ],
+              "engine": "Windows.Media.Ocr",
+              "error": "",
+              "field": "condition_bounds",
+              "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+              "language": "zh-Hans-CN",
+              "ok": true,
+              "same_frame": true,
+              "scale": 2,
+              "timing": {
+                "engine_cache_hit": true,
+                "engine_created": false,
+                "error": "",
+                "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+                "frame_released": true,
+                "frame_total_ms": 5,
+                "helper_pid": "300276",
+                "helper_reused": true,
+                "helper_roundtrip_ms": 4,
+                "helper_start_ms": 0,
+                "language": "zh-Hans-CN",
+                "mapping_name": "Local\\RelinkVision_b33105f4-97bf-45b6-9c96-2f9ef06d2199_0",
+                "mapping_prepare_ms": 0,
+                "ok": true,
+                "request_id": "b33105f4-97bf-45b6-9c96-2f9ef06d2199",
+                "request_write_ms": 0,
+                "roi_preprocess_ms": 0,
+                "roi_total_ms": 5,
+                "worker_bitmap_copy_ms": 0.23440000000000003,
+                "worker_engine_init_ms": 0.0122,
+                "worker_helper_request_ms": 2.9458,
+                "worker_recognize_ms": 2.0226,
+                "worker_runtime_init_ms": 0.0026000000000000003
+              },
+              "tokens": [
+                "成",
+                "色",
+                "S"
+              ],
+              "word_count": 3
+            },
+            {
+              "attempt": 0,
+              "bounds": [
+                1712,
+                613,
+                149,
+                42
+              ],
+              "engine": "local_price_pending",
+              "error": "E_LOCAL_PRICE_PENDING",
+              "field": "price_bounds",
+              "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+              "numeric_preprocess": {
+                "background_level": 62,
+                "component_bounds": [
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "crop_bounds": [
+                  1813,
+                  625,
+                  41,
+                  19
+                ],
+                "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+                "edge_line_column_count": 1,
+                "edge_line_pixels_removed": 190,
+                "edge_line_row_count": 1,
+                "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+                "glyph_span_count": 3,
+                "highlight_level": 250,
+                "image_file_writes": 0,
+                "ink_bounds": [
+                  1814,
+                  626,
+                  39,
+                  17
+                ],
+                "ink_threshold": 147,
+                "method": "observed_components_edge_line_removal_white_padding",
+                "padding_prepared_pixels": 15,
+                "padding_source_pixels": 5,
+                "prepared_size": [
+                  153,
+                  87
+                ],
+                "reliable_digit_span_bounds": [
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "reliable_digit_span_minimum": 3,
+                "same_frame": true,
+                "scale": 3,
+                "schema": "numeric-roi-v1",
+                "source_frame_bytes_unchanged": true,
+                "source_region": [
+                  1712,
+                  613,
+                  149,
+                  42
+                ]
+              },
+              "ok": false,
+              "same_frame": true,
+              "scale": 3
+            }
+          ],
+          "kind": "card_fields",
+          "ok": false,
+          "scope": "visible_layout",
+          "split_fields_refinement": true,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1004,
+              "y": 625
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1026,
+              "y": 625
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 1047,
+              "y": 626
+            }
+          ]
+        }
+      ],
+      "same_frame": true
+    },
+    "collection_selected_card": {
+      "bounds": [
+        996,
+        392,
+        866,
+        264
+      ],
+      "card_id": "edge:996:392:1861:655",
+      "favorite_bright_fraction": 0,
+      "favorite_warm_fraction": 0.13398692810457516,
+      "fields_bounds": [
+        997,
+        613,
+        864,
+        42
+      ],
+      "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+      "frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "same_frame": true,
+      "selected": true
+    },
+    "local_title_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "region_kind": "product_title",
+      "source_frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+      "source_frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "source_png_sha256": "e3f93e1badfb6d769856897704291caecae2334677eb8f14d04ccd7e75e8880d",
+      "image_file_writes": 0,
+      "expected_text_supplied": false,
+      "provider_selection": "explicit_before_run_not_target_match",
+      "recognition_cache_hit": false,
+      "single_line_attempt": {
+        "texts": [
+          "AS Val突击步枪-黑银先锋"
+        ],
+        "scores": [
+          0.99625
+        ],
+        "elapsed_ms": 25.08049993775785,
+        "accepted": true,
+        "fallback_reason": null,
+        "expected_text_supplied": false,
+        "detector_used": false
+      },
+      "recognition_route": "known_listing_single_line_recognizer",
+      "word_bounds_basis": "whole_current_observed_title_roi_not_detector_boxes",
+      "ok": true,
+      "words": [
+        {
+          "text": "AS Val突击步枪-黑银先锋",
+          "score": 0.99625,
+          "x": 1915,
+          "y": 238,
+          "width": 530,
+          "height": 54
+        }
+      ],
+      "rejected": [],
+      "bounds": [
+        1915,
+        238,
+        530,
+        54
+      ],
+      "error": null,
+      "elapsed_ms": 25.77539999037981
+    },
+    "local_price_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "expected_value_supplied": false,
+      "provider_selection": "explicit_before_run_not_price_match",
+      "confidence_threshold": 0.99,
+      "image_file_writes": 0,
+      "source_frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+      "source_frame_sha256": "d9f2c701b376ba3178c7af67a9fc1726763fbdbdfad70381e211da545b514620",
+      "source_png_sha256": "961010d5b1a38a83dcca78c2f762fda206e1ef41c79378c9dede98f91d05cfb6",
+      "native_observation": {
+        "bounds": [
+          997,
+          613,
+          864,
+          42
+        ],
+        "card_id": "edge:996:392:1861:655",
+        "error": "E_LOCAL_PRICE_PENDING",
+        "field_attempts": [
+          {
+            "attempt": 1,
+            "bounds": [
+              997,
+              613,
+              115,
+              42
+            ],
+            "engine": "Windows.Media.Ocr",
+            "error": "",
+            "field": "condition_bounds",
+            "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+            "language": "zh-Hans-CN",
+            "ok": true,
+            "same_frame": true,
+            "scale": 2,
+            "timing": {
+              "engine_cache_hit": true,
+              "engine_created": false,
+              "error": "",
+              "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+              "frame_released": true,
+              "frame_total_ms": 5,
+              "helper_pid": "300276",
+              "helper_reused": true,
+              "helper_roundtrip_ms": 4,
+              "helper_start_ms": 0,
+              "language": "zh-Hans-CN",
+              "mapping_name": "Local\\RelinkVision_b33105f4-97bf-45b6-9c96-2f9ef06d2199_0",
+              "mapping_prepare_ms": 0,
+              "ok": true,
+              "request_id": "b33105f4-97bf-45b6-9c96-2f9ef06d2199",
+              "request_write_ms": 0,
+              "roi_preprocess_ms": 0,
+              "roi_total_ms": 5,
+              "worker_bitmap_copy_ms": 0.23440000000000003,
+              "worker_engine_init_ms": 0.0122,
+              "worker_helper_request_ms": 2.9458,
+              "worker_recognize_ms": 2.0226,
+              "worker_runtime_init_ms": 0.0026000000000000003
+            },
+            "tokens": [
+              "成",
+              "色",
+              "S"
+            ],
+            "word_count": 3
+          },
+          {
+            "attempt": 0,
+            "bounds": [
+              1712,
+              613,
+              149,
+              42
+            ],
+            "engine": "local_price_pending",
+            "error": "E_LOCAL_PRICE_PENDING",
+            "field": "price_bounds",
+            "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+            "numeric_preprocess": {
+              "background_level": 62,
+              "component_bounds": [
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "crop_bounds": [
+                1813,
+                625,
+                41,
+                19
+              ],
+              "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+              "edge_line_column_count": 1,
+              "edge_line_pixels_removed": 190,
+              "edge_line_row_count": 1,
+              "frame_id": "dxgi:87e894ef-c437-4707-8abb-9b3a42033ceb",
+              "glyph_span_count": 3,
+              "highlight_level": 250,
+              "image_file_writes": 0,
+              "ink_bounds": [
+                1814,
+                626,
+                39,
+                17
+              ],
+              "ink_threshold": 147,
+              "method": "observed_components_edge_line_removal_white_padding",
+              "padding_prepared_pixels": 15,
+              "padding_source_pixels": 5,
+              "prepared_size": [
+                153,
+                87
+              ],
+              "reliable_digit_span_bounds": [
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "reliable_digit_span_minimum": 3,
+              "same_frame": true,
+              "scale": 3,
+              "schema": "numeric-roi-v1",
+              "source_frame_bytes_unchanged": true,
+              "source_region": [
+                1712,
+                613,
+                149,
+                42
+              ]
+            },
+            "ok": false,
+            "same_frame": true,
+            "scale": 3
+          }
+        ],
+        "kind": "card_fields",
+        "ok": false,
+        "scope": "visible_layout",
+        "split_fields_refinement": true,
+        "truncated": false,
+        "words": [
+          {
+            "height": 19,
+            "text": "成",
+            "width": 20,
+            "x": 1004,
+            "y": 625
+          },
+          {
+            "height": 19,
+            "text": "色",
+            "width": 19,
+            "x": 1026,
+            "y": 625
+          },
+          {
+            "height": 17,
+            "text": "S",
+            "width": 13,
+            "x": 1047,
+            "y": 626
+          }
+        ]
+      },
+      "raw_texts": [
+        "300"
+      ],
+      "scores": [
+        0.88659
+      ],
+      "detector_boxes": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            122.0,
+            0.0
+          ],
+          [
+            122.0,
+            56.0
+          ],
+          [
+            0.0,
+            56.0
+          ]
+        ]
+      ],
+      "crop_bounds": [
+        1813,
+        625,
+        41,
+        19
+      ],
+      "ink_bounds": [
+        1814,
+        626,
+        39,
+        17
+      ],
+      "scale": 3,
+      "reliable_digit_span_minimum": 3,
+      "ok": false,
+      "error": "LOCAL_PRICE_CONFIDENCE",
+      "elapsed_ms": 23.158000083640218
+    },
+    "local_title_error": "LOCAL_PRICE_CONFIDENCE"
+  },
+  "fresh": {
+    "capture_passed": true,
+    "ocr_passed": true,
+    "startup_page": {
+      "actions_enabled": false,
+      "anchor_checks": {
+        "catalog.circulation": false,
+        "catalog.rows": false,
+        "catalog.skin_tab": false,
+        "catalog.watch": true,
+        "collection.added": true,
+        "collection.full": false,
+        "listing.condition": true,
+        "listing.default_sort": true,
+        "listing.filter_all": false,
+        "listing.filter_confirm": false,
+        "listing.filter_price": false,
+        "listing.page_number": true,
+        "listing.sale": true,
+        "listing.similar": true,
+        "mandel.current": false,
+        "mandel.past": false,
+        "mandel.tab": false
+      },
+      "anchors": [
+        "list.sale",
+        "list.sort",
+        "list.condition",
+        "list.layout"
+      ],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [
+        "skin_listings"
+      ],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "skin_listings",
+      "provider_scores_available": false,
+      "reason": "MULTI_ANCHOR_MATCH",
+      "token_count": 208,
+      "valid_input": true
+    },
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_end_mono_ms": 1155610467,
+        "capture_ms": 48,
+        "capture_start_mono_ms": 1155610419,
+        "digest_ms": 4.6347,
+        "digest_provider": "Windows.CNG.SHA256",
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "not_before_mono_ms": 1155610405,
+        "pixel_max": 255,
+        "pixel_min": 5,
+        "requested_mono_ms": 1155610405,
+        "sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+        "source": "dxgi",
+        "source_age_ms": 39,
+        "source_mono_ms": 1155610428,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "coordinate_space": "client_physical_px",
+      "coordinate_transform": "clockwise_about_image_center",
+      "coverage": "full_client",
+      "frame_age_at_result_ms": 314,
+      "frame_age_before_output_ms": 500,
+      "frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "full_frame_ocr_performed": true,
+      "language": "zh-Hans-CN",
+      "outside_frame_tokens_dropped": 0,
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "source_text_angle_degrees": 0,
+      "word_count": 208
+    },
+    "focus_activation_requests": 0,
+    "focus_restore_requests": 0,
+    "collection_layout": {
+      "cards": [
+        {
+          "bounds": [
+            120,
+            304,
+            863,
+            75
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": false
+          },
+          "fields_bounds": null,
+          "id": "edge:120:304:982:378",
+          "selected": false
+        },
+        {
+          "bounds": [
+            997,
+            304,
+            863,
+            75
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": false
+          },
+          "fields_bounds": null,
+          "id": "edge:997:304:1859:378",
+          "selected": false
+        },
+        {
+          "bounds": [
+            120,
+            394,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            611,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            121,
+            611,
+            860,
+            42
+          ],
+          "id": "edge:120:394:981:653",
+          "price_bounds": [
+            832,
+            611,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            996,
+            392,
+            866,
+            264
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            997,
+            613,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "id": "edge:996:392:1861:655",
+          "price_bounds": [
+            1712,
+            613,
+            149,
+            42
+          ],
+          "selected": true
+        },
+        {
+          "bounds": [
+            121,
+            666,
+            862,
+            263
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            122,
+            886,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            122,
+            886,
+            860,
+            42
+          ],
+          "id": "edge:121:666:982:928",
+          "price_bounds": [
+            833,
+            886,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            668,
+            862,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            886,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            886,
+            860,
+            42
+          ],
+          "id": "edge:998:668:1859:928",
+          "price_bounds": [
+            1710,
+            886,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            943,
+            860,
+            260
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:121:943:980:1202",
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            943,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:998:943:1859:1202",
+          "selected": false
+        }
+      ],
+      "complete": true,
+      "detector": "visible_edges",
+      "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+      "frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "image_file_writes": 0,
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "page_exhausted": false,
+      "same_frame": true,
+      "schema": "collection-layout-v1",
+      "scrollbar": {
+        "geometry_basis": "observed_centerline_only",
+        "measured_center_x": 1878,
+        "method": "symmetric_contrast_with_independent_left_affine_background",
+        "thumb_bounds": [
+          1878,
+          429,
+          1,
+          61
+        ],
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ]
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    "collection_observation": {
+      "coverage": "field_projection",
+      "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+      "frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "image_file_writes": 0,
+      "page": "skin_listings",
+      "regions": [
+        {
+          "error": "",
+          "kind": "listing_controls",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 26,
+              "text": "平",
+              "width": 25,
+              "x": 238,
+              "y": 251
+            },
+            {
+              "height": 18,
+              "text": "已",
+              "width": 19,
+              "x": 276,
+              "y": 255
+            },
+            {
+              "height": 21,
+              "text": "筛",
+              "width": 20,
+              "x": 296,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "选",
+              "width": 20,
+              "x": 317,
+              "y": 253
+            },
+            {
+              "height": 17,
+              "text": "1",
+              "width": 6,
+              "x": 338,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "顶",
+              "width": 20,
+              "x": 346,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "不",
+              "width": 19,
+              "x": 527,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "限",
+              "width": 18,
+              "x": 549,
+              "y": 254
+            },
+            {
+              "height": 19,
+              "text": "公",
+              "width": 19,
+              "x": 569,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "示",
+              "width": 19,
+              "x": 590,
+              "y": 255
+            },
+            {
+              "height": 20,
+              "text": "期",
+              "width": 18,
+              "x": 611,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "默",
+              "width": 19,
+              "x": 1153,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "认",
+              "width": 19,
+              "x": 1174,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "排",
+              "width": 19,
+              "x": 1195,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "序",
+              "width": 19,
+              "x": 1216,
+              "y": 253
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "product_title",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "text": "AS Val突击步枪-黑银先锋",
+              "score": 0.99674,
+              "x": 1915,
+              "y": 238,
+              "width": 530,
+              "height": 54
+            }
+          ],
+          "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+          "windows_observation": {
+            "error": "E_LOCAL_TEXT_PENDING",
+            "kind": "product_title",
+            "ok": false,
+            "split_fields_refinement": false,
+            "truncated": false,
+            "words": []
+          }
+        },
+        {
+          "error": "",
+          "kind": "selected_detail",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1931,
+              "y": 659
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1953,
+              "y": 659
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 2213,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〔",
+              "width": 6,
+              "x": 2228,
+              "y": 660
+            },
+            {
+              "height": 17,
+              "text": "0",
+              "width": 11,
+              "x": 2244,
+              "y": 662
+            },
+            {
+              "height": 3,
+              "text": "．",
+              "width": 3,
+              "x": 2258,
+              "y": 676
+            },
+            {
+              "height": 17,
+              "text": "029618",
+              "width": 81,
+              "x": 2265,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〕",
+              "width": 6,
+              "x": 2349,
+              "y": 660
+            },
+            {
+              "height": 14,
+              "text": "7",
+              "width": 13,
+              "x": 2387,
+              "y": 661
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "selected_detail_precise",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 25.626345384141842,
+              "text": "0.029618)",
+              "width": 111.94687721119222,
+              "x": 2243.5576258103383,
+              "y": 656.6927190300779
+            }
+          ]
+        },
+        {
+          "bounds": [
+            997,
+            613,
+            864,
+            42
+          ],
+          "card_id": "edge:996:392:1861:655",
+          "error": "",
+          "field_attempts": [
+            {
+              "attempt": 1,
+              "bounds": [
+                997,
+                613,
+                115,
+                42
+              ],
+              "engine": "Windows.Media.Ocr",
+              "error": "",
+              "field": "condition_bounds",
+              "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+              "language": "zh-Hans-CN",
+              "ok": true,
+              "same_frame": true,
+              "scale": 2,
+              "timing": {
+                "engine_cache_hit": true,
+                "engine_created": false,
+                "error": "",
+                "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+                "frame_released": true,
+                "frame_total_ms": 5,
+                "helper_pid": "300276",
+                "helper_reused": true,
+                "helper_roundtrip_ms": 4,
+                "helper_start_ms": 0,
+                "language": "zh-Hans-CN",
+                "mapping_name": "Local\\RelinkVision_6d7d78ad-6161-45aa-85ec-eaf8069ccb01_0",
+                "mapping_prepare_ms": 0,
+                "ok": true,
+                "request_id": "6d7d78ad-6161-45aa-85ec-eaf8069ccb01",
+                "request_write_ms": 0,
+                "roi_preprocess_ms": 0,
+                "roi_total_ms": 5,
+                "worker_bitmap_copy_ms": 0.2255,
+                "worker_engine_init_ms": 0.0119,
+                "worker_helper_request_ms": 2.5951,
+                "worker_recognize_ms": 1.6742000000000001,
+                "worker_runtime_init_ms": 0.0037
+              },
+              "tokens": [
+                "成",
+                "色",
+                "S"
+              ],
+              "word_count": 3
+            },
+            {
+              "attempt": 0,
+              "bounds": [
+                1712,
+                613,
+                149,
+                42
+              ],
+              "engine": "local_price_pending",
+              "error": "E_LOCAL_PRICE_PENDING",
+              "field": "price_bounds",
+              "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+              "numeric_preprocess": {
+                "background_level": 62,
+                "component_bounds": [
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "crop_bounds": [
+                  1813,
+                  625,
+                  41,
+                  19
+                ],
+                "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+                "edge_line_column_count": 1,
+                "edge_line_pixels_removed": 190,
+                "edge_line_row_count": 1,
+                "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+                "glyph_span_count": 3,
+                "highlight_level": 250,
+                "image_file_writes": 0,
+                "ink_bounds": [
+                  1814,
+                  626,
+                  39,
+                  17
+                ],
+                "ink_threshold": 147,
+                "method": "observed_components_edge_line_removal_white_padding",
+                "padding_prepared_pixels": 15,
+                "padding_source_pixels": 5,
+                "prepared_size": [
+                  153,
+                  87
+                ],
+                "reliable_digit_span_bounds": [
+                  [
+                    1814,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1828,
+                    626,
+                    11,
+                    17
+                  ],
+                  [
+                    1842,
+                    626,
+                    11,
+                    17
+                  ]
+                ],
+                "reliable_digit_span_minimum": 3,
+                "same_frame": true,
+                "scale": 3,
+                "schema": "numeric-roi-v1",
+                "source_frame_bytes_unchanged": true,
+                "source_region": [
+                  1712,
+                  613,
+                  149,
+                  42
+                ]
+              },
+              "ok": false,
+              "same_frame": true,
+              "scale": 3
+            }
+          ],
+          "kind": "card_fields",
+          "ok": true,
+          "scope": "visible_layout",
+          "split_fields_refinement": true,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1004,
+              "y": 625
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1026,
+              "y": 625
+            },
+            {
+              "height": 17,
+              "text": "S",
+              "width": 13,
+              "x": 1047,
+              "y": 626
+            },
+            {
+              "text": "300",
+              "score": 0.99998,
+              "x": 1813.0,
+              "y": 625.0,
+              "width": 40.666666666666664,
+              "height": 18.666666666666668
+            }
+          ],
+          "price_provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU"
+        }
+      ],
+      "same_frame": true
+    },
+    "collection_selected_card": {
+      "bounds": [
+        996,
+        392,
+        866,
+        264
+      ],
+      "card_id": "edge:996:392:1861:655",
+      "favorite_bright_fraction": 0,
+      "favorite_warm_fraction": 0.13398692810457516,
+      "fields_bounds": [
+        997,
+        613,
+        864,
+        42
+      ],
+      "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+      "frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "same_frame": true,
+      "selected": true
+    },
+    "local_title_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "region_kind": "product_title",
+      "source_frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+      "source_frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "source_png_sha256": "b0654bff6228e63fc16387fa248ee7bcf76c1b46b897f8ab4e3cc33b2d0c644d",
+      "image_file_writes": 0,
+      "expected_text_supplied": false,
+      "provider_selection": "explicit_before_run_not_target_match",
+      "recognition_cache_hit": false,
+      "single_line_attempt": {
+        "texts": [
+          "AS Val突击步枪-黑银先锋"
+        ],
+        "scores": [
+          0.99674
+        ],
+        "elapsed_ms": 23.026299895718694,
+        "accepted": true,
+        "fallback_reason": null,
+        "expected_text_supplied": false,
+        "detector_used": false
+      },
+      "recognition_route": "known_listing_single_line_recognizer",
+      "word_bounds_basis": "whole_current_observed_title_roi_not_detector_boxes",
+      "ok": true,
+      "words": [
+        {
+          "text": "AS Val突击步枪-黑银先锋",
+          "score": 0.99674,
+          "x": 1915,
+          "y": 238,
+          "width": 530,
+          "height": 54
+        }
+      ],
+      "rejected": [],
+      "bounds": [
+        1915,
+        238,
+        530,
+        54
+      ],
+      "error": null,
+      "elapsed_ms": 23.676600074395537
+    },
+    "local_price_ocr": {
+      "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+      "model_sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      },
+      "expected_value_supplied": false,
+      "provider_selection": "explicit_before_run_not_price_match",
+      "confidence_threshold": 0.99,
+      "image_file_writes": 0,
+      "source_frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+      "source_frame_sha256": "89ed9ff8151bfd51c56b13e745a2d8ea7da7a7e7027a8c1129d314ba7c18c26e",
+      "source_png_sha256": "52ae74dff31c781520ffca6c442a6f5db46a6472909972d5c9eef8369f6ab546",
+      "native_observation": {
+        "bounds": [
+          997,
+          613,
+          864,
+          42
+        ],
+        "card_id": "edge:996:392:1861:655",
+        "error": "E_LOCAL_PRICE_PENDING",
+        "field_attempts": [
+          {
+            "attempt": 1,
+            "bounds": [
+              997,
+              613,
+              115,
+              42
+            ],
+            "engine": "Windows.Media.Ocr",
+            "error": "",
+            "field": "condition_bounds",
+            "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+            "language": "zh-Hans-CN",
+            "ok": true,
+            "same_frame": true,
+            "scale": 2,
+            "timing": {
+              "engine_cache_hit": true,
+              "engine_created": false,
+              "error": "",
+              "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+              "frame_released": true,
+              "frame_total_ms": 5,
+              "helper_pid": "300276",
+              "helper_reused": true,
+              "helper_roundtrip_ms": 4,
+              "helper_start_ms": 0,
+              "language": "zh-Hans-CN",
+              "mapping_name": "Local\\RelinkVision_6d7d78ad-6161-45aa-85ec-eaf8069ccb01_0",
+              "mapping_prepare_ms": 0,
+              "ok": true,
+              "request_id": "6d7d78ad-6161-45aa-85ec-eaf8069ccb01",
+              "request_write_ms": 0,
+              "roi_preprocess_ms": 0,
+              "roi_total_ms": 5,
+              "worker_bitmap_copy_ms": 0.2255,
+              "worker_engine_init_ms": 0.0119,
+              "worker_helper_request_ms": 2.5951,
+              "worker_recognize_ms": 1.6742000000000001,
+              "worker_runtime_init_ms": 0.0037
+            },
+            "tokens": [
+              "成",
+              "色",
+              "S"
+            ],
+            "word_count": 3
+          },
+          {
+            "attempt": 0,
+            "bounds": [
+              1712,
+              613,
+              149,
+              42
+            ],
+            "engine": "local_price_pending",
+            "error": "E_LOCAL_PRICE_PENDING",
+            "field": "price_bounds",
+            "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+            "numeric_preprocess": {
+              "background_level": 62,
+              "component_bounds": [
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "crop_bounds": [
+                1813,
+                625,
+                41,
+                19
+              ],
+              "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+              "edge_line_column_count": 1,
+              "edge_line_pixels_removed": 190,
+              "edge_line_row_count": 1,
+              "frame_id": "dxgi:cd895e9d-61c1-4446-b3bd-539c90b7cc40",
+              "glyph_span_count": 3,
+              "highlight_level": 250,
+              "image_file_writes": 0,
+              "ink_bounds": [
+                1814,
+                626,
+                39,
+                17
+              ],
+              "ink_threshold": 147,
+              "method": "observed_components_edge_line_removal_white_padding",
+              "padding_prepared_pixels": 15,
+              "padding_source_pixels": 5,
+              "prepared_size": [
+                153,
+                87
+              ],
+              "reliable_digit_span_bounds": [
+                [
+                  1814,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1828,
+                  626,
+                  11,
+                  17
+                ],
+                [
+                  1842,
+                  626,
+                  11,
+                  17
+                ]
+              ],
+              "reliable_digit_span_minimum": 3,
+              "same_frame": true,
+              "scale": 3,
+              "schema": "numeric-roi-v1",
+              "source_frame_bytes_unchanged": true,
+              "source_region": [
+                1712,
+                613,
+                149,
+                42
+              ]
+            },
+            "ok": false,
+            "same_frame": true,
+            "scale": 3
+          }
+        ],
+        "kind": "card_fields",
+        "ok": false,
+        "scope": "visible_layout",
+        "split_fields_refinement": true,
+        "truncated": false,
+        "words": [
+          {
+            "height": 19,
+            "text": "成",
+            "width": 20,
+            "x": 1004,
+            "y": 625
+          },
+          {
+            "height": 19,
+            "text": "色",
+            "width": 19,
+            "x": 1026,
+            "y": 625
+          },
+          {
+            "height": 17,
+            "text": "S",
+            "width": 13,
+            "x": 1047,
+            "y": 626
+          }
+        ]
+      },
+      "raw_texts": [
+        "300"
+      ],
+      "scores": [
+        0.99998
+      ],
+      "detector_boxes": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            122.0,
+            0.0
+          ],
+          [
+            122.0,
+            56.0
+          ],
+          [
+            0.0,
+            56.0
+          ]
+        ]
+      ],
+      "crop_bounds": [
+        1813,
+        625,
+        41,
+        19
+      ],
+      "ink_bounds": [
+        1814,
+        626,
+        39,
+        17
+      ],
+      "scale": 3,
+      "reliable_digit_span_minimum": 3,
+      "ok": true,
+      "words": [
+        {
+          "text": "300",
+          "score": 0.99998,
+          "x": 1813.0,
+          "y": 625.0,
+          "width": 40.666666666666664,
+          "height": 18.666666666666668
+        }
+      ],
+      "elapsed_ms": 20.843799924477935
+    }
+  }
+}

@@ -40,7 +40,6 @@ bool exactDefaultSkin(const ::Skin& skin) {
     const auto* known = knownDemoIdentity(skin);
     return known && skin.condition == known->condition && skin.rarity == known->rarity
         && skin.wear == known->wear && skin.price == known->price && skin.change == known->change
-        && skin.menuColor.isEmpty()
         && skin.variant.isEmpty() && skin.skinSeries.isEmpty();
 }
 
@@ -114,6 +113,8 @@ bool clearKnownSynthetic(::Skin& skin) {
 
 QString catalogSkinId(const QString& productId) { return QStringLiteral("catalog:") + productId; }
 
+QString catalogGradeText(const QString& grade) { return grade.isEmpty() ? QStringLiteral("待核对") : grade; }
+
 bool applyCatalogConfiguration(AppState& state, const catalog::Catalog& catalog,
                                CatalogProjectionReport* report, QString* error) {
     if (error) error->clear();
@@ -180,10 +181,9 @@ bool applyCatalogConfiguration(AppState& state, const catalog::Catalog& catalog,
         skin.id = catalogSkinId(item.productId);
         skin.name = item.displayName;
         skin.series = item.seasonId + QStringLiteral(" · ") + item.seasonLabel;
-        skin.rarity = item.gameQualityName.isEmpty() ? QStringLiteral("待核对") : item.gameQualityName;
+        skin.rarity = catalogGradeText(item.grade);
         if (skin.condition.isEmpty()) skin.condition = QStringLiteral("未采集");
         skin.catalogProductId = item.productId;
-        skin.menuColor = item.menuColor;
         skin.variant = item.variantLabel;
         skin.skinSeries = item.skinSeries;
         if (skin.dataSource.isEmpty() || skin.dataSource == QStringLiteral("test_fixture"))

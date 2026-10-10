@@ -1,0 +1,392 @@
+{
+  "schema": "recorded-stream-scroll-readiness-fixture-v1",
+  "source": "C:\\Users\\Administrator\\Desktop\\price\\artifacts\\collection_ready_stream\\run01\\session.json",
+  "source_sha256": "dda89963101f546455ea969d436236d5d2cdea564e21bb8853669c76f09b5c32",
+  "image_data_included": false,
+  "before_step": 44,
+  "after_step": 46,
+  "before_layout": {
+    "schema": "collection-layout-v1",
+    "complete": true,
+    "same_frame": true,
+    "frame_id": "dxgi:1e4edfcb-620b-4790-8440-f41817e8ff69",
+    "frame_sha256": "d775f40c353a35d02e40e4cebcc6d4367089c34639f65cddea47e8a8f1169136",
+    "viewport": [
+      2560,
+      1440
+    ],
+    "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+    ],
+    "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+        1878,
+        329,
+        1,
+        61
+      ],
+      "track_bounds": [
+        1878,
+        304,
+        1,
+        899
+      ]
+    },
+    "cards": [
+      {
+        "bounds": [
+          120,
+          304,
+          863,
+          231
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "selected": false,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          996,
+          304,
+          866,
+          233
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "selected": true,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          120,
+          549,
+          863,
+          261
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          121,
+          767,
+          861,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          997,
+          549,
+          863,
+          261
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          998,
+          767,
+          861,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          121,
+          824,
+          862,
+          260
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          122,
+          1041,
+          860,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          998,
+          824,
+          862,
+          260
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          999,
+          1041,
+          860,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          121,
+          1099,
+          860,
+          104
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          997,
+          1099,
+          863,
+          104
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": null
+      }
+    ]
+  },
+  "after_layout": {
+    "schema": "collection-layout-v1",
+    "complete": true,
+    "same_frame": true,
+    "frame_id": "dxgi:c86b5fcf-f4b0-430b-ad10-5232d39abad1",
+    "frame_sha256": "7ad5497affee58ad207a3aeb56bb1bd68d1f98ce834ef7b19db43424801c20fc",
+    "viewport": [
+      2560,
+      1440
+    ],
+    "listing_viewport": [
+      108,
+      300,
+      1765,
+      903
+    ],
+    "scrollbar": {
+      "geometry_basis": "observed_centerline_only",
+      "measured_center_x": 1878,
+      "method": "symmetric_contrast_with_independent_left_affine_background",
+      "thumb_bounds": [
+        1878,
+        329,
+        1,
+        62
+      ],
+      "track_bounds": [
+        1878,
+        304,
+        1,
+        899
+      ]
+    },
+    "cards": [
+      {
+        "bounds": [
+          120,
+          304,
+          863,
+          225
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "selected": false,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          997,
+          304,
+          863,
+          225
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "selected": false,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          119,
+          541,
+          865,
+          261
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": true,
+        "fields_bounds": [
+          120,
+          759,
+          863,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          998,
+          543,
+          862,
+          260
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          999,
+          760,
+          860,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          121,
+          818,
+          862,
+          260
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          122,
+          1035,
+          860,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          998,
+          818,
+          862,
+          260
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": [
+          999,
+          1035,
+          860,
+          42
+        ]
+      },
+      {
+        "bounds": [
+          121,
+          1092,
+          861,
+          111
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": null
+      },
+      {
+        "bounds": [
+          998,
+          1093,
+          862,
+          110
+        ],
+        "bounds_basis": "observed",
+        "edges": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "fields_bounds": null
+      }
+    ]
+  }
+}

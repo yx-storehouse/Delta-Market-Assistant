@@ -5,6 +5,7 @@
 #include "ui/dialogs/skin_catalog_dialog.h"
 #include "ui/dialogs/collection_import_dialog.h"
 #include "application/collection_task_commit.h"
+#include "application/collection_hotkey.h"
 #include "config/v1_adapter.h"
 #include "application/runtime/replay_controller.h"
 #include "application/runtime/ui_projection.h"
@@ -23,6 +24,7 @@
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialog>
+#include <QDesktopServices>
 #include <QDir>
 #include <QDoubleSpinBox>
 #include <QEvent>
@@ -36,6 +38,7 @@
 #include <QHeaderView>
 #include <QItemSelectionModel>
 #include <QJsonArray>
+#include <QUrl>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
@@ -75,13 +78,6 @@ const QStringList titles = {QStringLiteral("工作台"), QStringLiteral("我的�
                             QStringLiteral("价格中心"), QStringLiteral("运行统计"), QStringLiteral("运行日志"),
                             QStringLiteral("设置"), QStringLiteral("运行设置")};
 constexpr int RunPage = 7;
-QString menuColorName(const QString& color) {
-    if (color == "red") return QStringLiteral("红色");
-    if (color == "orange") return QStringLiteral("橙色");
-    if (color == "purple") return QStringLiteral("紫色");
-    if (color == "blue") return QStringLiteral("蓝色");
-    return QStringLiteral("未记录");
-}
 
 // Review edits remain visible on save failure; Escape and the title-bar close
 // take the same explicit discard path as the Cancel command.
@@ -465,7 +461,7 @@ QWidget* MainWindow::buildFavorites()
     filters->addStretch();
     m_rarityFilter = new FluentComboBox;
     m_rarityFilter->setObjectName(QStringLiteral("favoriteRarity"));
-    m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部颜色") : QStringLiteral("全部品级")));
+    m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部品阶") : QStringLiteral("全部品级")));
     m_rarityFilter->setFixedWidth(132);
     m_favoriteStateFilter = new FluentComboBox;
     m_favoriteStateFilter->setObjectName(QStringLiteral("favoriteTaskFilter"));
@@ -566,7 +562,7 @@ QWidget* MainWindow::buildFavorites()
         block->addWidget(value);
         facts->addLayout(block, 1);
     };
-    addFact((m_catalog ? QStringLiteral("菜单颜色") : QStringLiteral("品级")), m_factRarity);
+    addFact((m_catalog ? QStringLiteral("品阶") : QStringLiteral("品级")), m_factRarity);
     addFact(QStringLiteral("成色"), m_factCondition);
     addFact(QStringLiteral("磨损"), m_factWear);
     detail->addLayout(facts);
@@ -851,6 +847,18 @@ QWidget* MainWindow::buildLogs()
     header->addWidget(m_logLevel, 0, Qt::AlignVCenter);
     auto* clear = button(QStringLiteral("清空日志"), QStringLiteral("clearLogsButton"), ButtonKind::Standard, Glyph::Delete);
     header->addWidget(clear, 0, Qt::AlignVCenter);
+    // Development log files of the hotkey collection (runner + program) and
+    // each run's failure records live under artifacts/logs and hotkey_runs.
+    const QString logDirectory = relink::application::collectionLogDirectory(QCoreApplication::applicationDirPath());
+    if (!logDirectory.isEmpty()) {
+        auto* openLogs = button(QStringLiteral("打开日志文件夹"), QStringLiteral("openLogFolderButton"), ButtonKind::Standard, Glyph::Folder);
+        openLogs->setToolTip(QDir::toNativeSeparators(logDirectory));
+        header->addWidget(openLogs, 0, Qt::AlignVCenter);
+        connect(openLogs, &QPushButton::clicked, this, [logDirectory] {
+            QDir().mkpath(logDirectory);
+            QDesktopServices::openUrl(QUrl::fromLocalFile(logDirectory));
+        });
+    }
     layout->addSpacing(20);
     if (m_workspace) {
         layout->addWidget(buildWorkspaceRecords());
@@ -1089,11 +1097,11 @@ void MainWindow::refreshFavorites()
         const QString rarity = m_rarityFilter->currentText();
         QStringList values;
         for (const auto& skin : m_state->skins) {
-            const auto value = m_catalog ? menuColorName(skin.menuColor) : skin.rarity;
+            const auto value = skin.rarity;
             if (!value.isEmpty() && !values.contains(value)) values.append(value);
         }
         m_rarityFilter->clear();
-        m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部颜色") : QStringLiteral("全部品级")));
+        m_rarityFilter->addItem((m_catalog ? QStringLiteral("全部品阶") : QStringLiteral("全部品级")));
         m_rarityFilter->addItems(values);
         m_rarityFilter->setCurrentIndex(qMax(0, m_rarityFilter->findText(rarity)));
     }
@@ -1118,8 +1126,8 @@ void MainWindow::refreshFavorites()
     for (const auto& skin : m_state->skins) {
         if (!matches(skin, m_catalogFilter)) continue;
         if (!query.isEmpty() && !skin.name.contains(query, Qt::CaseInsensitive) && !skin.series.contains(query, Qt::CaseInsensitive) && !skin.catalogProductId.contains(query, Qt::CaseInsensitive)
-            && !skin.variant.contains(query, Qt::CaseInsensitive) && !skin.menuColor.contains(query) && !menuColorName(skin.menuColor).contains(query)) continue;
-        if (m_rarityFilter->currentIndex() > 0 && (m_catalog ? menuColorName(skin.menuColor) : skin.rarity) != m_rarityFilter->currentText()) continue;
+            && !skin.variant.contains(query, Qt::CaseInsensitive) && !skin.rarity.contains(query)) continue;
+        if (m_rarityFilter->currentIndex() > 0 && skin.rarity != m_rarityFilter->currentText()) continue;
         const Task* linked = nullptr;
         bool enabled = false;
         for (const auto& task : m_state->tasks) {
@@ -1146,7 +1154,7 @@ void MainWindow::refreshFavorites()
         identity->setData(KindRole, ItemCell);
         identity->setData(SubtitleRole, skin.series);
         identity->setData(ArtRole, -1);
-        identity->setToolTip(skin.name + "\n" + skin.series + (m_catalog ? QStringLiteral(" · ") + menuColorName(skin.menuColor) + QStringLiteral(" · ") + skin.variant : QString()));
+        identity->setToolTip(skin.name + "\n" + skin.series + (m_catalog ? QStringLiteral(" · ") + skin.rarity + (skin.variant.isEmpty() ? QString() : QStringLiteral(" · ") + skin.variant) : QString()));
         put(m_favoritesTable, row, 2, skin.wearKnown ? QString::number(skin.wear, 'f', 3) : QStringLiteral("—"), FluentTheme::secondary);
         put(m_favoritesTable, row, 3, skin.priceKnown ? amount(skin.price) : QStringLiteral("—"));
         QVariantList samples;
@@ -1193,8 +1201,8 @@ void MainWindow::refreshFavoriteDetail()
     // Falling prices read as favourable for a buyer, rising prices as unfavourable.
     const QColor changeColor = skin->change < 0 ? FluentTheme::positive : (skin->change > 0 ? FluentTheme::negative : FluentTheme::secondary);
     m_favoriteChange->setStyleSheet(QStringLiteral("color:%1;").arg(changeColor.name()));
-    m_factRarity->setText(m_catalog ? menuColorName(skin->menuColor) : skin->rarity);
-    m_factRarity->setToolTip(QStringLiteral("正式品质：") + skin->rarity);
+    m_factRarity->setText(skin->rarity);
+    m_factRarity->setToolTip((m_catalog ? QStringLiteral("品阶：") : QStringLiteral("品级：")) + skin->rarity);
     m_factCondition->setText(skin->condition);
     m_factWear->setText(skin->wearKnown ? QString::number(skin->wear, 'f', 3) : QStringLiteral("—"));
     m_favoriteChart->setSeries(m_catalog ? QVector<double>{} : series(skin->price));
@@ -1348,9 +1356,9 @@ void MainWindow::showHelp()
         body->addWidget(text);
         body->addSpacing(14);
     }
-    body->addWidget(label(QStringLiteral("运行快捷键：%1（接入执行模块后生效）").arg(m_state->run.hotkey), QStringLiteral("cardCaption")));
+    body->addWidget(label(QStringLiteral("运行快捷键：%1（按一下开始收藏+购买，再按一下停止；会真实购买）").arg(m_state->run.hotkey), QStringLiteral("cardCaption")));
     body->addSpacing(4);
-    auto* demo = label((m_catalog ? QStringLiteral("通过“皮肤资料 / 追加赛季”维护目录。菜单颜色、极品 / 优品与任务成色独立保存；未知市场数据保持空白。") : QStringLiteral("当前版本是本地演示前端：不连接游戏，不读取实时市场，也不执行点击或购买。")), QStringLiteral("tertiaryLabel"));
+    auto* demo = label((m_catalog ? QStringLiteral("通过“皮肤资料 / 追加赛季”维护目录。品阶、极品 / 优品与任务成色独立保存；未知市场数据保持空白。") : QStringLiteral("当前版本是本地演示前端：不连接游戏，不读取实时市场，也不执行点击或购买。")), QStringLiteral("tertiaryLabel"));
     demo->setWordWrap(true);
     body->addWidget(demo);
     outer->addWidget(content, 1);

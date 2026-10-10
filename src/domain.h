@@ -14,7 +14,8 @@ struct Skin {
     double wear = 0, price = 0, change = 0;
     bool followed = false;
     // Product identity is separate from a listing's condition/price/wear.
-    QString catalogProductId = {}, menuColor = {}, variant = {}, skinSeries = {};
+    // A catalogue skin's 品阶 is in `rarity` (待核对 when not recorded).
+    QString catalogProductId = {}, variant = {}, skinSeries = {};
     // A zero is not evidence that an unobserved market value is known.
     bool priceKnown = false, wearKnown = false, changeKnown = false;
     QString dataSource = QStringLiteral("catalog");
@@ -48,7 +49,12 @@ struct Task {
 struct RunSettings {
     QString profile = QStringLiteral("S11新赛季1103");
     QString hotkey = QStringLiteral("F2");
+    // User 2026-10-09: the delay after the purchase dialog's countdown reaches
+    // zero before the green button is clicked ("归零后多少延迟之后准确的点击购买").
     int purchaseDelayMs = 830;
+    // Seconds before zero at which the purchase dialog is opened (1..5: the
+    // price button appears 5 s before zero, live preentry01/02).
+    int enterBeforeSeconds = 3;
     bool dynamicDelay = false;
     int queueFullTrigger = 1;
     double queueFullStepMs = 1.0;

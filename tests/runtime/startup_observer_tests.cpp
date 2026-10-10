@@ -76,6 +76,27 @@ int main(int argc, char** argv) {
         {"words", QJsonArray{token(QStringLiteral("交易行"), 700, 30, 80), token(QStringLiteral("典藏外观"), 300, 40, 100)}}};
     nav["legacy_page_label"] = QStringLiteral("皮肤列表");
     check(classifySkinPage(nav).page == SkinPage::Unknown, "navigation_and_legacy_label_never_supply_page_proof");
+    QJsonObject missingHome{{"width",2560},{"height",1440},{"coverage","full_client"},
+        {"words",QJsonArray{token(QStringLiteral("典藏外观"),390,91,100),
+                           token(QStringLiteral("我的关注"),2288,264,100)}}};
+    check(classifySkinPage(missingHome).page==SkinPage::Unknown
+        &&homeCirculationRefinementRegion(missingHome)==QRect(625,310,800,95),
+        "repaired_navigation_requests_real_circulation_without_assuming_home");
+    auto missingNav=missingHome;auto repairedWords=missingHome["words"].toArray();
+    auto onlyOne=repairedWords;onlyOne.removeLast();missingNav["words"]=onlyOne;
+    check(homeCirculationRefinementRegion(missingNav).isEmpty(),"one_navigation_anchor_is_not_enough_to_request_home_refinement");
+    repairedWords.append(token(QStringLiteral("当前市场流通量：471个"),625,320,300));
+    auto repairedHome=missingHome;repairedHome["words"]=repairedWords;
+    check(classifySkinPage(repairedHome).page==SkinPage::SkinHome
+        &&homeCirculationRefinementRegion(repairedHome).isEmpty(),
+        "actual_circulation_word_supplies_original_independent_home_anchor");
+    check(homeCirculationRefinementRegion(scaled(missingHome,.75)).isEmpty(),"home_refinement_does_not_guess_unmeasured_resolution");
+    auto conflictingHome=missingHome;auto conflictingWords=missingHome["words"].toArray();
+    conflictingWords.append(token(QStringLiteral("分辨率"),500,500,100));
+    conflictingWords.append(token(QStringLiteral("显示模式"),500,550,100));
+    conflictingWords.append(token(QStringLiteral("局内帧数上限"),500,600,160));
+    conflictingHome["words"]=conflictingWords;
+    check(homeCirculationRefinementRegion(conflictingHome).isEmpty(),"known_other_page_never_gets_home_refinement");
     check(classifySkinPage(fixtures["p4_settings_2880"]).page == SkinPage::GameSettings, "legacy_warfare_label_is_actually_settings");
     check(classifySkinPage(fixtures["p6_settings_mislabeled"]).page == SkinPage::GameSettings, "legacy_apply_appearance_label_is_actually_settings");
     auto low = home; auto words = low["words"].toArray();
@@ -106,6 +127,37 @@ int main(int argc, char** argv) {
     auto far = words.last().toObject(); far["x"] = far["x"].toDouble() + 150; words[words.size()-1] = far;
     fragment["words"] = words;
     check(classifySkinPage(fragment).page == SkinPage::Unknown, "far_apart_text_not_concatenated_into_page_anchor");
+    {
+        // Live 2026-10-09: the watchlist count may be read without its colon,
+        // split from the number, or as separate characters.
+        const auto watch = fixtures["p1_watch_list"];
+        bool allWatch = true;
+        for (const auto& variant : QList<QStringList>{{QStringLiteral("我的关注60/150")}, {QStringLiteral("我的关注"), QStringLiteral("：60/150")},
+                                                     {QStringLiteral("我的"), QStringLiteral("关注"), QStringLiteral("60/150")}}) {
+            auto page = watch;
+            auto words = page["words"].toArray();
+            for (qsizetype i = 0; i < words.size(); ++i) {
+                const auto w = words[i].toObject();
+                if (!w["text"].toString().startsWith(QStringLiteral("我的关注"))) continue;
+                words.removeAt(i);
+                double x = w["x"].toDouble();
+                for (const auto& part : variant) {
+                    const double width = 20.0 * part.size();
+                    words.append(token(part, x, w["y"].toDouble(), width, w["height"].toDouble()));
+                    x += width + 2;
+                }
+                break;
+            }
+            page["words"] = words;
+            allWatch &= classifySkinPage(page).page == SkinPage::WatchlistListings;
+        }
+        check(allWatch, "watchlist_count_without_colon_or_split_still_watchlist");
+        auto toast = fixtures["p1_skin_list"];
+        auto words = toast["words"].toArray();
+        words.append(token(QStringLiteral("成功添加至我的关注"), 800, 160, 320, 28));
+        toast["words"] = words;
+        check(classifySkinPage(toast).page == SkinPage::SkinListings, "collection_toast_does_not_make_a_listing_a_watchlist");
+    }
     auto laterPage = fixtures["p3_list_filter_open"];
     words = laterPage["words"].toArray();
     for (qsizetype i = 0; i < words.size(); ++i) {
@@ -125,6 +177,123 @@ int main(int argc, char** argv) {
         auto missing=covered;QJsonArray list;
         for(const auto& v:visible)if(v.toObject()["text"].toString()!=required)list.append(v);
         missing["words"]=list;check(classifySkinPage(missing).page==SkinPage::Unknown,"filter_panel_missing_independent_anchor_rejected_"+required);
+    }
+    // A synthetic full-client observation reproduces run_06's exact missing
+    // anchor pattern; label boxes below are the recorded same-layout label
+    // positions. These tests do not claim an OCR re-read of unsaved live pixels.
+    auto filterMissing=scaled(fixtures["p3_list_filter_open"],4.0/3.0);
+    filterMissing["frame_id"]="fixture:filter-refinement";
+    filterMissing["frame_sha256"]=QString(64,QLatin1Char('a'));
+    QJsonArray missingLabelWords;
+    for(const auto& value:filterMissing["words"].toArray())
+        if(value.toObject()["text"]!=QStringLiteral("所有成色"))missingLabelWords.append(value);
+    filterMissing["words"]=missingLabelWords;
+    const QRect labelRoi(1886,444,120,42);
+    const auto beforeRefinement=classifySkinPage(filterMissing);
+    check(beforeRefinement.page==SkinPage::SkinListings &&beforeRefinement.overlay==PageOverlay::None
+        &&beforeRefinement.anchorChecks["listing.filter_price"].toBool()
+        &&beforeRefinement.anchorChecks["listing.filter_confirm"].toBool()
+        &&!beforeRefinement.anchorChecks["listing.filter_all"].toBool(),"missing_all_label_not_inferred_from_other_two_modal_anchors");
+    check(listingFilterAllLabelRefinementRegion(filterMissing)==labelRoi,"listing_filter_label_roi_excludes_checked_box");
+    QJsonObject labelRead{{"width",2560},{"height",1440},{"coverage","roi"},{"same_frame",true},
+        {"frame_id",filterMissing["frame_id"]},{"frame_sha256",filterMissing["frame_sha256"]},
+        {"words",QJsonArray{token(QStringLiteral("所"),1894,456,19,18),token(QStringLiteral("有"),1915,455,19,19),
+                           token(QStringLiteral("成"),1936,455,19,19),token(QStringLiteral("色"),1957,455,19,19)}}};
+    const auto originalFilter=filterMissing,originalRead=labelRead;
+    QJsonObject labelEvidence;
+    const auto filterRefined=refineListingFilterAllLabel(filterMissing,labelRead,labelRoi,&labelEvidence);
+    const auto refinedPage=classifySkinPage(filterRefined);
+    check(labelEvidence["replacement_applied"].toBool() &&labelEvidence["same_frame"].toBool()
+        &&!labelEvidence["actions_enabled"].toBool() &&refinedPage.overlay==PageOverlay::ListingFilter
+        &&refinedPage.anchorChecks["listing.filter_all"].toBool(),"same_frame_actual_label_tokens_restore_original_three_anchor_modal_rule");
+    check(filterMissing==originalFilter &&labelRead==originalRead,"filter_refinement_inputs_unchanged");
+    for(const auto& removed:QStringList{QStringLiteral("在售"),QStringLiteral("默认排序"),QStringLiteral("价格区间"),QStringLiteral("确定")}){
+        auto invalidContext=filterMissing;QJsonArray remaining;
+        for(const auto& value:invalidContext["words"].toArray())
+            if(value.toObject()["text"]!=removed)remaining.append(value);
+        invalidContext["words"]=remaining;
+        check(listingFilterAllLabelRefinementRegion(invalidContext).isEmpty(),"label_refinement_requires_independent_context_"+removed);
+    }
+    check(listingFilterAllLabelRefinementRegion(filterRefined).isEmpty(),"complete_modal_not_repeatedly_refined");
+    auto wrongSize=scaled(filterMissing,.5);
+    check(listingFilterAllLabelRefinementRegion(wrongSize).isEmpty(),"fixed_label_roi_not_applied_to_unmeasured_resolution");
+    const std::function<void(QJsonObject&)> corruptLabel[] = {
+        [](auto& p){p["frame_id"]="old-frame";},[](auto& p){p["frame_sha256"]=QString(64,QLatin1Char('b'));},
+        [](auto& p){p["same_frame"]=false;},[](auto& p){p["coverage"]="full_client";},
+        [](auto& p){p["width"]=1280;},[](auto& p){p["words"]=QJsonArray{};},
+        [](auto& p){auto w=p["words"].toArray();auto a=w[0].toObject();a["x"]=1885;w[0]=a;p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();auto a=w[1].toObject();a["text"]=QStringLiteral("右");w[1]=a;p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();w.removeAt(1);p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();auto a=w[0].toObject();a["score"]=.69;w[0]=a;p["words"]=w;},
+        [](auto& p){QJsonArray w;for(int i=0;i<17;++i)w.append(token(QStringLiteral("所"),1894,456,19,18));p["words"]=w;}
+    };
+    for(const auto& corrupt:corruptLabel){
+        auto bad=labelRead;corrupt(bad);QJsonObject rejected;
+        const auto unchanged=refineListingFilterAllLabel(filterMissing,bad,labelRoi,&rejected);
+        check(!rejected["replacement_applied"].toBool() &&unchanged==filterMissing,
+            "invalid_missing_shifted_or_cross_frame_label_never_invents_modal_evidence");
+    }
+    QJsonObject wrongRoiEvidence;
+    check(refineListingFilterAllLabel(filterMissing,labelRead,labelRoi.translated(1,0),&wrongRoiEvidence)==filterMissing
+        &&!wrongRoiEvidence["replacement_applied"].toBool(),"caller_cannot_expand_or_shift_label_refinement_roi");
+    // Synthetic replies at the recorded run03 label positions. These verify
+    // merge contracts, not OCR accuracy of the original unsaved game pixels.
+    QJsonObject unknownEmpty{{"width",2560},{"height",1440},{"coverage","full_client"},
+        {"frame_id","fixture:empty-refinement"},{"frame_sha256",QString(64,QLatin1Char('d'))},
+        {"words",QJsonArray{token(QStringLiteral("暂未添任何关注"),1165,879,230,20)}}};
+    auto saleRead=unknownEmpty; saleRead["coverage"]="roi";saleRead["same_frame"]=true;
+    saleRead["words"]=QJsonArray{token(QStringLiteral("在售"),235,93,41,20)};
+    auto emptyRead=saleRead;
+    QJsonArray messageWords;
+    const QString message=QStringLiteral("暂未添加任何关注的皮肤");
+    for(int i=0;i<message.size();++i)messageWords.append(token(message.mid(i,1),1165+i*21,879,20,20));
+    emptyRead["words"]=messageWords;
+    QJsonObject emptyEvidence;
+    const auto fixedEmpty=refineEmptyWatchlistPage(unknownEmpty,saleRead,emptyRead,&emptyEvidence);
+    check(classifySkinPage(unknownEmpty).page==SkinPage::Unknown
+        &&classifySkinPage(fixedEmpty).page==SkinPage::EmptyWatchlist
+        &&emptyEvidence["replacement_applied"].toBool() &&!emptyEvidence["actions_enabled"].toBool(),
+        "new_same_frame_full_exact_empty_message_and_sale_required");
+    const std::function<void(QJsonObject&)> corruptEmpty[] = {
+        [](auto& p){p["frame_id"]="old-frame";},[](auto& p){p["frame_sha256"]=QString(64,QLatin1Char('a'));},
+        [](auto& p){p["same_frame"]=false;},[](auto& p){p["coverage"]="full_client";},
+        [](auto& p){p["height"]=1080;},[](auto& p){p["words"]=QJsonArray{};},
+        [](auto& p){auto w=p["words"].toArray();w.removeAt(3);p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();auto x=w[3].toObject();x["text"]=QStringLiteral("减");w[3]=x;p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();auto x=w[0].toObject();x["score"]=.69;w[0]=x;p["words"]=w;},
+        [](auto& p){auto w=p["words"].toArray();auto x=w[0].toObject();x["x"]=500;w[0]=x;p["words"]=w;}
+    };
+    for(const auto& corrupt:corruptEmpty){
+        auto bad=emptyRead;corrupt(bad);QJsonObject evidence;
+        check(refineEmptyWatchlistPage(unknownEmpty,saleRead,bad,&evidence)==unknownEmpty
+            &&!evidence["replacement_applied"].toBool(),"partial_cross_frame_wrong_or_outside_message_rejected");
+    }
+    auto wrongSale=saleRead;wrongSale["words"]=QJsonArray{token(QStringLiteral("停售"),235,93,41,20)};
+    check(refineEmptyWatchlistPage(unknownEmpty,wrongSale,emptyRead)==unknownEmpty,"message_alone_does_not_prove_empty_page");
+    check(refineEmptyWatchlistPage(fixedEmpty,saleRead,emptyRead)==fixedEmpty,"known_page_not_refined_again");
+    auto wrongEmptySize=scaled(unknownEmpty,.5);
+    check(refineEmptyWatchlistPage(wrongEmptySize,saleRead,emptyRead)==wrongEmptySize,"unmeasured_resolution_not_refined");
+    {
+        // peek01: the watchlist its refresh emptied. Full OCR kept only the
+        // filter/sort labels; three new same-frame reads prove the page.
+        QJsonObject emptied{{"width",2560},{"height",1440},{"coverage","full_client"},
+            {"frame_id","fixture:emptied"},{"frame_sha256",QString(64,QLatin1Char('e'))},
+            {"words",QJsonArray{token(QStringLiteral("不限公示期"),527,254,105,22),
+                                token(QStringLiteral("按稀有度升序"),1153,253,126,22)}}};
+        auto sale=emptied;sale["coverage"]="roi";sale["same_frame"]=true;
+        sale["words"]=QJsonArray{token(QStringLiteral("在售"),235,93,41,20)};
+        auto content=sale;content["words"]=QJsonArray{token(QStringLiteral("暂无信息内容"),928,861,125,22)};
+        auto count=sale;count["words"]=QJsonArray{token(QStringLiteral("我的关注:0/150"),120,1250,173,22)};
+        QJsonObject evidence;
+        const auto fixed=refineEmptiedWatchlistPage(emptied,sale,content,count,&evidence);
+        check(classifySkinPage(emptied).page==SkinPage::Unknown &&classifySkinPage(fixed).page==SkinPage::EmptyWatchlist
+              &&evidence["replacement_applied"].toBool(),"refresh_emptied_watchlist_needs_message_and_count");
+        auto noCount=count;noCount["words"]=QJsonArray{token(QStringLiteral("第1页"),940,1250,60,22)};
+        check(refineEmptiedWatchlistPage(emptied,sale,content,noCount)==emptied,"no_content_message_alone_is_not_the_watchlist");
+        auto outside=content;outside["words"]=QJsonArray{token(QStringLiteral("暂无信息内容"),1300,861,125,22)};
+        check(refineEmptiedWatchlistPage(emptied,sale,outside,count)==emptied,"emptied_message_outside_its_region_rejected");
+        auto stale=count;stale["frame_id"]="old-frame";
+        check(refineEmptiedWatchlistPage(emptied,sale,content,stale)==emptied,"emptied_reads_must_share_the_frame");
     }
     auto toastPage=home;QJsonArray toastWords=home["words"].toArray();
     const QString receipt=QStringLiteral("成功添加至我的关注");

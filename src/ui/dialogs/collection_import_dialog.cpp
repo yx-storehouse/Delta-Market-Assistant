@@ -16,13 +16,7 @@
 
 namespace relink::ui {
 namespace {
-QString colorText(const QString& color) {
-    if (color == QStringLiteral("red")) return QStringLiteral("红色");
-    if (color == QStringLiteral("orange")) return QStringLiteral("橙色");
-    if (color == QStringLiteral("purple")) return QStringLiteral("紫色");
-    if (color == QStringLiteral("blue")) return QStringLiteral("蓝色");
-    return QStringLiteral("未记录");
-}
+QString gradeText(const QString& grade) { return grade.isEmpty() ? QStringLiteral("未记录") : grade; }
 QString number(double value) { return QString::number(value, 'g', 15); }
 }
 
@@ -69,7 +63,7 @@ CollectionImportDialog::CollectionImportDialog(const QJsonObject& dictionary,
     m_counts->setWordWrap(true);
     body->addWidget(m_counts);
     m_table = table({QStringLiteral("行"), QStringLiteral("赛季"), QStringLiteral("商品"),
-                     QStringLiteral("颜色 / 标记"), QStringLiteral("成色"), QStringLiteral("最低价格"),
+                     QStringLiteral("品阶 / 标记"), QStringLiteral("成色"), QStringLiteral("最低价格"),
                      QStringLiteral("最高价格"), QStringLiteral("最大磨损"), QStringLiteral("限量"),
                      QStringLiteral("启用"), QStringLiteral("处理")},
                     QStringLiteral("collectionImportTable"), RowStyle::Lines);
@@ -187,7 +181,7 @@ void CollectionImportDialog::renderPreview() {
         auto* product = put(m_table, row, 2, item.displayName);
         product->setToolTip(item.displayName + QStringLiteral("\n商品 ID：") + item.productId);
         product->setData(Qt::UserRole, item.productId);
-        put(m_table, row, 3, colorText(item.menuColor) + (item.variantLabel.isEmpty() ? QString() : QStringLiteral(" / ") + item.variantLabel));
+        put(m_table, row, 3, gradeText(item.grade) + (item.variantLabel.isEmpty() ? QString() : QStringLiteral(" / ") + item.variantLabel));
         put(m_table, row, 4, task.condition);
         put(m_table, row, 5, number(task.minPrice));
         put(m_table, row, 6, number(task.maxPrice));

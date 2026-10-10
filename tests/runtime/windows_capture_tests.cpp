@@ -32,6 +32,35 @@ CaptureRequest request(const ObservationDemand& d) { return {d, QStringLiteral("
 
 int main(int argc, char** argv) {
     QCoreApplication app(argc, argv);
+    {
+        // Only our click-through banner inside the top 4% band may sit above the game.
+        const QRect client(0, 0, 2560, 1440), banner(384, 4, 1792, 44);
+        const quint32 styles = 0x00080000u | 0x00000020u | 0x00000008u | 0x00000080u | 0x08000000u;
+        const QString cls = QString::fromLatin1(StatusOverlayWindowClass);
+        check(statusOverlayWindowAllowed(cls, styles, QStringLiteral("RelinkStudio.exe"), banner, client),
+              "status_overlay_banner_in_top_band_is_tolerated");
+        check(!statusOverlayWindowAllowed(cls, styles & ~0x00000020u, QStringLiteral("RelinkStudio.exe"), banner, client),
+              "status_overlay_must_be_click_through");
+        check(!statusOverlayWindowAllowed(cls, styles & ~0x08000000u, QStringLiteral("RelinkStudio.exe"), banner, client),
+              "status_overlay_must_never_activate");
+        check(!statusOverlayWindowAllowed(QStringLiteral("Chrome_WidgetWin_1"), styles, QStringLiteral("RelinkStudio.exe"), banner, client),
+              "other_window_class_still_occludes");
+        // Live timed01: NVIDIA's click-through overlay (exstyle 0x800a8).
+        check(clickThroughVendorOverlayAllowed(QStringLiteral("CEF-OSC-WIDGET"), 0x800a8u, QStringLiteral("NVIDIA Overlay.exe")),
+              "nvidia_click_through_overlay_is_tolerated");
+        check(!clickThroughVendorOverlayAllowed(QStringLiteral("CEF-OSC-WIDGET"), 0x80088u, QStringLiteral("NVIDIA Overlay.exe")),
+              "nvidia_overlay_taking_input_still_occludes");
+        check(!clickThroughVendorOverlayAllowed(QStringLiteral("CEF-OSC-WIDGET"), 0x800a8u, QStringLiteral("other.exe"))
+              && !clickThroughVendorOverlayAllowed(QStringLiteral("Chrome_WidgetWin_1"), 0x800a8u, QStringLiteral("NVIDIA Overlay.exe")),
+              "only_the_nvidia_overlay_window_is_tolerated");
+        check(!statusOverlayWindowAllowed(cls, styles, QStringLiteral("other.exe"), banner, client),
+              "other_process_with_our_class_name_still_occludes");
+        check(!statusOverlayWindowAllowed(cls, styles, QStringLiteral("RelinkStudio.exe"), QRect(384, 4, 1792, 60), client)
+              && !statusOverlayWindowAllowed(cls, styles, QStringLiteral("RelinkStudio.exe"), QRect(384, 400, 1792, 44), client),
+              "banner_below_top_band_still_occludes");
+        check(!statusOverlayWindowAllowed(cls, styles, QStringLiteral("RelinkStudio.exe"), QRect(0, 4, 2560, 44), client),
+              "full_width_banner_is_not_tolerated");
+    }
     check(qpcTicksToMs(0, 10000000) == 0, "qpc_zero");
     check(qpcTicksToMs(10000001, 10000000) == 1000, "qpc_floor");
     check(qpcTicksToMs(19999999, 10000000) == 1999, "qpc_fraction_floor");
@@ -44,6 +73,37 @@ int main(int argc, char** argv) {
     check(qpcTicksToMs(9007199254740991LL, 1000) == 9007199254740991LL, "qpc_safe_integer_boundary");
     check(qpcTicksToMs(9007199254740992LL, 1000) == -1, "qpc_fraction_cannot_exceed_safe_integer");
     check(captureClockMs() >= 0 && captureClockMs() <= captureClockMs(), "native_qpc_clock_monotonic");
+    const auto resources = std::make_shared<DxgiCaptureResources>();
+    check(resources->metrics()["ready"] == false && resources->metrics()["initializations"] == 0
+        && resources->metrics()["pixel_cache"] == false, "resource_owner_is_lazy_and_has_no_pixel_cache");
+    check(resources->discard() && resources->metrics()["invalidations"]==0,
+        "discarding_empty_owner_does_not_initialize_or_count_fake_invalidation");
+    TargetWindow resourceTarget;
+    resourceTarget.hwnd=1; resourceTarget.pid=2; resourceTarget.processCreated=3;
+    resourceTarget.windowClass="fixture"; resourceTarget.executableName="fixture.exe";
+    resourceTarget.monitor=4;resourceTarget.clientRect=QRect(0,0,2560,1440);
+    resourceTarget.monitorRect=resourceTarget.clientRect;resourceTarget.dpi=144;
+    check(sameCaptureResourceTarget(resourceTarget,resourceTarget), "identical_resource_binding_matches");
+    const auto changedResource = [&](const std::function<void(TargetWindow&)>& mutate) {
+        auto other=resourceTarget;mutate(other);return !sameCaptureResourceTarget(resourceTarget,other);
+    };
+    check(changedResource([](auto& x){++x.hwnd;}),"cache_invalidates_hwnd");
+    check(changedResource([](auto& x){++x.pid;}),"cache_invalidates_pid");
+    check(changedResource([](auto& x){++x.processCreated;}),"cache_invalidates_process_reuse");
+    check(changedResource([](auto& x){x.windowClass+="x";}),"cache_invalidates_window_class");
+    check(changedResource([](auto& x){x.executableName+="x";}),"cache_invalidates_executable");
+    check(changedResource([](auto& x){++x.monitor;}),"cache_invalidates_monitor");
+    check(changedResource([](auto& x){x.clientRect.translate(1,0);}),"cache_invalidates_client_origin");
+    check(changedResource([](auto& x){x.clientRect.setWidth(2559);}),"cache_invalidates_client_dimensions");
+    check(changedResource([](auto& x){x.monitorRect.translate(0,1);}),"cache_invalidates_monitor_rectangle");
+    check(changedResource([](auto& x){x.dpi=96;}),"cache_invalidates_dpi");
+    check(!sameCaptureResourceTarget({},{}),"invalid_resource_bindings_never_match");
+    {
+        auto d=demand();DxgiObservationSource invalid({},d,resources);
+        check(invalid.capture(request(d)).status!=CaptureStatus::Captured,"shared_owner_does_not_skip_window_validation");
+        check(resources->metrics()["ready"]==false && resources->metrics()["initializations"]==0,
+            "invalid_request_does_not_create_gpu_resources");
+    }
     QByteArray black(4 * 4 * 4, '\0');
     auto summary = summarizeBgra(black, 4, 4, 16);
     check(summary.valid && summary.nearBlack && summary.sampledPixels == 16, "black_frame_classified");

@@ -1,0 +1,2379 @@
+{
+  "source": "artifacts/collection_hotpath_speed/probe03/session.json",
+  "pending": {
+    "kind": "selection",
+    "lease": {
+      "schema": "collection-card-lease-v1",
+      "layout_id": "c80ada43a17e515c6fdf311e97a41f43293ef4287c3b4467bcde785e29b3e023",
+      "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "scope": {
+        "row_index": 1,
+        "product_name": "AUG突击步枪-天命",
+        "condition_label": "成色A"
+      },
+      "card": {
+        "id": "edge:997:306:1859:565",
+        "bounds": [
+          997,
+          306,
+          863,
+          260
+        ],
+        "fields_bounds": [
+          998,
+          523,
+          861,
+          42
+        ],
+        "edges": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": true
+        },
+        "selected": false,
+        "selectable": true,
+        "body_bounds": [
+          1001,
+          310,
+          855,
+          209
+        ],
+        "bounds_basis": "observed",
+        "condition_bounds": [
+          998,
+          523,
+          115,
+          42
+        ],
+        "price_bounds": [
+          1710,
+          523,
+          149,
+          42
+        ]
+      },
+      "point": [
+        1428,
+        414
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "purchase_phase_enabled": false
+    },
+    "rule": {
+      "row_index": 1,
+      "product_name": "AUG突击步枪-天命",
+      "condition_label": "成色A",
+      "enabled": true,
+      "dictionary_resolved": true
+    },
+    "wait_layout": {
+      "schema": "collection-layout-v1",
+      "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "cards": [
+        {
+          "id": "edge:119:304:984:567",
+          "bounds": [
+            119,
+            304,
+            866,
+            264
+          ],
+          "fields_bounds": [
+            120,
+            525,
+            864,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": true,
+          "selectable": true,
+          "body_bounds": [
+            123,
+            308,
+            858,
+            213
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            120,
+            525,
+            115,
+            42
+          ],
+          "price_bounds": [
+            835,
+            525,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:997:306:1859:565",
+          "bounds": [
+            997,
+            306,
+            863,
+            260
+          ],
+          "fields_bounds": [
+            998,
+            523,
+            861,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": true,
+          "body_bounds": [
+            1001,
+            310,
+            855,
+            209
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            998,
+            523,
+            115,
+            42
+          ],
+          "price_bounds": [
+            1710,
+            523,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:120:580:982:840",
+          "bounds": [
+            120,
+            580,
+            863,
+            261
+          ],
+          "fields_bounds": [
+            121,
+            798,
+            861,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": true,
+          "body_bounds": [
+            124,
+            584,
+            855,
+            210
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            798,
+            115,
+            42
+          ],
+          "price_bounds": [
+            833,
+            798,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:998:580:1859:840",
+          "bounds": [
+            998,
+            580,
+            862,
+            261
+          ],
+          "fields_bounds": [
+            999,
+            798,
+            860,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": true,
+          "body_bounds": [
+            1002,
+            584,
+            854,
+            210
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            798,
+            115,
+            42
+          ],
+          "price_bounds": [
+            1710,
+            798,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:121:855:981:1114",
+          "bounds": [
+            121,
+            855,
+            861,
+            260
+          ],
+          "fields_bounds": [
+            122,
+            1072,
+            859,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": true,
+          "body_bounds": [
+            125,
+            859,
+            853,
+            209
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            122,
+            1072,
+            115,
+            42
+          ],
+          "price_bounds": [
+            832,
+            1072,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:998:855:1859:1114",
+          "bounds": [
+            998,
+            855,
+            862,
+            260
+          ],
+          "fields_bounds": [
+            999,
+            1072,
+            860,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": true,
+          "body_bounds": [
+            1002,
+            859,
+            854,
+            209
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            1072,
+            115,
+            42
+          ],
+          "price_bounds": [
+            1710,
+            1072,
+            149,
+            42
+          ]
+        },
+        {
+          "id": "edge:121:1130:981:1202",
+          "bounds": [
+            121,
+            1130,
+            861,
+            73
+          ],
+          "fields_bounds": null,
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": false,
+          "body_bounds": null,
+          "bounds_basis": "observed"
+        },
+        {
+          "id": "edge:998:1130:1860:1202",
+          "bounds": [
+            998,
+            1130,
+            863,
+            73
+          ],
+          "fields_bounds": null,
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "selected": false,
+          "selectable": false,
+          "body_bounds": null,
+          "bounds_basis": "observed"
+        }
+      ],
+      "scrollbar": {
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ],
+        "thumb_bounds": [
+          1878,
+          304,
+          1,
+          73
+        ]
+      },
+      "partial_card_ids": [
+        "edge:121:1130:981:1202",
+        "edge:998:1130:1860:1202"
+      ],
+      "page_exhausted": false,
+      "purchase_phase_enabled": false,
+      "layout_id": "c80ada43a17e515c6fdf311e97a41f43293ef4287c3b4467bcde785e29b3e023"
+    }
+  },
+  "before": {
+    "startup_page": {
+      "actions_enabled": false,
+      "anchor_checks": {
+        "catalog.circulation": false,
+        "catalog.rows": false,
+        "catalog.skin_tab": false,
+        "catalog.watch": false,
+        "collection.added": false,
+        "collection.full": false,
+        "listing.condition": true,
+        "listing.default_sort": true,
+        "listing.filter_all": false,
+        "listing.filter_confirm": false,
+        "listing.filter_price": false,
+        "listing.page_number": true,
+        "listing.sale": true,
+        "listing.similar": true,
+        "mandel.current": false,
+        "mandel.past": false,
+        "mandel.tab": false
+      },
+      "anchors": [
+        "list.sale",
+        "list.sort",
+        "list.condition",
+        "list.layout"
+      ],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [
+        "skin_listings"
+      ],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "skin_listings",
+      "provider_scores_available": false,
+      "reason": "MULTI_ANCHOR_MATCH",
+      "token_count": 182,
+      "valid_input": true
+    },
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_end_mono_ms": 1139684647,
+        "capture_ms": 32,
+        "capture_start_mono_ms": 1139684615,
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "not_before_mono_ms": 1139684615,
+        "pixel_max": 255,
+        "pixel_min": 4,
+        "requested_mono_ms": 1139684615,
+        "sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+        "source": "dxgi",
+        "source_age_ms": 22,
+        "source_mono_ms": 1139684625,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "collection_layout": {
+      "cards": [
+        {
+          "bounds": [
+            119,
+            304,
+            866,
+            264
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            120,
+            525,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            120,
+            525,
+            864,
+            42
+          ],
+          "id": "edge:119:304:984:567",
+          "price_bounds": [
+            835,
+            525,
+            149,
+            42
+          ],
+          "selected": true
+        },
+        {
+          "bounds": [
+            997,
+            306,
+            863,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            998,
+            523,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            998,
+            523,
+            861,
+            42
+          ],
+          "id": "edge:997:306:1859:565",
+          "price_bounds": [
+            1710,
+            523,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            120,
+            580,
+            863,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            798,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            121,
+            798,
+            861,
+            42
+          ],
+          "id": "edge:120:580:982:840",
+          "price_bounds": [
+            833,
+            798,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            580,
+            862,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            798,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            798,
+            860,
+            42
+          ],
+          "id": "edge:998:580:1859:840",
+          "price_bounds": [
+            1710,
+            798,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            855,
+            861,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            122,
+            1072,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            122,
+            1072,
+            859,
+            42
+          ],
+          "id": "edge:121:855:981:1114",
+          "price_bounds": [
+            832,
+            1072,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            855,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            1072,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            1072,
+            860,
+            42
+          ],
+          "id": "edge:998:855:1859:1114",
+          "price_bounds": [
+            1710,
+            1072,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            1130,
+            861,
+            73
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:121:1130:981:1202",
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            1130,
+            863,
+            73
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:998:1130:1860:1202",
+          "selected": false
+        }
+      ],
+      "complete": true,
+      "detector": "visible_edges",
+      "edge_evidence": {
+        "actions_enabled": false,
+        "complete": false,
+        "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+        "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+        "rows": [
+          {
+            "cells": [
+              {
+                "bottom": 567,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 304,
+                "top_edge": true
+              },
+              {
+                "bottom": 565,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 306,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 840,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 580,
+                "top_edge": true
+              },
+              {
+                "bottom": 840,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 580,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 1114,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 855,
+                "top_edge": true
+              },
+              {
+                "bottom": 1114,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 855,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 1202,
+                "bottom_edge": false,
+                "column": 0,
+                "top": 1130,
+                "top_edge": true
+              },
+              {
+                "bottom": 1202,
+                "bottom_edge": false,
+                "column": 1,
+                "top": 1130,
+                "top_edge": true
+              }
+            ]
+          }
+        ],
+        "schema": "collection-edge-candidates-v1",
+        "scrollbar_candidate": {
+          "geometry_basis": "observed_centerline_only",
+          "measured_center_x": 1878,
+          "method": "symmetric_contrast_with_independent_left_affine_background",
+          "thumb_bounds": [
+            1878,
+            304,
+            1,
+            73
+          ],
+          "track_bounds": [
+            1878,
+            304,
+            1,
+            899
+          ]
+        },
+        "tail_top_selection": {
+          "accepted": true,
+          "actions_enabled": false,
+          "basis": "same_frame_both_column_refined_top_edges",
+          "candidates": [
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                2.9199999999999875,
+                2.569999999999993
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1128,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 2.569999999999993,
+              "usable_columns": [
+                true,
+                true
+              ]
+            },
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                3.260000000000005,
+                3.0100000000000193
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1129,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 3.0100000000000193,
+              "usable_columns": [
+                true,
+                true
+              ]
+            },
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                2.6399999999999864,
+                2.9799999999999898
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1130,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 2.6399999999999864,
+              "usable_columns": [
+                true,
+                true
+              ]
+            }
+          ],
+          "maximum_column_alignment_pixels": 3,
+          "same_frame_pitch": {
+            "basis": "same_frame_independent_complete_row_gaps_and_bottom_intervals",
+            "columns": [
+              {
+                "column": 0,
+                "last_complete_bottom_y": 1114,
+                "last_complete_top_y": 855,
+                "maximum_gap": 15,
+                "minimum_gap": 13,
+                "observed_bottom_pitches": [
+                  273,
+                  274
+                ],
+                "observed_complete_bottom_y": [
+                  567,
+                  840,
+                  1114
+                ],
+                "observed_complete_top_y": [
+                  304,
+                  580,
+                  855
+                ],
+                "observed_inter_row_gaps": [
+                  13,
+                  15
+                ],
+                "observed_top_pitches": [
+                  276,
+                  275
+                ]
+              },
+              {
+                "column": 1,
+                "last_complete_bottom_y": 1114,
+                "last_complete_top_y": 855,
+                "maximum_gap": 15,
+                "minimum_gap": 15,
+                "observed_bottom_pitches": [
+                  275,
+                  274
+                ],
+                "observed_complete_bottom_y": [
+                  565,
+                  840,
+                  1114
+                ],
+                "observed_complete_top_y": [
+                  306,
+                  580,
+                  855
+                ],
+                "observed_inter_row_gaps": [
+                  15,
+                  15
+                ],
+                "observed_top_pitches": [
+                  274,
+                  275
+                ]
+              }
+            ],
+            "coordinates_inferred": false,
+            "proven": true,
+            "tolerance_pixels": 3
+          },
+          "schema": "collection-tail-top-selection-v1",
+          "search_interval": [
+            1120,
+            1154
+          ],
+          "selected_peak_y": 1129,
+          "selected_top_y": [
+            1130,
+            1130
+          ],
+          "thresholds_changed": false
+        }
+      },
+      "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "image_file_writes": 0,
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "page_exhausted": false,
+      "same_frame": true,
+      "schema": "collection-layout-v1",
+      "scrollbar": {
+        "geometry_basis": "observed_centerline_only",
+        "measured_center_x": 1878,
+        "method": "symmetric_contrast_with_independent_left_affine_background",
+        "thumb_bounds": [
+          1878,
+          304,
+          1,
+          73
+        ],
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ]
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    "collection_selected_card": {
+      "bounds": [
+        119,
+        304,
+        866,
+        264
+      ],
+      "card_id": "edge:119:304:984:567",
+      "favorite_bright_fraction": 0,
+      "favorite_warm_fraction": 0.13398692810457516,
+      "fields_bounds": [
+        120,
+        525,
+        864,
+        42
+      ],
+      "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "same_frame": true,
+      "selected": true
+    },
+    "collection_observation": {
+      "coverage": "field_projection",
+      "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "image_file_writes": 0,
+      "page": "skin_listings",
+      "regions": [
+        {
+          "error": "",
+          "kind": "listing_controls",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 26,
+              "text": "平",
+              "width": 25,
+              "x": 238,
+              "y": 251
+            },
+            {
+              "height": 18,
+              "text": "已",
+              "width": 19,
+              "x": 276,
+              "y": 255
+            },
+            {
+              "height": 21,
+              "text": "筛",
+              "width": 20,
+              "x": 296,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "选",
+              "width": 20,
+              "x": 317,
+              "y": 253
+            },
+            {
+              "height": 17,
+              "text": "1",
+              "width": 6,
+              "x": 338,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "顶",
+              "width": 20,
+              "x": 346,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "不",
+              "width": 19,
+              "x": 527,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "限",
+              "width": 18,
+              "x": 549,
+              "y": 254
+            },
+            {
+              "height": 19,
+              "text": "公",
+              "width": 19,
+              "x": 569,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "示",
+              "width": 19,
+              "x": 590,
+              "y": 255
+            },
+            {
+              "height": 20,
+              "text": "期",
+              "width": 18,
+              "x": 611,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "默",
+              "width": 19,
+              "x": 1153,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "认",
+              "width": 19,
+              "x": 1174,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "排",
+              "width": 19,
+              "x": 1195,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "序",
+              "width": 19,
+              "x": 1216,
+              "y": 253
+            },
+            {
+              "height": 59,
+              "text": "0",
+              "width": 58,
+              "x": 1803,
+              "y": 233
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "product_title",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "text": "AUG突击步枪-天命",
+              "score": 0.99958,
+              "x": 1970.0,
+              "y": 244.0,
+              "width": 245.0,
+              "height": 31.0
+            }
+          ],
+          "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+          "windows_observation": {
+            "error": "E_LOCAL_TEXT_PENDING",
+            "kind": "product_title",
+            "ok": false,
+            "split_fields_refinement": false,
+            "truncated": false,
+            "words": []
+          }
+        },
+        {
+          "error": "",
+          "kind": "selected_detail",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1931,
+              "y": 659
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1953,
+              "y": 659
+            },
+            {
+              "height": 17,
+              "text": "A",
+              "width": 14,
+              "x": 2212,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〔",
+              "width": 6,
+              "x": 2228,
+              "y": 660
+            },
+            {
+              "height": 17,
+              "text": "0",
+              "width": 11,
+              "x": 2244,
+              "y": 662
+            },
+            {
+              "height": 3,
+              "text": "．",
+              "width": 3,
+              "x": 2258,
+              "y": 676
+            },
+            {
+              "height": 17,
+              "text": "589359",
+              "width": 81,
+              "x": 2265,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〕",
+              "width": 6,
+              "x": 2349,
+              "y": 660
+            },
+            {
+              "height": 14,
+              "text": "7",
+              "width": 13,
+              "x": 2387,
+              "y": 661
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "selected_detail_precise",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 20,
+              "text": "0.589359)",
+              "width": 111,
+              "x": 2244,
+              "y": 660
+            }
+          ]
+        },
+        {
+          "bounds": [
+            120,
+            525,
+            864,
+            42
+          ],
+          "card_id": "edge:119:304:984:567",
+          "error": "",
+          "field_attempts": [
+            {
+              "attempt": 1,
+              "bounds": [
+                120,
+                525,
+                115,
+                42
+              ],
+              "engine": "Windows.Media.Ocr",
+              "error": "",
+              "field": "condition_bounds",
+              "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+              "language": "zh-Hans-CN",
+              "ok": true,
+              "same_frame": true,
+              "scale": 2,
+              "timing": {
+                "engine_cache_hit": true,
+                "engine_created": false,
+                "error": "",
+                "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+                "frame_released": true,
+                "frame_total_ms": 5,
+                "helper_pid": "301852",
+                "helper_reused": true,
+                "helper_roundtrip_ms": 4,
+                "helper_start_ms": 0,
+                "language": "zh-Hans-CN",
+                "mapping_name": "Local\\RelinkVision_dfc6b799-bdfa-49d5-996e-c554e49c2203_0",
+                "mapping_prepare_ms": 0,
+                "ok": true,
+                "request_id": "dfc6b799-bdfa-49d5-996e-c554e49c2203",
+                "request_write_ms": 0,
+                "roi_preprocess_ms": 0,
+                "roi_total_ms": 5,
+                "worker_bitmap_copy_ms": 0.2275,
+                "worker_engine_init_ms": 0.0119,
+                "worker_helper_request_ms": 3.1019,
+                "worker_recognize_ms": 2.1409000000000002,
+                "worker_runtime_init_ms": 0.0032
+              },
+              "tokens": [
+                "成",
+                "色",
+                "A"
+              ],
+              "word_count": 3
+            },
+            {
+              "attempt": 0,
+              "bounds": [
+                835,
+                525,
+                149,
+                42
+              ],
+              "engine": "local_price_pending",
+              "error": "E_LOCAL_PRICE_PENDING",
+              "field": "price_bounds",
+              "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+              "numeric_preprocess": {
+                "background_level": 47,
+                "component_bounds": [
+                  [
+                    965,
+                    538,
+                    11,
+                    17
+                  ],
+                  [
+                    951,
+                    538,
+                    11,
+                    17
+                  ],
+                  [
+                    937,
+                    538,
+                    11,
+                    17
+                  ]
+                ],
+                "crop_bounds": [
+                  936,
+                  537,
+                  41,
+                  19
+                ],
+                "digit_span_contract": "supported_separated_price_font_not_general_ocr",
+                "edge_line_column_count": 1,
+                "edge_line_pixels_removed": 190,
+                "edge_line_row_count": 1,
+                "frame_id": "dxgi:31214b9a-c8dd-41f9-a191-cafa4de0926e",
+                "glyph_span_count": 3,
+                "highlight_level": 250,
+                "image_file_writes": 0,
+                "ink_bounds": [
+                  937,
+                  538,
+                  39,
+                  17
+                ],
+                "ink_threshold": 138,
+                "method": "observed_components_edge_line_removal_white_padding",
+                "padding_prepared_pixels": 15,
+                "padding_source_pixels": 5,
+                "prepared_size": [
+                  153,
+                  87
+                ],
+                "reliable_digit_span_bounds": [
+                  [
+                    937,
+                    538,
+                    11,
+                    17
+                  ],
+                  [
+                    951,
+                    538,
+                    11,
+                    17
+                  ],
+                  [
+                    965,
+                    538,
+                    11,
+                    17
+                  ]
+                ],
+                "reliable_digit_span_minimum": 3,
+                "same_frame": true,
+                "scale": 3,
+                "schema": "numeric-roi-v1",
+                "source_frame_bytes_unchanged": true,
+                "source_region": [
+                  835,
+                  525,
+                  149,
+                  42
+                ]
+              },
+              "ok": false,
+              "same_frame": true,
+              "scale": 3
+            }
+          ],
+          "kind": "card_fields",
+          "ok": true,
+          "scope": "visible_layout",
+          "split_fields_refinement": true,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 127,
+              "y": 537
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 149,
+              "y": 537
+            },
+            {
+              "height": 17,
+              "text": "A",
+              "width": 14,
+              "x": 170,
+              "y": 538
+            },
+            {
+              "text": "230",
+              "score": 0.99999,
+              "x": 936.0,
+              "y": 537.0,
+              "width": 40.666666666666664,
+              "height": 18.666666666666668
+            }
+          ],
+          "price_provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU"
+        }
+      ],
+      "same_frame": true
+    },
+    "capture_passed": true,
+    "ocr_passed": true,
+    "focus_activation_requests": 0,
+    "focus_restore_requests": 0,
+    "page_match_passed": true,
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "coordinate_space": "client_physical_px",
+      "coordinate_transform": "clockwise_about_image_center",
+      "frame_age_at_result_ms": 318,
+      "frame_age_before_output_ms": 318,
+      "frame_sha256": "3feee7181c83946de9245bbe54fbe7ca9d3755a5d1a8437ebe524bb6874ec915",
+      "language": "zh-Hans-CN",
+      "outside_frame_tokens_dropped": 0,
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "source_text_angle_degrees": 0,
+      "word_count": 182
+    }
+  },
+  "after": {
+    "startup_page": {
+      "actions_enabled": false,
+      "anchor_checks": {
+        "catalog.circulation": false,
+        "catalog.rows": false,
+        "catalog.skin_tab": false,
+        "catalog.watch": false,
+        "collection.added": false,
+        "collection.full": false,
+        "listing.condition": true,
+        "listing.default_sort": true,
+        "listing.filter_all": false,
+        "listing.filter_confirm": false,
+        "listing.filter_price": false,
+        "listing.page_number": true,
+        "listing.sale": true,
+        "listing.similar": true,
+        "mandel.current": false,
+        "mandel.past": false,
+        "mandel.tab": false
+      },
+      "anchors": [
+        "list.sale",
+        "list.sort",
+        "list.condition",
+        "list.layout"
+      ],
+      "calibration": "historical_ocr_only",
+      "candidate_pages": [
+        "skin_listings"
+      ],
+      "live_calibrated": false,
+      "low_score_tokens": 0,
+      "overlay": "none",
+      "page": "skin_listings",
+      "provider_scores_available": false,
+      "reason": "MULTI_ANCHOR_MATCH",
+      "token_count": 184,
+      "valid_input": true
+    },
+    "frames": [
+      {
+        "bytes": 14745600,
+        "capture_end_mono_ms": 1139685553,
+        "capture_ms": 32,
+        "capture_start_mono_ms": 1139685521,
+        "dpi": 144,
+        "freshness": "source_timestamp",
+        "height": 1440,
+        "near_black": false,
+        "not_before_mono_ms": 1139685521,
+        "pixel_max": 255,
+        "pixel_min": 5,
+        "requested_mono_ms": 1139685521,
+        "sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+        "source": "dxgi",
+        "source_age_ms": 26,
+        "source_mono_ms": 1139685527,
+        "source_uncertainty_ms": 1,
+        "width": 2560
+      }
+    ],
+    "collection_layout": {
+      "cards": [
+        {
+          "bounds": [
+            120,
+            306,
+            863,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            523,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            121,
+            523,
+            861,
+            42
+          ],
+          "id": "edge:120:306:982:565",
+          "price_bounds": [
+            833,
+            523,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            996,
+            304,
+            865,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            997,
+            522,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            997,
+            522,
+            863,
+            42
+          ],
+          "id": "edge:996:304:1860:564",
+          "price_bounds": [
+            1711,
+            522,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            120,
+            580,
+            863,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            121,
+            798,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            121,
+            798,
+            861,
+            42
+          ],
+          "id": "edge:120:580:982:840",
+          "price_bounds": [
+            833,
+            798,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            580,
+            862,
+            261
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            798,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            798,
+            860,
+            42
+          ],
+          "id": "edge:998:580:1859:840",
+          "price_bounds": [
+            1710,
+            798,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            855,
+            861,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            122,
+            1072,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            122,
+            1072,
+            859,
+            42
+          ],
+          "id": "edge:121:855:981:1114",
+          "price_bounds": [
+            832,
+            1072,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            998,
+            855,
+            862,
+            260
+          ],
+          "bounds_basis": "observed",
+          "condition_bounds": [
+            999,
+            1072,
+            115,
+            42
+          ],
+          "edges": {
+            "bottom": true,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": [
+            999,
+            1072,
+            860,
+            42
+          ],
+          "id": "edge:998:855:1859:1114",
+          "price_bounds": [
+            1710,
+            1072,
+            149,
+            42
+          ],
+          "selected": false
+        },
+        {
+          "bounds": [
+            121,
+            1130,
+            862,
+            73
+          ],
+          "bounds_basis": "observed",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": true,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:121:1130:982:1202",
+          "selected": false
+        },
+        {
+          "bounds": [
+            999,
+            1130,
+            874,
+            73
+          ],
+          "bounds_basis": "clipped_search_region",
+          "edges": {
+            "bottom": false,
+            "left": true,
+            "right": false,
+            "top": true
+          },
+          "fields_bounds": null,
+          "id": "edge:999:1130:1872:1202",
+          "selected": false
+        }
+      ],
+      "complete": true,
+      "detector": "visible_edges",
+      "edge_evidence": {
+        "actions_enabled": false,
+        "complete": false,
+        "frame_id": "dxgi:2c42d58d-d80a-4dcc-bffd-5b0af35502e5",
+        "frame_sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+        "rows": [
+          {
+            "cells": [
+              {
+                "bottom": 565,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 306,
+                "top_edge": true
+              },
+              {
+                "bottom": 564,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 304,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 840,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 580,
+                "top_edge": true
+              },
+              {
+                "bottom": 840,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 580,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 1114,
+                "bottom_edge": true,
+                "column": 0,
+                "top": 855,
+                "top_edge": true
+              },
+              {
+                "bottom": 1114,
+                "bottom_edge": true,
+                "column": 1,
+                "top": 855,
+                "top_edge": true
+              }
+            ]
+          },
+          {
+            "cells": [
+              {
+                "bottom": 1202,
+                "bottom_edge": false,
+                "column": 0,
+                "top": 1130,
+                "top_edge": true
+              },
+              {
+                "bottom": 1202,
+                "bottom_edge": false,
+                "column": 1,
+                "top": 1130,
+                "top_edge": true
+              }
+            ]
+          }
+        ],
+        "schema": "collection-edge-candidates-v1",
+        "scrollbar_candidate": {
+          "geometry_basis": "observed_centerline_only",
+          "measured_center_x": 1878,
+          "method": "symmetric_contrast_with_independent_left_affine_background",
+          "thumb_bounds": [
+            1878,
+            304,
+            1,
+            73
+          ],
+          "track_bounds": [
+            1878,
+            304,
+            1,
+            899
+          ]
+        },
+        "tail_top_selection": {
+          "accepted": true,
+          "actions_enabled": false,
+          "basis": "same_frame_both_column_refined_top_edges",
+          "candidates": [
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                2.1599999999999966,
+                1.5699999999999932
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1127,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 2.1599999999999966,
+              "usable_columns": [
+                true,
+                false
+              ]
+            },
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                2.960000000000008,
+                2.6799999999999926
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1128,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 2.6799999999999926,
+              "usable_columns": [
+                true,
+                true
+              ]
+            },
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                3.180000000000007,
+                3.1200000000000188
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1129,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 3.1200000000000188,
+              "usable_columns": [
+                true,
+                true
+              ]
+            },
+            {
+              "accepted_for_ranking": true,
+              "column_scores": [
+                1.9299999999999926,
+                3.469999999999999
+              ],
+              "gap_from_last_complete_bottom_y": [
+                16,
+                16
+              ],
+              "observed_gap_consistent": true,
+              "peak_y": 1130,
+              "refined_top_y": [
+                1130,
+                1130
+              ],
+              "rejection_reason": "",
+              "score": 3.469999999999999,
+              "usable_columns": [
+                false,
+                true
+              ]
+            }
+          ],
+          "maximum_column_alignment_pixels": 3,
+          "same_frame_pitch": {
+            "basis": "same_frame_independent_complete_row_gaps_and_bottom_intervals",
+            "columns": [
+              {
+                "column": 0,
+                "last_complete_bottom_y": 1114,
+                "last_complete_top_y": 855,
+                "maximum_gap": 15,
+                "minimum_gap": 15,
+                "observed_bottom_pitches": [
+                  275,
+                  274
+                ],
+                "observed_complete_bottom_y": [
+                  565,
+                  840,
+                  1114
+                ],
+                "observed_complete_top_y": [
+                  306,
+                  580,
+                  855
+                ],
+                "observed_inter_row_gaps": [
+                  15,
+                  15
+                ],
+                "observed_top_pitches": [
+                  274,
+                  275
+                ]
+              },
+              {
+                "column": 1,
+                "last_complete_bottom_y": 1114,
+                "last_complete_top_y": 855,
+                "maximum_gap": 16,
+                "minimum_gap": 15,
+                "observed_bottom_pitches": [
+                  276,
+                  274
+                ],
+                "observed_complete_bottom_y": [
+                  564,
+                  840,
+                  1114
+                ],
+                "observed_complete_top_y": [
+                  304,
+                  580,
+                  855
+                ],
+                "observed_inter_row_gaps": [
+                  16,
+                  15
+                ],
+                "observed_top_pitches": [
+                  276,
+                  275
+                ]
+              }
+            ],
+            "coordinates_inferred": false,
+            "proven": true,
+            "tolerance_pixels": 3
+          },
+          "schema": "collection-tail-top-selection-v1",
+          "search_interval": [
+            1120,
+            1154
+          ],
+          "selected_peak_y": 1130,
+          "selected_top_y": [
+            1130,
+            1130
+          ],
+          "thresholds_changed": false
+        }
+      },
+      "frame_id": "dxgi:2c42d58d-d80a-4dcc-bffd-5b0af35502e5",
+      "frame_sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+      "image_file_writes": 0,
+      "listing_viewport": [
+        108,
+        300,
+        1765,
+        903
+      ],
+      "page_exhausted": false,
+      "same_frame": true,
+      "schema": "collection-layout-v1",
+      "scrollbar": {
+        "geometry_basis": "observed_centerline_only",
+        "measured_center_x": 1878,
+        "method": "symmetric_contrast_with_independent_left_affine_background",
+        "thumb_bounds": [
+          1878,
+          304,
+          1,
+          73
+        ],
+        "track_bounds": [
+          1878,
+          304,
+          1,
+          899
+        ]
+      },
+      "viewport": [
+        2560,
+        1440
+      ]
+    },
+    "collection_selected_card": {
+      "favorite_bright_fraction": 0.12990196078431374,
+      "favorite_warm_fraction": 0,
+      "frame_id": "dxgi:2c42d58d-d80a-4dcc-bffd-5b0af35502e5",
+      "frame_sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+      "same_frame": true,
+      "selected": false
+    },
+    "collection_observation": {
+      "coverage": "field_projection",
+      "frame_id": "dxgi:2c42d58d-d80a-4dcc-bffd-5b0af35502e5",
+      "frame_sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+      "image_file_writes": 0,
+      "page": "skin_listings",
+      "regions": [
+        {
+          "error": "",
+          "kind": "listing_controls",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 26,
+              "text": "平",
+              "width": 25,
+              "x": 238,
+              "y": 251
+            },
+            {
+              "height": 18,
+              "text": "已",
+              "width": 19,
+              "x": 276,
+              "y": 255
+            },
+            {
+              "height": 21,
+              "text": "筛",
+              "width": 20,
+              "x": 296,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "选",
+              "width": 20,
+              "x": 317,
+              "y": 253
+            },
+            {
+              "height": 17,
+              "text": "1",
+              "width": 6,
+              "x": 338,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "顶",
+              "width": 21,
+              "x": 345,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "不",
+              "width": 19,
+              "x": 527,
+              "y": 255
+            },
+            {
+              "height": 19,
+              "text": "限",
+              "width": 18,
+              "x": 549,
+              "y": 254
+            },
+            {
+              "height": 19,
+              "text": "公",
+              "width": 19,
+              "x": 569,
+              "y": 254
+            },
+            {
+              "height": 18,
+              "text": "示",
+              "width": 19,
+              "x": 590,
+              "y": 255
+            },
+            {
+              "height": 20,
+              "text": "期",
+              "width": 18,
+              "x": 611,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "默",
+              "width": 19,
+              "x": 1153,
+              "y": 253
+            },
+            {
+              "height": 19,
+              "text": "认",
+              "width": 19,
+              "x": 1174,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "排",
+              "width": 19,
+              "x": 1195,
+              "y": 253
+            },
+            {
+              "height": 20,
+              "text": "序",
+              "width": 19,
+              "x": 1216,
+              "y": 253
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "product_title",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "text": "AUG突击步枪-天命",
+              "score": 0.99958,
+              "x": 1970.0,
+              "y": 244.0,
+              "width": 245.0,
+              "height": 31.0
+            }
+          ],
+          "provider": "RapidOCR3.9.2/PP-OCRv6-local-CPU",
+          "windows_observation": {
+            "error": "E_LOCAL_TEXT_PENDING",
+            "kind": "product_title",
+            "ok": false,
+            "split_fields_refinement": false,
+            "truncated": false,
+            "words": []
+          }
+        },
+        {
+          "error": "",
+          "kind": "selected_detail",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 19,
+              "text": "成",
+              "width": 20,
+              "x": 1931,
+              "y": 659
+            },
+            {
+              "height": 19,
+              "text": "色",
+              "width": 19,
+              "x": 1953,
+              "y": 659
+            },
+            {
+              "height": 17,
+              "text": "A",
+              "width": 14,
+              "x": 2212,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〔",
+              "width": 6,
+              "x": 2228,
+              "y": 660
+            },
+            {
+              "height": 17,
+              "text": "0",
+              "width": 11,
+              "x": 2244,
+              "y": 662
+            },
+            {
+              "height": 3,
+              "text": "．",
+              "width": 3,
+              "x": 2258,
+              "y": 676
+            },
+            {
+              "height": 17,
+              "text": "609159",
+              "width": 81,
+              "x": 2265,
+              "y": 662
+            },
+            {
+              "height": 20,
+              "text": "〕",
+              "width": 6,
+              "x": 2349,
+              "y": 660
+            },
+            {
+              "height": 14,
+              "text": "7",
+              "width": 13,
+              "x": 2387,
+              "y": 661
+            }
+          ]
+        },
+        {
+          "error": "",
+          "kind": "selected_detail_precise",
+          "ok": true,
+          "split_fields_refinement": false,
+          "truncated": false,
+          "words": [
+            {
+              "height": 20,
+              "text": "0.609159)",
+              "width": 111,
+              "x": 2244,
+              "y": 660
+            }
+          ]
+        }
+      ],
+      "same_frame": true
+    },
+    "capture_passed": true,
+    "ocr_passed": true,
+    "focus_activation_requests": 0,
+    "focus_restore_requests": 0,
+    "page_match_passed": true,
+    "ocr": {
+      "body_anchors": [],
+      "business_fields_validated": false,
+      "confidence_available": false,
+      "coordinate_space": "client_physical_px",
+      "coordinate_transform": "clockwise_about_image_center",
+      "frame_age_at_result_ms": 330,
+      "frame_age_before_output_ms": 330,
+      "frame_sha256": "e1c0f02e4eed577879e14866e12f57bda03132a131d31b29057e905d1e2345c5",
+      "language": "zh-Hans-CN",
+      "outside_frame_tokens_dropped": 0,
+      "page_hint": "unknown",
+      "provider": "Windows.Media.Ocr",
+      "source_text_angle_degrees": 0,
+      "word_count": 184
+    }
+  }
+}
