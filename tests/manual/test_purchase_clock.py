@@ -68,7 +68,8 @@ class LineTests(unittest.TestCase):
         self.assertEqual(line_state('L0分10秒后解锁购买'), ('countdown', 10))  # the clock icon
         self.assertEqual(line_state('剩余：2天23小时'), ('unlocked', None))
         self.assertEqual(line_state('剩余2天23小时'), ('unlocked', None))       # colon lost in the line read
-        self.assertEqual(line_state('60分4秒后解锁购买'), ('unread', None))     # icon + 0分4秒
+        self.assertEqual(line_state('60分4秒后解锁购买'), ('countdown', 4))     # icon read as 6 + 0分4秒
+        self.assertEqual(line_state('60分0秒后解锁购买'), ('countdown', 0))     # live buy_cycle05, as native
         for text in ('0分1O秒后解锁购买', '0分10秒后解', '', None, '秒后解锁购买', 'ABC0分10秒后解锁购买'):
             with self.subTest(text=text):
                 self.assertEqual(line_state(text), ('unread', None))

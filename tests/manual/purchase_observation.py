@@ -77,6 +77,10 @@ def countdown_seconds(text):
     m=re.fullmatch(r'(?:(\d{1,2})小时)?(?:(\d{1,2})分)?(\d{1,2})秒后解锁购买',value)
     if not m:raise ValueError('PURCHASE_COUNTDOWN_FORMAT')
     h,mn,s=(int(x or 0) for x in m.groups())
+    # The clock icon read as a 6 right before the minutes ("60分0秒" for
+    # 0分0秒, live buy_cycle05): minutes never reach 60, so the 6 is dropped,
+    # as the native countdownLineSeconds does (its stop-on-zero relies on it).
+    if m.group(1) is None and m.group(2) is not None and 60<=mn<70:mn-=60
     if s>=60 or mn>=60 or h*3600+mn*60+s>86400:
         raise ValueError('PURCHASE_COUNTDOWN_RANGE')
     return h*3600+mn*60+s
