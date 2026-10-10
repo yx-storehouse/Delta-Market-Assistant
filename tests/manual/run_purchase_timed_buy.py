@@ -96,11 +96,12 @@ DIALOG_BUY_POINT = [DIALOG_BUY_RECT[0] + DIALOG_BUY_RECT[2] // 2, DIALOG_BUY_REC
 # watchlist's. One sample only: the prior plans watches, it never times a press.
 DIALOG_PHASE_PRIOR_MS = -107
 # The dialog's zero must lie this close to the watchlist's. Live 2026-10-10:
-# it fell -880, -188, -150, +58..+131 and +827 ms from it (rehearse10: 34
-# footer ticks against 4 dialog ticks): the dialog syncs its clock when it
-# opens, anywhere within about a second. Misreads are caught by the ticks
-# themselves (agreeing ticks, the 1->0 frame, the frame bounds).
-DIALOG_ZERO_WINDOW_MS = (-1200, 1200)
+# it fell -1167, -880, -191, -150, +58..+131, +824 and +827 ms from it
+# (rehearse10: 34 footer ticks against 4 dialog ticks): the dialog syncs its
+# clock when it opens, anywhere within about a second. A sanity bound only:
+# misreads are caught by the ticks themselves (agreeing ticks, the 1->0
+# frame, the frame bounds).
+DIALOG_ZERO_WINDOW_MS = (-1500, 1500)
 # A lean watch returns within a few ms of its end; keep it this far before the press.
 LEAN_MARGIN_MS = 40
 LEAN_MIN_MS = 100
