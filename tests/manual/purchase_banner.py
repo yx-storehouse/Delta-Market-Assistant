@@ -72,13 +72,25 @@ def display_seconds(remaining_ms):
     return max(0, int(math.ceil(remaining_ms / 1000.0 - 1e-9)))
 
 
-def banner_text(counts, delay_ms, remaining_ms, rehearsal):
-    """购买：已抢 橙色0 紫皮2 蓝皮0 购买延迟：830 倒计时监控：0分9秒"""
+def banner_text(counts, delay_ms, remaining_ms, rehearsal, note=None):
+    """购买：已抢 橙色0 紫皮2 蓝皮0 购买延迟：830 倒计时监控：0分9秒 (· note)"""
     parts = ['%s%d' % (label, counts[key]) for _, key, label in GRADES]
     shown = display_seconds(remaining_ms)
     countdown = '--' if shown is None else '%d分%d秒' % (shown // 60, shown % 60)
     delay = ('%d' % delay_ms) if float(delay_ms).is_integer() else ('%.1f' % delay_ms)
-    return '%s：已抢 %s 购买延迟：%s 倒计时监控：%s' % ('购买(演练)' if rehearsal else '购买', ' '.join(parts), delay, countdown)
+    text = '%s：已抢 %s 购买延迟：%s 倒计时监控：%s' % ('购买(演练)' if rehearsal else '购买', ' '.join(parts), delay, countdown)
+    return text + (' · ' + note if note else '')
+
+
+def dialog_clock_note(offset_from_watchlist_ms):
+    """Why 倒计时监控 jumps when the dialog opens (user 2026-10-10: "顶部的延迟都会
+    慢半拍"): from then on it follows the dialog's own countdown, which syncs
+    when the dialog opens and can differ from the watchlist's by up to ~1 s."""
+    if offset_from_watchlist_ms is None:
+        return None
+    if abs(offset_from_watchlist_ms) < 5:
+        return '按小窗倒计时（与关注页一致）'
+    return '按小窗倒计时（比关注页%s%.2f秒）' % ('晚' if offset_from_watchlist_ms > 0 else '早', abs(offset_from_watchlist_ms) / 1000.0)
 
 
 class BannerTicker:

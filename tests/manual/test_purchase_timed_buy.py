@@ -561,6 +561,24 @@ class PressResultTimingTests(unittest.TestCase):
                 self.assertTrue(result_kinds(text))
 
 
+class TimedPressTests(unittest.TestCase):
+    def test_a_real_press_holds_the_button_and_releases_at_the_moment(self):
+        # User 2026-10-10: the game acts on the release; the press-down passes a slow hook (2-4 ms).
+        from run_purchase_timed_buy import PRESS_HOLD_MS, press_hold_ms
+        self.assertEqual(press_hold_ms(798), PRESS_HOLD_MS)
+        self.assertEqual(press_hold_ms(240), 40.0)          # small delays: the zero is still seen first
+        self.assertEqual(press_hold_ms(160), 0.0)
+
+    def test_the_banner_says_why_it_jumps_when_the_dialog_opens(self):
+        from purchase_banner import banner_text, dialog_clock_note
+        self.assertEqual(dialog_clock_note(827.2), '按小窗倒计时（比关注页晚0.83秒）')
+        self.assertEqual(dialog_clock_note(-1167), '按小窗倒计时（比关注页早1.17秒）')
+        self.assertIsNone(dialog_clock_note(None))
+        counts = dict(orange=0, purple=1, blue=0)
+        self.assertTrue(banner_text(counts, 798, 2400, False, note='按小窗倒计时（比关注页晚0.83秒）').endswith('晚0.83秒）'))
+        self.assertNotIn('·', banner_text(counts, 798, 2400, False))
+
+
 class OutcomeTests(unittest.TestCase):
     def test_outcomes_from_the_screens_after_the_press(self):
         def screen(*kinds):

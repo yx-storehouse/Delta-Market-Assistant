@@ -49,7 +49,8 @@ from run_purchase_probe import navigate, return_policy, sample_step, RETURN_POLI
 from purchase_watchlist_cleanup import clean_expired_head, cleanup_step_permitted, identity_readable
 from purchase_watchlist_sort import ensure_rarity_sort, sort_step_permitted
 from collection_status import OverlayChannel
-from purchase_banner import BannerTicker, banner_text, grade_key, grade_of, ledger_append, ledger_counts, ledger_path
+from purchase_banner import (BannerTicker, banner_text, dialog_clock_note, grade_key, grade_of, ledger_append,
+                             ledger_counts, ledger_path)
 
 # Its own banner pipe: the F2 standby runner keeps the collection banner's.
 # The banner accepts only names under its own prefix (status_overlay.cpp;
@@ -133,6 +134,17 @@ PRESS_LATE_LIMIT_MS = 15
 # The coarse wait for a real press ends this much early; the backend spins
 # the rest right before SendInput, after its checks.
 PRESS_SPIN_LEAD_MS = 3
+# A real press holds the button this long: down before the moment, the
+# release (which the game acts on; user 2026-10-10) at it. The press-down's
+# slow hook pass (2-4 ms) then falls before the moment; the hold is also
+# visible ("我都看不到按下的动作了").
+PRESS_HOLD_MS = 80
+
+
+def press_hold_ms(delay_ms):
+    """The hold for a real press: PRESS_HOLD_MS, shorter for small delays so
+    the dialog's zero is still seen before the button goes down."""
+    return float(min(PRESS_HOLD_MS, max(0.0, delay_ms - 200.0)))
 # Session steps of one attempt (a 10 min follow is about 70 watches, cleanup up
 # to 5 x 11), and the steps kept back for the dialog phase before the entry.
 ATTEMPT_MAX_STEPS = 300
@@ -714,7 +726,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         banner['counts'] = counts
         banner['ticker'] = BannerTicker(overlay, lambda: banner_text(
             banner['counts'], delay_ms, None if banner['zero_ms'] is None else banner['zero_ms'] - qpc_ms(),
-            not args.buy)).start()
+            not args.buy, note=banner.get('note'))).start()
 
     def stop_banner():
         if banner['ticker'] is not None:
@@ -984,6 +996,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         backend.hover(DIALOG_BUY_POINT)
         dialog_rest = backend._cursor()
         prior = footer_zero_ms + DIALOG_PHASE_PRIOR_MS
+        hold = press_hold_ms(delay_ms)
         line_state = 'unread'
         if early_ms is not None:
             return early_press_phase(prior, footer_zero_ms, footer_calibrated, dialog_rest)
@@ -992,7 +1005,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         for index in range(DIALOG_WATCH_ROUNDS):
             check_stop(stop_requested)
             zero = dialog_zero(dialog_clock, prior, footer_zero_ms, footer_calibrated, (earliest, latest))
-            planned = next_dialog_watch(qpc_ms(), zero, latest, delay_ms)
+            # A real press goes down the hold before its moment: the last watch ends before that.
+            planned = next_dialog_watch(qpc_ms(), zero, latest, delay_ms - (hold if args.buy else 0.0))
             if planned is None:
                 break
             ms, stop_on_zero = planned
@@ -1003,6 +1017,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             seen = dialog_zero(dialog_clock, prior, footer_zero_ms, footer_calibrated, (earliest, latest))
             if seen['source'] == 'dialog':
                 banner['zero_ms'] = seen['zero_ms']  # 倒计时监控 follows the dialog's own countdown
+                banner['note'] = dialog_clock_note(seen.get('offset_from_footer_ms') if footer_calibrated else None)
             dialog_watches.append(dict(requested_ms=ms, stop_on_zero=stop_on_zero, line_state=line_state,
                 received_qpc_ms=qpc_ms(), earliest_zero_ms=earliest, frames=watch.get('frames_examined'),
                 max_frame_gap_ms=watch.get('max_frame_gap_ms'), time_rounding=watch.get('time_rounding'), watch=dict(events=[dict(text=e.get('text'), source_mono_ms=e.get('source_mono_ms'),
@@ -1016,7 +1031,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         result['dialog_zero'] = dict(zero, prior_mono_ms=prior, click_planned_qpc_ms=click_ms,
                                      earliest_zero_ms=earliest, latest_zero_ms=latest)
         waited_from = qpc_ms()
-        lead = PRESS_SPIN_LEAD_MS if args.buy else 0
+        lead = (hold + PRESS_SPIN_LEAD_MS) if args.buy else 0
         if click_ms - waited_from <= enter_at_ms + 2000:
             wait_until_or_stop(click_ms - lead, stop_requested)
         check_stop(stop_requested)
@@ -1032,7 +1047,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             def press_guard():
                 # After the pointer and window checks: still on time, and the rest is a short spin.
                 late = qpc_ms() - click_ms
-                if not -PRESS_SPIN_LEAD_MS - 1 <= late <= PRESS_LATE_LIMIT_MS:
+                if not -lead - 1 <= late <= PRESS_LATE_LIMIT_MS:
                     result['press_decision'].update(allowed=False, reason='PRESS_WINDOW_MISSED:%.1f' % late,
                                                     dispatch_late_ms=late)
                     raise ValueError('PURCHASE_TIMED_NO_PRESS:PRESS_WINDOW_MISSED:%.1f' % late)
@@ -1040,7 +1055,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             budget.confirm(DIALOG_BUY_POINT)
             try:
                 backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard, at_qpc_ms=click_ms,
-                              late_limit_ms=PRESS_LATE_LIMIT_MS)
+                              late_limit_ms=PRESS_LATE_LIMIT_MS, hold_ms=hold)
             except RuntimeError as error:
                 if not str(error).startswith('PURCHASE_PRESS_'):
                     raise
@@ -1050,7 +1065,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                                                 dispatch_late_ms=late, backend_code=str(error))
                 raise ValueError('PURCHASE_TIMED_NO_PRESS:PRESS_WINDOW_MISSED:%.1f' % late) from error
             stop_banner()
-            overlay.show('已按下购买（归零后 %g ms）' % delay_ms, 'ok')
+            overlay.show('已点击购买（归零后 %g ms 松开）' % delay_ms, 'ok')
             sent = backend.last_dispatch if isinstance(backend.last_dispatch, dict) else {}
             result['confirm_clicks'] = 1 if (sent.get('returned_events') or 0) >= 1 else 0
             dispatched = sent.get('started_qpc_ms') or now
@@ -1059,8 +1074,9 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                                      after_dialog_zero_ms=dispatched - zero['zero_ms'], returned_qpc_ms=returned,
                                      returned_events=sent.get('returned_events'),
                                      sendinput_ms=None if returned is None else returned - dispatched,
-                                     down_ms=None if sent.get('down_returned_qpc_ms') is None
-                                     else sent['down_returned_qpc_ms'] - dispatched,
+                                     down_ms=None if None in (sent.get('down_returned_qpc_ms'), sent.get('down_started_qpc_ms'))
+                                     else sent['down_returned_qpc_ms'] - sent['down_started_qpc_ms'],
+                                     hold_ms=sent.get('hold_ms'),
                                      up_ms=None if None in (returned, sent.get('up_started_qpc_ms'))
                                      else returned - sent['up_started_qpc_ms'],
                                      zero_uncertainty_ms=zero.get('uncertainty_ms'), zero_ticks_used=zero.get('ticks_used'))

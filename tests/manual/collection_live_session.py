@@ -35,8 +35,10 @@ from collection_paths import project_root
 ROOT = project_root(__file__)
 # Native capture errors that a fresh read may clear (no input is repeated).
 TRANSIENT_CAPTURE_ERRORS = frozenset(('E_DXGI_ACQUIRE',))
-# A timed press never spins longer than this before SendInput.
-TIMED_PRESS_MAX_SPIN_MS = 20
+# A timed press never waits longer than this for its press-down; its hold
+# sleeps but the last TIMED_PRESS_SPIN_TAIL_MS before the release spin.
+TIMED_PRESS_MAX_SPIN_MS = 300
+TIMED_PRESS_SPIN_TAIL_MS = 3
 # Native capture refusals that mean the game is no longer the front window.
 WINDOW_LOST_ERRORS = frozenset(('E_WINDOW_NOT_FOREGROUND', 'E_BATCH_FOREGROUND_NOT_OWNED'))
 KINDS = frozenset(('capture', 'click', 'hover', 'scroll', 'click_label', 'collect_selected',
@@ -1037,10 +1039,12 @@ class WindowsBackend:
         return subprocess.run(command, capture_output=True, timeout=timeout,
                               creationflags=subprocess.CREATE_NO_WINDOW)
 
-    def click(self, point, before_dispatch=None, at_qpc_ms=None, late_limit_ms=None):
-        """at_qpc_ms: a timed press, sent at that QPC moment after every check
-        (spinning the last few ms), refused if already late_limit_ms past it."""
-        return self._click(point,before_dispatch,False,at_qpc_ms=at_qpc_ms,late_limit_ms=late_limit_ms)
+    def click(self, point, before_dispatch=None, at_qpc_ms=None, late_limit_ms=None, hold_ms=0):
+        """at_qpc_ms: a timed press whose button RELEASE (the game acts on it)
+        goes out at that QPC moment, after every check, spinning the last few
+        ms; the button goes down hold_ms before it. Refused before any input
+        if already late_limit_ms past it."""
+        return self._click(point,before_dispatch,False,at_qpc_ms=at_qpc_ms,late_limit_ms=late_limit_ms,hold_ms=hold_ms)
 
     def fast_collection_click(self,point,before_dispatch=None):
         return self._click(point,before_dispatch,True)
@@ -1053,7 +1057,7 @@ class WindowsBackend:
         # Favorite toggles and ordinary navigation retain their original path.
         return self._click(point,before_dispatch,True,selection_hold=True)
 
-    def _click(self,point,before_dispatch,fast,selection_hold=False,at_qpc_ms=None,late_limit_ms=None):
+    def _click(self,point,before_dispatch,fast,selection_hold=False,at_qpc_ms=None,late_limit_ms=None,hold_ms=0):
         self.last_dispatch = None
         self._planned_target = None
         self._position(point, purpose='collection_click' if fast else 'click')
@@ -1068,39 +1072,11 @@ class WindowsBackend:
         if selection_hold:
             return self._selection_press(pair)
         if at_qpc_ms is not None:
-            # The last moments of a timed press spin here, right before SendInput
-            # (review wf_b4f7bdbb-525: checks after the wait made it 0.2-0.9 ms late).
-            _require(at_qpc_ms - time.perf_counter() * 1000 <= TIMED_PRESS_MAX_SPIN_MS, 'PURCHASE_PRESS_SPIN_TOO_LONG')
-            while time.perf_counter() * 1000 < at_qpc_ms:
-                pass
-            if late_limit_ms is not None and time.perf_counter() * 1000 - at_qpc_ms > late_limit_ms:
-                raise RuntimeError('PURCHASE_PRESS_LATE')
+            return self._timed_press(pair, at_qpc_ms, late_limit_ms, hold_ms)
         dispatch_start = time.monotonic() * 1000
         # QPC (as the capture clock's source_mono_ms) around the API call:
         # time.monotonic steps 15.6 ms on this machine.
         dispatch_qpc = time.perf_counter() * 1000
-        if at_qpc_ms is not None:
-            # A timed press: down and up as two back-to-back calls, each timed, so
-            # the time each button event spends in the system's low-level mouse
-            # hook chain is on record (2026-10-10: about 2.6 ms per button event
-            # with the game in front, 0.4-0.8 ms with it behind; keys ~0.5 ms).
-            size = self.c.sizeof(self.Input)
-            sent = self.u.SendInput(1, self.c.byref(pair[0]), size)
-            down_returned = time.perf_counter() * 1000
-            up_started = time.perf_counter() * 1000
-            sent += self.u.SendInput(1, self.c.byref(pair[1]), size) if sent == 1 else 0
-            returned_qpc = time.perf_counter() * 1000
-            self.last_dispatch = dict(api='SendInput', kind='click',
-                started_mono_ms=dispatch_start, returned_mono_ms=time.monotonic()*1000,
-                started_qpc_ms=dispatch_qpc, returned_qpc_ms=returned_qpc,
-                down_returned_qpc_ms=down_returned, up_started_qpc_ms=up_started,
-                expected_events=2, returned_events=sent, clock='python_monotonic', calls=2,
-                semantics='API_call_boundary_not_hardware_delivery_timestamp')
-            if sent == 1:
-                release = self.Input()
-                release.data.mi.dwFlags = 4
-                self.u.SendInput(1, self.c.byref(release), size)
-            return sent
         sent = self.u.SendInput(2, pair, self.c.sizeof(self.Input))
         returned_qpc = time.perf_counter() * 1000
         self.last_dispatch = dict(api='SendInput', kind='click',
@@ -1113,6 +1089,56 @@ class WindowsBackend:
             release.data.mi.dwFlags = 4
             self.u.SendInput(1, self.c.byref(release), self.c.sizeof(self.Input))
         return sent
+
+    def _timed_press(self, pair, at_qpc_ms, late_limit_ms, hold_ms):
+        """The timed press: the button goes down hold_ms before at_qpc_ms and
+        is released exactly then (the game acts on the release; user
+        2026-10-10). The press-down passes a slow low-level hook chain while
+        the game is in front (live 2.3-4.2 ms, the release 0.6-0.9 ms), so
+        it goes early and only the fast release meets the moment; the hold
+        also shows the press on screen. Every check ran before the down; the
+        last few ms before each event spin (review wf_b4f7bdbb-525)."""
+        now = time.perf_counter() * 1000
+        down_at = at_qpc_ms - max(0.0, hold_ms)
+        _require(down_at - now <= TIMED_PRESS_MAX_SPIN_MS, 'PURCHASE_PRESS_SPIN_TOO_LONG')
+        while time.perf_counter() * 1000 < down_at:
+            pass
+        if late_limit_ms is not None and time.perf_counter() * 1000 - at_qpc_ms > late_limit_ms:
+            raise RuntimeError('PURCHASE_PRESS_LATE')
+        size = self.c.sizeof(self.Input)
+        dispatch_start = time.monotonic() * 1000
+        down_started = time.perf_counter() * 1000
+        down = self.u.SendInput(1, self.c.byref(pair[0]), size)
+        down_returned = time.perf_counter() * 1000
+        up = 0
+        planned = getattr(self, '_planned_target', None)
+        moved_during_hold = False
+        try:
+            if down == 1:
+                # Hold: sleep, then spin the last ms. A pointer taken away meanwhile
+                # releases off the button (no click); the button never stays down.
+                left = at_qpc_ms - time.perf_counter() * 1000
+                if left > TIMED_PRESS_SPIN_TAIL_MS:
+                    time.sleep((left - TIMED_PRESS_SPIN_TAIL_MS) / 1000.0)
+                if planned is not None and self._cursor() != planned[0]:
+                    moved_during_hold = True
+                while time.perf_counter() * 1000 < at_qpc_ms:
+                    pass
+        finally:
+            up_started = time.perf_counter() * 1000
+            if down == 1:
+                up = self.u.SendInput(1, self.c.byref(pair[1]), size)
+            returned = time.perf_counter() * 1000
+            self.last_dispatch = dict(api='SendInput', kind='click',
+                started_mono_ms=dispatch_start, returned_mono_ms=time.monotonic() * 1000,
+                # started_qpc_ms: the release, the moment the game acts on.
+                started_qpc_ms=up_started, returned_qpc_ms=returned,
+                down_started_qpc_ms=down_started, down_returned_qpc_ms=down_returned, up_started_qpc_ms=up_started,
+                hold_ms=up_started - down_started, moved_during_hold=moved_during_hold,
+                expected_events=2, returned_events=down + up, clock='python_monotonic', calls=2,
+                semantics='API_call_boundary_not_hardware_delivery_timestamp')
+        _require(not moved_during_hold, 'COLLECTION_CURSOR_MOVED_BEFORE_INPUT')
+        return down + up
 
     def _selection_press(self,pair):
         """One bounded press, always released; never repeats a mouse-down."""
