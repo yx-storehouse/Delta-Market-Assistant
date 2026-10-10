@@ -60,7 +60,7 @@ inline CaptureServiceRequest parseCaptureServiceRequest(const QByteArray& line) 
     const QSet<QString> valued{"focus-policy", "target-hwnd", "target-pid", "return-hwnd", "return-pid",
         "frames", "collection-receipt-reference", "collection-card-id", "collection-visible-index",
         "collection-card-index", "expected-page", "collection-selection-point", "purchase-countdown-watch",
-        "purchase-countdown-area", "purchase-countdown-expect-zero-ms"};
+        "purchase-countdown-area", "purchase-countdown-expect-zero-ms", "purchase-countdown-stop-on-text"};
     QSet<QString> seen;
     QString focusPolicy;
     for (qsizetype i = 0; i < request.arguments.size(); ++i) {

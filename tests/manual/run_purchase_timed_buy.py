@@ -39,7 +39,7 @@ from types import SimpleNamespace
 from collection_paths import project_root
 from collection_run_config import snapshot_from_files
 from purchase_clock import CountdownClock, _zero_interval, qpc_ms, standard_time, system_clock_check, ticks_from_watch
-from purchase_observation import read_screen
+from purchase_observation import final_result_phrases, normalize, read_screen
 from run_purchase_countdown_probe import (WATCH_MAX_MS, WATCH_PAGES, first_card_selected, listing_identity,
                                           only_listing_in_first_slot, same_listing, watch_step, watch_summary)
 from run_purchase_dialog_probe import ESCAPE, VIEWPORT, dialog_closed, dialog_open, dialog_texts
@@ -127,6 +127,15 @@ AFTER_PRESS_READS = 5
 # on the watchlist until a result shows or LATE_RESULT_READS are done.
 BUY_DIALOG_READS = 3
 LATE_RESULT_READS = 10
+# After a real press the toast region is watched frame by frame (user
+# 2026-10-10: when the answer shows measures this machine's server latency;
+# live buy_cycle05: 订单尚未开放购买 within about 0.45 s, 抢购队列已满 only
+# about 1.9-2.3 s after the press, after Esc). The dialog stays open
+# meanwhile; if nothing showed, the watchlist is watched once more after Esc.
+TOAST_WATCH_MS = 3500
+LATE_TOAST_WATCH_MS = 3000
+# Change events this close (frame gaps) belong to one toast sliding and fading in.
+TOAST_BURST_GAP_MS = 100
 # Agent probe only (user 2026-10-09 "再测一下小窗里按早了的提示"): press the
 # dialog's green button this long before ITS zero, to read the toast for a
 # press that came too early ("订单尚未开放购买"). The dialog unlocks about 1 s
@@ -425,6 +434,61 @@ def button_change_since_publicity(changed, watch_events, states):
     return changed
 
 
+def toast_events(watch, dispatched_ms):
+    """The toast region's line reads in a watch after the press: when each
+    change showed (the frame before it and its frame, ms after the press),
+    its text and the result kinds in it."""
+    from purchase_observation import result_kinds
+    out = []
+    for event in (watch or {}).get('events') or []:
+        source, previous = event.get('source_mono_ms'), event.get('previous_source_mono_ms')
+        text = normalize(event.get('text') or '')
+        out.append(dict(kind=event.get('kind'), text=text, kinds=result_kinds(text), changed_px=event.get('changed_px'),
+                        after_press_ms=None if type(source) not in (int, float) else source - dispatched_ms,
+                        frame_before_after_press_ms=None if type(previous) not in (int, float) else previous - dispatched_ms))
+    return out
+
+
+def result_shown_after_press(result, read=False):
+    """[frame before, frame] in ms after the press when the first result toast
+    showed (read=True: when its text first read), from the dialog's watch or
+    the one after Esc; None if neither saw one."""
+    keys = ('result_read_frame_before_ms', 'result_read_after_press_ms') if read else \
+        ('result_frame_before_ms', 'result_after_press_ms')
+    for name in ('press_result', 'press_result_late'):
+        timing = result.get(name) or {}
+        if timing.get(keys[1]) is not None:
+            return [timing.get(keys[0]), timing[keys[1]]]
+    return None
+
+
+def toast_timing(events):
+    """When the toast with the first result showed: the first change of the
+    unbroken burst of changes that ends in the read of its text (it slides
+    and fades in over some 50-80 ms before its text reads; review
+    wf_cf31784b-664), as the frame before it and its frame; and when its text
+    first read. Also the region's first change at all."""
+    change = next((e for e in events if e['kind'] == 'change'), None)
+    index = next((i for i, e in enumerate(events) if e['kinds']), None)
+    result = events[index] if index is not None else None
+    onset = result
+    if result is not None and result['kind'] == 'change':
+        for earlier in reversed(events[:index]):
+            if (earlier['kind'] != 'change' or onset['frame_before_after_press_ms'] is None
+                    or earlier['after_press_ms'] is None
+                    or onset['frame_before_after_press_ms'] - earlier['after_press_ms'] > TOAST_BURST_GAP_MS):
+                break
+            onset = earlier
+    return dict(first_change_after_press_ms=change and change['after_press_ms'],
+                first_change_frame_before_ms=change and change['frame_before_after_press_ms'],
+                result_after_press_ms=onset and onset['after_press_ms'],
+                result_frame_before_ms=onset and (None if onset['kind'] == 'baseline' else onset['frame_before_after_press_ms']),
+                result_read_after_press_ms=result and result['after_press_ms'],
+                result_read_frame_before_ms=result and result['frame_before_after_press_ms'],
+                result_seen_at_watch_start=bool(result and onset['kind'] == 'baseline'),
+                kinds=result['kinds'] if result else [], text=result['text'] if result else None)
+
+
 def page_reread_due(after, rereads, lead_ms):
     """Read once more before judging the page: the last read could not place it."""
     return after['page'] == 'unknown' and rereads < PAGE_UNKNOWN_REREADS and lead_ms >= PAGE_REREAD_MIN_LEAD_MS
@@ -645,16 +709,18 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
     def direct_read():
         return read_screen(direct_packet())
 
-    def lean_dialog_watch(ms, stop_on_zero=False):
-        """The dialog's countdown line on every frame, no full OCR: returns
-        within a few ms of its end (or of its 0分0秒 frame). Read-only,
-        outside the session's steps."""
+    def lean_dialog_watch(ms, stop_on_zero=False, area='dialog', stop_on_text=None):
+        """The dialog's countdown line (or the result toast) on every frame,
+        no full OCR: returns within a few ms of its end (or of its 0分0秒
+        frame). Read-only, outside the session's steps."""
         command = [str(root / 'dist/RelinkStudio/RelinkStudio.exe'), '--live-capture-check', '--focus-policy', 'caller-owned']
         command += session._identity_arguments()
-        command += ['--frames', '1', '--purchase-countdown-watch', str(int(ms)), '--purchase-countdown-area', 'dialog',
+        command += ['--frames', '1', '--purchase-countdown-watch', str(int(ms)), '--purchase-countdown-area', area,
                     '--purchase-countdown-lean', '--reuse-capture-resources', '--collection-ready-stream']
         if stop_on_zero:
             command.append('--purchase-countdown-stop-on-zero')
+        if stop_on_text:
+            command += ['--purchase-countdown-stop-on-text', '|'.join(stop_on_text)]
         process = WindowsBackend.capture(backend, command, max(2.0, ms / 1000.0 + 3.0))
         packet = json.loads(process.stdout)
         if process.returncode != 0 or packet.get('capture_passed') is not True or 'purchase_countdown_watch' not in packet:
@@ -702,6 +768,23 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         out['verified'] = None if screen is None else dialog_closed(screen)
         return out
 
+    def watch_toast(name, ms, screens):
+        """The toast region frame by frame after the press (no input); its
+        result kinds join `screens`. Recorded under result[name]."""
+        dispatched = (result.get('confirm') or {}).get('dispatch_qpc_ms')
+        try:
+            # Ends two frames after a final result reads (the dialog closes, the next listing waits).
+            watch = lean_dialog_watch(ms, area='toast', stop_on_text=final_result_phrases())
+            events = toast_events(watch, dispatched or 0.0)
+            result[name] = dict(toast_timing(events), watch_ms=ms, events=events[:40],
+                                first_frame_after_press_ms=(watch.get('first_source_mono_ms') or 0) - (dispatched or 0),
+                                last_frame_after_press_ms=(watch.get('last_source_mono_ms') or 0) - (dispatched or 0),
+                                frames=watch.get('frames_examined'), max_frame_gap_ms=watch.get('max_frame_gap_ms'),
+                                line_reads=watch.get('line_reads'), ended_by=watch.get('ended_by'))
+            screens.append(dict(signals=[dict(kind=k) for e in events for k in e['kinds']]))
+        except Exception as error:
+            result[name] = dict(error=str(error) or type(error).__name__)
+
     def late_result():
         """After a real press and Esc: the result may come late (buy01). Read
         the watchlist, no input, until a result shows; then write the ledger."""
@@ -710,8 +793,13 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             outcome = result.get('outcome') or 'unknown'
             if outcome == 'unknown':
                 outcome = outcome_of([dict(signals=[dict(kind=k) for k in kinds])])
+            if outcome == 'unknown' and not (stop_requested is not None and stop_requested()):
+                # Frame by frame first: when the answer shows matters (server latency).
+                late = []
+                watch_toast('press_result_late', LATE_TOAST_WATCH_MS, late)
+                outcome = outcome_of(late)
             for index in range(LATE_RESULT_READS):
-                if outcome != 'unknown':
+                if outcome != 'unknown' or (stop_requested is not None and stop_requested()):
                     break
                 time.sleep(.2)
                 try:
@@ -735,7 +823,11 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             title=title, grade=grade, grade_key=grade_key(grade), outcome=result.get('outcome') or 'unknown',
             delay_ms=delay_ms,
             wear=(result.get('identity') or {}).get('selected_detail_precise'),
-            press_late_ms=(result.get('confirm') or {}).get('late_ms')))
+            press_late_ms=(result.get('confirm') or {}).get('late_ms'),
+            # When the answer showed after the press (server latency): the frame before it and its frame;
+            # and when its text first read.
+            result_after_press_ms=result_shown_after_press(result),
+            result_read_after_press_ms=result_shown_after_press(result, read=True)))
 
     def read_after_press(direct):
         """The result toast shows for about 1.2 s (live toast04: read at 0 and
@@ -921,10 +1013,14 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             if left >= LEAN_MIN_MS and not dialog_clock.unlock()['observed']:
                 dialog_clock.add_watch(lean_dialog_watch(min(WATCH_MAX_MS, int(left))))
         screens = []
+        if args.buy:
+            watch_toast('press_result', TOAST_WATCH_MS, screens)
         try:
             # The result toast shows for about 1.2 s (live toast04: read at 0 and
             # 0.58 s, gone at 1.18 s): read back to back, no pause.
             for index in range(BUY_DIALOG_READS if args.buy else AFTER_PRESS_READS):
+                if args.buy and outcome_of(screens) != 'unknown':
+                    break
                 try:
                     screens.append(read_dialog('after_press_%d' % index, preview=not args.buy and index < 3,
                                                direct=args.buy))

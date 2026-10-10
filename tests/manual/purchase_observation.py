@@ -199,26 +199,12 @@ def read_screen(packet):
         try:dialog_countdown=countdown_seconds(dialog_line)
         except ValueError:dialog_countdown=None
     signals=[]
-    names={'获得枪械外观':'success_text','该商品已被购买或已下架':'sold_or_removed',
-        '队列已满':'queue_full','仍在公示期':'still_publicity','余额不足':'insufficient_balance',
-        '当前订单还在公示期内':'still_publicity','确认购买':'confirm_dialog',
-        '外观购买':'purchase_dialog','购买结果公示':'result_publicity',
-        # Live 2026-10-09 (purchase_readonly/dialog02): with 7 三角币 for a 230
-        # listing the price button opens "您当前的三角币不足，是否前往充值？
-        # （缺少223三角币，推荐充值¥30档位）" with 取消 and 充值 (real-money top-up).
-        '三角币不足':'insufficient_balance','是否前往充值':'recharge_prompt',
-        # BBZPS log result texts (docs/PURCHASE_READONLY.md): a pooled draw,
-        # its loss, crowding and a not-yet-open order.
-        '加入抢购池':'lottery_pool','运气不佳':'lottery_lost','抢购请求玩家过多':'too_many_buyers',
-        # User 2026-10-09 (screenshot at 0分1秒): the toast after pressing the
-        # dialog's green button before the unlock ("点快了").
-        '订单尚未开放购买':'not_open_yet'}
     shortfall=None
     seen=set();toast=[]
     for region in ('dialog_text','toast'):
         for line in regions[region]:
             text=normalize(line['text'])
-            kinds=[kind for phrase,kind in names.items() if phrase in text]
+            kinds=result_kinds(text)
             if region=='toast' and text:toast.append(dict(text=text,kinds=kinds))
             for kind in kinds:
                 if (kind,text) not in seen:
@@ -235,6 +221,38 @@ def read_screen(packet):
         countdown_ambiguous=len(countdowns)>1,
         screen_result_is_order_receipt=False,actions_enabled=False,purchase_authorized=False,
         source_frame=deepcopy(frames[-1]))
+
+
+# On-screen phrases of the purchase dialog and its results, and their kinds.
+RESULT_PHRASES={'获得枪械外观':'success_text','该商品已被购买或已下架':'sold_or_removed',
+        '队列已满':'queue_full','仍在公示期':'still_publicity','余额不足':'insufficient_balance',
+        '当前订单还在公示期内':'still_publicity','确认购买':'confirm_dialog',
+        '外观购买':'purchase_dialog','购买结果公示':'result_publicity',
+        # Live 2026-10-09 (purchase_readonly/dialog02): with 7 三角币 for a 230
+        # listing the price button opens "您当前的三角币不足，是否前往充值？
+        # （缺少223三角币，推荐充值¥30档位）" with 取消 and 充值 (real-money top-up).
+        '三角币不足':'insufficient_balance','是否前往充值':'recharge_prompt',
+        # BBZPS log result texts (docs/PURCHASE_READONLY.md): a pooled draw,
+        # its loss, crowding and a not-yet-open order.
+        '加入抢购池':'lottery_pool','运气不佳':'lottery_lost','抢购请求玩家过多':'too_many_buyers',
+        # User 2026-10-09 (screenshot at 0分1秒): the toast after pressing the
+        # dialog's green button before the unlock ("点快了").
+        '订单尚未开放购买':'not_open_yet'}
+
+
+# Results that end the toast watch after a press: the server's answer is in
+# (a pooled draw or a result notice may still be followed by another).
+FINAL_RESULT_KINDS=frozenset(('success_text','sold_or_removed','queue_full','still_publicity','insufficient_balance',
+    'recharge_prompt','too_many_buyers','not_open_yet','lottery_lost'))
+
+
+def final_result_phrases():
+    return [phrase for phrase,kind in RESULT_PHRASES.items() if kind in FINAL_RESULT_KINDS]
+
+
+def result_kinds(text):
+    """The kinds of the phrases in one normalized line of text."""
+    return [kind for phrase,kind in RESULT_PHRASES.items() if phrase in text]
 
 
 def match_current_watchlist(packet,snapshot):

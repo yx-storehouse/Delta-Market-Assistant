@@ -116,6 +116,7 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
     parser.addOption({"purchase-countdown-stop-on-button", "With the countdown watch: end it two frames after the buy button's pixels change (公示中 to price). Timing evidence only, no input."});
     parser.addOption({"purchase-countdown-expect-zero-ms", "With --purchase-countdown-stop-on-jump: the caller's followed display zero (QPC ms); the watch's first readable line far from it also ends the watch.", "ms"});
     parser.addOption({"purchase-countdown-stop-on-jump", "With the countdown watch: end it two frames after the line reads a value that does not follow the previous one (another listing in the panel). Timing evidence only, no input."});
+    parser.addOption({"purchase-countdown-stop-on-text", "With the countdown watch: end it two frames after the line's text contains one of these '|'-separated phrases (a purchase result toast). Timing evidence only, no input.", "phrases"});
     parser.addOption({"purchase-countdown-stop-on-zero", "With the countdown watch: end it two frames after the line first reads 0 seconds after a positive value (the dialog's zero), so the zero lies inside one watch. Timing evidence only, no input."});
     parser.addOption({"ocr-lobby-anchors", "With --ocr: emit text boxes from three fixed lobby button regions only, not full OCR."});
     parser.addOption({"ocr-market-anchors", "With --ocr: emit bounded allowlisted market labels, not full OCR or images."});
@@ -204,6 +205,7 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
         ||(!expectedPage.isEmpty() &&expectedPage!="watchlist_listings") ||parser.isSet("preview-stdout")))
         ||((parser.isSet("purchase-countdown-stop-on-button") ||parser.isSet("purchase-countdown-area")
             ||parser.isSet("purchase-countdown-stop-on-jump") ||parser.isSet("purchase-countdown-stop-on-zero")
+            ||parser.isSet("purchase-countdown-stop-on-text")
             ||parser.isSet("purchase-countdown-stop-on-green") ||parser.isSet("purchase-countdown-lean"))
             &&!parser.isSet("purchase-countdown-watch")) ||!countdownAreaOk ||!expectZeroOk){
         result["error"]="E_PURCHASE_COUNTDOWN_WATCH_ARGUMENTS";return {result,2};
@@ -311,6 +313,13 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
     int zeroStopIn=-1;
     bool stoppedOnZero=false;
     QJsonValue zeroSeen;
+    // A purchase result read in the toast: the answer is in, end the watch.
+    QStringList stopPhrases;
+    for(const auto& phrase:parser.value("purchase-countdown-stop-on-text").split('|',Qt::SkipEmptyParts))
+        if(stopPhrases.size()<24)stopPhrases.append(phrase.trimmed().left(32));
+    int textStopIn=-1;
+    bool stoppedOnText=false;
+    QJsonValue textSeen;
     // The price may turn green between two watches: then the next watch's
     // first frame is already green and no change is seen.
     const bool stopOnGreen=parser.isSet("purchase-countdown-stop-on-green");
@@ -561,6 +570,15 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                                             {"expected_zero_ms",offClock?QJsonValue(expectZeroMs):QJsonValue()}};
                                         jumpStopIn=PurchaseButtonSettleFrames;
                                     }
+                                    if(!stopPhrases.isEmpty() &&textStopIn<0 &&textSeen.isNull()) {
+                                        QString squeezed=line;squeezed.remove(QRegularExpression(QStringLiteral("\\s")));
+                                        for(const auto& phrase:stopPhrases) if(squeezed.contains(phrase)) {
+                                            textSeen=QJsonObject{{"phrase",phrase},{"frame_id",f.frameId},
+                                                {"source_mono_ms",double(f.sourceMonoMs)}};
+                                            textStopIn=PurchaseButtonSettleFrames;
+                                            break;
+                                        }
+                                    }
                                     if(stopOnZero &&zeroStopIn<0 &&zeroSeen.isNull() &&seconds==0 &&lineSeconds>0) {
                                         zeroSeen=QJsonObject{{"from",lineSeconds},{"frame_id",f.frameId},
                                             {"source_mono_ms",double(f.sourceMonoMs)}};
@@ -595,6 +613,7 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                             if(buttonStopIn>=0 &&buttonStopIn--==0)stoppedOnButton=true;
                             if(jumpStopIn>=0 &&jumpStopIn--==0)stoppedOnJump=true;
                             if(zeroStopIn>=0 &&zeroStopIn--==0)stoppedOnZero=true;
+                            if(textStopIn>=0 &&textStopIn--==0)stoppedOnText=true;
                         }
                     } else if(readyWatch) {
                         QElapsedTimer timer;timer.start();
@@ -626,14 +645,14 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                     if (!adapter.releaseFrame(f.leaseId, f.slotGeneration)) error = QStringLiteral("E_DIAGNOSTIC_RELEASE");
                     ++segmentFrames;
                     if(readyWatch &&(selectionReady ||captureClockMs()+100>=demand.deadlineMonoMs))break;
-                    if(countdownWatch &&(stoppedOnButton ||stoppedOnJump ||stoppedOnZero ||captureClockMs()>=countdownWatchEnd))break;
+                    if(countdownWatch &&(stoppedOnButton ||stoppedOnJump ||stoppedOnZero ||stoppedOnText ||captureClockMs()>=countdownWatchEnd))break;
                 }
                 adapter.close();
                 result["resources_drained"] = adapter.snapshot().resourcesDrained;
                 if(streaming)result["resources_drained_scope"]="request_delivery_leases_only_producer_owned_by_session";
                 result["adapter_state"] = toString(adapter.state());
             }
-            if(!countdownWatch ||!error.isEmpty() ||stoppedOnButton ||stoppedOnJump ||stoppedOnZero ||segmentFrames<demand.frameBudget
+            if(!countdownWatch ||!error.isEmpty() ||stoppedOnButton ||stoppedOnJump ||stoppedOnZero ||stoppedOnText ||segmentFrames<demand.frameBudget
                 ||captureClockMs()+30>=countdownWatchEnd ||segment>=40)break;
             countdownSegments=segment+2;
             }
@@ -664,10 +683,11 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                 {"max_frame_gap_ms",double(countdownMaxGap)},{"change_threshold_px",PurchaseCountdownChangePixels},
                 {"segments",countdownSegments},{"max_quiet_changed_px",countdownQuietMax},
                 {"covered_ms",countdownFirstSource>=0?double(countdownPreviousSource-countdownFirstSource):0.0},
-                {"ended_by",!error.isEmpty()?"error":stoppedOnButton?"button":stoppedOnJump?"jump":stoppedOnZero?"zero"
+                {"ended_by",!error.isEmpty()?"error":stoppedOnButton?"button":stoppedOnJump?"jump":stoppedOnZero?"zero":stoppedOnText?"text"
                     :captureClockMs()+30>=countdownWatchEnd?"time":"segment_limit"},
                 {"stop_on_jump",stopOnJump},{"stopped_on_jump",stoppedOnJump},{"jump_seen",jumpSeen},
                 {"stop_on_zero",stopOnZero},{"stopped_on_zero",stoppedOnZero},{"zero_seen",zeroSeen},
+                {"stop_on_text",QJsonArray::fromStringList(stopPhrases)},{"stopped_on_text",stoppedOnText},{"text_seen",textSeen},
                 {"button_rect",QJsonArray{countdownAreaRects.button.x(),countdownAreaRects.button.y(),countdownAreaRects.button.width(),countdownAreaRects.button.height()}},
                 {"button_change_measure","ink_level_changes"},
                 {"button_change_threshold_px",PurchaseButtonChangePixels},{"button_events",buttonEvents},

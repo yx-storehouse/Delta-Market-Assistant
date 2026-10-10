@@ -464,6 +464,64 @@ class SwitchEvidenceTests(unittest.TestCase):
                         .startswith('PAGE_NOT_WATCHLIST'))
 
 
+class PressResultTimingTests(unittest.TestCase):
+    """User 2026-10-10: the toast after the press, read frame by frame, times
+    this machine's server latency."""
+
+    def test_the_answer_is_timed_between_two_frames(self):
+        from run_purchase_timed_buy import result_shown_after_press, toast_events, toast_timing
+        press = 5_000_000.0
+        watch = dict(events=[dict(kind='baseline', text='', source_mono_ms=press + 30),
+                             dict(kind='change', text='', source_mono_ms=press + 419, previous_source_mono_ms=press + 412,
+                                  changed_px=900),
+                             dict(kind='change', text='订单尚未开放购买', source_mono_ms=press + 433,
+                                  previous_source_mono_ms=press + 426, changed_px=1500),
+                             dict(kind='change', text='', source_mono_ms=press + 1730, previous_source_mono_ms=press + 1722)])
+        events = toast_events(watch, press)
+        timing = toast_timing(events)
+        self.assertEqual(timing['kinds'], ['not_open_yet'])
+        # Review wf_cf31784b-664: it showed with the burst's first change (412..419), its text read at 426..433.
+        self.assertEqual((timing['result_frame_before_ms'], timing['result_after_press_ms']), (412, 419))
+        self.assertEqual((timing['result_read_frame_before_ms'], timing['result_read_after_press_ms']), (426, 433))
+        self.assertEqual((timing['first_change_frame_before_ms'], timing['first_change_after_press_ms']), (412, 419))
+        self.assertFalse(timing['result_seen_at_watch_start'])
+        self.assertEqual(result_shown_after_press(dict(press_result=timing)), [412, 419])
+        self.assertEqual(result_shown_after_press(dict(press_result=timing), read=True), [426, 433])
+        # An earlier change more than TOAST_BURST_GAP_MS before the burst is something else.
+        from run_purchase_timed_buy import TOAST_BURST_GAP_MS
+        apart = dict(events=[dict(kind='baseline', text='', source_mono_ms=press + 30),
+                             dict(kind='change', text='', source_mono_ms=press + 200, previous_source_mono_ms=press + 190),
+                             dict(kind='change', text='订单尚未开放购买', source_mono_ms=press + 200 + TOAST_BURST_GAP_MS + 20,
+                                  previous_source_mono_ms=press + 200 + TOAST_BURST_GAP_MS + 10)])
+        self.assertEqual(toast_timing(toast_events(apart, press))['result_after_press_ms'], 200 + TOAST_BURST_GAP_MS + 20)
+        late = toast_timing(toast_events(dict(events=[dict(kind='baseline', text='抢购队列已满，无法购买',
+                                                           source_mono_ms=press + 2100)]), press))
+        self.assertEqual(late['kinds'], ['queue_full'])
+        self.assertTrue(late['result_seen_at_watch_start'])
+        self.assertEqual(result_shown_after_press(dict(press_result=toast_timing([]), press_result_late=late)), [None, 2100])
+        self.assertIsNone(result_shown_after_press({}))
+
+    def test_after_a_real_press_the_toast_is_watched_before_any_read(self):
+        import inspect
+        import run_purchase_timed_buy
+        source = inspect.getsource(run_purchase_timed_buy.run_attempt)
+        press = source.index('backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard)')
+        watch = source.index("watch_toast('press_result', TOAST_WATCH_MS, screens)")
+        self.assertLess(press, watch)
+        self.assertIn("if args.buy:\n            watch_toast('press_result'", source)
+        self.assertIn("watch_toast('press_result_late', LATE_TOAST_WATCH_MS, late)", source)
+        self.assertIn("lean_dialog_watch(ms, area='toast', stop_on_text=final_result_phrases())", source)
+
+    def test_only_final_results_end_the_toast_watch(self):
+        from purchase_observation import final_result_phrases, result_kinds
+        phrases = final_result_phrases()
+        for text, final in (('抢购队列已满，无法购买', True), ('订单尚未开放购买', True), ('该商品已被购买或已下架', True),
+                            ('您已加入抢购池', False), ('外观购买', False), ('购买结果公示中', False)):
+            with self.subTest(text=text):
+                self.assertEqual(any(p in text for p in phrases), final)
+                self.assertTrue(result_kinds(text))
+
+
 class OutcomeTests(unittest.TestCase):
     def test_outcomes_from_the_screens_after_the_press(self):
         def screen(*kinds):

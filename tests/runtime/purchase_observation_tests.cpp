@@ -142,7 +142,8 @@ int main(int argc,char** argv){
         CountdownArea area;
         check(countdownArea(QString(),&area) &&area.name=="footer" &&area.line==PurchaseCountdownRoi
             &&countdownArea("dialog",&area) &&area.line==PurchaseDialogCountdownRoi &&area.button==PurchaseDialogButtonRect
-            &&!countdownArea("anywhere",&area),"countdown areas are footer or dialog only");
+            &&countdownArea("toast",&area) &&area.line==PurchaseToastRect &&area.line==QRect(896,150,768,150)
+            &&!countdownArea("anywhere",&area),"countdown areas are footer, dialog or the result toast only");
         check(countdownStrongDifference(countdownInk(publicity,PurchaseCountdownRoi),countdownInk(priced,PurchaseCountdownRoi))==0,
             "the button is outside the countdown line");
         const auto pair=purchaseClockPair();

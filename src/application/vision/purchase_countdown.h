@@ -34,6 +34,12 @@ inline const QRect PurchaseBuyButtonRect(1978, 1206, 393, 74);
 // 小时" there at x 1527..1724, y 850..873 and the button text at y 924..949.
 inline const QRect PurchaseDialogCountdownRoi(1430, 842, 395, 40);
 inline const QRect PurchaseDialogButtonRect(1428, 896, 397, 76);
+// The result toast after a press, watched frame by frame for the server's
+// answer (user 2026-10-10: its timing measures this machine's server
+// latency). It slides up into place from about 40 px below its rest band
+// (y ~200-250; review wf_cf31784b-664), so the watch covers y 150-299: above
+// the dialog title 外观购买 (y ~371), over only static labels on 我的关注.
+inline const QRect PurchaseToastRect(896, 150, 768, 150);
 struct CountdownArea {
     QString name;
     QRect line, button;
@@ -45,6 +51,10 @@ inline bool countdownArea(const QString& name, CountdownArea* area) {
     }
     if (name == QStringLiteral("dialog")) {
         *area = {QStringLiteral("dialog"), PurchaseDialogCountdownRoi, PurchaseDialogButtonRect};
+        return true;
+    }
+    if (name == QStringLiteral("toast")) {
+        *area = {QStringLiteral("toast"), PurchaseToastRect, PurchaseDialogButtonRect};
         return true;
     }
     return false;
