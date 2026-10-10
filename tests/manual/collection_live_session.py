@@ -1079,6 +1079,28 @@ class WindowsBackend:
         # QPC (as the capture clock's source_mono_ms) around the API call:
         # time.monotonic steps 15.6 ms on this machine.
         dispatch_qpc = time.perf_counter() * 1000
+        if at_qpc_ms is not None:
+            # A timed press: down and up as two back-to-back calls, each timed, so
+            # the time each button event spends in the system's low-level mouse
+            # hook chain is on record (2026-10-10: about 2.6 ms per button event
+            # with the game in front, 0.4-0.8 ms with it behind; keys ~0.5 ms).
+            size = self.c.sizeof(self.Input)
+            sent = self.u.SendInput(1, self.c.byref(pair[0]), size)
+            down_returned = time.perf_counter() * 1000
+            up_started = time.perf_counter() * 1000
+            sent += self.u.SendInput(1, self.c.byref(pair[1]), size) if sent == 1 else 0
+            returned_qpc = time.perf_counter() * 1000
+            self.last_dispatch = dict(api='SendInput', kind='click',
+                started_mono_ms=dispatch_start, returned_mono_ms=time.monotonic()*1000,
+                started_qpc_ms=dispatch_qpc, returned_qpc_ms=returned_qpc,
+                down_returned_qpc_ms=down_returned, up_started_qpc_ms=up_started,
+                expected_events=2, returned_events=sent, clock='python_monotonic', calls=2,
+                semantics='API_call_boundary_not_hardware_delivery_timestamp')
+            if sent == 1:
+                release = self.Input()
+                release.data.mi.dwFlags = 4
+                self.u.SendInput(1, self.c.byref(release), size)
+            return sent
         sent = self.u.SendInput(2, pair, self.c.sizeof(self.Input))
         returned_qpc = time.perf_counter() * 1000
         self.last_dispatch = dict(api='SendInput', kind='click',

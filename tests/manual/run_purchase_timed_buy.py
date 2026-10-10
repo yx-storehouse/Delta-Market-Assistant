@@ -1059,6 +1059,10 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                                      after_dialog_zero_ms=dispatched - zero['zero_ms'], returned_qpc_ms=returned,
                                      returned_events=sent.get('returned_events'),
                                      sendinput_ms=None if returned is None else returned - dispatched,
+                                     down_ms=None if sent.get('down_returned_qpc_ms') is None
+                                     else sent['down_returned_qpc_ms'] - dispatched,
+                                     up_ms=None if None in (returned, sent.get('up_started_qpc_ms'))
+                                     else returned - sent['up_started_qpc_ms'],
                                      zero_uncertainty_ms=zero.get('uncertainty_ms'), zero_ticks_used=zero.get('ticks_used'))
             if result['confirm_clicks'] != 1:
                 raise ValueError('PURCHASE_TIMED_PRESS_NOT_DISPATCHED')
