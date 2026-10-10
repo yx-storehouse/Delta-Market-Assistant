@@ -71,6 +71,7 @@ STOP_TEXT = {
     'COLLECTION_WINDOW_IDENTITY': '没有找到唯一的游戏窗口，请先打开游戏',
     'COLLECTION_GAME_ELEVATED': '游戏以管理员权限运行，点击会被系统拦截：请右键 RelinkStudio 选“以管理员身份运行”',
     'GAME_NOT_IN_FRONT': '游戏窗口被切走', 'SESSION_FAILED': '按下后的一次读图失败（结果已读到）',
+    'HEAD_TOO_CLOSE': '第一位离解锁不到 2 秒，来不及对表，跳过',
     'USER_INPUT_ACTIVE': '检测到鼠标或 Shift/Ctrl/Alt 按下，未点击', 'INPUT_GUARD_CHANGED': '检测到鼠标或键盘操作，未点击',
     'STOP_REQUESTED': '已按 F2 停止', 'ENTER_TOO_LATE': '“提前进入”至少要 2 秒才能校准',
     'STEP_BUDGET': '这一把的识别次数用完了', 'RUN_SETTINGS': '运行设置读不懂',
@@ -118,6 +119,11 @@ DIALOG_WATCH_ROUNDS = 40
 # between two follow watches takes about a second (live rehearse09 at
 # 提前进入 4.8 s: the change fell into a 1.1 s gap, never proven, no entry).
 PRICE_BUTTON_LEAD_MS = 4995
+# A head met closer to its zero than 提前进入 is entered at once, down to
+# this much left (the dialog still shows two boundaries); closer, it is
+# skipped without counting as a failure (live buy_cycle11 at 4.8 s: heads met
+# at 3 s and 1 s were followed to their unlock and stopped the cycle).
+MIN_ENTRY_LEFT_MS = 2000
 BUTTON_SPAN_MS = 600
 FOLLOW_READ_GAP_MS = 1500
 SPANNING_WATCH_MAX_MS = 2500
@@ -471,6 +477,15 @@ def follow_plan(lead_ms, button_ready, age_ms, enter_ms):
     if cap < planned[0]:
         return max(500, cap), planned[1]
     return planned
+
+
+def price_shown_in_its_last_seconds(screen):
+    """The price on the button while the countdown shows at most 5 s: it
+    turned before this attempt saw it (the game shows it only from 5 s), so
+    there was no change to see; that read is the proof."""
+    seconds = screen.get('countdown_seconds')
+    # The display shows s seconds while (s - 1, s] remain: 0分5秒 already when the price appears.
+    return screen.get('button_state') == 'price_ready' and seconds is not None and (seconds - 1) * 1000 < PRICE_BUTTON_LEAD_MS
 
 
 def button_change_since_publicity(changed, watch_events, states, previous_state=None):
@@ -1180,6 +1195,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                                       title=identity.get('product_title'))
                 if screen['countdown_seconds'] > args.follow_limit:
                     raise ValueError('PURCHASE_TIMED_TOO_EARLY:%d' % screen['countdown_seconds'])
+                if screen['countdown_seconds'] * 1000 <= MIN_ENTRY_LEFT_MS:
+                    raise ValueError('PURCHASE_TIMED_HEAD_TOO_CLOSE:%d' % screen['countdown_seconds'])
                 read_seconds, read_frame = screen['countdown_seconds'], screen['source_frame']['source_mono_ms']
                 after, packet, button_ready, changed = screen, first, False, False
                 banner['zero_ms'] = read_frame + (read_seconds - .5) * 1000.0
@@ -1268,6 +1285,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                     changed = button_change_since_publicity(changed, record['button_events'],
                                                             [watch_after['button_state']] + [r['button_state'] for r in rereads],
                                                             previous_state=state_before)
+                    if not changed and 'publicity' not in [watch_after['button_state']] + [r['button_state'] for r in rereads]:
+                        changed = price_shown_in_its_last_seconds(after)
                     button_ready = button_ready_now(after, packet, changed)
                 refused = timed_entry_allowed(after, packet, changed) or entry_page_problem(
                     after, identity, listing_identity(packet))
@@ -1277,6 +1296,9 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                     raise ValueError('PURCHASE_TIMED_STEP_BUDGET:%d' % len(session.steps))
                 # 2. Open the dialog at the set remaining time.
                 target, zero = enter_target(clock, read_seconds, read_frame, enter_at_ms)
+                left_ms = target + enter_at_ms - max(target, qpc_ms())
+                if left_ms < MIN_ENTRY_LEFT_MS:
+                    raise ValueError('PURCHASE_TIMED_HEAD_TOO_CLOSE:%d' % left_ms)
                 plan['armed'] = True
                 session.perform(dict(kind='hover', point=BUY_POINT, viewport=VIEWPORT, expected_before=after['page']))
                 rest = backend._cursor()

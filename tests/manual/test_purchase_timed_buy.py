@@ -561,6 +561,20 @@ class PressResultTimingTests(unittest.TestCase):
                 self.assertTrue(result_kinds(text))
 
 
+class CloseHeadTests(unittest.TestCase):
+    def test_a_price_already_shown_in_the_last_seconds_is_proof(self):
+        # Live buy_cycle11: heads met at 3 s were followed to their unlock without an entry.
+        from run_purchase_timed_buy import price_shown_in_its_last_seconds as shown
+        self.assertTrue(shown(dict(button_state='price_ready', countdown_seconds=3)))
+        self.assertTrue(shown(dict(button_state='price_ready', countdown_seconds=5)))
+        self.assertFalse(shown(dict(button_state='price_ready', countdown_seconds=7)))      # too early for a price
+        self.assertFalse(shown(dict(button_state='publicity', countdown_seconds=3)))
+        self.assertFalse(shown(dict(button_state='price_button', countdown_seconds=None)))
+        from purchase_cycle import classify
+        self.assertEqual(classify(dict(error='PURCHASE_TIMED_HEAD_TOO_CLOSE:1')), 'retry')
+        self.assertEqual(classify(dict(error='PURCHASE_TIMED_HEAD_TOO_CLOSE:1', price_button_clicks=1)), 'failed')
+
+
 class TimedPressTests(unittest.TestCase):
     def test_a_real_press_holds_the_button_and_releases_at_the_moment(self):
         # User 2026-10-10: the game acts on the release; the press-down passes a slow hook (2-4 ms).

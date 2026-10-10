@@ -105,6 +105,8 @@ def classify(result):
         return 'collect'
     if 'TOO_EARLY' in error and (result.get('head') or {}).get('countdown_seconds') is not None:
         return 'wait'
+    if 'HEAD_TOO_CLOSE' in error and not result.get('price_button_clicks'):
+        return 'retry'      # met too close to its zero to calibrate: look again, the next one comes up
     if ('LISTING_CHANGED' in error or 'HEAD_SWITCHED:' in error) and not result.get('price_button_clicks'):
         # The head went away while followed (live early02: withdrawn, the
         # next one moved up): a market event, not a failure; look again now.
