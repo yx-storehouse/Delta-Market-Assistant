@@ -102,6 +102,8 @@ struct FrameEnvelope {
     FreshnessBasis freshnessBasis = FreshnessBasis::Unproven;
     qint64 sourceMonoMs = -1;
     qint64 sourceUncertaintyMs = -1;
+    // The same present time unrounded (QPC ms with its fraction), or -1.
+    double sourcePresentMs = -1.0;
     QString leaseId;
     int slotIndex = 0;
     qint64 slotGeneration = 0;

@@ -88,6 +88,22 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
         });
         return item;
     };
+    const auto seconds = [&](const QString& name, double RunSettings::* field, double low, double high, int width) {
+        auto* item = new FluentDoubleSpinBox;
+        item->setObjectName(name);
+        item->setRange(low, high);
+        item->setDecimals(1);
+        item->setSingleStep(0.1);
+        item->setSuffix(QStringLiteral(" 秒"));
+        item->setFixedWidth(width);
+        connect(item, &QDoubleSpinBox::valueChanged, this, [this, field](double value) { m_state->run.*field = value; });
+        m_runBinders.append([this, item, field] {
+            if (item->hasFocus()) return;
+            QSignalBlocker guard(item);
+            item->setValue(m_state->run.*field);
+        });
+        return item;
+    };
     const auto step = [&](const QString& name, double RunSettings::* field) {
         auto* item = new FluentDoubleSpinBox;
         item->setObjectName(name);
@@ -153,8 +169,8 @@ RunSettingsPage::RunSettingsPage(AppState* state, QWidget* workspacePanel, QWidg
                      strip({text(QStringLiteral("开始")), scheduleStart, text(QStringLiteral("结束")), scheduleStop, schedule})));
 
     group(QStringLiteral("购买延迟"));
-    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("提前进入"), QStringLiteral("倒计时剩余这么多秒时点开购买小窗，并把鼠标移到购买按钮上（2–5 秒：要留时间校准小窗倒计时）"),
-                     integer(QStringLiteral("runEnterBefore"), &RunSettings::enterBeforeSeconds, 2, 5, QStringLiteral(" 秒"), 140)));
+    row(settingsCard(glyphLabel(Glyph::Stopwatch), QStringLiteral("提前进入"), QStringLiteral("倒计时剩余这么多秒时点开购买小窗，并把鼠标移到购买按钮上（2–5 秒，可到 0.1 秒：越早进小窗能看到的跳秒越多、对表越准；关注页按钮剩 5 秒才可点）"),
+                     seconds(QStringLiteral("runEnterBefore"), &RunSettings::enterBeforeSeconds, 2.0, 5.0, 140)));
     row(settingsCard(nullptr, QStringLiteral("购买延迟"), QStringLiteral("购买小窗的倒计时归零后，再等这么久点击购买；会按下面两项自动增减，顶部状态栏显示当前实际用的值，改这里就从新值重新开始"),
                      integer(QStringLiteral("runPurchaseDelay"), &RunSettings::purchaseDelayMs, 0, 60000, QStringLiteral(" ms"), 140), QString(), true));
     row(settingsCard(nullptr, QStringLiteral("动态延迟"), QStringLiteral("原程序的动态延迟（跳过抽奖页），本程序暂未使用。下面两项的自动增减不受这个开关控制，步长设 0 即关闭"),

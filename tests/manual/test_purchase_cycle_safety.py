@@ -141,7 +141,8 @@ class StopUpToThePressTests(unittest.TestCase):
         clicks = [i for i, line in enumerate(lines) if line.startswith('backend.click(DIALOG_BUY_POINT')]
         self.assertEqual(len(clicks), 2)   # the purchase (--buy) and the early-press probe
         for index in clicks:
-            self.assertTrue(lines[index - 1].startswith('budget.confirm(DIALOG_BUY_POINT)'))
+            before = index - 1 if lines[index - 1] != 'try:' else index - 2
+            self.assertTrue(lines[before].startswith('budget.confirm(DIALOG_BUY_POINT)'))
         # The probe's press re-checks the clock right before SendInput.
         self.assertIn('backend.click(DIALOG_BUY_POINT, before_dispatch=dispatch_guard)', source)
         loops = [i for i, line in enumerate(lines)

@@ -209,7 +209,7 @@ QJsonObject defaultRunSettings() {
     return {
         {QStringLiteral("profile"), QStringLiteral("S11新赛季1103")},
         {QStringLiteral("hotkey"), QStringLiteral("F2")},
-        {QStringLiteral("purchaseDelayMs"), 830}, {QStringLiteral("enterBeforeSeconds"), 3}, {QStringLiteral("dynamicDelay"), false},
+        {QStringLiteral("purchaseDelayMs"), 830}, {QStringLiteral("enterBeforeSeconds"), 3.0}, {QStringLiteral("dynamicDelay"), false},
         {QStringLiteral("queueFullTrigger"), 1}, {QStringLiteral("queueFullStepMs"), 1.0},
         {QStringLiteral("publicityTrigger"), 1}, {QStringLiteral("publicityStepMs"), 1.0},
         {QStringLiteral("burstClick"), true}, {QStringLiteral("clickIntervalMs"), 10},
@@ -240,7 +240,7 @@ bool validRunSetting(const QString& key, const QJsonValue& value) {
     if (key == QStringLiteral("profile")) return value.isString() && !value.toString().isEmpty() && value.toString().size() <= 40;
     if (key == QStringLiteral("hotkey")) return value.isString() && QRegularExpression(QStringLiteral("^F([1-9]|1[0-2])$")).match(value.toString()).hasMatch();
     if (key == QStringLiteral("purchaseDelayMs")) return integerIn(0, 60000);
-    if (key == QStringLiteral("enterBeforeSeconds")) return integerIn(1, 5);
+    if (key == QStringLiteral("enterBeforeSeconds")) return decimalIn(1.0, 5.0, 1);
     if (key == QStringLiteral("dynamicDelay") || key == QStringLiteral("burstClick") ||
         key == QStringLiteral("refreshPage") || key == QStringLiteral("skipLotteryPage") ||
         key == QStringLiteral("skipSuccessPage") || key == QStringLiteral("autoCollect") ||

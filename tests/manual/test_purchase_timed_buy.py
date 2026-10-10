@@ -62,8 +62,11 @@ class SettingsTests(unittest.TestCase):
             self.assertEqual(read_delay_settings(path), (3, 830))
             path.write_text(json.dumps(dict(run_settings={})), 'utf-8')
             self.assertEqual(read_delay_settings(path), (3, 830))
+            path.write_text(json.dumps(dict(run_settings=dict(enterBeforeSeconds=4.8))), 'utf-8')
+            self.assertEqual(read_delay_settings(path), (4.8, 830))
             for bad in (dict(enterBeforeSeconds=6), dict(enterBeforeSeconds=0), dict(purchaseDelayMs=-1),
-                        dict(purchaseDelayMs=1.5), dict(enterBeforeSeconds='3')):
+                        dict(purchaseDelayMs=1.5), dict(enterBeforeSeconds='3'), dict(enterBeforeSeconds=4.85),
+                        dict(enterBeforeSeconds=True)):
                 path.write_text(json.dumps(dict(run_settings=bad)), 'utf-8')
                 with self.subTest(bad=bad), self.assertRaisesRegex(ValueError, 'RUN_SETTINGS'):
                     read_delay_settings(path)
@@ -187,7 +190,7 @@ class DialogZeroTests(unittest.TestCase):
         # zero the dialog shows after its first watch began is seen and pressed.
         for enter_s in (2, 3, 4, 5):
             for delay in (160, 300, 795, 1200):
-                for offset in range(-1100, 300, 50):    # inside DIALOG_ZERO_WINDOW_MS
+                for offset in range(-1150, 1150, 50):    # inside DIALOG_ZERO_WINDOW_MS (live: -880..+827)
                     for calibrated in (True, False):
                         for gap in (2, 9, 20):
                             refused, error, overrun = self.simulate_dialog_phase(enter_s, delay, offset, calibrated, gap)
@@ -282,6 +285,33 @@ class DialogZeroTests(unittest.TestCase):
         self.assertFalse(page_reread_due(listed, 0, 5000))
         self.assertFalse(page_reread_due(dict(page='skin_listings'), 0, 5000))       # a known other page: refused
 
+    def test_the_watches_span_the_moment_the_price_button_is_due(self):
+        # Live rehearse09 (提前进入 4.8 s): the button turned at 5.0 s inside a 1.1 s read gap.
+        from run_purchase_timed_buy import (BUTTON_SPAN_MS, FOLLOW_READ_GAP_MS, PRICE_BUTTON_LEAD_MS,
+                                            SPANNING_WATCH_MAX_MS, follow_plan)
+        for enter_ms in (3000, 4000, 4800):
+            for start in range(-20000, -PRICE_BUTTON_LEAD_MS - 300, 37):   # ms to the zero when following starts
+                now, ready, seen, ends = float(start), False, False, []
+                for _ in range(60):
+                    lead = (-enter_ms) - now
+                    planned = follow_plan(lead, ready, 0, enter_ms)
+                    if planned is None:
+                        break
+                    ms, stop = planned
+                    change = -PRICE_BUTTON_LEAD_MS
+                    end = now + ms
+                    if stop and now <= change < end:
+                        end, seen, ready = change + 30, True, True     # ends two frames after the change
+                    elif now <= change < end:
+                        seen = True                                    # seen, not stopped on
+                    ends.append(end)
+                    now = end + 1100                                   # the full read between two watches
+                    if now > 2000:
+                        break
+                with self.subTest(enter_ms=enter_ms, start=start):
+                    self.assertTrue(seen)                              # the change lies inside a watch
+                    self.assertTrue(ready)
+
     def test_a_button_change_counts_only_after_the_last_publicity_read(self):
         # Review wf_993b38d0-6b8: events before a re-read that still showed 公示中 are no proof.
         from run_purchase_timed_buy import button_change_since_publicity as since
@@ -292,6 +322,10 @@ class DialogZeroTests(unittest.TestCase):
         self.assertFalse(since(False, events, ['price_ready', 'publicity']))     # a later re-read
         self.assertTrue(since(True, [], ['price_ready']))                        # earlier proof stands
         self.assertFalse(since(True, [], ['publicity']))
+        # 公示中 read before the watch, the price at its end: changed in between.
+        self.assertTrue(since(False, [], ['price_ready'], previous_state='publicity'))
+        self.assertFalse(since(False, [], ['price_ready'], previous_state='price_ready'))
+        self.assertFalse(since(False, [], ['price_ready', 'publicity'], previous_state='publicity'))
 
     def test_the_press_needs_calibration_a_read_line_and_the_exact_moment(self):
         good = dict(calibrated=True)
@@ -301,6 +335,11 @@ class DialogZeroTests(unittest.TestCase):
         self.assertEqual(press_decision(good, 'countdown', 0, 6000, 6000, 3000), 'PRESS_TOO_FAR')
         self.assertTrue(press_decision(good, 'countdown', 0, 3000, 3000 + PRESS_LATE_LIMIT_MS + 1, 3000).startswith('PRESS_WINDOW_MISSED'))
         self.assertTrue(press_decision(good, 'countdown', 0, 3000, 2999, 3000).startswith('PRESS_WINDOW_MISSED'))
+        # A real press wakes PRESS_SPIN_LEAD_MS early; the backend spins the rest right before SendInput.
+        from run_purchase_timed_buy import PRESS_SPIN_LEAD_MS
+        self.assertIsNone(press_decision(good, 'countdown', 0, 3000, 3000 - PRESS_SPIN_LEAD_MS, 3000, lead_ms=PRESS_SPIN_LEAD_MS))
+        self.assertTrue(press_decision(good, 'countdown', 0, 3000, 2996.9, 3000, lead_ms=PRESS_SPIN_LEAD_MS)
+                        .startswith('PRESS_WINDOW_MISSED'))
         self.assertEqual(last_line_state(dialog_watch(5_000_000.0, 4_998_500.0, 1200)), 'countdown')
 
 
@@ -505,7 +544,7 @@ class PressResultTimingTests(unittest.TestCase):
         import inspect
         import run_purchase_timed_buy
         source = inspect.getsource(run_purchase_timed_buy.run_attempt)
-        press = source.index('backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard)')
+        press = source.index('backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard, at_qpc_ms=click_ms')
         watch = source.index("watch_toast('press_result', TOAST_WATCH_MS, screens)")
         self.assertLess(press, watch)
         self.assertIn("if args.buy:\n            watch_toast('press_result'", source)

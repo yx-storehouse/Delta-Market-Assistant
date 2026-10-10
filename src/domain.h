@@ -54,7 +54,9 @@ struct RunSettings {
     int purchaseDelayMs = 830;
     // Seconds before zero at which the purchase dialog is opened (1..5: the
     // price button appears 5 s before zero, live preentry01/02).
-    int enterBeforeSeconds = 3;
+    // Seconds before the watchlist countdown ends when the purchase dialog
+    // opens; one decimal (user 2026-10-10: 4.8, more dialog boundaries).
+    double enterBeforeSeconds = 3.0;
     bool dynamicDelay = false;
     int queueFullTrigger = 1;
     double queueFullStepMs = 1.0;

@@ -277,6 +277,7 @@ CaptureReply DxgiObservationSource::capture(const CaptureRequest& request) {
         frame.captureStartMonoMs = start; frame.captureEndMonoMs = captureClockMs();
         frame.freshnessBasis = FreshnessBasis::SourceTimestamp;
         frame.sourceMonoMs = presented; frame.sourceUncertaintyMs = 1;
+        frame.sourcePresentMs = double(info.LastPresentTime.QuadPart) * 1000.0 / double(frequency.QuadPart);
         if (frame.captureEndMonoMs - (presented - 1) > m_demand.maxFrameAgeMs)
             return fail(QStringLiteral("E_FRAME_TOO_OLD"));
         reply.status = CaptureStatus::Captured; reply.frame = std::move(frame);

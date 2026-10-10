@@ -764,8 +764,9 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
             auto* limitBlue = window.findChild<QSpinBox*>("runLimitBlue");
             auto* publicityStep = window.findChild<QDoubleSpinBox*>("runPublicityStep");
             auto* interval = window.findChild<QSpinBox*>("runClickInterval");
-            auto* enterBefore = window.findChild<QSpinBox*>("runEnterBefore");
-            check(enterBefore && enterBefore->value() == 3 && enterBefore->minimum() == 2 && enterBefore->maximum() == 5,
+            auto* enterBefore = window.findChild<QDoubleSpinBox*>("runEnterBefore");
+            check(enterBefore && enterBefore->value() == 3.0 && enterBefore->minimum() == 2.0 && enterBefore->maximum() == 5.0
+                  && enterBefore->decimals() == 1,
                   "RUN_ENTER_BEFORE_DEFAULT");
             check(delay && delay->value() == 830 && refreshToggle && !refreshToggle->isChecked() && hotkey
                   && hotkey->currentText() == "F2" && interval && interval->value() == 10 && interval->isEnabled(),
@@ -792,13 +793,13 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
                 flush();
             }
             if (delay) delay->setValue(900);
-            if (enterBefore) enterBefore->setValue(4);
+            if (enterBefore) enterBefore->setValue(4.8);
             if (refreshToggle) refreshToggle->click();
             if (hotkey) hotkey->setCurrentText("F5");
             if (limitBlue) limitBlue->setValue(3);
             if (publicityStep) publicityStep->setValue(2.5);
             flush();
-            check(state.run.purchaseDelayMs == 900 && state.run.enterBeforeSeconds == 4 && state.run.refreshPage && state.run.hotkey == "F5"
+            check(state.run.purchaseDelayMs == 900 && std::fabs(state.run.enterBeforeSeconds - 4.8) < 1e-9 && state.run.refreshPage && state.run.hotkey == "F5"
                   && state.run.limitBlue == 3 && state.run.publicityStepMs == 2.5, "RUN_SETTINGS_EDIT");
             state.run.purchaseDelayMs = 777;
             state.run.burstClick = false;
@@ -808,7 +809,7 @@ int runUiSelfTest(QApplication& app, MainWindow& window, AppState& state,
             QString runError;
             AppState runReload;
             check(state.saveTo(config, &runError) && runReload.loadFrom(config, &runError)
-                  && runReload.run.purchaseDelayMs == 777 && runReload.run.enterBeforeSeconds == 4
+                  && runReload.run.purchaseDelayMs == 777 && std::fabs(runReload.run.enterBeforeSeconds - 4.8) < 1e-9
                   && runReload.run.hotkey == "F5", "RUN_SETTINGS_PERSIST");
             state.run = RunSettings{};
             state.notifyChanged();

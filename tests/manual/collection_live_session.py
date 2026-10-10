@@ -35,6 +35,8 @@ from collection_paths import project_root
 ROOT = project_root(__file__)
 # Native capture errors that a fresh read may clear (no input is repeated).
 TRANSIENT_CAPTURE_ERRORS = frozenset(('E_DXGI_ACQUIRE',))
+# A timed press never spins longer than this before SendInput.
+TIMED_PRESS_MAX_SPIN_MS = 20
 # Native capture refusals that mean the game is no longer the front window.
 WINDOW_LOST_ERRORS = frozenset(('E_WINDOW_NOT_FOREGROUND', 'E_BATCH_FOREGROUND_NOT_OWNED'))
 KINDS = frozenset(('capture', 'click', 'hover', 'scroll', 'click_label', 'collect_selected',
@@ -1035,8 +1037,10 @@ class WindowsBackend:
         return subprocess.run(command, capture_output=True, timeout=timeout,
                               creationflags=subprocess.CREATE_NO_WINDOW)
 
-    def click(self, point, before_dispatch=None):
-        return self._click(point,before_dispatch,False)
+    def click(self, point, before_dispatch=None, at_qpc_ms=None, late_limit_ms=None):
+        """at_qpc_ms: a timed press, sent at that QPC moment after every check
+        (spinning the last few ms), refused if already late_limit_ms past it."""
+        return self._click(point,before_dispatch,False,at_qpc_ms=at_qpc_ms,late_limit_ms=late_limit_ms)
 
     def fast_collection_click(self,point,before_dispatch=None):
         return self._click(point,before_dispatch,True)
@@ -1049,7 +1053,7 @@ class WindowsBackend:
         # Favorite toggles and ordinary navigation retain their original path.
         return self._click(point,before_dispatch,True,selection_hold=True)
 
-    def _click(self,point,before_dispatch,fast,selection_hold=False):
+    def _click(self,point,before_dispatch,fast,selection_hold=False,at_qpc_ms=None,late_limit_ms=None):
         self.last_dispatch = None
         self._planned_target = None
         self._position(point, purpose='collection_click' if fast else 'click')
@@ -1063,6 +1067,14 @@ class WindowsBackend:
         pair[1].data.mi.dwFlags = 4
         if selection_hold:
             return self._selection_press(pair)
+        if at_qpc_ms is not None:
+            # The last moments of a timed press spin here, right before SendInput
+            # (review wf_b4f7bdbb-525: checks after the wait made it 0.2-0.9 ms late).
+            _require(at_qpc_ms - time.perf_counter() * 1000 <= TIMED_PRESS_MAX_SPIN_MS, 'PURCHASE_PRESS_SPIN_TOO_LONG')
+            while time.perf_counter() * 1000 < at_qpc_ms:
+                pass
+            if late_limit_ms is not None and time.perf_counter() * 1000 - at_qpc_ms > late_limit_ms:
+                raise RuntimeError('PURCHASE_PRESS_LATE')
         dispatch_start = time.monotonic() * 1000
         # QPC (as the capture clock's source_mono_ms) around the API call:
         # time.monotonic steps 15.6 ms on this machine.

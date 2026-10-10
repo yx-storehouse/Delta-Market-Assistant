@@ -182,6 +182,17 @@ bool parseRunSettings(const QJsonObject& root, RunSettings& run, QString* error)
         value = field.toDouble();
         return true;
     };
+    auto seconds = [&](const char* key, double& value, double low, double high) {
+        const auto field = object.value(QLatin1String(key));
+        if (field.isUndefined()) return true;
+        const double number = field.toDouble(-1.0);
+        if (!field.isDouble() || !std::isfinite(number) || number < low || number > high
+            || !hasDecimalPrecision(number, 10.0))
+            return fail(error, context + QStringLiteral("：%1 必须在%2至%3之间，且最多保留1位小数")
+                                         .arg(QLatin1String(key)).arg(low).arg(high));
+        value = number;
+        return true;
+    };
     auto flag = [&](const char* key, bool& value) {
         const auto field = object.value(QLatin1String(key));
         if (field.isUndefined()) return true;
@@ -214,7 +225,7 @@ bool parseRunSettings(const QJsonObject& root, RunSettings& run, QString* error)
         run.hotkey = hotkey.toString();
     }
     return integer("purchaseDelayMs", run.purchaseDelayMs, 0, 60000)
-        && integer("enterBeforeSeconds", run.enterBeforeSeconds, 1, 5)
+        && seconds("enterBeforeSeconds", run.enterBeforeSeconds, 1.0, 5.0)
         && flag("dynamicDelay", run.dynamicDelay)
         && integer("queueFullTrigger", run.queueFullTrigger, 1, 9999)
         && step("queueFullStepMs", run.queueFullStepMs)

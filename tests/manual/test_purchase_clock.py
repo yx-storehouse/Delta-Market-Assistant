@@ -236,6 +236,37 @@ class ClockTests(unittest.TestCase):
         # of the same unlock: the estimate is "display reaches 0", by design.
         self.assertAlmostEqual(summary['display_zero']['estimate_mono_ms'], zero - 1000, delta=17)
 
+    def test_one_interval_a_frame_off_is_dropped_from_the_combination(self):
+        # Review wf_b4f7bdbb-525: about 1.8 % of boundary intervals are 1-7 ms late.
+        from purchase_clock import _combine
+        ticks = [dict(before_mono_ms=990.0, upper_mono_ms=1004.0, seconds=0),
+                 dict(before_mono_ms=-3.0, upper_mono_ms=9.0, seconds=1),       # zero in (997, 1009]
+                 dict(before_mono_ms=-1004.0, upper_mono_ms=-994.0, seconds=2),  # zero in (996, 1006]
+                 dict(before_mono_ms=-1990.0, upper_mono_ms=-1985.0, seconds=3)]  # (1010, 1015]: a frame late
+        zero = _combine(ticks)
+        self.assertEqual(zero.get('dropped_intervals'), 1)
+        self.assertEqual((zero['lower_mono_ms'], zero['upper_mono_ms']), (997.0, 1004.0))
+        # Review wf_7aabd0b3-24a: whatever the order, the late one goes and the zero (~1002) stays inside.
+        g1, g2, late = (dict(before_mono_ms=997.0, upper_mono_ms=1004.0, seconds=0),
+                        dict(before_mono_ms=1000.0, upper_mono_ms=1007.0, seconds=0),
+                        dict(before_mono_ms=1005.0, upper_mono_ms=1012.0, seconds=0))
+        for order in ([g1, g2, late], [late, g1, g2], [g2, late, g1]):
+            zero = _combine(order)
+            with self.subTest(order=[t['before_mono_ms'] for t in order]):
+                self.assertTrue(zero['lower_mono_ms'] <= 1002 <= zero['upper_mono_ms'])
+        # The review's case: dropping the early-ending (995, 1003) would leave (1004.5, 1006) and miss the
+        # zero (~1000); only the late (1004.5, 1006) lies wholly after the others, so it is the one dropped.
+        overlapping = [dict(before_mono_ms=995.0, upper_mono_ms=1003.0, seconds=0),
+                       dict(before_mono_ms=999.0, upper_mono_ms=1010.0, seconds=0),
+                       dict(before_mono_ms=1004.5, upper_mono_ms=1006.0, seconds=0)]
+        zero = _combine(overlapping)
+        self.assertEqual((zero['lower_mono_ms'], zero['upper_mono_ms']), (999.0, 1003.0))
+        # Two candidates (both wholly after the rest's part would be ambiguous): no drop, the median.
+        ambiguous = [dict(before_mono_ms=990.0, upper_mono_ms=995.0, seconds=0),
+                     dict(before_mono_ms=1000.0, upper_mono_ms=1005.0, seconds=0),
+                     dict(before_mono_ms=1010.0, upper_mono_ms=1015.0, seconds=0)]
+        self.assertNotIn('dropped_intervals', _combine(ambiguous))
+
     def test_wall_time_and_phase_come_from_the_clock_pairs(self):
         zero = 1_000_000.0
         watch = make_watch(zero, zero - 20_000, 3_000, offset=1_760_000_000_250.0)

@@ -192,6 +192,22 @@ def _combine(ticks):
     if lower < upper:
         return dict(estimate_mono_ms=(lower + upper) / 2, uncertainty_ms=(upper - lower) / 2, consistent=True,
                     lower_mono_ms=lower, upper_mono_ms=upper)
+    # One interval a frame late among several (review wf_b4f7bdbb-525: about
+    # 1.8 % are 1-7 ms late): the others' common part, without it - only when
+    # exactly one interval lies wholly after the others' common part (review
+    # wf_7aabd0b3-24a: dropping by width could keep the late one and exclude
+    # the zero); otherwise the median below.
+    if len(intervals) >= 3:
+        late = []
+        for drop, (a, b) in enumerate(intervals):
+            rest = intervals[:drop] + intervals[drop + 1:]
+            low, high = max(x for x, _ in rest), min(y for _, y in rest)
+            if low < high and a >= high:
+                late.append((low, high))
+        if len(late) == 1:
+            low, high = late[0]
+            return dict(estimate_mono_ms=(low + high) / 2, uncertainty_ms=(high - low) / 2, consistent=False,
+                        lower_mono_ms=low, upper_mono_ms=high, dropped_intervals=1)
     estimate = statistics.median((a + b) / 2 for a, b in intervals)
     uncertainty = (lower - upper) / 2 + min((b - a) / 2 for a, b in intervals)
     # Bounds for anything built on the estimate: never inverted.
@@ -289,7 +305,8 @@ class CountdownClock:
         best = [candidates[i] for i in _agreeing(candidates)]
         zero = _combine(best)
         all_ticks = [t for w in usable for t in w['ticks'] if t['state'] == 'countdown']
-        zero.update(ticks_used=len(best), reference_watch=reference['watch'], verified=bool(verified),
+        zero.update(ticks_used=len(best) - zero.get('dropped_intervals', 0), reference_watch=reference['watch'],
+                    verified=bool(verified),
                     anchor_mismatch_watches=out['anchor_mismatch_watches'],
                     excluded_watches=[w['watch'] for w in per_watch if w not in joined],
                     outlier_ticks=[dict(seconds=t['seconds'], text=t['text']) for t in all_ticks if t not in best])

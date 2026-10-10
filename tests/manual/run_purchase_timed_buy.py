@@ -95,9 +95,12 @@ DIALOG_BUY_POINT = [DIALOG_BUY_RECT[0] + DIALOG_BUY_RECT[2] // 2, DIALOG_BUY_REC
 # preentry02: the dialog's countdown reached zero 107 ms before the
 # watchlist's. One sample only: the prior plans watches, it never times a press.
 DIALOG_PHASE_PRIOR_MS = -107
-# The dialog's zero must lie this close to the watchlist's (whole-second
-# misreads fall outside; the dialog may have its own phase within a second).
-DIALOG_ZERO_WINDOW_MS = (-1100, 300)
+# The dialog's zero must lie this close to the watchlist's. Live 2026-10-10:
+# it fell -880, -188, -150, +58..+131 and +827 ms from it (rehearse10: 34
+# footer ticks against 4 dialog ticks): the dialog syncs its clock when it
+# opens, anywhere within about a second. Misreads are caught by the ticks
+# themselves (agreeing ticks, the 1->0 frame, the frame bounds).
+DIALOG_ZERO_WINDOW_MS = (-1200, 1200)
 # A lean watch returns within a few ms of its end; keep it this far before the press.
 LEAN_MARGIN_MS = 40
 LEAN_MIN_MS = 100
@@ -106,6 +109,16 @@ LEAN_MIN_MS = 100
 ZERO_BOUND_SLACK_MS = 50
 # Lean dialog watches of one attempt (short ones while the zero is still unplaced).
 DIALOG_WATCH_ROUNDS = 40
+# The watchlist's button turns into the price this long before its zero
+# (live preentry01: 4995 ms). While it is awaited, one follow watch spans
+# that moment (ending on the change, or BUTTON_SPAN_MS after it), and the
+# watch before must end FOLLOW_READ_GAP_MS ahead of it: the full read
+# between two follow watches takes about a second (live rehearse09 at
+# 提前进入 4.8 s: the change fell into a 1.1 s gap, never proven, no entry).
+PRICE_BUTTON_LEAD_MS = 4995
+BUTTON_SPAN_MS = 600
+FOLLOW_READ_GAP_MS = 1500
+SPANNING_WATCH_MAX_MS = 2500
 # A follow watch whose final full-frame read the page reader cannot place
 # (live buy_cycle03 2026-10-10: 'unknown' on the frame the button turned to
 # the price, 5 s before the unlock; the attempt gave up) is followed by plain
@@ -116,6 +129,9 @@ PAGE_UNKNOWN_REREADS = 2
 PAGE_REREAD_MIN_LEAD_MS = 600
 # The press goes out at most this long after its planned moment, never before.
 PRESS_LATE_LIMIT_MS = 15
+# The coarse wait for a real press ends this much early; the backend spins
+# the rest right before SendInput, after its checks.
+PRESS_SPIN_LEAD_MS = 3
 # Session steps of one attempt (a 10 min follow is about 70 watches, cleanup up
 # to 5 x 11), and the steps kept back for the dialog phase before the entry.
 ATTEMPT_MAX_STEPS = 300
@@ -330,9 +346,11 @@ def read_delay_settings(config_path):
     run = data.get('run_settings', {}) if isinstance(data, dict) else {}
     enter = run.get('enterBeforeSeconds', 3)
     delay = run.get('purchaseDelayMs', 830)
-    if type(enter) is not int or not 1 <= enter <= 5 or type(delay) is not int or not 0 <= delay <= 60000:
+    # One decimal (user 2026-10-10: 4.8 s, the dialog then shows more boundaries).
+    if (type(enter) not in (int, float) or not 1 <= enter <= 5 or abs(enter * 10 - round(enter * 10)) > 1e-9
+            or type(delay) is not int or not 0 <= delay <= 60000):
         raise ValueError('PURCHASE_TIMED_RUN_SETTINGS')
-    return enter, delay
+    return float(enter), delay
 
 
 def zero_frame_seen(dialog_clock, zero_ms):
@@ -423,11 +441,33 @@ def next_dialog_watch(now_ms, zero, latest_zero_ms, delay_ms):
     return min(WATCH_MAX_MS, ms), not zero['observed']
 
 
-def button_change_since_publicity(changed, watch_events, states):
+def follow_plan(lead_ms, button_ready, age_ms, enter_ms):
+    """plan_next's (watch ms, stop on a button change) or None; while the
+    price button is awaited, the watches are fitted around the moment it is
+    due (PRICE_BUTTON_LEAD_MS before the zero, i.e. enter_ms - that after the
+    entry target) so that one of them spans it."""
+    planned = plan_next(lead_ms, button_ready, age_ms)
+    if planned is None or button_ready:
+        return planned
+    until_change = lead_ms + enter_ms - PRICE_BUTTON_LEAD_MS
+    if until_change <= -BUTTON_SPAN_MS:
+        return planned     # long past: it was missed, the next reads decide
+    if until_change + BUTTON_SPAN_MS <= SPANNING_WATCH_MAX_MS:
+        return max(500, int(until_change + BUTTON_SPAN_MS)), True
+    cap = int(until_change - FOLLOW_READ_GAP_MS)
+    if cap < planned[0]:
+        return max(500, cap), planned[1]
+    return planned
+
+
+def button_change_since_publicity(changed, watch_events, states, previous_state=None):
     """A native button change counts as proof of the price only when seen
     after the last 公示中 read: the watch's events come before its final read,
-    and every later read showing 公示中 clears them (review wf_993b38d0-6b8)."""
-    if watch_events:
+    and every later read showing 公示中 clears them (review wf_993b38d0-6b8).
+    Two full reads, 公示中 before the watch and the price at its end, prove
+    the change too (it can come between two watches; a false one at worst
+    presses 公示中: only the 订单尚未开放购买 toast, no dialog)."""
+    if watch_events or (previous_state == 'publicity' and states and states[0] in ('price_ready', 'price_button')):
         changed = True
     if 'publicity' in states:
         changed = False
@@ -501,8 +541,9 @@ def last_line_state(watch):
     return final['state']
 
 
-def press_decision(zero, line_state, waited_from_ms, click_ms, now_ms, enter_at_ms):
-    """None if the press may go out now; otherwise why not."""
+def press_decision(zero, line_state, waited_from_ms, click_ms, now_ms, enter_at_ms, lead_ms=0):
+    """None if the press may go out now (lead_ms: up to that much before its
+    moment, the backend then waits the rest); otherwise why not."""
     if not zero['calibrated']:
         return 'DIALOG_ZERO_UNCALIBRATED'
     if line_state not in ('countdown', 'unlocked'):
@@ -510,7 +551,7 @@ def press_decision(zero, line_state, waited_from_ms, click_ms, now_ms, enter_at_
     if click_ms - waited_from_ms > enter_at_ms + 2000:
         return 'PRESS_TOO_FAR'
     late = now_ms - click_ms
-    if late < 0 or late > PRESS_LATE_LIMIT_MS:
+    if late < -lead_ms or late > PRESS_LATE_LIMIT_MS:
         return 'PRESS_WINDOW_MISSED:%.1f' % late
     return None
 
@@ -962,7 +1003,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
             if seen['source'] == 'dialog':
                 banner['zero_ms'] = seen['zero_ms']  # 倒计时监控 follows the dialog's own countdown
             dialog_watches.append(dict(requested_ms=ms, stop_on_zero=stop_on_zero, line_state=line_state,
-                received_qpc_ms=qpc_ms(), earliest_zero_ms=earliest, watch=dict(events=[dict(text=e.get('text'), source_mono_ms=e.get('source_mono_ms'),
+                received_qpc_ms=qpc_ms(), earliest_zero_ms=earliest, frames=watch.get('frames_examined'),
+                max_frame_gap_ms=watch.get('max_frame_gap_ms'), time_rounding=watch.get('time_rounding'), watch=dict(events=[dict(text=e.get('text'), source_mono_ms=e.get('source_mono_ms'),
                                         previous_source_mono_ms=e.get('previous_source_mono_ms')) for e in watch.get('events', [])],
                            covered_ms=watch.get('covered_ms'), ended_by=watch.get('ended_by')),
                 display_zero=estimate['display_zero']))
@@ -973,11 +1015,12 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
         result['dialog_zero'] = dict(zero, prior_mono_ms=prior, click_planned_qpc_ms=click_ms,
                                      earliest_zero_ms=earliest, latest_zero_ms=latest)
         waited_from = qpc_ms()
+        lead = PRESS_SPIN_LEAD_MS if args.buy else 0
         if click_ms - waited_from <= enter_at_ms + 2000:
-            wait_until_or_stop(click_ms, stop_requested)
+            wait_until_or_stop(click_ms - lead, stop_requested)
         check_stop(stop_requested)
         now = qpc_ms()
-        refused = press_decision(zero, line_state, waited_from, click_ms, now, enter_at_ms)
+        refused = press_decision(zero, line_state, waited_from, click_ms, now, enter_at_ms, lead_ms=lead)
         if refused is None and backend._cursor() != dialog_rest:
             refused = 'POINTER_MOVED'
         result['press_decision'] = dict(allowed=refused is None, reason=refused, late_ms=now - click_ms)
@@ -986,22 +1029,36 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                 raise ValueError('PURCHASE_TIMED_NO_PRESS:' + refused)
 
             def press_guard():
-                # Right before SendInput (after the pointer and window checks): still on time.
+                # After the pointer and window checks: still on time, and the rest is a short spin.
                 late = qpc_ms() - click_ms
-                if not 0 <= late <= PRESS_LATE_LIMIT_MS:
+                if not -PRESS_SPIN_LEAD_MS - 1 <= late <= PRESS_LATE_LIMIT_MS:
                     result['press_decision'].update(allowed=False, reason='PRESS_WINDOW_MISSED:%.1f' % late,
                                                     dispatch_late_ms=late)
                     raise ValueError('PURCHASE_TIMED_NO_PRESS:PRESS_WINDOW_MISSED:%.1f' % late)
             check_stop(stop_requested)
             budget.confirm(DIALOG_BUY_POINT)
-            backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard)
+            try:
+                backend.click(DIALOG_BUY_POINT, before_dispatch=press_guard, at_qpc_ms=click_ms,
+                              late_limit_ms=PRESS_LATE_LIMIT_MS)
+            except RuntimeError as error:
+                if not str(error).startswith('PURCHASE_PRESS_'):
+                    raise
+                # The backend's own last timing gate refused it (review wf_7aabd0b3-24a): no input went out.
+                late = qpc_ms() - click_ms
+                result['press_decision'].update(allowed=False, reason='PRESS_WINDOW_MISSED:%.1f' % late,
+                                                dispatch_late_ms=late, backend_code=str(error))
+                raise ValueError('PURCHASE_TIMED_NO_PRESS:PRESS_WINDOW_MISSED:%.1f' % late) from error
             stop_banner()
             overlay.show('已按下购买（归零后 %g ms）' % delay_ms, 'ok')
             sent = backend.last_dispatch if isinstance(backend.last_dispatch, dict) else {}
             result['confirm_clicks'] = 1 if (sent.get('returned_events') or 0) >= 1 else 0
             dispatched = sent.get('started_qpc_ms') or now
+            returned = sent.get('returned_qpc_ms')
             result['confirm'] = dict(planned_qpc_ms=click_ms, dispatch_qpc_ms=dispatched, late_ms=dispatched - click_ms,
-                                     after_dialog_zero_ms=dispatched - zero['zero_ms'])
+                                     after_dialog_zero_ms=dispatched - zero['zero_ms'], returned_qpc_ms=returned,
+                                     returned_events=sent.get('returned_events'),
+                                     sendinput_ms=None if returned is None else returned - dispatched,
+                                     zero_uncertainty_ms=zero.get('uncertainty_ms'), zero_ticks_used=zero.get('ticks_used'))
             if result['confirm_clicks'] != 1:
                 raise ValueError('PURCHASE_TIMED_PRESS_NOT_DISPATCHED')
         else:
@@ -1114,7 +1171,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                     lead = target - qpc_ms()
                     if zero is not None and qpc_ms() > zero['upper_mono_ms'] + 2500 and not button_ready:
                         raise ValueError('PURCHASE_TIMED_PRICE_BUTTON_NEVER_APPEARED')
-                    planned = plan_next(lead, button_ready, max(target, qpc_ms() + HOVER_MARGIN_MS) - last_watch_start)
+                    planned = follow_plan(lead, button_ready, max(target, qpc_ms() + HOVER_MARGIN_MS) - last_watch_start,
+                                          enter_at_ms)
                     if planned is None:
                         break
                     ms, stop = planned
@@ -1126,6 +1184,7 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                                 expect_zero_ms=(followed['estimate_mono_ms'] if followed
                                                 else read_frame + (read_seconds - .5) * 1000.0))
                     last_watch_start = qpc_ms()
+                    state_before = after['button_state']
                     session.perform(step)
                     packet = session.previous
                     after = read_screen(packet)
@@ -1186,7 +1245,8 @@ def run_attempt(settings, *, root, output, snapshot, backend, overlay, stop_requ
                     if estimate is not None:
                         banner['zero_ms'] = estimate['estimate_mono_ms']
                     changed = button_change_since_publicity(changed, record['button_events'],
-                                                            [watch_after['button_state']] + [r['button_state'] for r in rereads])
+                                                            [watch_after['button_state']] + [r['button_state'] for r in rereads],
+                                                            previous_state=state_before)
                     button_ready = button_ready_now(after, packet, changed)
                 refused = timed_entry_allowed(after, packet, changed) or entry_page_problem(
                     after, identity, listing_identity(packet))

@@ -291,7 +291,10 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
     CountdownInk countdownReference;
     QJsonArray countdownEvents;
     QJsonObject countdownStartClock;
-    qint64 countdownPreviousSource=-1,countdownFirstSource=-1,countdownMaxGap=0,countdownWatchEnd=0,countdownLastRequested=0;
+    qint64 countdownWatchEnd=0,countdownLastRequested=0;
+    // Present times unrounded (sourcePresentMs) where the source has them.
+    double countdownPreviousSource=-1,countdownFirstSource=-1,countdownMaxGap=0;
+    bool countdownExactTimes=true;
     int countdownFrames=0,countdownReads=0,countdownSegments=1,countdownQuietMax=0;
     // The buy button: its reference is the last changed button; a change
     // may end the watch (stop-on-button) after it has settled.
@@ -524,14 +527,16 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                         if(!ink.valid)error=QStringLiteral("E_PURCHASE_COUNTDOWN_ROI");
                         else {
                             ++countdownFrames;
-                            if(countdownFirstSource<0)countdownFirstSource=f.sourceMonoMs;
-                            if(countdownPreviousSource>=0)countdownMaxGap=std::max(countdownMaxGap,f.sourceMonoMs-countdownPreviousSource);
+                            const double present=f.sourcePresentMs>=0?f.sourcePresentMs:double(f.sourceMonoMs);
+                            if(f.sourcePresentMs<0)countdownExactTimes=false;
+                            if(countdownFirstSource<0)countdownFirstSource=present;
+                            if(countdownPreviousSource>=0)countdownMaxGap=std::max(countdownMaxGap,present-countdownPreviousSource);
                             const int changed=countdownStrongDifference(countdownReference,ink);
                             if(!countdownReference.valid ||changed>=PurchaseCountdownChangePixels) {
                                 QJsonObject event{{"index",countdownEvents.size()},
                                     {"kind",countdownReference.valid?"change":"baseline"},
-                                    {"frame_id",f.frameId},{"source_mono_ms",double(f.sourceMonoMs)},
-                                    {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(double(countdownPreviousSource)):QJsonValue()},
+                                    {"frame_id",f.frameId},{"source_mono_ms",present},
+                                    {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(countdownPreviousSource):QJsonValue()},
                                     {"changed_px",changed},{"bright_px",ink.bright}};
                                 // Bounded: a flickering line must not turn the
                                 // watch into continuous OCR.
@@ -594,8 +599,8 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                             const int buttonChanged=countdownLevelDifference(buttonReference,button);
                             if(buttonReference.valid &&buttonChanged>=PurchaseButtonChangePixels &&buttonEvents.size()<16) {
                                 buttonEvents.append(QJsonObject{{"index",buttonEvents.size()},{"frame_id",f.frameId},
-                                    {"source_mono_ms",double(f.sourceMonoMs)},
-                                    {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(double(countdownPreviousSource)):QJsonValue()},
+                                    {"source_mono_ms",present},
+                                    {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(countdownPreviousSource):QJsonValue()},
                                     {"changed_px",buttonChanged},{"bright_px",button.bright}});
                                 if(stopOnButton &&buttonStopIn<0)buttonStopIn=PurchaseButtonSettleFrames;
                             }
@@ -603,13 +608,13 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                             if(stopOnGreen &&greenSeen.isNull()) {
                                 const double green=buttonGreenFraction(f,countdownAreaRects.button);
                                 if(green>=PurchaseButtonGreenFill) {
-                                    greenSeen=QJsonObject{{"frame_id",f.frameId},{"source_mono_ms",double(f.sourceMonoMs)},
-                                        {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(double(countdownPreviousSource)):QJsonValue()},
+                                    greenSeen=QJsonObject{{"frame_id",f.frameId},{"source_mono_ms",present},
+                                        {"previous_source_mono_ms",countdownPreviousSource>=0?QJsonValue(countdownPreviousSource):QJsonValue()},
                                         {"green_fraction",green}};
                                     if(buttonStopIn<0)buttonStopIn=PurchaseButtonSettleFrames;
                                 }
                             }
-                            countdownPreviousSource=f.sourceMonoMs;
+                            countdownPreviousSource=present;
                             if(buttonStopIn>=0 &&buttonStopIn--==0)stoppedOnButton=true;
                             if(jumpStopIn>=0 &&jumpStopIn--==0)stoppedOnJump=true;
                             if(zeroStopIn>=0 &&zeroStopIn--==0)stoppedOnZero=true;
@@ -678,11 +683,11 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                 {"area",countdownAreaRects.name},
                 {"roi",QJsonArray{countdownAreaRects.line.x(),countdownAreaRects.line.y(),countdownAreaRects.line.width(),countdownAreaRects.line.height()}},
                 {"requested_ms",countdownWatchMs},{"frames_examined",countdownFrames},{"line_reads",countdownReads},
-                {"first_source_mono_ms",countdownFirstSource>=0?QJsonValue(double(countdownFirstSource)):QJsonValue()},
-                {"last_source_mono_ms",countdownPreviousSource>=0?QJsonValue(double(countdownPreviousSource)):QJsonValue()},
-                {"max_frame_gap_ms",double(countdownMaxGap)},{"change_threshold_px",PurchaseCountdownChangePixels},
+                {"first_source_mono_ms",countdownFirstSource>=0?QJsonValue(countdownFirstSource):QJsonValue()},
+                {"last_source_mono_ms",countdownPreviousSource>=0?QJsonValue(countdownPreviousSource):QJsonValue()},
+                {"max_frame_gap_ms",countdownMaxGap},{"change_threshold_px",PurchaseCountdownChangePixels},
                 {"segments",countdownSegments},{"max_quiet_changed_px",countdownQuietMax},
-                {"covered_ms",countdownFirstSource>=0?double(countdownPreviousSource-countdownFirstSource):0.0},
+                {"covered_ms",countdownFirstSource>=0?countdownPreviousSource-countdownFirstSource:0.0},
                 {"ended_by",!error.isEmpty()?"error":stoppedOnButton?"button":stoppedOnJump?"jump":stoppedOnZero?"zero":stoppedOnText?"text"
                     :captureClockMs()+30>=countdownWatchEnd?"time":"segment_limit"},
                 {"stop_on_jump",stopOnJump},{"stopped_on_jump",stoppedOnJump},{"jump_seen",jumpSeen},
@@ -698,7 +703,7 @@ CaptureResult capture(const QStringList& arguments, WindowsOcrRecognizer& recogn
                 {"final_button_mean_bgr",ocrFrame.frameId.isEmpty()?QJsonArray{}:rectMeanBgr(ocrFrame,countdownAreaRects.button)},
                 // Present times are QPC floored to whole ms: a present at
                 // t lies in [t, t+1).
-                {"time_rounding","floor_ms"},
+                {"time_rounding",countdownExactTimes?"exact_qpc":"floor_ms"},
                 {"ink_levels",QJsonArray{PurchaseCountdownInkDark,PurchaseCountdownInkBright}},
                 {"events",countdownEvents},{"clock_pairs",QJsonArray{countdownStartClock,purchaseClockPair()}},
                 {"time_basis","dxgi_last_present_qpc_ms"},{"system_time_changed",false},
